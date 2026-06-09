@@ -612,8 +612,163 @@ NAVIGATION
 Confirm wireframe maps to pyramid exactly. Each KL = one section. No section without a KL.
 No KL without a section.
 
+---
+
+### Swiss Editorial Design Standard (mandatory)
+
+Every illuminate artifact is built to the Swiss International Typographic Style — the design
+tradition of Müller-Brockmann and Helmut Schmid. Structure is visible. Type carries the
+argument. Every visual element earns its presence by serving the logical hierarchy.
+
+**Typography stack:**
+```
+--hn:   'Helvetica Neue', Helvetica, Arial, sans-serif
+--ft:   Futura, 'Century Gothic', 'Trebuchet MS', var(--hn)
+--mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace
+```
+
+- **GT / hero body** — Helvetica Neue 300 (ultra-light), uppercase, tracking −0.04em,
+  `clamp(2rem, 4vw, 3.5rem)`. The lightest weight creates maximum contrast with section titles.
+- **Section titles / labels** — Futura 700, all caps, tracking −0.02em to 0.2em depending on
+  size. Futura is the geometric Swiss counterpoint to Helvetica's neutral grotesque.
+- **Evidence / CLI / motifs** — monospace only, terminal green (`#00ff88`), 0.7–0.8rem,
+  `text-shadow: 0 0 12px rgba(0,255,136,.18)` glow. Evidence is a different material.
+
+**12-column Swiss grid:**
+```css
+.g12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(12px, 1.5vw, 20px);
+}
+/* Hero: GT takes cols 1–8, SCQA panel takes cols 9–12 */
+/* Sections: motif + data vizes take 5fr, lede + cards take 7fr */
+```
+
+Visible column overlay in the hero section:
+```css
+.grid-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(90deg,
+    rgba(255,255,255,.05) 0, rgba(255,255,255,.05) 1px,
+    transparent 1px, transparent calc(100% / 12));
+}
+```
+
+**Color system — dark editorial:**
+```
+--paper:   #070708   /* near-black paper */
+--ink:     #f0f0ee   /* soft white ink */
+--ink-2:   #888886   /* mid grey — body text */
+--ink-3:   #404040   /* dark grey — labels, rules */
+--rule:    rgba(240,240,238,.06)   /* barely-there grid lines */
+--rule-hi: rgba(240,240,238,.14)   /* section borders */
+--red:     #ff1e1e   /* editorial accent — one strong color, used sparingly */
+--cli:     #00ff88   /* terminal green — evidence and ASCII only */
+--blue:    #3d9eff   /* data blue — metrics and charts */
+--amber:   #ffaa00   /* contested / hedge signal */
+```
+
+Full light-mode override via `@media(prefers-color-scheme:light)`.
+
+**Ghost section numbers:**
+```css
+.ghost {
+  position: absolute; right: var(--pad); top: 1.5rem;
+  font-family: var(--ft); font-size: clamp(7rem, 20vw, 16rem);
+  font-weight: 700; letter-spacing: -.05em;
+  color: rgba(240,240,238,.022);
+  line-height: 1; pointer-events: none; user-select: none;
+  transition: color .8s;
+}
+.kl:hover .ghost { color: rgba(240,240,238,.04) }
+```
+Large ghost numbers (01/02/03) in Futura at ~20vw. Barely visible at rest, intensify on
+section hover. This is the Swiss editorial convention of using numbers as structural elements.
+
+**Section header rule:**
+```css
+.kl-hd {
+  display: flex; align-items: baseline; gap: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid var(--ink);  /* thick rule = logical authority */
+}
+.kl-tag {
+  font-family: var(--ft); font-size: .68rem;
+  font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red);  /* editorial red for KL number only */
+}
+.kl-title {
+  font-family: var(--ft); font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 700; letter-spacing: -.02em; text-transform: uppercase;
+}
+```
+
+**Custom cursor (editorial dot):**
+```css
+#cur {
+  position: fixed; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--red); pointer-events: none; z-index: 9000;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  transition: width .18s, height .18s, background .18s;
+}
+#cur.big { width: 28px; height: 28px; background: var(--ink) }
+#cur.cli-mode { background: var(--cli) }  /* green over motif/CLI content */
+```
+`mix-blend-mode: difference` inverts the cursor color against whatever is beneath it —
+making it always visible regardless of background. Cursor enlarges on interactive elements,
+turns terminal green over ASCII/evidence content.
+
+**Progress stripe — anchored to nav bottom edge:**
+```css
+#nav { position: sticky; top: 0 }  /* nav is the positioning parent */
+#prog {
+  position: absolute; bottom: 0; left: 0; height: 2px; z-index: 1;
+  background: var(--red); width: 0%;
+  box-shadow: 0 0 8px var(--red), 0 0 2px var(--red);
+  transition: width .1s linear;
+}
+```
+The stripe sits at the bottom of the sticky nav bar — always visible, never competing with
+content. The red glow makes it legible at 2px. Never use `position:fixed` for the stripe —
+it will collide with the nav background at the same `top:0` position.
+
+**Newspaper dateline:**
+```html
+<div class="hero-dateline">
+  /illuminate<span> · </span>source-name<span> · </span>date
+</div>
+```
+```css
+.hero-dateline {
+  font-family: var(--mono); font-size: .68rem;
+  color: var(--ink-3); letter-spacing: .12em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 1.5rem;
+}
+.hero-dateline span { color: var(--red) }
+.hero-dateline::after { content: ''; flex: 1; height: 1px; background: var(--rule-hi); max-width: 200px }
+```
+
+**GT reveal — answer-first, scramble animation:**
+The GT is the first element built, not the SCQA. Editorial convention: answer leads.
+```javascript
+// Each character cycles through ░▓█│─┼╬ before landing — mechanical typesetting feel
+// Sequence: GT scramble → on complete → SCQA slides in → pipeline builds
+const SCRAMBLE_CHARS = '█▓▒░│─┼╬═■◆●▸◉⊕◇□';
+// cd: 4ms per char, sc: 2 scramble cycles per char → GT builds in ~2-3s
+scrambleReveal(gtEl, GT_TEXT, { cd: 4, sc: 2, onDone: () => {
+  scqaEl.classList.add('in');
+  buildPipeline();
+}});
+```
+GT CSS: `font-weight: 300` (ultra-light Helvetica), uppercase, gradient applies as `.done`
+class on completion. This is the inverse of the classical typewriter GT (which used weight 800)
+— Swiss editorial uses ultra-light at large size for maximum editorial tension.
+
 ```
 [ILLUMINATE:GATE] Phase 5 PASS | Wireframe confirmed | KLs: <N> | Components: 11+
+                                | Editorial: Swiss grid · Helvetica Neue + Futura · editorial red
 ```
 
 ---
@@ -632,25 +787,62 @@ use vanilla. If a library saves time and sharpens the result, use it.
 
 ---
 
-### CSS Architecture
+### CSS Architecture — Swiss Editorial Token System
+
+The Phase 5 Swiss Editorial Design Standard defines the token vocabulary. Use these exact
+token names in Phase 6 CSS — consistent naming makes the design system auditable.
 
 ```css
 :root {
-  /* Complete design token system — no hardcoded values in selectors */
-  --bg, --bg-1, --bg-2, --bg-3: surface hierarchy (4 levels)
-  --border, --border-hi, --border-act: interactive border states
-  --text, --text-2, --text-3, --text-4: 4 text contrast levels
-  --accent, --green, --amber, --red, --purple: semantic palette
-  --*-dim: 20-opacity tinted backgrounds for each semantic color
-  --sans, --mono: two font stacks only
-  --r, --r-lg: border-radius tokens
+  /* Typefaces */
+  --hn:    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ft:    Futura, 'Century Gothic', 'Trebuchet MS', var(--hn);
+  --mono:  'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
 
-  /* Motion tokens */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Surface hierarchy */
+  --paper:   #070708;   --paper-1: #0f0f11;   --paper-2: #171719;
+
+  /* Ink — 3 contrast levels */
+  --ink:   #f0f0ee;   --ink-2: #888886;   --ink-3: #404040;
+
+  /* Structural rules */
+  --rule:    rgba(240,240,238,.06);
+  --rule-hi: rgba(240,240,238,.14);
+
+  /* Semantic palette — one editorial accent per semantic role */
+  --red:    #ff1e1e;   --red-dim:    rgba(255,30,30,.1);    /* editorial accent */
+  --cli:    #00ff88;   --cli-dim:    rgba(0,255,136,.07);   /* evidence / ASCII */
+  --blue:   #3d9eff;   --blue-dim:   rgba(61,158,255,.09);  /* data / metrics */
+  --amber:  #ffaa00;   --amber-dim:  rgba(255,170,0,.1);    /* hedge / contested */
+
+  /* Swiss Grid */
+  --col12: repeat(12, 1fr);
+  --gap12: clamp(12px, 1.5vw, 20px);
+  --max:   1400px;
+  --pad:   clamp(1.25rem, 4vw, 3.5rem);
+
+  /* Type scale */
+  --t-gt:     clamp(2rem, 4vw, 3.5rem);     /* GT / hero — Helvetica Neue 300 */
+  --t-h1:     clamp(1.4rem, 2.5vw, 2rem);   /* section titles — Futura 700 */
+  --t-body:   clamp(.9rem, 1.1vw, 1rem);
+  --t-small:  .82rem;
+  --t-micro:  .68rem;                         /* labels / dateline — Futura caps */
+  --t-ghost:  clamp(7rem, 20vw, 16rem);      /* ghost section numbers */
+
+  /* Motion */
+  --ease:   cubic-bezier(.16,1,.3,1);
+  --spring: cubic-bezier(.34,1.56,.64,1);
+  --dur:    .5s;
 }
-@media (prefers-color-scheme: light) { :root { /* full light override */ } }
-@media (prefers-reduced-motion: reduce) { :root { --duration: 0s; } }
+@media(prefers-color-scheme:light) {
+  :root {
+    --paper: #f8f8f6; --paper-1: #f0f0ee; --paper-2: #e8e8e4;
+    --ink: #111;      --ink-2: #555;       --ink-3: #999;
+    --rule: rgba(0,0,0,.08); --rule-hi: rgba(0,0,0,.15);
+    --cli: #006644; --cli-dim: rgba(0,102,68,.08);
+  }
+}
+@media(prefers-reduced-motion:reduce) { :root { --dur: 0s } }
 ```
 
 ---
@@ -1037,15 +1229,16 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 
 1. **Maximum dynamism** — the artifact should feel alive: smooth animations, snappy transitions, rich interactivity. This is the primary goal.
 2. **Libraries freely** — any JS/CSS library that enhances the experience; CDN or build step both fine
-3. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
-4. **Parallax hero** — minimum 3 depth layers
-5. **3D card physics** — all KL section cards have hover tilt
-6. **Interactive ASCII** — all motifs animate on reveal; named nodes respond to hover
-7. **Accordion with nested components** — scan-line open, nested sub-sections, evidence drawer
-8. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
-9. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
-10. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
-11. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
+3. **Swiss editorial design** — Helvetica Neue 300 (GT/hero) + Futura 700 (section titles/labels) + monospace (evidence/ASCII). 12-column CSS grid with visible column overlay. Editorial red accent, terminal green for evidence only. Ghost section numbers in Futura at ~20vw. Custom cursor with `mix-blend-mode:difference`. Progress stripe anchored to nav bottom edge. The design language must feel like it's pushing the boundaries of what HTML can express.
+4. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
+5. **Parallax hero** — minimum 3 depth layers
+6. **3D card physics** — all KL section cards have hover tilt
+7. **Interactive ASCII** — all motifs animate on reveal; named nodes respond to hover
+8. **Accordion with nested components** — scan-line open, nested sub-sections, evidence drawer
+9. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
+10. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
+11. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
+12. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
 
 ---
 
