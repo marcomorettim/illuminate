@@ -39,10 +39,12 @@
   │                           │                                       │
   │                           ▼                                       │
   │                                                                   │
-  │  single .html — parallax hero · 3D card physics                  │
+  │  single .html — Swiss editorial design · 12-column grid          │
+  │               · Helvetica Neue + Futura + monospace              │
+  │               · GT scramble · parallax · 3D card physics         │
   │               · interactive ASCII · evidence drawer              │
   │               · focus mode · signal view · keyboard nav          │
-  │               · GT typewriter · confidence meters                │
+  │               · confidence meters · ghost section numbers        │
   │                                                                   │
   │  opens in any browser · works offline · no server needed         │
   └───────────────────────────────────────────────────────────────────┘
@@ -82,10 +84,12 @@ The stages are not phases to rush through — they are the method.
   ╠══════════════════════════════════════════════════════════════════╣
   ║  STAGE III · OUTPUT                                              ║
   ║                                                                  ║
-  ║   pyramid anchor ──▶ visual architecture  ──▶  HTML build        ║
+  ║   pyramid anchor ──▶ Swiss editorial design ──▶ HTML build      ║
   ║                                                                  ║
-  ║   SCQA hero  ·  GT typewriter  ·  parallax (3 depth layers)     ║
-  ║   KL sections  ·  3D card physics  ·  interactive ASCII art     ║
+  ║   SCQA hero  ·  GT scramble reveal  ·  12-column grid           ║
+  ║   Helvetica Neue 300 + Futura 700 + monospace                   ║
+  ║   ghost section numbers  ·  editorial red accent                ║
+  ║   parallax  ·  3D card physics  ·  interactive ASCII            ║
   ║   evidence drawer  ·  confidence meters  ·  keyboard nav        ║
   ║   focus mode  ·  signal view  ·  progress arc                   ║
   ║                                                                  ║
@@ -114,6 +118,86 @@ The stages are not phases to rush through — they are the method.
   · hierarchy implicit                · KLs equal peers (MECE)
   · evidence untraced                 · every claim traces to S-NNN
   · insights buried                   · insights surfaced + enacted visually
+```
+
+---
+
+## Swiss Editorial Design System
+
+Every artifact is built to the Swiss International Typographic Style —
+Müller-Brockmann's grid discipline, Helmut Schmid's typographic precision.
+Structure is visible. Type carries the argument. Decoration earns its place or is removed.
+
+```
+  TYPOGRAPHY
+  ──────────────────────────────────────────────────────────────────
+
+  HELVETICA NEUE 300          FUTURA 700                SF MONO
+  ──────────────────          ──────────────────        ──────────────────
+  GT · HERO BODY              SECTION TITLES            evidence · ASCII
+  ultra-light                 LABELS · TAGS             terminal green
+  uppercase                   ALL CAPS                  #00ff88
+  tracking −0.04em            tracking +0.20em          glow: 0 0 12px
+  clamp(2rem, 4vw, 3.5rem)    clamp(1.4rem, 2.5vw, 2rem)  0.70–0.82rem
+
+  the contrast between ultra-light GT and bold Futura titles
+  IS the visual enactment of GT > KL in the Minto hierarchy
+
+
+  12-COLUMN GRID
+  ──────────────────────────────────────────────────────────────────
+
+  ┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┐
+  │ 1│ 2│ 3│ 4│ 5│ 6│ 7│ 8│ 9│10│11│12│
+  └──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┘
+
+  hero    ├───────────── GT ─────────────┤├── SCQA ──┤
+                         cols 1–8          cols 9–12
+
+  section ├─── motif + vizes ───┤├────── lede + cards ──────┤
+                    5fr                       7fr
+
+  column lines visible in hero as repeating-linear-gradient overlay
+  — not decoration, structural signal
+
+
+  COLOR — dark editorial
+  ──────────────────────────────────────────────────────────────────
+
+  ████ #070708  paper         ████ #ff1e1e  editorial red  (accent only)
+  ████ #f0f0ee  ink           ████ #00ff88  cli green      (evidence only)
+  ████ #888886  ink-2         ████ #3d9eff  data blue      (metrics only)
+  ████ #404040  ink-3         ████ #ffaa00  amber          (hedge/contested)
+
+  one strong color per semantic role  ·  never decorative
+
+
+  GHOST SECTION NUMBERS
+  ──────────────────────────────────────────────────────────────────
+
+  01                            barely visible at rest (.022 opacity)
+                                intensify on section hover (.04 opacity)
+  02                            Futura 700  ·  clamp(7rem, 20vw, 16rem)
+                                structure made legible without stating it
+  03
+
+
+  GT REVEAL — ANSWER FIRST
+  ──────────────────────────────────────────────────────────────────
+
+  each character cycles:  ░ → ▓ → █ → ╬ → ■ → [final char]
+  the mechanical scramble before landing = typesetting under pressure
+
+  Minto principle: answer leads  ·  GT appears before SCQA, not after
+  sequence:  GT scramble → SCQA slides in → pipeline builds
+
+
+  CUSTOM CURSOR
+  ──────────────────────────────────────────────────────────────────
+
+  ·  6px dot  ·  mix-blend-mode: difference  ·  always visible
+  ·  expands to 28px on interactive elements
+  ·  turns terminal green (#00ff88) over ASCII / evidence content
 ```
 
 ---
@@ -200,24 +284,30 @@ The output *renders* the pyramid — it does not illustrate it.
   LOGICAL CLAIM               VISUAL ENACTMENT
   ─────────────               ────────────────
 
-  GT is the answer            ·  oversized gradient text
-                              ·  typewriter arrival on load
-                              ·  highest contrast on page
+  GT is the answer            ·  Helvetica Neue 300  ·  ultra-light uppercase
+                              ·  scramble reveal — chars cycle before landing
+                              ·  gradient on completion  ·  highest contrast
+                              ·  answer-first (Minto): GT before SCQA
 
-  S+C+Q build tension         ·  Q appears after S+C (static)
-  GT resolves it              ·  GT builds character-by-character
-                              ·  pause at the em-dash
+  S+C+Q build tension         ·  SCQA panel slides in after GT
+  GT resolves it              ·  Q in amber  ·  A in terminal green
+                              ·  border-left rule separates SCQA from GT
 
-  KLs are MECE peers          ·  identical section anatomy
-                              ·  same visual weight
+  KLs are MECE peers          ·  identical section anatomy — Futura 700 titles
+                              ·  same 2px rule  ·  same ghost number treatment
                               ·  visual equality = logical equality
 
-  evidence has depth          ·  parallax: GT at front, evidence receding
-                              ·  3D card tilt: mouse-driven perspective
+  evidence has depth          ·  12-column grid separates motif from lede
+                              ·  3D tilt on vis blocks  ·  mouse perspective
+                              ·  parallax: GT at front, evidence receding
 
-  signal is traceable         ·  S-NNN chips → evidence drawer
+  signal is traceable         ·  S-NNN chips in terminal green → evidence drawer
                               ·  signal-view (s): strips prose, shows traces
-                              ·  confidence meter: █▓░ per KL
+                              ·  confidence meter: █▓░ per KL in green/amber/red
+
+  section is an argument      ·  ghost section number at 20vw — structure visible
+                              ·  ASCII motif in terminal green — technical layer
+                              ·  thick 2px rule under title — logical authority
 ```
 
 ---
@@ -227,54 +317,31 @@ The output *renders* the pyramid — it does not illustrate it.
 ```
   ┌─ single .html ─────────────────────────────────────────────────┐
   │                                                                │
-  │  HERO                                                          │
-  │    GT ── oversized gradient typewriter · first thing seen      │
-  │    SCQA-ARC ── S · C · Q · answer blocks                       │
-  │    PIPELINE-DIAGRAM ── ASCII · builds after GT completes       │
+  │  HERO   (12-column grid · column overlay visible)              │
+  │    GT ── Helvetica Neue 300 · scramble reveal · cols 1–8       │
+  │    SCQA-ARC ── slides in after GT · cols 9–12                  │
+  │    PIPELINE-DIAGRAM ── ASCII · builds after SCQA               │
+  │    DATELINE ── /skill · source · date · monospace              │
   │    PROGRESS-ARC ── fixed right · dot moves per section         │
-  │    PARALLAX ── 3 depth layers at different scroll speeds       │
+  │    PROGRESS-STRIPE ── nav bottom edge · red glow               │
   │                                                                │
   │  SECTIONS  (one per KL · identical anatomy — MECE enacted)     │
-  │    SECTION-MOTIF ── thematic ASCII · builds on scroll-in       │
-  │    SECTION-HEADER ── KL number + argument statement            │
+  │    GHOST-NUM ── Futura 700 · 20vw · barely visible             │
+  │    SECTION-MOTIF ── terminal green ASCII · builds on scroll-in │
+  │    SECTION-HEADER ── KL-tag red · Futura 700 title · 2px rule  │
   │    SECTION-LEDE ── standalone paragraph (reads cold)           │
-  │    INLINE-VISUAL ── data grid / comparison / chain / tree      │
+  │    INLINE-VISUAL ── data grid / bars / chain / MECE checks     │
   │    ACCORDION-CARDS ── scan-line open · 3D tilt · nested        │
   │      evidence tags S-NNN ── click → drawer slides in           │
   │                                                                │
   │  NAVIGATION                                                    │
-  │    STICKY-NAV ── scroll-spy · keyboard j/k                     │
+  │    STICKY-NAV ── Futura micro caps · scroll-spy · j/k          │
   │    EVIDENCE-DRAWER ── slides from right · full S-NNN body      │
+  │    CUSTOM-CURSOR ── 6px dot · mix-blend-mode:difference        │
   │    FOCUS-MODE (f) ── dims all but active section               │
   │    SIGNAL-VIEW (s) ── strips prose · shows only evidence       │
   │                                                                │
   └────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## Install
-
-```bash
-git clone https://github.com/marcomorettim/illuminate ~/.claude/skills/illuminate
-```
-
-Then in Claude Code:
-
-```
-/illuminate <source>
-```
-
----
-
-## Usage
-
-```bash
-/illuminate whitepaper.md            # research corpus
-/illuminate book-chapters/           # long-form, chapter-chunked
-/illuminate src/                     # codebase provenance chain
-/illuminate conversation.md          # transcript or dialogue
-/illuminate spec.md notes.md         # multi-source, synthesized
 ```
 
 ---
@@ -286,9 +353,14 @@ Then in Claude Code:
   ║                                                               ║
   ║  buildArt(el, lines, opts)                                    ║
   ║                                                               ║
-  ║  ·  charDelay: 12ms  ·  lineDelay: 40ms                       ║
+  ║  ·  charDelay: 8ms  ·  lineDelay: 28ms                        ║
   ║  ·  onDone: cascade next component                            ║
   ║  ·  prefers-reduced-motion: instant render                    ║
+  ║                                                               ║
+  ║  scrambleReveal(el, text, opts)                               ║
+  ║  ·  each character cycles ░▓█│─┼╬■ before landing            ║
+  ║  ·  cd: 4ms  ·  sc: 2 scramble cycles per char               ║
+  ║  ·  GT builds in ~2–3 seconds                                 ║
   ║                                                               ║
   ║  art-nodes: named concepts wrap as <span>                     ║
   ║  on hover → highlight section + animate connecting paths      ║
@@ -311,7 +383,7 @@ Section reveal sequence — enacts pyramid descent in DOM order:
   MOTIF builds ──▶ HEADER fades in ──▶ LEDE fades in
        │
        └──▶ INLINE-VISUAL builds  ──▶  ACCORDION-CARDS stagger
-            (parallel to header)        100ms per card · 400ms base
+            (parallel to header)        80ms per card · 120ms base
 ```
 
 ---
@@ -339,7 +411,8 @@ Section reveal sequence — enacts pyramid descent in DOM order:
     ·  mechanical invariants first  (file exists or not · not model opinion)
     ·  disk anchors  (harder to retroactively rationalize than in-context claims)
     ·  named attack angles  (generic approval is explicitly invalid output)
-    ·  operator-mandatory Phase 6  (model cannot self-certify the HTML)
+    ·  operator-mandatory Phase 7  (model cannot self-certify the HTML)
+    ·  Phase 6 correction register  (3-attempt / escalate-on-exhaust for HTML build)
     ·  named gaps  (silence is not a pass)
 
   what cannot be mitigated:
@@ -358,6 +431,47 @@ Section reveal sequence — enacts pyramid descent in DOM order:
 | `f` | focus mode — dim all but active section |
 | `s` | signal view — strip prose, show only evidence |
 | `Esc` | close drawer / exit mode |
+
+---
+
+## Examples
+
+Live artifacts produced by `/illuminate`:
+
+| Source | Artifact | What it illuminates |
+|--------|----------|---------------------|
+| `SKILL.md` (self) | [illuminate-self-arc.html](examples/illuminate-self-arc.html) | Self-arc paradox — the skill as its own source |
+| Agentic OS whitepaper | [illuminate-agentic-os-whitepaper.html](examples/illuminate-agentic-os-whitepaper.html) | 9 design pillars of an agentic OS |
+| Agentic OS evolution | [illuminate-agentic-os-evolution.html](examples/illuminate-agentic-os-evolution.html) | Runtime evolution + framework comparison |
+
+The self-arc is the canonical reference for the Swiss editorial design standard —
+it was the artifact where the standard was first fully realized and then codified back into SKILL.md.
+
+---
+
+## Install
+
+```bash
+git clone https://github.com/marcomorettim/illuminate ~/.claude/skills/illuminate
+```
+
+Then in Claude Code:
+
+```
+/illuminate <source>
+```
+
+---
+
+## Usage
+
+```bash
+/illuminate whitepaper.md            # research corpus
+/illuminate book-chapters/           # long-form, chapter-chunked
+/illuminate src/                     # codebase provenance chain
+/illuminate conversation.md          # transcript or dialogue
+/illuminate spec.md notes.md         # multi-source, synthesized
+```
 
 ---
 
