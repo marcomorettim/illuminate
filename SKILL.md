@@ -1,6 +1,6 @@
 ---
 name: illuminate
-description: Dense source in. Self-contained interactive HTML out. Three-stage arc — INPUT (multi-source ingestion, signal stratification, faithful provenance), PROCESS (Barbara Minto Pyramid + MECE issue-tree, 3-skeptic adversarial audit), OUTPUT (parallax hero, 3D card physics, interactive ASCII diagrams, advanced UX). Single file, no build step.
+description: Dense source in. Self-contained interactive HTML out. Three-stage arc — INPUT (multi-source ingestion, signal stratification, faithful provenance), PROCESS (Barbara Minto Pyramid + MECE issue-tree, 3-skeptic adversarial audit), OUTPUT (parallax hero, 3D card physics, interactive ASCII diagrams, advanced UX). Maximum dynamism — any JS/CSS library that enhances the experience is allowed.
 trigger: /illuminate
 ---
 
@@ -30,12 +30,12 @@ gate conditions. The stages are not phases to rush through — they are the meth
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**Technical constraint:** single file, no build step. These are hard rules — they protect
-against infrastructure complexity and ensure the artifact is openable anywhere. Everything
-else is a preference: prefer vanilla HTML/CSS/JS; one lightweight CDN-delivered library
-(Alpine.js, HTMX, Tailwind CDN) is acceptable when it meaningfully reduces code and the
-artifact lives on a served site — state the justification. No React, no Vue, no Vite, no
-webpack. Every technique below is achievable in plain browser APIs.
+**Technical stance: maximum dynamism.** The goal is the most animated, interactive, visually
+alive artifact possible. Any JS or CSS library, framework, or component that enhances the
+experience is allowed — GSAP, Three.js, Alpine.js, Framer Motion, Tailwind, anything. No
+restriction. A build step (Vite, esbuild, Parcel) is acceptable when deploying to a served
+site; prefer to avoid it only when the artifact needs to be self-contained for offline use.
+Vanilla HTML/CSS/JS is fine when it's the fastest path — not because it's purer.
 
 ---
 
@@ -624,10 +624,11 @@ Build the Phase 5 wireframe as a single self-contained HTML file, executing ever
 below at the highest standard. This is not a checklist to satisfy minimally — it is the
 standard to exceed. Each technique serves the argument structure. Decoration is not the goal.
 
-**Constraint:** single file, no build step. Prefer vanilla HTML/CSS/JS — every technique
-below is achievable in plain browser APIs. One lightweight CDN library (Alpine.js, HTMX,
-Tailwind CDN) is acceptable when it meaningfully reduces code; state the justification
-inline. No React, no Vue, no webpack, no Vite.
+**Stance: maximum dynamism.** Use whatever JS or CSS enhances the experience — GSAP for
+animation, Three.js for 3D, Tailwind for layout, Alpine for interactivity, anything. CDN
+delivery or a simple build step (Vite, esbuild) are both fine. The only constraint: don't
+add abstraction that slows you down. If vanilla is faster to write and equally expressive,
+use vanilla. If a library saves time and sharpens the result, use it.
 
 ---
 
@@ -1010,8 +1011,8 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 
 ## Output Contract
 
-1. **Single file** — everything in one `.html`, no build step
-2. **No component framework** — no React, Vue, Svelte, Angular, webpack, Vite
+1. **Maximum dynamism** — the artifact should feel alive: smooth animations, snappy transitions, rich interactivity. This is the primary goal.
+2. **Libraries freely** — any JS/CSS library that enhances the experience; CDN or build step both fine
 3. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
 4. **Parallax hero** — minimum 3 depth layers
 5. **3D card physics** — all KL section cards have hover tilt
@@ -1019,9 +1020,8 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 7. **Accordion with nested components** — scan-line open, nested sub-sections, evidence drawer
 8. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
 9. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
-10. **Dependencies** — prefer vanilla; one lightweight CDN library allowed with stated justification
-11. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
-12. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
+10. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
+11. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
 
 ---
 
@@ -1093,5 +1093,5 @@ Design for containment, not exorcism. Signal, do not certify.
 18. The HTML renders the pyramid. It does not expand or improve it.
 
 **Technical constraints**
-19. Never use a component framework (React, Vue, Angular, Svelte) or a build tool (webpack, Vite).
-20. Single file, no build step — always. One lightweight CDN utility library is permitted; justify it inline.
+19. Any JS or CSS library is allowed — GSAP, Three.js, Tailwind, Alpine, Framer Motion, anything. CDN delivery and build steps (Vite, esbuild) are both fine.
+20. Prefer vanilla only when it is faster to write and equally expressive. Never avoid a library out of principle — avoid it only when it adds complexity without payoff.
