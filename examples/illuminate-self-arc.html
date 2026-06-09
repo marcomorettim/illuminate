@@ -87,12 +87,13 @@ a { color:inherit; text-decoration:none }
 #cur.hidden { opacity:0 }
 
 /* ═══════════════════════════════════════════
-   PROGRESS STRIPE
+   PROGRESS STRIPE — sits at bottom of nav bar
 ═══════════════════════════════════════════ */
 #prog {
-  position:fixed; top:0; left:0; height:2px; z-index:800;
+  position:absolute; bottom:0; left:0; height:2px; z-index:1;
   background:var(--red); width:0%;
-  transition:width .08s linear;
+  box-shadow:0 0 8px var(--red), 0 0 2px var(--red);
+  transition:width .1s linear;
 }
 
 /* ═══════════════════════════════════════════
@@ -103,6 +104,8 @@ a { color:inherit; text-decoration:none }
   background:rgba(7,7,8,.94);
   backdrop-filter:blur(20px) saturate(160%);
   border-bottom:1px solid var(--rule);
+  /* needed so #prog (position:absolute) anchors here */
+  overflow:visible;
 }
 .nav-inner {
   max-width:var(--max); margin:0 auto;
@@ -617,14 +620,12 @@ footer {
 <!-- Custom cursor -->
 <div id="cur"></div>
 
-<!-- Progress stripe -->
-<div id="prog"></div>
-
 <!-- Evidence drawer overlay -->
 <div id="dr-overlay"></div>
 
 <!-- Nav -->
 <nav id="nav">
+  <div id="prog"></div>
   <div class="nav-inner">
     <div class="nav-brand">/illuminate · self-arc</div>
     <div class="nav-links">
