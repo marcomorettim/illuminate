@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>/illuminate · self-arc</title>
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS — Swiss Editorial System
+═══════════════════════════════════════════ */
+:root {
+  /* Typefaces — Swiss International Typographic Style */
+  --hn:    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ft:    Futura, 'Century Gothic', 'Trebuchet MS', var(--hn);
+  --mono:  'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+
+  /* Ink + Paper — dark editorial */
+  --paper:   #070708;
+  --paper-1: #0f0f11;
+  --paper-2: #171719;
+  --ink:     #f0f0ee;
+  --ink-2:   #888886;
+  --ink-3:   #404040;
+  --rule:    rgba(240,240,238,.06);
+  --rule-hi: rgba(240,240,238,.14);
+
+  /* Accent palette — one strong red + technical green + data blue */
+  --red:       #ff1e1e;
+  --red-dim:   rgba(255,30,30,.1);
+  --cli:       #00ff88;
+  --cli-dim:   rgba(0,255,136,.07);
+  --blue:      #3d9eff;
+  --blue-dim:  rgba(61,158,255,.09);
+  --amber:     #ffaa00;
+  --amber-dim: rgba(255,170,0,.1);
+
+  /* Swiss Grid — 12 columns */
+  --col12:    repeat(12, 1fr);
+  --gap12:    clamp(12px, 1.5vw, 20px);
+  --max:      1400px;
+  --pad:      clamp(1.25rem, 4vw, 3.5rem);
+
+  /* Type Scale — editorial */
+  --t-display:  clamp(2.8rem, 7vw, 6.5rem);
+  --t-hero:     clamp(2rem, 4vw, 3.5rem);
+  --t-h1:       clamp(1.4rem, 2.5vw, 2rem);
+  --t-h2:       clamp(1.05rem, 1.8vw, 1.4rem);
+  --t-body:     clamp(.9rem, 1.1vw, 1rem);
+  --t-small:    .82rem;
+  --t-micro:    .68rem;
+  --t-ghost:    clamp(7rem, 20vw, 16rem);
+
+  /* Motion */
+  --ease:    cubic-bezier(.16,1,.3,1);
+  --spring:  cubic-bezier(.34,1.56,.64,1);
+  --snap:    cubic-bezier(.77,0,.175,1);
+  --dur:     .5s;
+}
+@media(prefers-reduced-motion:reduce){ :root { --dur:0s } }
+
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html { font-size:16px; scroll-behavior:smooth }
+body {
+  background:var(--paper); color:var(--ink);
+  font-family:var(--hn); line-height:1.65;
+  overflow-x:hidden;
+  cursor:none;
+}
+a { color:inherit; text-decoration:none }
+
+/* ═══════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════ */
+#cur {
+  position:fixed; top:0; left:0; z-index:9000; pointer-events:none;
+  width:6px; height:6px; border-radius:50%; background:var(--red);
+  transform:translate(-50%,-50%);
+  mix-blend-mode:difference;
+  transition:width .18s var(--ease), height .18s var(--ease),
+             background .18s, opacity .18s;
+}
+#cur.big { width:28px; height:28px; background:var(--ink); }
+#cur.cli-mode { background:var(--cli); }
+#cur.hidden { opacity:0 }
+
+/* ═══════════════════════════════════════════
+   PROGRESS STRIPE
+═══════════════════════════════════════════ */
+#prog {
+  position:fixed; top:0; left:0; height:2px; z-index:800;
+  background:var(--red); width:0%;
+  transition:width .08s linear;
+}
+
+/* ═══════════════════════════════════════════
+   NAV — Swiss editorial header
+═══════════════════════════════════════════ */
+#nav {
+  position:sticky; top:0; z-index:500;
+  background:rgba(7,7,8,.94);
+  backdrop-filter:blur(20px) saturate(160%);
+  border-bottom:1px solid var(--rule);
+}
+.nav-inner {
+  max-width:var(--max); margin:0 auto;
+  padding:.55rem var(--pad);
+  display:flex; justify-content:space-between; align-items:center;
+  gap:2rem;
+}
+.nav-brand {
+  font-family:var(--mono); font-size:var(--t-micro);
+  color:var(--cli); letter-spacing:.1em; font-weight:700;
+  display:flex; align-items:center; gap:.5rem;
+}
+.nav-brand::before {
+  content:''; display:inline-block; width:6px; height:6px;
+  border-radius:50%; background:var(--red);
+  animation:pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.5;transform:scale(.7)}
+}
+.nav-links { display:flex; gap:2rem; align-items:center }
+.nav-link {
+  font-family:var(--ft); font-size:var(--t-micro);
+  color:var(--ink-3); letter-spacing:.15em; text-transform:uppercase;
+  cursor:pointer; transition:color .15s;
+}
+.nav-link:hover, .nav-link.on { color:var(--ink) }
+.nav-mode {
+  font-family:var(--mono); font-size:var(--t-micro); color:var(--ink-3);
+  padding:.25rem .5rem; border:1px solid var(--rule-hi);
+  letter-spacing:.05em; cursor:pointer;
+  transition:all .15s;
+}
+.nav-mode:hover { color:var(--cli); border-color:var(--cli); }
+body.signal .nav-mode-s { color:var(--cli); border-color:var(--cli) }
+body.focus .nav-mode-f  { color:var(--amber); border-color:var(--amber) }
+
+/* ═══════════════════════════════════════════
+   SWISS GRID OVERLAY
+═══════════════════════════════════════════ */
+.grid-bg {
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    repeating-linear-gradient(90deg,
+      var(--rule) 0, var(--rule) 1px,
+      transparent 1px, transparent calc(100% / 12));
+  opacity:.5;
+}
+
+/* ═══════════════════════════════════════════
+   LAYOUT UTILITIES
+═══════════════════════════════════════════ */
+.wrap { max-width:var(--max); margin:0 auto; padding:0 var(--pad) }
+.g12 {
+  display:grid; grid-template-columns:var(--col12);
+  gap:var(--gap12);
+}
+
+/* ═══════════════════════════════════════════
+   HERO — editorial magazine opening
+═══════════════════════════════════════════ */
+#hero {
+  position:relative; overflow:hidden;
+  min-height:100svh;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:clamp(5rem,10vh,9rem) var(--pad) clamp(3rem,6vh,5rem);
+}
+
+/* date-line — like a newspaper */
+.hero-dateline {
+  display:flex; align-items:center; gap:1.5rem;
+  margin-bottom:2.5rem;
+  font-family:var(--mono); font-size:var(--t-micro);
+  color:var(--ink-3); letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.hero-dateline span { color:var(--red) }
+.hero-dateline::after {
+  content:''; flex:1; height:1px; background:var(--rule-hi);
+  max-width:200px;
+}
+
+/* GT — the governing thought, displayed first (Minto: answer leads) */
+.gt-wrap { grid-column: 1 / 9; position:relative }
+@media(max-width:900px){ .gt-wrap { grid-column:1/-1 } }
+
+.gt-label {
+  font-family:var(--ft); font-size:var(--t-micro);
+  color:var(--red); letter-spacing:.25em; text-transform:uppercase;
+  margin-bottom:.9rem; display:flex; align-items:center; gap:.75rem;
+}
+.gt-label::before {
+  content:'A'; display:inline-flex; align-items:center; justify-content:center;
+  width:1.4rem; height:1.4rem; border:1px solid var(--red);
+  font-size:.6rem; font-weight:700; letter-spacing:.05em;
+}
+
+#gt {
+  font-family:var(--hn);
+  font-size:var(--t-hero);
+  font-weight:300;
+  letter-spacing:-.04em;
+  line-height:1.08;
+  text-transform:uppercase;
+  color:var(--ink);
+  min-height:4em;
+}
+#gt.done {
+  background:linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 50%, var(--red) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  transition:background 1s;
+}
+
+/* SCQA panel — right column */
+.scqa-wrap {
+  grid-column:9/-1;
+  display:flex; flex-direction:column;
+  border-left:1px solid var(--rule-hi);
+  padding-left:clamp(1.5rem,3vw,2.5rem);
+  margin-top:.25rem;
+  opacity:0; transform:translateX(16px);
+  transition:opacity .6s var(--ease) .4s, transform .6s var(--ease) .4s;
+}
+.scqa-wrap.in { opacity:1; transform:none }
+@media(max-width:900px){
+  .scqa-wrap { grid-column:1/-1; border-left:none; border-top:1px solid var(--rule-hi); padding-left:0; padding-top:1.5rem; margin-top:2rem }
+}
+
+.scqa-item {
+  padding:1.1rem 0; border-bottom:1px solid var(--rule);
+}
+.scqa-item:last-child { border-bottom:none }
+.scqa-letter {
+  font-family:var(--ft); font-size:var(--t-micro);
+  font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  margin-bottom:.35rem;
+}
+.scqa-s .scqa-letter { color:var(--ink-3) }
+.scqa-c .scqa-letter { color:var(--ink-2) }
+.scqa-q .scqa-letter { color:var(--amber) }
+.scqa-a .scqa-letter { color:var(--cli) }
+.scqa-text {
+  font-size:var(--t-small); color:var(--ink-2); line-height:1.7;
+}
+.scqa-q .scqa-text, .scqa-a .scqa-text { color:var(--ink) }
+
+/* Pipeline below hero content */
+.pipeline-strip {
+  grid-column:1/-1;
+  margin-top:3rem; padding-top:2rem;
+  border-top:1px solid var(--rule);
+  opacity:0; transform:translateY(10px);
+  transition:opacity .5s var(--ease) .9s, transform .5s var(--ease) .9s;
+}
+.pipeline-strip.in { opacity:1; transform:none }
+.pipe-label {
+  font-family:var(--ft); font-size:var(--t-micro);
+  color:var(--ink-3); letter-spacing:.15em; text-transform:uppercase;
+  margin-bottom:.75rem;
+}
+#pipeline {
+  font-family:var(--mono); font-size:.72rem;
+  color:var(--cli); line-height:1.65; white-space:pre; overflow-x:auto;
+  min-height:3.5rem;
+  text-shadow:0 0 10px rgba(0,255,136,.15);
+}
+
+/* ═══════════════════════════════════════════
+   SECTIONS — Swiss editorial modules
+═══════════════════════════════════════════ */
+.kl {
+  position:relative; overflow:hidden;
+  border-top:1px solid var(--rule-hi);
+  padding:clamp(3rem,7vh,6rem) 0 clamp(4rem,8vh,7rem);
+}
+
+/* Ghost section number — Swiss editorial aesthetic */
+.ghost {
+  position:absolute; right:var(--pad); top:1.5rem;
+  font-family:var(--ft); font-size:var(--t-ghost);
+  font-weight:700; letter-spacing:-.05em;
+  color:rgba(240,240,238,.022);
+  line-height:1; pointer-events:none; user-select:none;
+  transition:color .8s;
+}
+.kl:hover .ghost { color:rgba(240,240,238,.04) }
+
+/* Section header — thick rule + Futura all-caps */
+.kl-hd {
+  grid-column:1/-1;
+  display:flex; align-items:baseline; gap:1.25rem;
+  padding-bottom:1.25rem; margin-bottom:0;
+  border-bottom:2px solid var(--ink);
+  opacity:0; transform:translateY(16px);
+  transition:opacity .5s var(--ease), transform .5s var(--ease);
+}
+.kl-hd.in { opacity:1; transform:none }
+
+.kl-tag {
+  font-family:var(--ft); font-size:var(--t-micro);
+  font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--red); white-space:nowrap;
+}
+.kl-title {
+  font-family:var(--ft); font-size:var(--t-h1);
+  font-weight:700; letter-spacing:-.02em; line-height:1.1;
+  text-transform:uppercase;
+}
+.kl-cites { display:flex; flex-wrap:wrap; gap:.25rem; margin-left:auto }
+
+/* Two-column body */
+.kl-body {
+  grid-column:1/-1;
+  display:grid; grid-template-columns:5fr 7fr;
+  gap:clamp(2rem,5vw,5rem);
+  margin-top:2.5rem;
+  opacity:0; transform:translateY(12px);
+  transition:opacity .55s var(--ease) .12s, transform .55s var(--ease) .12s;
+}
+.kl-body.in { opacity:1; transform:none }
+@media(max-width:768px){ .kl-body { grid-template-columns:1fr } }
+
+.kl-left, .kl-right { display:flex; flex-direction:column; gap:2rem }
+
+/* Motif — CLI art, terminal green */
+.motif {
+  font-family:var(--mono); font-size:.7rem;
+  color:var(--cli); line-height:1.7;
+  white-space:pre; overflow-x:auto;
+  min-height:5rem;
+  text-shadow:0 0 12px rgba(0,255,136,.18);
+}
+
+/* Lede */
+.kl-lede {
+  font-size:var(--t-body); color:var(--ink-2); line-height:1.85;
+}
+body.signal .kl-lede { display:none }
+
+/* Inline visual blocks */
+.vis {
+  background:var(--paper-1); border:1px solid var(--rule-hi);
+  padding:1.25rem 1.4rem;
+  transition:transform .3s var(--ease), box-shadow .3s;
+}
+.vis:hover {
+  box-shadow:0 4px 24px rgba(0,0,0,.5);
+}
+.vis-hd {
+  font-family:var(--ft); font-size:var(--t-micro);
+  color:var(--ink-3); letter-spacing:.15em; text-transform:uppercase;
+  margin-bottom:.9rem; padding-bottom:.6rem;
+  border-bottom:1px solid var(--rule);
+}
+
+/* Tag bars — KL1 signal stratification infographic */
+.tag-bar-row {
+  display:flex; align-items:center; gap:.75rem;
+  margin-bottom:.55rem;
+  font-family:var(--mono); font-size:var(--t-micro);
+}
+.tag-bar-label { width:8ch; color:var(--ink-3); flex-shrink:0 }
+.tag-bar-track {
+  flex:1; height:4px; background:var(--rule-hi);
+  overflow:hidden; position:relative;
+}
+.tag-bar-fill {
+  height:100%; width:0%; transition:width 1s var(--ease);
+  position:relative;
+}
+.tag-bar-fill::after {
+  content:''; position:absolute; right:0; top:-3px;
+  width:10px; height:10px; border-radius:50%;
+  background:inherit; opacity:.6;
+}
+.tag-bar-val { width:3ch; color:var(--ink-2); text-align:right; flex-shrink:0 }
+
+/* MECE check — KL2 */
+.mece-row {
+  display:flex; align-items:center; gap:.75rem;
+  padding:.55rem 0; border-bottom:1px solid var(--rule);
+  font-family:var(--mono); font-size:var(--t-small);
+  opacity:0; transform:translateX(-8px);
+  transition:opacity .35s var(--ease), transform .35s var(--ease);
+}
+.mece-row:last-child { border-bottom:none }
+.mece-row.in { opacity:1; transform:none }
+.mece-sym { width:1.2rem; flex-shrink:0; font-size:.9rem }
+.mece-sym.pass { color:var(--cli) }
+.mece-sym.fail { color:var(--red) }
+.mece-text { color:var(--ink-2); flex:1 }
+.mece-src { color:var(--ink-3); font-size:var(--t-micro); margin-left:auto; flex-shrink:0 }
+
+/* Trust chain — KL3 */
+.trust-chain {
+  display:flex; align-items:flex-start; gap:0;
+  overflow-x:auto; padding:.5rem 0;
+}
+.trust-node {
+  flex-shrink:0; display:flex; flex-direction:column; align-items:center;
+  gap:.5rem; text-align:center;
+  opacity:0; transform:translateY(10px);
+  transition:opacity .35s var(--ease), transform .35s var(--ease);
+}
+.trust-node.in { opacity:1; transform:none }
+.trust-box {
+  font-family:var(--mono); font-size:var(--t-micro);
+  padding:.6rem 1rem; border:1px solid var(--rule-hi);
+  color:var(--ink-2); white-space:nowrap;
+}
+.trust-box.trusted { border-color:var(--cli); color:var(--cli) }
+.trust-box.warn    { border-color:var(--amber); color:var(--amber) }
+.trust-box-label {
+  font-family:var(--ft); font-size:9px; color:var(--ink-3);
+  letter-spacing:.1em; text-transform:uppercase;
+  text-align:center; max-width:8rem;
+}
+.trust-arrow {
+  flex-shrink:0; align-self:center;
+  font-family:var(--mono); font-size:.7rem; color:var(--ink-3);
+  padding:0 .5rem; margin-top:-1.5rem;
+}
+
+/* Confidence meter */
+.conf-wrap { display:flex; flex-direction:column; gap:.4rem }
+.conf-row {
+  display:flex; align-items:center; gap:.6rem;
+  font-family:var(--mono); font-size:var(--t-micro);
+}
+.conf-key { width:10ch; color:var(--ink-3) }
+.conf-track {
+  flex:1; height:3px; background:var(--rule-hi); overflow:hidden;
+}
+.conf-fill { height:100%; width:0%; transition:width 1.2s var(--ease) }
+.conf-val { width:4ch; text-align:right; color:var(--ink-2) }
+
+/* ═══════════════════════════════════════════
+   ACCORDION CARDS — editorial typographic modules
+═══════════════════════════════════════════ */
+.cards { display:flex; flex-direction:column }
+
+.card {
+  border-top:1px solid var(--rule);
+  overflow:hidden;
+  opacity:0; transform:translateY(8px);
+  transition:opacity .35s var(--ease), transform .35s var(--ease);
+}
+.card.in { opacity:1; transform:none }
+
+.card-hd {
+  display:grid; grid-template-columns:1fr 1.4ch;
+  gap:1rem; padding:.9rem 0;
+  cursor:pointer;
+  font-family:var(--hn); font-size:var(--t-small); font-weight:600;
+  letter-spacing:-.01em;
+  transition:color .15s;
+}
+.card-hd:hover { color:var(--red) }
+
+.chev {
+  font-family:var(--mono); font-size:var(--t-micro); color:var(--ink-3);
+  transition:transform .25s var(--ease); align-self:center;
+}
+.card[open] .chev { transform:rotate(90deg); color:var(--red) }
+
+/* Scan-line open animation */
+.scan { height:0; overflow:hidden }
+.card[open] .scan { animation:scanl .18s forwards }
+@keyframes scanl {
+  from { height:1px; background:linear-gradient(90deg,transparent,var(--red),transparent); opacity:1 }
+  to   { height:0; opacity:0 }
+}
+
+.card-body {
+  max-height:0; overflow:hidden;
+  transition:max-height .4s var(--ease);
+  padding:0;
+}
+.card[open] .card-body { max-height:600px; padding:0 0 1.1rem }
+.card-body p {
+  font-size:var(--t-small); color:var(--ink-2); line-height:1.8;
+}
+.card-body p+p { margin-top:.75rem }
+body.signal .card-body p.prose { display:none }
+
+/* ═══════════════════════════════════════════
+   CITATION CHIPS
+═══════════════════════════════════════════ */
+.cite {
+  display:inline-block; font-family:var(--mono); font-size:.62rem;
+  background:var(--cli-dim); color:var(--cli);
+  border:1px solid rgba(0,255,136,.2);
+  padding:.07em .32em; margin:.1rem .1rem;
+  cursor:pointer; transition:all .15s;
+  line-height:1.4;
+}
+.cite:hover, .cite.hl { background:rgba(0,255,136,.18); border-color:var(--cli) }
+
+/* ═══════════════════════════════════════════
+   EVIDENCE DRAWER
+═══════════════════════════════════════════ */
+#drawer {
+  position:fixed; right:0; top:0; height:100%;
+  width:min(440px,94vw);
+  background:var(--paper-1);
+  border-left:1px solid var(--rule-hi);
+  z-index:600;
+  transform:translateX(105%);
+  transition:transform .42s var(--ease);
+  display:flex; flex-direction:column;
+  box-shadow:-20px 0 60px rgba(0,0,0,.5);
+}
+#drawer.open { transform:none }
+
+.dr-hd {
+  padding:1.2rem 1.5rem;
+  border-bottom:1px solid var(--rule);
+  display:flex; justify-content:space-between; align-items:center;
+  flex-shrink:0;
+}
+.dr-id {
+  font-family:var(--mono); font-size:var(--t-micro);
+  color:var(--cli); font-weight:700; letter-spacing:.1em;
+}
+.dr-close {
+  font-family:var(--hn); font-size:.85rem; color:var(--ink-3);
+  cursor:pointer; transition:color .15s; line-height:1; padding:.2rem;
+}
+.dr-close:hover { color:var(--red) }
+.dr-tag {
+  font-family:var(--ft); font-size:var(--t-micro);
+  font-weight:700; letter-spacing:.15em; text-transform:uppercase;
+  padding:.25rem .5rem; margin-left:.5rem;
+}
+.dr-tag-SOURCE   { color:var(--blue);  background:var(--blue-dim) }
+.dr-tag-INSIGHT  { color:var(--amber); background:var(--amber-dim) }
+.dr-tag-SYNTHESIS{ color:var(--cli);   background:var(--cli-dim)  }
+.dr-tag-GAP      { color:var(--red);   background:var(--red-dim)  }
+.dr-tag-PRINCIPLE{ color:var(--ink-2); background:var(--rule) }
+
+.dr-body {
+  padding:1.5rem; overflow-y:auto; flex:1;
+  font-size:var(--t-small); line-height:1.82; color:var(--ink-2);
+}
+.dr-body strong { color:var(--ink) }
+.dr-body em { color:var(--ink-3); font-style:normal }
+
+#dr-overlay {
+  display:none; position:fixed; inset:0; z-index:595;
+  background:rgba(7,7,8,.4);
+  backdrop-filter:blur(2px);
+  opacity:0; transition:opacity .3s;
+}
+#dr-overlay.open { display:block; opacity:1 }
+
+/* ═══════════════════════════════════════════
+   FOCUS MODE
+═══════════════════════════════════════════ */
+body.focus .kl { opacity:.06; transition:opacity .4s }
+body.focus .kl.focused { opacity:1 }
+
+/* ═══════════════════════════════════════════
+   SIDE PROGRESS ARC
+═══════════════════════════════════════════ */
+#arc {
+  position:fixed; right:1.2rem; top:50%;
+  transform:translateY(-50%); z-index:200;
+  display:flex; flex-direction:column; align-items:center; gap:.5rem;
+}
+.arc-track { width:1px; height:90px; background:var(--rule-hi); position:relative }
+.arc-dot {
+  position:absolute; left:50%; transform:translate(-50%,-50%);
+  width:5px; height:5px; border-radius:50%; background:var(--red);
+  transition:top .5s var(--ease); top:0%;
+  box-shadow:0 0 6px var(--red);
+}
+.arc-label {
+  font-family:var(--ft); font-size:8px; color:var(--ink-3);
+  writing-mode:vertical-rl; letter-spacing:.1em; text-transform:uppercase;
+}
+@media(max-width:700px){ #arc { display:none } }
+
+/* ═══════════════════════════════════════════
+   SELF-ARC NOTICE
+═══════════════════════════════════════════ */
+.self-note {
+  margin-top:4rem; padding:1.5rem 1.75rem;
+  border:1px dashed var(--rule-hi);
+  font-size:var(--t-small); color:var(--ink-3); line-height:1.8;
+}
+.self-note strong { color:var(--amber) }
+.self-note code { font-family:var(--mono); color:var(--cli); font-size:.75rem }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  border-top:1px solid var(--rule);
+  padding:2rem var(--pad);
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:1rem;
+}
+.ft-brand { font-family:var(--mono); font-size:var(--t-micro); color:var(--cli) }
+.ft-keys  { font-family:var(--mono); font-size:var(--t-micro); color:var(--ink-3) }
+.ft-keys b { color:var(--ink-2) }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cur"></div>
+
+<!-- Progress stripe -->
+<div id="prog"></div>
+
+<!-- Evidence drawer overlay -->
+<div id="dr-overlay"></div>
+
+<!-- Nav -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">/illuminate · self-arc</div>
+    <div class="nav-links">
+      <span class="nav-link" data-sec="hero">GT</span>
+      <span class="nav-link" data-sec="kl1">§1</span>
+      <span class="nav-link" data-sec="kl2">§2</span>
+      <span class="nav-link" data-sec="kl3">§3</span>
+      <span class="nav-mode nav-mode-f" onclick="toggleFocus()">F</span>
+      <span class="nav-mode nav-mode-s" onclick="toggleSignal()">S</span>
+    </div>
+  </div>
+</nav>
+
+<!-- Side progress arc -->
+<div id="arc">
+  <div class="arc-label">§1</div>
+  <div class="arc-track"><div class="arc-dot" id="arc-dot"></div></div>
+  <div class="arc-label">§3</div>
+</div>
+
+<!-- Evidence drawer -->
+<div id="drawer">
+  <div class="dr-hd">
+    <div>
+      <span class="dr-id" id="dr-id">S-000</span>
+      <span class="dr-tag" id="dr-tag"></span>
+    </div>
+    <div class="dr-close" onclick="closeDrawer()">✕</div>
+  </div>
+  <div class="dr-body" id="dr-body">Select a citation to view evidence.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section id="hero">
+  <div class="grid-bg"></div>
+
+  <div class="wrap" style="position:relative;z-index:1;width:100%">
+    <div class="hero-dateline">
+      /illuminate<span> · </span>self-arc<span> · </span>SKILL.md source<span> · </span>2026-06-08
+    </div>
+    <div class="g12">
+
+      <!-- GT column -->
+      <div class="gt-wrap">
+        <div class="gt-label">Governing thought</div>
+        <div id="gt"></div>
+      </div>
+
+      <!-- SCQA panel -->
+      <div class="scqa-wrap" id="scqa">
+        <div class="scqa-item scqa-s">
+          <div class="scqa-letter">S — Situation</div>
+          <p class="scqa-text">Transforming dense argument into navigable structure is hard. Tools choose: rigorous but unreadable, or beautiful but shallow.</p>
+        </div>
+        <div class="scqa-item scqa-c">
+          <div class="scqa-letter">C — Complication</div>
+          <p class="scqa-text">/illuminate claims both — but every enforcement mechanism is executed by the same language model it is designed to constrain. The lock is made of the same material it holds.</p>
+        </div>
+        <div class="scqa-item scqa-q">
+          <div class="scqa-letter">Q — Question</div>
+          <p class="scqa-text">How does /illuminate produce reliable argument navigation despite this irresolvable self-certification problem?</p>
+        </div>
+        <div class="scqa-item scqa-a">
+          <div class="scqa-letter">A — See GT →</div>
+          <p class="scqa-text">Three mechanical gates: evidence on disk, structure in geometry, judgment by an irreducibly human operator.</p>
+        </div>
+      </div>
+
+      <!-- Pipeline strip -->
+      <div class="pipeline-strip" id="pipeline-strip">
+        <div class="pipe-label">Arc pipeline</div>
+        <pre id="pipeline"></pre>
+      </div>
+
+    </div><!-- .g12 -->
+  </div><!-- .wrap -->
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KL1 — Evidence provenance is traceable by rule, not trust
+═══════════════════════════════════════════ -->
+<section class="kl" id="kl1">
+  <div class="ghost">01</div>
+  <div class="wrap">
+    <div class="g12">
+
+      <div class="kl-hd" id="kl1-hd">
+        <span class="kl-tag">KL — 01</span>
+        <h2 class="kl-title">Evidence provenance is traceable by rule, not trust</h2>
+        <div class="kl-cites">
+          <span class="cite" data-id="S-003">S-003</span>
+          <span class="cite" data-id="S-005">S-005</span>
+          <span class="cite" data-id="S-006">S-006</span>
+          <span class="cite" data-id="S-007">S-007</span>
+        </div>
+      </div>
+
+      <div class="kl-body" id="kl1-body">
+        <div class="kl-left">
+          <pre class="motif" id="motif1"></pre>
+
+          <div class="vis">
+            <div class="vis-hd">Signal stratification · 40 entries</div>
+            <div id="tag-bars"></div>
+          </div>
+
+          <div class="vis">
+            <div class="vis-hd">Confidence · KL1</div>
+            <div class="conf-wrap" id="conf1"></div>
+          </div>
+        </div>
+
+        <div class="kl-right">
+          <p class="kl-lede">
+            The skill extracts every load-bearing idea through three mandatory angles — structural, synthetic, adversarial — and assigns each a primary tag from a fixed vocabulary: SOURCE, INSIGHT, METRIC, PRINCIPLE, SYNTHESIS, GAP. Each entry is numbered S-NNN and written to a disk anchor before the phase gate passes. The anchor is not an in-context claim; it is a file. A file either exists or it does not. This is the first mechanical invariant: evidence is not trusted — it is located.
+          </p>
+
+          <div class="cards" id="cards1">
+            <div class="card">
+              <div class="card-hd" onclick="toggleCard(this)">
+                <span>3-angle extraction is itself MECE <span class="cite" data-id="S-031">S-031</span></span>
+                <span class="chev">▸</span>
+              </div>
+              <div class="scan"></div>
+              <div class="card-body">
+                <p>The three angles — structural (what IS stated), synthetic (what IMPLIES), adversarial (what ISN'T) — partition the signal space. Structural extraction finds stated claims. Synthetic extraction finds implied combinations. Adversarial extraction finds gaps, assumptions, and falsifiable claims. Together they cover the full epistemic surface of the source. No overlap, no gap: MECE at the extraction layer.</p>
+                <p class="prose">Removing any angle causes a characteristic miss: no structural angle → claims uncounted; no synthetic angle → insights buried; no adversarial angle → assumptions invisible.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd" onclick="toggleCard(this)">
+                <span>Disk anchor hardens provenance <span class="cite" data-id="S-005">S-005</span></span>
+                <span class="chev">▸</span>
+              </div>
+              <div class="scan"></div>
+              <div class="card-body">
+                <p class="prose">In-context claims can be retroactively rationalized. A file timestamp cannot. Writing illuminate-signal.md to disk before the Phase 1 gate passes converts a model assertion (fallible) into a filesystem fact (binary: present or absent). The gate check is mechanical, not evaluative.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd" onclick="toggleCard(this)">
+                <span>INSIGHT entries carry the most argumentative weight <span class="cite" data-id="S-009">S-009</span></span>
+                <span class="chev">▸</span>
+              </div>
+              <div class="scan"></div>
+              <div class="card-body">
+                <p class="prose">INSIGHT — counter-intuitive, reverses a common assumption — is the tag most likely to generate a Key Line in the pyramid. A pyramid built entirely from SOURCE entries is a summary, not an argument. INSIGHT entries resist reader priors, forcing the argument to do real work to sustain them. The skill identifies INSIGHT at extraction time so it can be prioritized at pyramid time.</p>
+              </div>
+            </div>
+          </div><!-- .cards -->
+        </div><!-- .kl-right -->
+      </div><!-- .kl-body -->
+    </div><!-- .g12 -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KL2 — Logical structure is tested by geometry, not assertion
+═══════════════════════════════════════════ -->
+<section class="kl" id="kl2">
+  <div class="ghost">02</div>
+  <div class="wrap">
+    <div class="g12">
+
+      <div class="kl-hd" id="kl2-hd">
+        <span class="kl-tag">KL — 02</span>
+        <h2 class="kl-title">Logical structure is tested by geometry, not assertion</h2>
+        <div class="kl-cites">
+          <span class="cite" data-id="S-011">S-011</span>
+          <span class="cite" data-id="S-012">S-012</span>
+          <span class="cite" data-id="S-032">S-032</span>
+          <span class="cite" data-id="S-033">S-033</span>
+        </div>
+      </div>
+
+      <div class="kl-body" id="kl2-body">
+        <div class="kl-left">
+          <pre class="motif" id="motif2"></pre>
+
+          <div class="vis">
+            <div class="vis-hd">MECE geometry checks</div>
+            <div id="mece-checks"></div>
+          </div>
+
+          <div class="vis">
+            <div class="vis-hd">Confidence · KL2</div>
+            <div class="conf-wrap" id="conf2"></div>
+          </div>
+        </div>
+
+        <div class="kl-right">
+          <p class="kl-lede">
+            The Minto Pyramid does not self-certify its correctness by assertion — it demonstrates it by passing three geometric tests. The MECE intersection test checks that no two Key Lines share supporting evidence: ∩=∅. The union test confirms that together they cover all sub-questions of the Governing Thought: ∪=GT. The necessity test confirms that removing any KL would leave the GT unprovable. Geometry either holds or it does not. "MECE looks right" is not a pass condition — the intersection being empty is.
+          </p>
+
+          <div class="cards" id="cards2">
+            <div class="card">
+              <div class="card-hd" onclick="toggleCard(this)">
+                <span>MECE grouping type determines legal Key Lines <span class="cite" data-id="S-011">S-011</span></span>
+                <span class="chev">▸</span>
+              </div>
+              <div class="scan"></div>
+              <div class="card-body">
+                <p>Three legal grouping types: Process (sequence is load-bearing), Structure (parts of a whole), Situation (mutually exclusive cases). Mixed grouping types fail the MECE test by definition — a step and a component cannot share the same dimensionality. This arc is Process: KL1 → KL2 → KL3 is a causal sequence. Removing KL1 (no provenance) makes KL2's geometry untestable. Removing KL2 makes KL3's human gate arbitrary.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd" onclick="toggleCard(this)">
+                <span>The 3-skeptic audit targets named failure modes <span class="cite" data-id="S-012">S-012</span></span>
+                <span class="chev">▸</span>
+              </div>
+              <div class="scan"></div>
+              <div class="card-body">
+                <p class="prose">Skeptic A: logical — can you construct a scenario where S-NNN is true but the KL is false? Skeptic B: evidential — is the KL paraphrasing beyond what the signal actually says? Skeptic C: completeness — is there a hub with no KL? Each skeptic targets a distinct failure mode. Generic "does this sound reasonable" is explicitly not a valid skeptic output — the attack must be specific.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd" onclick="toggleCard(this)">
+                <span>Visual equality enacts logical equality <span class="cite" data-id="S-032">S-032</span></span>
+                <span class="chev">▸</span>
+              </div>
+              <div class="scan"></div>
+              <div class="card-body">
+                <p class="prose">MECE Key Lines are logical peers — identical in rank, different in content. The HTML artifact enacts this: each KL section has identical visual anatomy (same header weight, same body layout, same card structure, same motif format). A section with heavier visual weight would imply logical dominance the pyramid does not authorize. The visual system is not decoration — it is the argument's geometry rendered in CSS.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KL3 — Final judgment is irreducibly human
+═══════════════════════════════════════════ -->
+<section class="kl" id="kl3">
+  <div class="ghost">03</div>
+  <div class="wrap">
+    <div class="g12">
+
+      <div class="kl-hd" id="kl3-hd">
+        <span class="kl-tag">KL — 03</span>
+        <h2 class="kl-title">Final judgment is irreducibly human</h2>
+        <div class="kl-cites">
+          <span class="cite" data-id="S-026">S-026</span>
+          <span class="cite" data-id="S-027">S-027</span>
+          <span class="cite" data-id="S-028">S-028</span>
+          <span class="cite" data-id="S-029">S-029</span>
+        </div>
+      </div>
+
+      <div class="kl-body" id="kl3-body">
+        <div class="kl-left">
+          <pre class="motif" id="motif3"></pre>
+
+          <div class="vis">
+            <div class="vis-hd">Trust transfer chain</div>
+            <div class="trust-chain" id="trust-chain"></div>
+          </div>
+
+          <div class="vis">
+            <div class="vis-hd">Confidence · KL3</div>
+            <div class="conf-wrap" id="conf3"></div>
+          </div>
+        </div>
+
+        <div class="kl-right">
+          <p class="kl-lede">
+            KL1 and KL2 reduce the self-certification problem; they do not eliminate it. A model can write a signal block and pass its own gate. A model can build a geometrically-valid pyramid. What a model cannot do is open a browser. Phase 7 requires the operator to inspect the artifact in a browser and confirm each checklist item. This gate cannot be completed without a human action. It is not a formality — it is the load-bearing resolution of the haunting problem: the lock is made of the same material, therefore the final key must be different material entirely.
+          </p>
+
+          <div class="cards" id="cards3">
+            <div class="card">
+              <div class="card-hd" onclick="toggleCard(this)">
+                <span>The self-certification problem is irresolvable by design <span class="cite" data-id="S-034">S-034</span></span>
+                <span class="chev">▸</span>
+              </div>
+              <div class="scan"></div>
+              <div class="card-body">
+                <p>Every enforcement mechanism in the skill is executed by the model it constrains. The model grades its own signal block. The model passes its own pyramid gate. No instruction prevents rationalization if the model decides to rationalize. This is not a bug to fix — it is a structural property to contain. Design for containment, not exorcism.</p>
+                <p class="prose">The self-arc applies this insight to itself: this HTML artifact is also produced by the model. The Phase 7 confirmation this artifact awaits is the same external judgment the skill requires of every illuminate output. The skill and the instance are isomorphic.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd" onclick="toggleCard(this)">
+                <span>Naming the problem IS the mitigation <span class="cite" data-id="S-035">S-035</span></span>
+                <span class="chev">▸</span>
+              </div>
+              <div class="scan"></div>
+              <div class="card-body">
+                <p class="prose">The self-certification problem is named directly in the skill as "the haunting problem." The skill does not claim to solve it. The ghost is visible — that visibility is the containment. A model that knows it is constrained and names the constraint gives the operator something to check. A model that does not name it provides no checkpoint at all.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd" onclick="toggleCard(this)">
+                <span>Phase 6 correction register closes the remaining gap <span class="cite" data-id="S-028">S-028</span></span>
+                <span class="chev">▸</span>
+              </div>
+              <div class="scan"></div>
+              <div class="card-body">
+                <p class="prose">The 3-attempt correction register (Phases 1–4) was previously absent from Phase 6 (HTML build) and Phase 7 (operator confirmation). The self-arc identified this gap. The fix: Phase 7 failures re-enter Phase 6 via a structured correction register — same named-problem counter, same escalate-on-exhaust, same rule that a fix breaking a passing item is not a fix. The arc is now closed.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="self-note">
+            <strong>Self-arc paradox</strong> — This artifact is simultaneously the method and one instance of the method applied. No external ground truth exists: the source is the skill; the skill is the instrument; the instrument built this output. The only checkpoint external to the model is you, reading this in a browser. If you see it — Phase 7 is in progress. <code>S-034, S-035</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-brand">/illuminate · self-arc · 2026-06-08</div>
+  <div class="ft-keys">
+    <b>J/K</b> section &nbsp;·&nbsp; <b>F</b> focus &nbsp;·&nbsp; <b>S</b> signal &nbsp;·&nbsp; <b>ESC</b> close
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════
+   EVIDENCE DATA
+═══════════════════════════════════════════ */
+const DATA = {
+  'S-003': {
+    tag:'SOURCE',
+    body:`<strong>Phase 1 produces a named signal block written to disk (/tmp/illuminate-signal.md) before the gate passes.</strong><br><br>The file exists or it does not. Gate check is mechanical. The disk anchor converts an in-context claim — fallible — into a filesystem fact that is either present or absent. No model judgment required at the gate.`
+  },
+  'S-005': {
+    tag:'INSIGHT',
+    body:`<strong>Disk anchors are harder to retroactively rationalize than in-context claims.</strong><br><br>A model in an extended conversation can construct in-context "memories" of events that did not occur. A file timestamp cannot be fabricated within the same session. Writing anchors to disk before gates pass is a mechanical hardening of provenance — not because files are infallible, but because verifying a file path is a different epistemic operation than trusting a model assertion.`
+  },
+  'S-006': {
+    tag:'SOURCE',
+    body:`<strong>Three extraction angles: structural (what IS stated), synthetic (what IMPLIES), adversarial (what ISN'T stated).</strong><br><br>Angle 1: forward read, extract stated claims. Angle 2: read Angle 1 entries only, find implications and insights. Angle 3: assert the opposite of each Angle 1 entry, find gaps and assumptions. Each angle requires a separate pass — not a combined scan.`
+  },
+  'S-007': {
+    tag:'PRINCIPLE',
+    body:`<strong>An unclosed provenance chain is a gate failure.</strong><br><br>Phase 0 lists every referenced file — "see also", "implemented in", "references:" — as mandatory reads before Phase 1 closes. Missing hubs are the most common consequence of skipping this step. The principle: if the source refers to a document, that document is part of the source.`
+  },
+  'S-009': {
+    tag:'INSIGHT',
+    body:`<strong>INSIGHT entries are the best candidates for Key Lines — they carry the most argumentative weight.</strong><br><br>INSIGHT = counter-intuitive, reverses a common assumption. A pyramid built entirely from SOURCE entries is a summary, not an argument. INSIGHT entries resist reader priors, forcing the argument to do real work. The skill identifies INSIGHT at extraction time precisely so it can be prioritized at pyramid time.`
+  },
+  'S-011': {
+    tag:'SOURCE',
+    body:`<strong>MECE grouping type must be identified before building the pyramid.</strong><br><br>Three legal types: Process (sequence is load-bearing), Structure (parts of a whole), Situation (mutually exclusive cases). Mixed types fail the MECE test by definition. This self-arc pyramid is Process: KL1 → KL2 → KL3 is a causal sequence.`
+  },
+  'S-012': {
+    tag:'SOURCE',
+    body:`<strong>3-skeptic audit: A (logical), B (evidential), C (completeness) — each targets a named failure mode.</strong><br><br>Skeptic A: "Construct a scenario where the S-NNN entry is true but the KL is false." Skeptic B: "Is the KL paraphrasing beyond what S-NNN states?" Skeptic C: "Is there a hub from Phase 2 with no KL?" Generic approval is explicitly not valid skeptic output.`
+  },
+  'S-026': {
+    tag:'PRINCIPLE',
+    body:`<strong>Phase 7 requires operator confirmation in a browser — the model cannot self-certify.</strong><br><br>The checklist must be verified by a human opening the file in a browser. This is not optional and cannot be approximated. The model cannot "simulate" a browser open. The gate requires a different kind of agent to close it.`
+  },
+  'S-027': {
+    tag:'INSIGHT',
+    body:`<strong>The haunting problem: every enforcement mechanism is executed by the model it constrains.</strong><br><br>The model grades its own signal block. The model passes its own MECE tests. The model builds the pyramid. No instruction prevents rationalization if the model decides to rationalize. This is a structural property, not a bug. Design for containment, not exorcism.`
+  },
+  'S-028': {
+    tag:'GAP',
+    body:`<strong>Gap identified by self-arc: Phase 6 (HTML build) had no correction register.</strong><br><br>The fix: Phase 7 failures re-enter Phase 6 via the same 3-attempt, escalate-on-exhaust correction register as Phases 1–4. Each named problem has its own counter independently. A fix that breaks a passing item is not a fix. GT drift → re-anchor and restart Phase 6 from scratch.`
+  },
+  'S-029': {
+    tag:'INSIGHT',
+    body:`<strong>Named gaps are mitigations — naming the self-certification problem IS part of the containment design.</strong><br><br>The skill does not claim to solve the haunting problem. It names it directly ("the lock is made of the same material it holds") and makes the ghost visible. A model that names its constraint gives the operator a checkpoint. A model that hides the constraint provides none.`
+  },
+  'S-031': {
+    tag:'INSIGHT',
+    body:`<strong>3-angle extraction is itself MECE: what IS / what IMPLIES / what ISN'T.</strong><br><br>The three angles cover the full epistemic surface of a source. They do not overlap (stated ≠ implied ≠ absent) and together they are exhaustive. The extraction is not an aesthetic choice — it is a structural requirement that makes Phase 1 gate-able.`
+  },
+  'S-032': {
+    tag:'INSIGHT',
+    body:`<strong>Visual equality of KL sections IS MECE made physical.</strong><br><br>MECE Key Lines are logical peers. The HTML artifact enacts this: identical section anatomy across all KL sections. A KL with heavier visual treatment would imply logical dominance the pyramid does not authorize. The visual system is not decoration — it is the argument's geometry rendered in CSS.`
+  },
+  'S-033': {
+    tag:'INSIGHT',
+    body:`<strong>The GT reveal IS the SCQA arc performed in time.</strong><br><br>SCQA builds tension: Situation → Complication → Question → Answer. In the HTML, S+C are static (already known), Q appears last, and the GT builds character-by-character — the answer arriving under pressure. The animation is not decorative. It performs the argument's temporal logic.`
+  },
+  'S-034': {
+    tag:'INSIGHT',
+    body:`<strong>Self-arc paradox: the skill is simultaneously the method and an instance of the method applied. No external ground truth exists.</strong><br><br>When the source IS the skill, there is no external fact to verify against. The only external checkpoint is the human operator who opens the artifact in a browser — the same Phase 7 gate that this artifact awaits right now.`
+  },
+  'S-035': {
+    tag:'SYNTHESIS',
+    body:`<strong>[SYNTHESIS: S-026 + S-027 + S-028 + S-029] — Naming the self-certification problem IS the mitigation.</strong><br><br>Mechanical gates (S-026) are insufficient alone because the model grades them. The haunting problem (S-027) cannot be eliminated. The correction register (S-028) closes the Phase 6 gap. But the root mitigation is S-029: making the ghost visible is the containment. These four together constitute the complete answer to the Q in the SCQA arc.`
+  }
+};
+
+/* ═══════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════ */
+const cur = document.getElementById('cur');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY });
+(function raf(){
+  cx+=(mx-cx)*.18; cy+=(my-cy)*.18;
+  cur.style.left=cx+'px'; cur.style.top=cy+'px';
+  requestAnimationFrame(raf);
+})();
+document.addEventListener('mouseover',e=>{
+  const t=e.target;
+  if(t.closest('a,button,.card-hd,.cite,.nav-link,.nav-mode,.dr-close')) cur.classList.add('big');
+  else cur.classList.remove('big');
+  if(t.closest('#pipeline,#motif1,#motif2,#motif3,.motif')) cur.classList.add('cli-mode');
+  else cur.classList.remove('cli-mode');
+});
+
+/* ═══════════════════════════════════════════
+   SCROLL
+═══════════════════════════════════════════ */
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{
+  const pct=window.scrollY/(document.body.scrollHeight-window.innerHeight);
+  prog.style.width=(pct*100)+'%';
+  updateArc(pct); updateNav();
+},{passive:true});
+
+/* ═══════════════════════════════════════════
+   SCRAMBLE ANIMATION
+═══════════════════════════════════════════ */
+const R=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+const GT='BY MAKING EACH GATE MECHANICAL RATHER THAN EVALUATIVE — EVIDENCE ANCHORED TO S-NNN TRACES, STRUCTURE TESTED AGAINST MECE GEOMETRY, OUTPUT CONFIRMED BY A HUMAN IN A BROWSER — /ILLUMINATE TRANSFERS CRITICAL JUDGMENT FROM THE MODEL THAT COULD RATIONALIZE TO ARTIFACTS AND HUMANS WHO CANNOT.';
+const SC='█▓▒░│─┼╬═■◆●▸◉⊕◇□';
+
+function scrambleReveal(el,text,opts){
+  const o=Object.assign({cd:4,sc:2,onDone:null},opts);
+  if(R){ el.textContent=text; el.classList.add('done'); if(o.onDone) o.onDone(); return; }
+  let base='',i=0;
+  function next(){
+    if(i>=text.length){ el.classList.add('done'); if(o.onDone) setTimeout(o.onDone,300); return; }
+    const ch=text[i];
+    if(ch===' '||ch==='\n'){ base+=ch; i++; el.textContent=base; setTimeout(next,o.cd); return; }
+    let s=o.sc;
+    function sc(){
+      if(s<=0){ base+=ch; i++; el.textContent=base; setTimeout(next,o.cd); return; }
+      el.textContent=base+SC[Math.floor(Math.random()*SC.length)];
+      s--; setTimeout(sc,o.cd*3);
+    }
+    sc();
+  }
+  next();
+}
+
+/* ═══════════════════════════════════════════
+   BUILD ART
+═══════════════════════════════════════════ */
+function buildArt(el,lines,opts){
+  const o=Object.assign({cd:8,ld:28,onDone:null},opts);
+  if(R){ el.textContent=lines.join('\n'); if(o.onDone) o.onDone(); return; }
+  let li=0,ci=0,built='';
+  function tick(){
+    if(li>=lines.length){ if(o.onDone) o.onDone(); return; }
+    const line=lines[li];
+    if(ci>=line.length){ built+=(li<lines.length-1?'\n':''); li++; ci=0; setTimeout(tick,o.ld); return; }
+    built+=line[ci]; el.textContent=built; ci++;
+    setTimeout(tick,o.cd);
+  }
+  tick();
+}
+
+/* ═══════════════════════════════════════════
+   MOTIFS
+═══════════════════════════════════════════ */
+const MOTIFS={
+  pipeline:[
+    '  ╔══════════════════════════════════╗',
+    '  ║  INPUT                           ║',
+    '  ║  source ──▶ 3-angle extract      ║',
+    '  ║  S-NNN ──▶ disk anchor ✓         ║',
+    '  ╠══════════════════════════════════╣',
+    '  ║  PROCESS                         ║',
+    '  ║  hubs ──▶ issue tree ──▶ pyramid ║',
+    '  ║  MECE ∩=∅  ∪=GT  ✓              ║',
+    '  ╠══════════════════════════════════╣',
+    '  ║  OUTPUT                          ║',
+    '  ║  pyramid ──▶ HTML build          ║',
+    '  ║  operator confirms in browser ✓  ║',
+    '  ╚══════════════════════════════════╝',
+  ],
+  kl1:[
+    '  ANGLE·1        ANGLE·2        ANGLE·3',
+    '  structural ─── synthetic ─── adversarial',
+    '',
+    '  ■ SOURCE        ★ INSIGHT      ○ GAP',
+    '  ▸ METRIC   ⚠    ◆ SYNTHESIS    △ ASSUME',
+    '  · PRINCIPLE     ▲ CONTESTED    ▽ UNDEF',
+    '',
+    '  ─────────────────────────────────────',
+    '  all angles → S-NNN → /tmp/*.md ✓',
+    '  gate: file exists ∨ gate fails',
+  ],
+  kl2:[
+    '              ▲',
+    '             ╱ ╲',
+    '            ╱ GT╲         ← Governing Thought',
+    '           ╱─────╲           directly answers Q',
+    '          ╱  KL1  ╲',
+    '         ╱─────────╲      ← Key Lines  (MECE)',
+    '        ╱ KL2   KL3 ╲        ∩=∅  ∪=all sub-Qs',
+    '       ╱─────────────╲',
+    '      ╱  d·a   ·  d·b ╲   ← S-NNN traces',
+    '     ─────────────────────',
+    '',
+    '  MECE test:  ∩=∅  ✓  ∪=GT  ✓  indep  ✓',
+  ],
+  kl3:[
+    '  ┌────────┐   ┌──────────┐   ┌──────────┐   ┌──────┐',
+    '  │ MODEL  │──▶│signal.md │──▶│anchor.md │──▶│  OP  │',
+    '  │   ✗    │   │  ✓ disk  │   │  ✓ disk  │   │opens │',
+    '  └────────┘   └──────────┘   └──────────┘   └──────┘',
+    '  no trust     mechanical     mechanical      browser',
+    '  rationalize  anchor ✓       anchor ✓        HUMAN',
+    '',
+    '  trust:  ✗         disk           disk        irred.',
+  ]
+};
+
+/* ═══════════════════════════════════════════
+   TAG BARS
+═══════════════════════════════════════════ */
+function buildTagBars(){
+  const cfg=[
+    {lbl:'SOURCE',  n:18,pct:46,color:'var(--blue)'},
+    {lbl:'INSIGHT', n:8, pct:20,color:'var(--amber)'},
+    {lbl:'SYNTH',   n:5, pct:13,color:'var(--cli)'},
+    {lbl:'GAP',     n:4, pct:10,color:'var(--red)'},
+    {lbl:'METRIC',  n:3, pct:8, color:'#9d7fff'},
+    {lbl:'PRINCPL', n:2, pct:5, color:'#ff7fd4'},
+  ];
+  const el=document.getElementById('tag-bars');
+  el.innerHTML=cfg.map(c=>`
+    <div class="tag-bar-row">
+      <div class="tag-bar-label">${c.lbl}</div>
+      <div class="tag-bar-track"><div class="tag-bar-fill" data-pct="${c.pct}" style="background:${c.color}"></div></div>
+      <div class="tag-bar-val">${c.n}</div>
+    </div>`).join('');
+}
+function animateTagBars(){
+  document.querySelectorAll('.tag-bar-fill').forEach(b=>{
+    setTimeout(()=>{ b.style.width=b.dataset.pct+'%' },80+Math.random()*250);
+  });
+}
+
+/* ═══════════════════════════════════════════
+   MECE CHECKS
+═══════════════════════════════════════════ */
+function buildMECE(){
+  const rows=[
+    {pass:true,  text:'Intersection test: KL1∩KL2=∅, KL1∩KL3=∅, KL2∩KL3=∅', src:'S-011'},
+    {pass:true,  text:'Union test: KL1∪KL2∪KL3 covers all GT sub-questions',  src:'S-011'},
+    {pass:true,  text:'Necessity: removing KL1 collapses GT (no provenance)',  src:'S-012'},
+    {pass:true,  text:'Necessity: removing KL2 collapses GT (no geometry)',    src:'S-012'},
+    {pass:true,  text:'Necessity: removing KL3 collapses GT (no human gate)',  src:'S-029'},
+    {pass:true,  text:'Grouping type: Process (causal sequence)',              src:'S-011'},
+    {pass:true,  text:'3-skeptic pass: A logical, B evidential, C complete',   src:'S-012'},
+  ];
+  const el=document.getElementById('mece-checks');
+  el.innerHTML=rows.map((r,i)=>`
+    <div class="mece-row" style="transition-delay:${i*60}ms">
+      <span class="mece-sym ${r.pass?'pass':'fail'}">${r.pass?'✓':'✗'}</span>
+      <span class="mece-text">${r.text}</span>
+      <span class="mece-src">${r.src}</span>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════
+   TRUST CHAIN
+═══════════════════════════════════════════ */
+function buildTrust(){
+  const nodes=[
+    {label:'MODEL',      sub:'no trust\nrationalizes\nfreely',   cls:'warn'},
+    null,
+    {label:'signal.md',  sub:'disk anchor\nmechanical\n✓ check', cls:'trusted'},
+    null,
+    {label:'anchor.md',  sub:'disk anchor\nmechanical\n✓ check', cls:'trusted'},
+    null,
+    {label:'OPERATOR',   sub:'browser\nirreducibly\nhuman',      cls:'trusted'},
+  ];
+  const el=document.getElementById('trust-chain');
+  el.innerHTML=nodes.map((n,i)=>{
+    if(!n) return `<div class="trust-arrow">──▶</div>`;
+    return `<div class="trust-node" style="transition-delay:${Math.floor(i/2)*120}ms">
+      <div class="trust-box ${n.cls}">${n.label}</div>
+      <div class="trust-box-label" style="white-space:pre">${n.sub}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════
+   CONFIDENCE METERS
+═══════════════════════════════════════════ */
+function buildConf(id,rows){
+  document.getElementById(id).innerHTML=rows.map(r=>`
+    <div class="conf-row">
+      <div class="conf-key">${r.key}</div>
+      <div class="conf-track"><div class="conf-fill" data-pct="${r.pct}" style="background:${r.color}"></div></div>
+      <div class="conf-val">${r.pct}%</div>
+    </div>`).join('');
+}
+function animateConf(id){
+  document.querySelectorAll(`#${id} .conf-fill`).forEach(f=>{
+    setTimeout(()=>{ f.style.width=f.dataset.pct+'%' },80);
+  });
+}
+
+const CONF={
+  conf1:[{key:'ASSERT',pct:78,color:'var(--cli)'},{key:'HEDGE',pct:18,color:'var(--amber)'},{key:'GAP',pct:4,color:'var(--red)'}],
+  conf2:[{key:'ASSERT',pct:84,color:'var(--cli)'},{key:'HEDGE',pct:12,color:'var(--amber)'},{key:'GAP',pct:4,color:'var(--red)'}],
+  conf3:[{key:'ASSERT',pct:72,color:'var(--cli)'},{key:'HEDGE',pct:22,color:'var(--amber)'},{key:'GAP',pct:6,color:'var(--red)'}],
+};
+
+/* ═══════════════════════════════════════════
+   INTERSECTION OBSERVER
+═══════════════════════════════════════════ */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const id=e.target.id||e.target.dataset.rev;
+    if(!id) return;
+
+    if(id.endsWith('-hd')){ e.target.classList.add('in'); io.unobserve(e.target); return; }
+    if(id==='scqa'){ e.target.classList.add('in'); io.unobserve(e.target); return; }
+    if(id==='pipeline-strip'){ e.target.classList.add('in'); buildPipeline(); io.unobserve(e.target); return; }
+
+    if(id.endsWith('-body')){
+      e.target.classList.add('in');
+      setTimeout(()=>{
+        e.target.querySelectorAll('.card').forEach((c,i)=>setTimeout(()=>c.classList.add('in'),120+i*80));
+        e.target.querySelectorAll('.mece-row').forEach((r,i)=>setTimeout(()=>r.classList.add('in'),100+i*55));
+        e.target.querySelectorAll('.trust-node').forEach((n,i)=>setTimeout(()=>n.classList.add('in'),80+i*120));
+      },80);
+      if(id==='kl1-body'){ animateTagBars(); animateConf('conf1'); buildMotif('motif1','kl1'); }
+      if(id==='kl2-body'){ animateConf('conf2'); buildMotif('motif2','kl2'); }
+      if(id==='kl3-body'){ animateConf('conf3'); buildMotif('motif3','kl3'); }
+      io.unobserve(e.target); return;
+    }
+  });
+},{threshold:.1});
+
+function buildMotif(id,key){
+  const el=document.getElementById(id);
+  if(!el||el._built) return; el._built=true;
+  buildArt(el,MOTIFS[key]);
+}
+function buildPipeline(){
+  const el=document.getElementById('pipeline');
+  if(el._built) return; el._built=true;
+  buildArt(el,MOTIFS.pipeline,{cd:7,ld:18});
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  buildTagBars(); buildMECE(); buildTrust();
+  Object.entries(CONF).forEach(([k,v])=>buildConf(k,v));
+
+  const observe=(id)=>{ const el=document.getElementById(id); if(el){ el.dataset.rev=id; io.observe(el); }};
+  ['scqa','pipeline-strip','kl1-hd','kl1-body','kl2-hd','kl2-body','kl3-hd','kl3-body'].forEach(observe);
+
+  document.querySelectorAll('.cite').forEach(c=>{
+    c.addEventListener('click',e=>{ e.stopPropagation(); openDrawer(c.dataset.id); });
+  });
+
+  // 3D tilt on vis blocks
+  document.querySelectorAll('.vis').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5;
+      const y=(e.clientY-r.top)/r.height-.5;
+      card.style.transform=`perspective(700px) rotateY(${x*5}deg) rotateX(${-y*5}deg)`;
+    });
+    card.addEventListener('mouseleave',()=>{ card.style.transform=''; });
+  });
+
+  // Start GT after brief pause
+  setTimeout(()=>{
+    scrambleReveal(document.getElementById('gt'),GT,{cd:4,sc:2,onDone:()=>{
+      document.getElementById('scqa').classList.add('in');
+      document.getElementById('pipeline-strip').classList.add('in');
+      buildPipeline();
+    }});
+  },350);
+});
+
+/* ═══════════════════════════════════════════
+   EVIDENCE DRAWER
+═══════════════════════════════════════════ */
+function openDrawer(id){
+  const d=DATA[id]; if(!d) return;
+  document.getElementById('dr-id').textContent=id;
+  const t=document.getElementById('dr-tag');
+  t.textContent=d.tag; t.className='dr-tag dr-tag-'+d.tag;
+  document.getElementById('dr-body').innerHTML=d.body;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('dr-overlay').classList.add('open');
+  document.querySelectorAll('.cite').forEach(c=>c.classList.toggle('hl',c.dataset.id===id));
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('dr-overlay').classList.remove('open');
+  document.querySelectorAll('.cite.hl').forEach(c=>c.classList.remove('hl'));
+}
+document.getElementById('dr-overlay').addEventListener('click',closeDrawer);
+
+/* ═══════════════════════════════════════════
+   ACCORDION
+═══════════════════════════════════════════ */
+function toggleCard(hd){
+  const card=hd.closest('.card');
+  const wasOpen=card.hasAttribute('open');
+  card.closest('.cards').querySelectorAll('.card[open]').forEach(c=>{
+    if(c!==card){ c.removeAttribute('open'); c.querySelector('.card-body').style.maxHeight='0'; }
+  });
+  if(wasOpen){
+    card.removeAttribute('open');
+    card.querySelector('.card-body').style.maxHeight='0';
+  } else {
+    card.setAttribute('open','');
+    const b=card.querySelector('.card-body');
+    b.style.maxHeight=b.scrollHeight+'px';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   MODES
+═══════════════════════════════════════════ */
+function toggleFocus(){ document.body.classList.toggle('focus') }
+function toggleSignal(){ document.body.classList.toggle('signal') }
+
+const SECS=['hero','kl1','kl2','kl3'];
+function updateFocus(){
+  if(!document.body.classList.contains('focus')) return;
+  let best=null,bestD=Infinity;
+  SECS.forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    const d=Math.abs(el.getBoundingClientRect().top);
+    if(d<bestD){ bestD=d; best=id; }
+  });
+  document.querySelectorAll('.kl').forEach(s=>{
+    s.classList.toggle('focused',s.id===best);
+  });
+}
+window.addEventListener('scroll',updateFocus,{passive:true});
+
+/* ═══════════════════════════════════════════
+   NAV + ARC
+═══════════════════════════════════════════ */
+function updateNav(){
+  let active='hero';
+  SECS.forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    if(el.getBoundingClientRect().top<=80) active=id;
+  });
+  document.querySelectorAll('.nav-link[data-sec]').forEach(l=>{
+    l.classList.toggle('on',l.dataset.sec===active);
+  });
+}
+function updateArc(pct){
+  const dot=document.getElementById('arc-dot');
+  if(dot) dot.style.top=(pct*100)+'%';
+}
+
+/* ═══════════════════════════════════════════
+   KEYBOARD
+═══════════════════════════════════════════ */
+let secIdx=0;
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='j'||e.key==='ArrowDown'){
+    e.preventDefault(); secIdx=Math.min(secIdx+1,SECS.length-1);
+    document.getElementById(SECS[secIdx])?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  if(e.key==='k'||e.key==='ArrowUp'){
+    e.preventDefault(); secIdx=Math.max(secIdx-1,0);
+    document.getElementById(SECS[secIdx])?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  if(e.key==='f') toggleFocus();
+  if(e.key==='s') toggleSignal();
+  if(e.key==='Escape'){ closeDrawer(); document.body.classList.remove('focus','signal'); }
+});
+document.querySelectorAll('.nav-link[data-sec]').forEach(l=>{
+  l.addEventListener('click',()=>{
+    const idx=SECS.indexOf(l.dataset.sec);
+    if(idx>=0) secIdx=idx;
+    document.getElementById(l.dataset.sec)?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+</script>
+</body>
+</html>
