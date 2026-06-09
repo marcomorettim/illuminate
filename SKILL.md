@@ -583,6 +583,16 @@ a specific function in making the pyramid's argument structure legible.
 11. `DEPTH-INDICATOR` — shows current position in pyramid (GT → KLn → sub-detail).
     Updates as user navigates expand states.
 
+**Controls (always visible, never intrusive):**
+12. `THEME-TOGGLE` — dark/light switch in sticky nav. Symbol: `◑` (dark) / `◐` (light).
+    Defaults to system preference (`prefers-color-scheme`). Manual choice persists in
+    `localStorage`. Applies via `[data-theme="dark|light"]` on `<html>`. Smooth surface
+    transition (background/border only — no text transition flash).
+13. `TIER-SELECTOR` — render complexity selector in sticky nav: three inline buttons
+    `s · b · r` (simple / balanced / rich). Defaults to `rich`. Persists in `localStorage`.
+    Applies via `[data-tier="simple|balanced|rich"]` on `<html>`. Active button highlighted
+    in editorial red. Controls which features activate — see Render Tier Architecture.
+
 **Wireframe format (required; confirm against pyramid before building):**
 ```
 HERO
@@ -607,6 +617,8 @@ SECTIONS (one per KL, identical anatomy)
 NAVIGATION
   [STICKY-NAV] GT → KL1 / KL2 / KL3 / ...
   [DEPTH-INDICATOR]
+  [THEME-TOGGLE] ◑/◐ — right-aligned in nav
+  [TIER-SELECTOR] s · b · r — right-aligned in nav, beside theme toggle
 ```
 
 Confirm wireframe maps to pyramid exactly. Each KL = one section. No section without a KL.
@@ -655,21 +667,36 @@ Visible column overlay in the hero section:
 }
 ```
 
-**Color system — dark editorial:**
-```
---paper:   #070708   /* near-black paper */
---ink:     #f0f0ee   /* soft white ink */
---ink-2:   #888886   /* mid grey — body text */
---ink-3:   #404040   /* dark grey — labels, rules */
---rule:    rgba(240,240,238,.06)   /* barely-there grid lines */
---rule-hi: rgba(240,240,238,.14)   /* section borders */
---red:     #ff1e1e   /* editorial accent — one strong color, used sparingly */
---cli:     #00ff88   /* terminal green — evidence and ASCII only */
---blue:    #3d9eff   /* data blue — metrics and charts */
---amber:   #ffaa00   /* contested / hedge signal */
-```
+**Color system — dual-mode, function-named:**
 
-Full light-mode override via `@media(prefers-color-scheme:light)`.
+Colour names a semantic function, never a visual preference. The same token
+`--cli` is `#00ff88` in dark and `#006e38` in light — same function, different
+value. Never hand-mix alphas; use the pre-computed `-dim` companion tokens.
+
+| Token | Dark | Light | Function |
+|---|---|---|---|
+| `--paper` | `#070708` | `#f5f4f0` | page canvas |
+| `--paper-1` | `#0f0f11` | `#eeede8` | card ground |
+| `--paper-2` | `#171719` | `#e4e3de` | raised surface |
+| `--ink` | `#f0f0ee` | `#1c1c1a` | primary text |
+| `--ink-2` | `#888886` | `#56564f` | body / secondary text |
+| `--ink-3` | `#404040` | `#9a9a92` | labels / rules |
+| `--rule` | `rgba(240,240,238,.06)` | `rgba(28,28,26,.07)` | structural hairlines |
+| `--rule-hi` | `rgba(240,240,238,.14)` | `rgba(28,28,26,.16)` | section borders |
+| `--red` | `#ff1e1e` | `#c8190e` | editorial accent / KL numbers |
+| `--cli` | `#00ff88` | `#006e38` | evidence / ASCII only — never decorative |
+| `--blue` | `#3d9eff` | `#1457a0` | data / metrics only |
+| `--amber` | `#ffaa00` | `#8a5e00` | contested / hedge signal |
+
+Light-mode values are not simply inverted — they are re-chosen for WCAG AA
+contrast on the warm-cream ground (`#f5f4f0`). In particular: `--cli` shifts
+from neon green to deep forest green; `--red` deepens to maintain contrast.
+Never use `#00ff88` (neon terminal green) on a light background — it fails
+contrast tests and breaks the editorial register.
+
+The `[data-theme]` attribute on `<html>` controls the active palette (see CSS
+Architecture). The `@media(prefers-color-scheme)` media query is the fallback
+when no manual preference is stored.
 
 **Ghost section numbers:**
 ```css
@@ -767,8 +794,9 @@ class on completion. This is the inverse of the classical typewriter GT (which u
 — Swiss editorial uses ultra-light at large size for maximum editorial tension.
 
 ```
-[ILLUMINATE:GATE] Phase 5 PASS | Wireframe confirmed | KLs: <N> | Components: 11+
+[ILLUMINATE:GATE] Phase 5 PASS | Wireframe confirmed | KLs: <N> | Components: 13
                                 | Editorial: Swiss grid · Helvetica Neue + Futura · editorial red
+                                | Theme: dark+light | Tiers: simple/balanced/rich declared
 ```
 
 ---
@@ -793,56 +821,255 @@ The Phase 5 Swiss Editorial Design Standard defines the token vocabulary. Use th
 token names in Phase 6 CSS — consistent naming makes the design system auditable.
 
 ```css
+/* ── Typefaces ── */
 :root {
-  /* Typefaces */
-  --hn:    'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --ft:    Futura, 'Century Gothic', 'Trebuchet MS', var(--hn);
-  --mono:  'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+  --hn:   'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ft:   Futura, 'Century Gothic', 'Trebuchet MS', var(--hn);
+  --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
 
-  /* Surface hierarchy */
-  --paper:   #070708;   --paper-1: #0f0f11;   --paper-2: #171719;
+  /* ── Dark palette (default) ── */
+  --paper:    #070708;  --paper-1:  #0f0f11;  --paper-2:  #171719;
+  --ink:      #f0f0ee;  --ink-2:    #888886;  --ink-3:    #404040;
+  --rule:     rgba(240,240,238,.06);
+  --rule-hi:  rgba(240,240,238,.14);
+  --red:      #ff1e1e;  --red-dim:    rgba(255,30,30,.10);
+  --cli:      #00ff88;  --cli-dim:    rgba(0,255,136,.07);
+  --blue:     #3d9eff;  --blue-dim:   rgba(61,158,255,.09);
+  --amber:    #ffaa00;  --amber-dim:  rgba(255,170,0,.10);
 
-  /* Ink — 3 contrast levels */
-  --ink:   #f0f0ee;   --ink-2: #888886;   --ink-3: #404040;
-
-  /* Structural rules */
-  --rule:    rgba(240,240,238,.06);
-  --rule-hi: rgba(240,240,238,.14);
-
-  /* Semantic palette — one editorial accent per semantic role */
-  --red:    #ff1e1e;   --red-dim:    rgba(255,30,30,.1);    /* editorial accent */
-  --cli:    #00ff88;   --cli-dim:    rgba(0,255,136,.07);   /* evidence / ASCII */
-  --blue:   #3d9eff;   --blue-dim:   rgba(61,158,255,.09);  /* data / metrics */
-  --amber:  #ffaa00;   --amber-dim:  rgba(255,170,0,.1);    /* hedge / contested */
-
-  /* Swiss Grid */
+  /* ── Swiss Grid ── */
   --col12: repeat(12, 1fr);
   --gap12: clamp(12px, 1.5vw, 20px);
   --max:   1400px;
   --pad:   clamp(1.25rem, 4vw, 3.5rem);
 
-  /* Type scale */
-  --t-gt:     clamp(2rem, 4vw, 3.5rem);     /* GT / hero — Helvetica Neue 300 */
-  --t-h1:     clamp(1.4rem, 2.5vw, 2rem);   /* section titles — Futura 700 */
-  --t-body:   clamp(.9rem, 1.1vw, 1rem);
-  --t-small:  .82rem;
-  --t-micro:  .68rem;                         /* labels / dateline — Futura caps */
-  --t-ghost:  clamp(7rem, 20vw, 16rem);      /* ghost section numbers */
+  /* ── Type scale ── */
+  --t-gt:    clamp(2rem, 4vw, 3.5rem);    /* GT hero — Helvetica Neue 300 */
+  --t-h1:    clamp(1.4rem, 2.5vw, 2rem);  /* section titles — Futura 700 */
+  --t-body:  clamp(.9rem, 1.1vw, 1rem);
+  --t-small: .82rem;
+  --t-micro: .68rem;                       /* labels / dateline — Futura caps */
+  --t-ghost: clamp(7rem, 20vw, 16rem);    /* ghost section numbers */
 
-  /* Motion */
-  --ease:   cubic-bezier(.16,1,.3,1);
-  --spring: cubic-bezier(.34,1.56,.64,1);
-  --dur:    .5s;
+  /* ── Motion ── */
+  --ease:     cubic-bezier(.16,1,.3,1);
+  --spring:   cubic-bezier(.34,1.56,.64,1);
+  --ease-out: cubic-bezier(.0,0,.2,1);
+  --dur:      .5s;
+  --dur-fast: .18s;
+  --dur-slow: .9s;
+  --stagger:  60ms;
 }
+
+/* ── Light palette — system preference (no manual override) ── */
+/* Values chosen for WCAG AA on warm-cream ground #f5f4f0.         */
+/* --cli shifts neon→deep forest; --red deepens for contrast.       */
 @media(prefers-color-scheme:light) {
-  :root {
-    --paper: #f8f8f6; --paper-1: #f0f0ee; --paper-2: #e8e8e4;
-    --ink: #111;      --ink-2: #555;       --ink-3: #999;
-    --rule: rgba(0,0,0,.08); --rule-hi: rgba(0,0,0,.15);
-    --cli: #006644; --cli-dim: rgba(0,102,68,.08);
+  :root:not([data-theme="dark"]) {
+    --paper:    #f5f4f0;  --paper-1:  #eeede8;  --paper-2:  #e4e3de;
+    --ink:      #1c1c1a;  --ink-2:    #56564f;  --ink-3:    #9a9a92;
+    --rule:     rgba(28,28,26,.07);
+    --rule-hi:  rgba(28,28,26,.16);
+    --red:      #c8190e;  --red-dim:    rgba(200,25,14,.09);
+    --cli:      #006e38;  --cli-dim:    rgba(0,110,56,.08);
+    --blue:     #1457a0;  --blue-dim:   rgba(20,87,160,.09);
+    --amber:    #8a5e00;  --amber-dim:  rgba(138,94,0,.09);
   }
 }
-@media(prefers-reduced-motion:reduce) { :root { --dur: 0s } }
+
+/* ── Manual light override (takes precedence over system pref) ── */
+[data-theme="light"] {
+  --paper:    #f5f4f0;  --paper-1:  #eeede8;  --paper-2:  #e4e3de;
+  --ink:      #1c1c1a;  --ink-2:    #56564f;  --ink-3:    #9a9a92;
+  --rule:     rgba(28,28,26,.07);
+  --rule-hi:  rgba(28,28,26,.16);
+  --red:      #c8190e;  --red-dim:    rgba(200,25,14,.09);
+  --cli:      #006e38;  --cli-dim:    rgba(0,110,56,.08);
+  --blue:     #1457a0;  --blue-dim:   rgba(20,87,160,.09);
+  --amber:    #8a5e00;  --amber-dim:  rgba(138,94,0,.09);
+}
+
+/* ── Manual dark override (overrides system light pref) ── */
+[data-theme="dark"] {
+  --paper:    #070708;  --paper-1:  #0f0f11;  --paper-2:  #171719;
+  --ink:      #f0f0ee;  --ink-2:    #888886;  --ink-3:    #404040;
+  --rule:     rgba(240,240,238,.06);
+  --rule-hi:  rgba(240,240,238,.14);
+  --red:      #ff1e1e;  --red-dim:    rgba(255,30,30,.10);
+  --cli:      #00ff88;  --cli-dim:    rgba(0,255,136,.07);
+  --blue:     #3d9eff;  --blue-dim:   rgba(61,158,255,.09);
+  --amber:    #ffaa00;  --amber-dim:  rgba(255,170,0,.10);
+}
+
+/* ── Theme-aware ghost numbers ── */
+[data-theme="light"] .ghost,
+@media(prefers-color-scheme:light) { :root:not([data-theme="dark"]) .ghost { color: rgba(28,28,26,.030) } }
+[data-theme="light"] .kl:hover .ghost,
+@media(prefers-color-scheme:light) { :root:not([data-theme="dark"]) .kl:hover .ghost { color: rgba(28,28,26,.06) } }
+
+/* ── Theme-aware grid overlay ── */
+[data-theme="light"] .grid-bg { background-image: repeating-linear-gradient(90deg,rgba(0,0,0,.025) 0,rgba(0,0,0,.025) 1px,transparent 1px,transparent calc(100%/12)); }
+@media(prefers-color-scheme:light) { :root:not([data-theme="dark"]) .grid-bg { background-image: repeating-linear-gradient(90deg,rgba(0,0,0,.025) 0,rgba(0,0,0,.025) 1px,transparent 1px,transparent calc(100%/12)); } }
+
+/* ── Smooth theme transition (surfaces + borders only; text excluded to avoid flash) ── */
+html { transition: background-color .25s var(--ease-out); }
+*, *::before, *::after { transition: background-color .20s var(--ease-out), border-color .20s var(--ease-out); }
+
+/* ── Progress stripe — no box-shadow in light mode (neon glow unreadable on cream) ── */
+[data-theme="light"] #prog,
+@media(prefers-color-scheme:light) { :root:not([data-theme="dark"]) #prog { box-shadow: none; } }
+
+@media(prefers-reduced-motion:reduce) {
+  :root { --dur: 0s; --dur-fast: 0s; --dur-slow: 0s; }
+  html, *, *::before, *::after { transition: none !important; }
+}
+```
+
+---
+
+### Theme Toggle Construction
+
+Boot order: apply theme attribute **before first paint** to prevent flash.
+Place the script inline in `<head>`, before any CSS.
+
+```html
+<script>
+// Run before paint — no flash of wrong theme
+(function() {
+  var stored = localStorage.getItem('il-theme');
+  var sys = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', stored || sys);
+  document.documentElement.setAttribute('data-tier', localStorage.getItem('il-tier') || 'rich');
+})();
+</script>
+```
+
+Toggle function (in body `<script>`):
+```javascript
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('il-theme', next);
+  var btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = next === 'dark' ? '◑' : '◐';
+}
+// Init button label to match current state
+(function() {
+  var btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '◑' : '◐';
+})();
+```
+
+HTML in sticky nav (right-aligned group):
+```html
+<div class="nav-controls">
+  <div class="tier-select">
+    <button class="tier-btn" data-t="simple"   onclick="setTier('simple')">s</button>
+    <button class="tier-btn" data-t="balanced" onclick="setTier('balanced')">b</button>
+    <button class="tier-btn" data-t="rich"     onclick="setTier('rich')">r</button>
+  </div>
+  <button id="theme-btn" class="nav-icon-btn" onclick="toggleTheme()" title="Toggle theme">◑</button>
+</div>
+```
+
+CSS:
+```css
+.nav-controls { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+
+.nav-icon-btn {
+  background: none; border: 1px solid var(--rule-hi); border-radius: 4px;
+  color: var(--ink-3); font-family: var(--mono); font-size: .88rem;
+  width: 26px; height: 26px; cursor: pointer; line-height: 1;
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+}
+.nav-icon-btn:hover { border-color: var(--ink-2); color: var(--ink-2); }
+
+.tier-select {
+  display: flex; border: 1px solid var(--rule-hi); border-radius: 4px; overflow: hidden;
+}
+.tier-btn {
+  background: none; border: none; border-right: 1px solid var(--rule-hi);
+  padding: 3px 7px; font-family: var(--ft); font-size: .6rem; font-weight: 700;
+  letter-spacing: .08em; color: var(--ink-3); cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.tier-btn:last-child { border-right: none; }
+.tier-btn:hover { background: var(--rule); color: var(--ink-2); }
+.tier-btn.active { background: var(--red-dim); color: var(--red); }
+```
+
+---
+
+### Render Tier Architecture
+
+Three tiers control the intensity of interactive and animated features.
+Applied via `[data-tier="simple|balanced|rich"]` on `<html>`.
+
+```javascript
+function setTier(t) {
+  document.documentElement.setAttribute('data-tier', t);
+  localStorage.setItem('il-tier', t);
+  document.querySelectorAll('.tier-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.t === t);
+  });
+}
+// Sync button state on init
+(function() {
+  var t = document.documentElement.getAttribute('data-tier') || 'rich';
+  document.querySelectorAll('.tier-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.t === t);
+  });
+})();
+```
+
+**Tier capability matrix:**
+
+| Feature | simple | balanced | rich |
+|---|---|---|---|
+| Parallax | ✗ | 2 layers | 3+ layers |
+| 3D card tilt | ✗ | KL sections only | everywhere |
+| ASCII animation | instant | 2× speed | full speed + hover nodes |
+| GT reveal | fade-in | typewriter | scramble |
+| Accordion open | instant | height transition | scan-line + nested |
+| Evidence drawer | inline expand | slide-in | full slide-in + transition |
+| Confidence meter | static bars | CSS transition | JS animated fill |
+| Custom cursor | ✗ | without blend-mode | `mix-blend-mode:difference` |
+| Focus mode `f` | ✓ | ✓ | ✓ |
+| Signal view `s` | ✓ | ✓ | ✓ |
+| Related highlights | ✓ | ✓ | ✓ |
+| Progress arc | ✓ | ✓ | ✓ |
+
+Focus mode, signal view, related highlights, and progress arc are **always active**
+across all tiers — these are navigation features, not decoration.
+
+**CSS tier guards** — disable features without JS:
+```css
+/* Parallax */
+[data-tier="simple"] .bg-grid,
+[data-tier="simple"] .hero-ascii,
+[data-tier="simple"] .hero-gt { transform: none !important; will-change: auto !important; }
+
+/* 3D cards */
+[data-tier="simple"] .card { transform: none !important; box-shadow: none !important; }
+
+/* Custom cursor */
+[data-tier="simple"] #cur,
+[data-tier="balanced"] #cur { display: none; }
+
+/* Scan-line open (simple + balanced use height transition fallback) */
+[data-tier="simple"] .scan-line,
+[data-tier="balanced"] .scan-line { display: none; }
+```
+
+**JS tier helpers** — use these in every animated component:
+```javascript
+var TIER = function() { return document.documentElement.dataset.tier || 'rich'; };
+var isRich       = function() { return TIER() === 'rich'; };
+var isBalancedUp = function() { return TIER() !== 'simple'; };
+// Usage: if (!isBalancedUp()) { el.textContent = text; return; }
+//        var speed = isRich() ? 1 : 2;  // balanced = 2× faster
 ```
 
 ---
@@ -853,29 +1080,41 @@ The hero has at least 3 depth layers moving at different speeds on scroll. This 
 the physical sensation that the argument has depth — GT at the front, evidence receding.
 
 ```javascript
-// Parallax engine — runs on scroll, RAF-throttled
-const LAYERS = [
-  { el: qs('.bg-grid'),    speed: 0.15 },   // slowest — structural background
-  { el: qs('.hero-ascii'), speed: 0.35 },   // middle depth — supporting evidence
-  { el: qs('.hero-gt'),    speed: 0.02 },   // nearly fixed — the GT stays prominent
+// Parallax engine — tier-aware, RAF-throttled
+// simple: disabled by CSS guard ([data-tier="simple"])
+// balanced: 2 layers (bg-grid + hero-ascii); hero-gt pinned
+// rich: all 3 layers
+var PARALLAX_LAYERS = [
+  { sel: '.bg-grid',    speed: 0.15 },
+  { sel: '.hero-ascii', speed: 0.35 },
+  { sel: '.hero-gt',    speed: 0.02 },
 ];
-let ticking = false;
-window.addEventListener('scroll', function() {
-  if (!ticking) {
-    requestAnimationFrame(function() {
-      const y = window.scrollY;
-      LAYERS.forEach(function(l) {
-        if (l.el) l.el.style.transform = 'translateY(' + (y * l.speed) + 'px)';
+function initParallax() {
+  if (!isBalancedUp()) return;  // simple: CSS guard handles it, but skip RAF too
+  var maxLayers = isRich() ? 3 : 2;
+  var layers = PARALLAX_LAYERS.slice(0, maxLayers).map(function(l) {
+    return { el: document.querySelector(l.sel), speed: l.speed };
+  }).filter(function(l) { return l.el; });
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        var y = window.scrollY;
+        layers.forEach(function(l) {
+          l.el.style.transform = 'translateY(' + (y * l.speed) + 'px)';
+        });
+        ticking = false;
       });
-      ticking = false;
-    });
-    ticking = true;
-  }
-});
+      ticking = true;
+    }
+  }, { passive: true });
+}
+initParallax();
 ```
 
-Background grid: CSS `background-image: repeating-linear-gradient(...)` or inline SVG pattern
-at `--bg-3`, shifted by scroll. Creates the sensation of depth under the text layers.
+Background grid: CSS `background-image: repeating-linear-gradient(...)` at `--paper-2`
+contrast, shifted by scroll. In light mode: use the `--paper-2` var (auto-switches).
+Creates the sensation of depth under the text layers.
 
 ---
 
@@ -885,31 +1124,39 @@ Cards in KL sections have 3D hover tilt based on mouse position. Use `perspectiv
 section container and `rotateX/rotateY` on cards from mouse delta.
 
 ```javascript
+// 3D card physics — tier-aware
+// simple: disabled (CSS guard + skip wiring)
+// balanced: KL section cards only; no blend-mode cursor
+// rich: all cards
 function wire3D(card) {
+  if (!isBalancedUp()) return;
   card.addEventListener('mousemove', function(e) {
-    const r = card.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width  - 0.5;  // -0.5 to 0.5
-    const y = (e.clientY - r.top)  / r.height - 0.5;
+    var r = card.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width  - 0.5;
+    var y = (e.clientY - r.top)  / r.height - 0.5;
     card.style.transform = [
       'perspective(800px)',
       'rotateY(' + (x * 8) + 'deg)',
       'rotateX(' + (-y * 6) + 'deg)',
       'translateZ(4px)',
     ].join(' ');
-    card.style.boxShadow = [
-      (-x * 12) + 'px', (-y * 12) + 'px', '24px',
-      'rgba(0,0,0,0.25)'
-    ].join(' ');
+    card.style.boxShadow = (-x * 12) + 'px ' + (-y * 12) + 'px 24px rgba(0,0,0,0.22)';
   });
   card.addEventListener('mouseleave', function() {
     card.style.transform = '';
     card.style.boxShadow = '';
   });
 }
-qsa('.card').forEach(wire3D);
+// balanced: KL cards only; rich: all cards
+var cardSel = isRich() ? '.card' : '.kl .card';
+document.querySelectorAll(cardSel).forEach(wire3D);
 ```
 
-CSS prerequisite: `.card { transition: transform 0.1s var(--ease-out), box-shadow 0.1s; }`
+CSS prerequisite: `.card { transition: transform 0.12s var(--ease-out), box-shadow 0.12s; }`
+
+**Note on light mode:** `box-shadow` uses `rgba(0,0,0,…)` — this works in both modes since
+shadow is always darker than the surface. No token needed.
+
 Disable for `prefers-reduced-motion`.
 
 ---
@@ -928,27 +1175,34 @@ diagram must:
 
 **`buildArt(el, lines, opts)` — the core engine:**
 ```javascript
-// opts: { cd: charDelay=12, ld: lineDelay=40, onDone: fn }
-// Respects prefers-reduced-motion: if reduced, sets textContent immediately
+// buildArt — tier-aware, motion-safe
+// simple:   instant (textContent; no tick)
+// balanced: animated at 2× speed
+// rich:     full speed + hover-node wiring after done
+// opts: { cd, ld, onDone }   cd default 12ms, ld default 40ms
+var R = matchMedia('(prefers-reduced-motion:reduce)').matches;
 function buildArt(el, lines, opts) {
-  const o = Object.assign({ cd: 12, ld: 40, onDone: null }, opts);
-  const arr = Array.isArray(lines) ? lines : lines.split('\n');
-  if (R) {
+  var o = Object.assign({ cd: 12, ld: 40, onDone: null }, opts);
+  var arr = Array.isArray(lines) ? lines : lines.split('\n');
+  if (R || !isBalancedUp()) {
+    // simple tier or reduced-motion: instant
     el.textContent = arr.join('\n');
+    el.classList.add('art-done');
     if (o.onDone) o.onDone();
     return;
   }
-  let li = 0, ci = 0;
+  var speed = isRich() ? 1 : 2;  // balanced: 2× faster
+  var li = 0, ci = 0;
   function tick() {
     if (li >= arr.length) {
       el.classList.add('art-done');
       if (o.onDone) setTimeout(o.onDone, 80);
       return;
     }
-    const above = arr.slice(0, li).join('\n');
+    var above = arr.slice(0, li).join('\n');
     el.textContent = (above ? above + '\n' : '') + arr[li].slice(0, ci);
     ci < arr[li].length ? ci++ : (li++, ci = 0);
-    setTimeout(tick, ci === 0 ? o.ld : o.cd);
+    setTimeout(tick, ci === 0 ? o.ld * speed : o.cd * speed);
   }
   tick();
 }
@@ -985,22 +1239,46 @@ The pyramid's descent must be enacted in the DOM reveal order. Each section:
 5. 100ms per card → `ACCORDION-CARDS` stagger in with `translateX(-12px)` slide
 
 ```javascript
-const io = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry) {
-    if (!entry.isIntersecting) return;
-    io.unobserve(entry.target);
-    const sec = SECTIONS.find(s => s.id === entry.target.id);
-    buildArt(sec.motifEl, MOTIFS[sec.motifKey], { onDone: function() {
-      sec.innerEl.classList.add('visible');           // header + lede
-      sec.vbs.forEach(function(vb, i) {              // inline visuals
-        setTimeout(function() { buildArt(vb.el, vb.art, { cd: 8, ld: 20 }); }, i * 300 + 200);
-      });
-      qsa('.card', sec.innerEl).forEach(function(c, i) {  // cards stagger
-        setTimeout(function() { c.classList.add('entry-done'); }, i * 100 + 400);
-      });
-    }});
-  });
-}, { threshold: 0.05, rootMargin: '-48px 0px 0px 0px' });
+// Section reveal — tier-aware stagger
+// simple:   all sections visible immediately (IntersectionObserver disabled)
+// balanced: motif + header fade-in; visuals appear (no stagger)
+// rich:     full sequence: motif builds → header slides → lede → visuals → cards stagger
+function initSectionReveals() {
+  if (!isBalancedUp()) {
+    // simple: make everything visible immediately
+    document.querySelectorAll('.kl').forEach(function(s) {
+      s.classList.add('visible');
+      s.querySelectorAll('.art').forEach(function(a) { a.classList.add('art-done'); });
+    });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      io.unobserve(entry.target);
+      var sec = SECTIONS.find(function(s) { return s.id === entry.target.id; });
+      if (!sec) return;
+      buildArt(sec.motifEl, MOTIFS[sec.motifKey], { onDone: function() {
+        sec.innerEl.classList.add('visible');
+        sec.vbs.forEach(function(vb, i) {
+          var delay = isRich() ? i * 300 + 200 : 100;
+          setTimeout(function() { buildArt(vb.el, vb.art, { cd: 8, ld: 20 }); }, delay);
+        });
+        if (isRich()) {
+          document.querySelectorAll('.card', sec.innerEl).forEach(function(c, i) {
+            setTimeout(function() { c.classList.add('entry-done'); }, i * 100 + 400);
+          });
+        } else {
+          document.querySelectorAll('.card', sec.innerEl).forEach(function(c) {
+            c.classList.add('entry-done');
+          });
+        }
+      }});
+    });
+  }, { threshold: 0.05, rootMargin: '-48px 0px 0px 0px' });
+  document.querySelectorAll('.kl').forEach(function(s) { io.observe(s); });
+}
+initSectionReveals();
 ```
 
 ---
@@ -1012,23 +1290,92 @@ Situation and Complication; they are primed. The Question appears; then the GT b
 character by character at a pace that creates suspense.
 
 ```javascript
-// Sequence: S+C (static) → divider builds → Q types → pause → GT types
+// GT reveal — 3 modes based on tier
+// simple:   fade-in (CSS opacity transition, no JS animation)
+// balanced: typewriter character by character
+// rich:     scramble reveal (each char cycles through glyphs before landing)
+const SCRAMBLE_CHARS = '█▓▒░│─┼╬═■◆●▸◉⊕◇□';
+
+function revealGT(gtEl, text, onDone) {
+  if (!isBalancedUp()) {
+    // simple: instant fade-in via CSS class
+    gtEl.textContent = text;
+    gtEl.classList.add('gt-visible');
+    if (onDone) onDone();
+    return;
+  }
+  if (!isRich()) {
+    // balanced: typewriter
+    var i = 0;
+    function tw() {
+      if (i > text.length) { gtEl.classList.add('done'); if (onDone) onDone(); return; }
+      gtEl.textContent = text.slice(0, i++);
+      setTimeout(tw, 7);
+    }
+    tw();
+    return;
+  }
+  // rich: scramble
+  scrambleReveal(gtEl, text, { cd: 4, sc: 2, onDone: onDone });
+}
+
+function scrambleReveal(el, text, opts) {
+  var o = Object.assign({ cd: 4, sc: 2, onDone: null }, opts);
+  var chars = text.split('');
+  var state = chars.map(function() { return { done: false, cycles: 0 }; });
+  var idx = 0;
+  function tick() {
+    if (idx >= chars.length) {
+      el.textContent = text;
+      el.classList.add('done');
+      if (o.onDone) setTimeout(o.onDone, 80);
+      return;
+    }
+    var display = chars.map(function(c, i) {
+      if (state[i].done) return c;
+      if (i < idx) {
+        if (state[i].cycles >= o.sc) { state[i].done = true; return c; }
+        state[i].cycles++;
+        return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+      }
+      return c === ' ' ? ' ' : '░';
+    }).join('');
+    el.textContent = display;
+    idx++;
+    setTimeout(tick, o.cd);
+  }
+  tick();
+}
+
+// Sequence: S+C visible → divider builds → Q types → pause → GT reveals
 type(dividerEl, '─'.repeat(48), { cd: 10, onDone: function() {
   type(questionEl, QUESTION_TEXT, { cd: 18, onDone: function() {
     setTimeout(function() {
-      type(gtEl, GT_TEXT, {
-        cd: 7,                                         // faster = more confident
-        pause: { at: GT_TEXT.indexOf('—') + 1, ms: 600 },  // beat at the em-dash
-        onDone: function() { buildPipelineDiagram(); }
-      });
+      revealGT(gtEl, GT_TEXT, function() { buildPipelineDiagram(); });
     }, 300);
   }});
 }});
 ```
 
-GT CSS: `font-size: clamp(1.8rem, 4.5vw, 3rem); font-weight: 800; letter-spacing: -.03em;`
-Gradient: `background: linear-gradient(140deg, var(--text) 0%, var(--text-2) 50%, var(--accent-2) 100%);`
-`-webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;`
+**GT CSS — theme-aware:**
+```css
+.gt-text {
+  font-family: var(--hn); font-size: var(--t-gt); font-weight: 300;
+  letter-spacing: -.04em; text-transform: uppercase; line-height: 1.08;
+  color: var(--ink);  /* base: visible before .done */
+}
+/* simple tier: fade-in */
+[data-tier="simple"] .gt-text { opacity: 0; transition: opacity .6s var(--ease); }
+[data-tier="simple"] .gt-text.gt-visible { opacity: 1; }
+/* balanced + rich: gradient on completion */
+.gt-text.done {
+  background: linear-gradient(140deg, var(--ink) 0%, var(--ink-2) 60%, var(--red) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+/* light mode: gradient uses ink tones, not neon */
+```
+The gradient uses `var(--ink)` → `var(--ink-2)` → `var(--red)` — all tokens, so it
+automatically reads correctly in both light and dark mode.
 
 ---
 
@@ -1150,6 +1497,7 @@ Operator confirms the file works live in a browser. Not self-certified.
 
 ```
 [ILLUMINATE:GATE] Phase 6 PASS (operator-confirmed) | File: <filename>.html | Size: <KB>
+Theme: dark+light verified | Tiers: simple/balanced/rich verified
 Techniques: parallax / 3D-cards / ascii-interactive / accordion / evidence-drawer
 Dynamic blocks: focus-mode / signal-view / confidence-meter / related-highlights
 ```
@@ -1165,20 +1513,36 @@ rtk read /tmp/illuminate-anchor.md  # line 1: anchored GT
 ```
 Paraphrase drift = failure. Fix before proceeding.
 
-**12-item checklist:**
+**17-item checklist (run in rich+dark by default; then spot-check tiers and light mode):**
+
+*Content and hierarchy*
 - [ ] GT immediately legible on load, above fold, without interaction
 - [ ] S, C, Q, A all visible in hero without scrolling or expanding
-- [ ] GT gradient text renders correctly (check on both dark and light mode)
-- [ ] Parallax layers move at different speeds on scroll (test: scroll slowly in hero)
-- [ ] 3D tilt fires on card hover (desktop)
-- [ ] All KL section motifs build on first scroll-in
-- [ ] Inline visualizations visible without card expand
-- [ ] Accordion scan-line fires before body opens
-- [ ] Evidence drawer opens on S-NNN click, shows correct entry
-- [ ] Focus mode (f) and signal view (s) toggles work
+- [ ] GT gradient text renders correctly in dark mode
+- [ ] GT text fully legible in light mode (no invisible gradient on cream)
+
+*Theme*
+- [ ] Theme toggle button (`◑`/`◐`) visible in nav; click switches correctly
+- [ ] No flash of wrong theme on hard reload (inline `<head>` script fires before paint)
+- [ ] All semantic colors (`--red`, `--cli`, `--amber`, `--blue`) legible in light mode
+- [ ] `--cli` (evidence/ASCII) is deep green in light mode, not neon
+
+*Render tiers*
+- [ ] Tier selector (`s·b·r`) visible in nav; active tier highlighted in editorial red
+- [ ] **simple**: page fully readable; no broken layout from missing animations
+- [ ] **balanced**: parallax (2 layers) and typewriter GT visible; 3D tilt on KL cards
+- [ ] **rich**: full scramble GT; 3 parallax layers; scan-line accordion; evidence drawer
+
+*Interactivity*
+- [ ] Parallax layers move at different speeds on scroll (rich tier)
+- [ ] 3D tilt fires on card hover (desktop, balanced+)
+- [ ] Evidence drawer opens on S-NNN click, shows correct entry (balanced+)
+- [ ] Focus mode `f` and signal view `s` toggles work on all tiers
+
+*Accessibility and hygiene*
 - [ ] `prefers-reduced-motion`: all animations disabled, layout unchanged, content identical
-- [ ] No console errors (open browser dev tools)
-- [ ] Self-contained: if no CDN library used, works offline; if CDN library used, no other external requests
+- [ ] No console errors on any tier or theme combination
+- [ ] Self-contained: no external requests beyond declared CDN libraries
 
 **Phase 7 failure path — correction register (same 3-attempt, escalate-on-exhaust as Phases 1–4):**
 
@@ -1215,9 +1579,10 @@ Stage I    Phase 0  context-audit    PASS  source: <type>, density: <H/M/L>
 Stage II   Phase 2  concept-map      PASS  hubs: <N>, issue-tree: <N> sub-Qs
            Phase 3  pyramid          PASS  GT confirmed, KL: <N>, MECE: <type>
            Phase 4  audit            PASS  10/10 · 3-skeptic: all resolved
-Stage III  Phase 5  architecture     PASS  wireframe: <N> sections, 11 components
+Stage III  Phase 5  architecture     PASS  wireframe: <N> sections, 13 components
            Phase 6  engineering      PASS  operator-confirmed, <KB> [corrections: <N>]
-           Phase 7  verify           PASS  GT drift: none · 12/12
+                                           theme: dark+light | tiers: simple/balanced/rich
+           Phase 7  verify           PASS  GT drift: none · 19/19
 ──────────────────────────────────────────────────────────────────────
 Output: <filename>.html (<KB>)
 Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate-anchor.md
@@ -1227,15 +1592,25 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 
 ## Output Contract
 
-1. **Maximum dynamism** — the artifact should feel alive: smooth animations, snappy transitions, rich interactivity. This is the primary goal.
+1. **Tier-scaled dynamism** — `rich` is fully alive; `balanced` is readable and interactive;
+   `simple` is clean, content-first. No tier produces a broken or unstyled page.
 2. **Libraries freely** — any JS/CSS library that enhances the experience; CDN or build step both fine
-3. **Swiss editorial design** — Helvetica Neue 300 (GT/hero) + Futura 700 (section titles/labels) + monospace (evidence/ASCII). 12-column CSS grid with visible column overlay. Editorial red accent, terminal green for evidence only. Ghost section numbers in Futura at ~20vw. Custom cursor with `mix-blend-mode:difference`. Progress stripe anchored to nav bottom edge. The design language must feel like it's pushing the boundaries of what HTML can express.
-4. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
-5. **Parallax hero** — minimum 3 depth layers
-6. **3D card physics** — all KL section cards have hover tilt
-7. **Interactive ASCII** — all motifs animate on reveal; named nodes respond to hover
-8. **Accordion with nested components** — scan-line open, nested sub-sections, evidence drawer
-9. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
+3. **Swiss editorial design** — Helvetica Neue 300 (GT/hero) + Futura 700 (section titles/labels) +
+   monospace (evidence/ASCII). 12-column CSS grid with visible column overlay. Editorial red accent,
+   `--cli` token for evidence only (deep green in light mode). Ghost section numbers in Futura at ~20vw.
+   Custom cursor with `mix-blend-mode:difference` (rich tier). Progress stripe anchored to nav bottom.
+4. **Dual-mode theme** — dark (default) + light, togglable via `◑`/`◐` in sticky nav. No flash on
+   load. All semantic tokens maintain WCAG AA contrast in both modes. `--cli` in light mode is deep
+   forest green (`#006e38`), never neon. Light mode is warm cream, not clinical white.
+5. **Render tier selector** — `s·b·r` buttons in nav. Defaults to `rich`. Persists in localStorage.
+   CSS guards + JS helpers ensure every feature degrades cleanly at lower tiers.
+6. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
+7. **Parallax hero** — 3 layers (rich) / 2 layers (balanced) / none (simple)
+8. **3D card physics** — all cards (rich) / KL cards only (balanced) / none (simple)
+9. **Interactive ASCII** — full animation + hover nodes (rich) / 2× speed animation (balanced) / instant (simple)
+10. **Accordion** — scan-line + nested components (rich) / height transition (balanced) / instant (simple)
+11. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
+    (active on all tiers — navigation features, not decoration)
 10. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
 11. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
 12. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
