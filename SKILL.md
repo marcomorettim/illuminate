@@ -988,7 +988,31 @@ Paraphrase drift = failure. Fix before proceeding.
 - [ ] No console errors (open browser dev tools)
 - [ ] Self-contained: if no CDN library used, works offline; if CDN library used, no other external requests
 
-Fix and re-verify any failure. Never self-certify.
+**Phase 7 failure path — correction register (same 3-attempt, escalate-on-exhaust as Phases 1–4):**
+
+When any checklist item fails, do not silently fix and re-mark PASS. Use the structured path:
+
+1. **Name the problem precisely.** Not "parallax broken" — "hero-bg translateY not firing; scrollY reads 0 inside RAF in this context."
+2. **Emit the correction signal:**
+   ```
+   [ILLUMINATE:CORRECT] Attempt <N>/3 on Phase 6 | Problem: <specific item — root cause>
+   ```
+3. **Make a targeted fix** — change only the broken component. Do not rebuild the file from scratch.
+4. **Re-run only the failing items** (not the full checklist). Item removed from problem list on pass.
+5. **Repeat for attempts 2 and 3 if needed.**
+6. **On attempt 3 with no improvement:**
+   ```
+   [ILLUMINATE:ESCALATE] Phase 6 unresolved after 3 attempts.
+   Problem: <specific item>
+   Last attempt: <what was tried and why it failed>
+   Operator must intervene. Correction register frozen for this problem.
+   ```
+
+**Correction register rules:**
+- Each named problem has its own 3-attempt counter. A second broken component starts its own counter independently.
+- A fix that breaks a previously passing item is not a fix — revert it and count the attempt.
+- Never self-certify a partial pass as a full pass. Report exactly which items pass and which remain open.
+- If GT drift is detected: this is not a Phase 6 problem — re-anchor the GT in `/tmp/illuminate-anchor.md` and re-run Phase 6 from scratch.
 
 ```
 [ILLUMINATE:CLOSE] File: <filename>.html
@@ -1000,7 +1024,7 @@ Stage II   Phase 2  concept-map      PASS  hubs: <N>, issue-tree: <N> sub-Qs
            Phase 3  pyramid          PASS  GT confirmed, KL: <N>, MECE: <type>
            Phase 4  audit            PASS  10/10 · 3-skeptic: all resolved
 Stage III  Phase 5  architecture     PASS  wireframe: <N> sections, 11 components
-           Phase 6  engineering      PASS  operator-confirmed, <KB>
+           Phase 6  engineering      PASS  operator-confirmed, <KB> [corrections: <N>]
            Phase 7  verify           PASS  GT drift: none · 12/12
 ──────────────────────────────────────────────────────────────────────
 Output: <filename>.html (<KB>)
@@ -1089,7 +1113,7 @@ Design for containment, not exorcism. Signal, do not certify.
 14. Never produce a flat scrolling page. The output is a nested navigable site with 3D depth.
 15. Visual hierarchy enacts the pyramid: GT most prominent, KLs equal peers, detail is depth.
 16. Parallax, 3D physics, interactive ASCII, evidence drawer, focus mode: all mandatory.
-17. Never self-certify Phase 6. Operator must confirm in browser.
+17. Never self-certify Phase 6. Operator confirms in browser. Failures re-enter Phase 6 via the correction register — same 3-attempt, escalate-on-exhaust pattern as Phases 1–4.
 18. The HTML renders the pyramid. It does not expand or improve it.
 
 **Technical constraints**
