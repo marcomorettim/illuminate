@@ -1,6 +1,6 @@
 ---
 name: illuminate
-description: Dense source in. Self-contained interactive HTML out. Three-stage arc — INPUT (multi-source ingestion, signal stratification, faithful provenance), PROCESS (Barbara Minto Pyramid + MECE issue-tree, 3-skeptic adversarial audit), OUTPUT (parallax hero, 3D card physics, interactive ASCII diagrams, advanced UX). Single self-contained file, zero deps.
+description: Dense source in. Self-contained interactive HTML out. Three-stage arc — INPUT (multi-source ingestion, signal stratification, faithful provenance), PROCESS (Barbara Minto Pyramid + MECE issue-tree, 3-skeptic adversarial audit), OUTPUT (parallax hero, 3D card physics, interactive ASCII diagrams, advanced UX). Single file, no build step.
 trigger: /illuminate
 ---
 
@@ -30,9 +30,12 @@ gate conditions. The stages are not phases to rush through — they are the meth
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**Technical constraint (non-negotiable):** vanilla HTML + CSS + JS. Single file. Zero
-external dependencies except optionally one web font. No React, no Vue, no Tailwind,
-no build step. Every technique below is achievable in ~200 lines of hand-written JS.
+**Technical constraint:** single file, no build step. These are hard rules — they protect
+against infrastructure complexity and ensure the artifact is openable anywhere. Everything
+else is a preference: prefer vanilla HTML/CSS/JS; one lightweight CDN-delivered library
+(Alpine.js, HTMX, Tailwind CDN) is acceptable when it meaningfully reduces code and the
+artifact lives on a served site — state the justification. No React, no Vue, no Vite, no
+webpack. Every technique below is achievable in plain browser APIs.
 
 ---
 
@@ -92,14 +95,12 @@ Input stage determines the quality of everything downstream.
 **Environment probe (run first, once):**
 
 ```
-Greenhouse environment (if available):
+Tool-enriched environment (if available):
   rtk vault search <topic>         → prior signal; tag as [VAULT] in Phase 1
   /faithful-sourcing skill         → invoke at Phase 1b close
   graphify / semantic_search_nodes → structural relationships; tag as [GRAPH] in Phase 2
-  /greenhouse or /cm               → soil grade replaces context-audit assessment
-  knowledge_router                 → SCQA decompose on task; enriches Phase 3
 
-Bare environment (no Greenhouse):
+Bare environment (no tools):
   All internal fallback procedures apply (described in each phase).
   Quality is identical; only the tooling differs.
 ```
@@ -163,7 +164,7 @@ Secondary flags (applied on top of primary tag):
 - `[CONTESTED:absolute]` — "always/never/all" universal claim
 - `[CONTESTED:contradiction]` — conflicts with another entry (tag both)
 - `[ASSUMPTION:basis-unknown]` — treated as background truth, never defended
-- `[VAULT]` — retrieved from prior vault signal (if rtk available)
+- `[VAULT]` — retrieved from prior vault signal (if available)
 - `[GRAPH]` — structural relationship from graphify (if available)
 
 **Three mandatory extraction angles — each a separate pass:**
@@ -623,9 +624,10 @@ Build the Phase 5 wireframe as a single self-contained HTML file, executing ever
 below at the highest standard. This is not a checklist to satisfy minimally — it is the
 standard to exceed. Each technique serves the argument structure. Decoration is not the goal.
 
-**Constraint:** vanilla HTML + CSS + JS. Single file. Zero external dependencies except
-optionally one web font. No libraries. No build step. Every technique below is achievable
-in plain browser APIs.
+**Constraint:** single file, no build step. Prefer vanilla HTML/CSS/JS — every technique
+below is achievable in plain browser APIs. One lightweight CDN library (Alpine.js, HTMX,
+Tailwind CDN) is acceptable when it meaningfully reduces code; state the justification
+inline. No React, no Vue, no webpack, no Vite.
 
 ---
 
@@ -983,7 +985,7 @@ Paraphrase drift = failure. Fix before proceeding.
 - [ ] Focus mode (f) and signal view (s) toggles work
 - [ ] `prefers-reduced-motion`: all animations disabled, layout unchanged, content identical
 - [ ] No console errors (open browser dev tools)
-- [ ] Self-contained: works offline, no external requests
+- [ ] Self-contained: if no CDN library used, works offline; if CDN library used, no other external requests
 
 Fix and re-verify any failure. Never self-certify.
 
@@ -1008,8 +1010,8 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 
 ## Output Contract
 
-1. **Self-contained** — no external dependencies except optionally one web font
-2. **Single file** — everything in one `.html`
+1. **Single file** — everything in one `.html`, no build step
+2. **No component framework** — no React, Vue, Svelte, Angular, webpack, Vite
 3. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
 4. **Parallax hero** — minimum 3 depth layers
 5. **3D card physics** — all KL section cards have hover tilt
@@ -1017,7 +1019,7 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 7. **Accordion with nested components** — scan-line open, nested sub-sections, evidence drawer
 8. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
 9. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
-10. **Zero dependencies** — vanilla HTML/CSS/JS only
+10. **Dependencies** — prefer vanilla; one lightweight CDN library allowed with stated justification
 11. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
 12. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
 
@@ -1031,10 +1033,8 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 | `/faithful-sourcing` skill | Phase 1b | Adversarial provenance check on signal block |
 | graphify / `semantic_search_nodes` | Phase 2 | Structural node relationships; tag `[GRAPH]` |
 | `get_impact_radius` | Phase 2 | Hub propagation through codebase communities |
-| `/greenhouse` or `/cm` | Phase 0 | Soil grade replaces context audit; phase gate uses soil grade |
-| `knowledge_router` | Phase 3 | SCQA decompose enriches GT; domain routing informs KL structure |
 
-When Greenhouse tools are absent, internal fallback procedures apply.
+When these tools are absent, internal fallback procedures apply.
 Quality is identical. Only tooling differs.
 
 ---
@@ -1049,6 +1049,7 @@ The model grades its own signal block. The model passes its own gates. The lock 
 of the same material it holds.
 
 The mitigation is structural, not exhortatory:
+
 
 | Mitigation | Mechanism |
 |---|---|
@@ -1092,5 +1093,5 @@ Design for containment, not exorcism. Signal, do not certify.
 18. The HTML renders the pyramid. It does not expand or improve it.
 
 **Technical constraints**
-19. Never use a JS library, CSS framework, or build tool.
-20. Zero external dependencies (web font optional).
+19. Never use a component framework (React, Vue, Angular, Svelte) or a build tool (webpack, Vite).
+20. Single file, no build step — always. One lightweight CDN utility library is permitted; justify it inline.
