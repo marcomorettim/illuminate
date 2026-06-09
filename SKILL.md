@@ -90,7 +90,40 @@ Input stage determines the quality of everything downstream.
 
 ---
 
-## Phase 0 — Environment + Source Audit
+## Phase 0 — Configuration + Environment Audit
+
+**Step 0a — Configuration prompt (run before any analysis):**
+
+Present the following to the operator and wait for confirmation before continuing.
+Do not begin signal extraction, source analysis, or any pipeline phase until palette and
+tier are chosen.
+
+```
+[ILLUMINATE] Configuring.
+
+Choose palette — visual identity of the artifact:
+  1. illuminate  (default) — Swiss editorial cold; pure editorial contrast; any source
+  2. claude                — warm terracotta; approachable intelligence; general-purpose
+  3. greenhouse            — eucalyptus membrane; living systems; technical/architectural sources
+  4. typeset               — printer's ink + aged paper; authoritative; dense text / books
+  5. signal                — phosphor instrument; precise; scientific / quantitative sources
+  6. archive               — historical parchment; dignified; documentary / primary sources
+
+Choose render tier:
+  r · rich      (default) — full parallax, 3D, ASCII animation, scramble GT
+  b · balanced            — interactive but lean; 2-layer parallax, typewriter GT
+  s · simple              — content-first; no animation; maximum legibility
+
+Confirm palette + tier to proceed.
+```
+
+Boot script will apply both selections before first paint. Persist in `localStorage`.
+
+```
+[ILLUMINATE:GATE] Phase 0a PASS | Palette: <name> | Tier: <r/b/s>
+```
+
+---
 
 **Environment probe (run first, once):**
 
@@ -592,6 +625,10 @@ a specific function in making the pyramid's argument structure legible.
     `s · b · r` (simple / balanced / rich). Defaults to `rich`. Persists in `localStorage`.
     Applies via `[data-tier="simple|balanced|rich"]` on `<html>`. Active button highlighted
     in editorial red. Controls which features activate — see Render Tier Architecture.
+14. `PALETTE-PICKER` — compact palette selector in sticky nav. A small colored swatch circle
+    (◉) shows the active palette; click opens a 6-swatch popover. Selected palette name
+    written to `[data-palette]` on `<html>`. Persists in `localStorage`. Works orthogonally
+    with `data-tier` and `data-theme` — any combination is valid. See Palette System.
 
 **Wireframe format (required; confirm against pyramid before building):**
 ```
@@ -619,6 +656,7 @@ NAVIGATION
   [DEPTH-INDICATOR]
   [THEME-TOGGLE] ◑/◐ — right-aligned in nav
   [TIER-SELECTOR] s · b · r — right-aligned in nav, beside theme toggle
+  [PALETTE-PICKER] ◉ — swatch button right of tier selector; opens palette popover
 ```
 
 Confirm wireframe maps to pyramid exactly. Each KL = one section. No section without a KL.
@@ -794,7 +832,7 @@ class on completion. This is the inverse of the classical typewriter GT (which u
 — Swiss editorial uses ultra-light at large size for maximum editorial tension.
 
 ```
-[ILLUMINATE:GATE] Phase 5 PASS | Wireframe confirmed | KLs: <N> | Components: 13
+[ILLUMINATE:GATE] Phase 5 PASS | Wireframe confirmed | KLs: <N> | Components: 14
                                 | Editorial: Swiss grid · Helvetica Neue + Futura · editorial red
                                 | Theme: dark+light | Tiers: simple/balanced/rich declared
 ```
@@ -901,6 +939,178 @@ token names in Phase 6 CSS — consistent naming makes the design system auditab
   --amber:    #ffaa00;  --amber-dim:  rgba(255,170,0,.10);
 }
 
+/* ════════════════════════════════════════════════════════════════════
+   NAMED PALETTES — applied via [data-palette="X"] on <html>
+   Each palette overrides the color tokens; theme (dark/light) still
+   applies within the palette via the combined selectors below.
+   Palette rules come AFTER theme rules so they win in the cascade.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── CLAUDE — warm terracotta intelligence ── */
+/* Character: approachable, considered, general-purpose             */
+[data-palette="claude"] {
+  --paper:    #1a1714;  --paper-1:  #231f1b;  --paper-2:  #2d2823;
+  --ink:      #f0ece4;  --ink-2:    #998f82;  --ink-3:    #5a5048;
+  --rule:     rgba(240,236,228,.06);
+  --rule-hi:  rgba(240,236,228,.14);
+  --red:      #e8633a;  --red-dim:    rgba(232,99,58,.10);
+  --cli:      #6ac5a0;  --cli-dim:    rgba(106,197,160,.07);
+  --blue:     #5ba3d0;  --blue-dim:   rgba(91,163,208,.09);
+  --amber:    #d4a055;  --amber-dim:  rgba(212,160,85,.10);
+}
+@media(prefers-color-scheme:light) {
+  [data-palette="claude"]:not([data-theme="dark"]) {
+    --paper:    #faf7f2;  --paper-1:  #f2ede6;  --paper-2:  #e8e1d8;
+    --ink:      #1a1410;  --ink-2:    #5a4e44;  --ink-3:    #9a8e84;
+    --rule:     rgba(26,20,16,.07);  --rule-hi:  rgba(26,20,16,.16);
+    --red:      #c44f28;  --red-dim:    rgba(196,79,40,.09);
+    --cli:      #2a8a6a;  --cli-dim:    rgba(42,138,106,.08);
+    --blue:     #2a6a9a;  --blue-dim:   rgba(42,106,154,.09);
+    --amber:    #9a6a1a;  --amber-dim:  rgba(154,106,26,.09);
+  }
+}
+[data-palette="claude"][data-theme="light"] {
+  --paper:    #faf7f2;  --paper-1:  #f2ede6;  --paper-2:  #e8e1d8;
+  --ink:      #1a1410;  --ink-2:    #5a4e44;  --ink-3:    #9a8e84;
+  --rule:     rgba(26,20,16,.07);  --rule-hi:  rgba(26,20,16,.16);
+  --red:      #c44f28;  --red-dim:    rgba(196,79,40,.09);
+  --cli:      #2a8a6a;  --cli-dim:    rgba(42,138,106,.08);
+  --blue:     #2a6a9a;  --blue-dim:   rgba(42,106,154,.09);
+  --amber:    #9a6a1a;  --amber-dim:  rgba(154,106,26,.09);
+}
+
+/* ── GREENHOUSE — eucalyptus membrane ── */
+/* Character: living systems, organic architecture, technical       */
+[data-palette="greenhouse"] {
+  --paper:    #060807;  --paper-1:  #0d110e;  --paper-2:  #141a15;
+  --ink:      #eef2ee;  --ink-2:    #7a8f7c;  --ink-3:    #3a4a3c;
+  --rule:     rgba(238,242,238,.06);
+  --rule-hi:  rgba(238,242,238,.14);
+  --red:      #d44f40;  --red-dim:    rgba(212,79,64,.10);
+  --cli:      #8fbcb3;  --cli-dim:    rgba(143,188,179,.07);
+  --blue:     #5a8ca8;  --blue-dim:   rgba(90,140,168,.09);
+  --amber:    #c8a050;  --amber-dim:  rgba(200,160,80,.10);
+}
+@media(prefers-color-scheme:light) {
+  [data-palette="greenhouse"]:not([data-theme="dark"]) {
+    --paper:    #f4f7f5;  --paper-1:  #eaede9;  --paper-2:  #dde0db;
+    --ink:      #101812;  --ink-2:    #3e5440;  --ink-3:    #7a8f7c;
+    --rule:     rgba(16,24,18,.07);  --rule-hi:  rgba(16,24,18,.16);
+    --red:      #a83428;  --red-dim:    rgba(168,52,40,.09);
+    --cli:      #306858;  --cli-dim:    rgba(48,104,88,.08);
+    --blue:     #284e68;  --blue-dim:   rgba(40,78,104,.09);
+    --amber:    #7a5e18;  --amber-dim:  rgba(122,94,24,.09);
+  }
+}
+[data-palette="greenhouse"][data-theme="light"] {
+  --paper:    #f4f7f5;  --paper-1:  #eaede9;  --paper-2:  #dde0db;
+  --ink:      #101812;  --ink-2:    #3e5440;  --ink-3:    #7a8f7c;
+  --rule:     rgba(16,24,18,.07);  --rule-hi:  rgba(16,24,18,.16);
+  --red:      #a83428;  --red-dim:    rgba(168,52,40,.09);
+  --cli:      #306858;  --cli-dim:    rgba(48,104,88,.08);
+  --blue:     #284e68;  --blue-dim:   rgba(40,78,104,.09);
+  --amber:    #7a5e18;  --amber-dim:  rgba(122,94,24,.09);
+}
+
+/* ── TYPESET — printer's ink + aged paper ── */
+/* Character: authoritative, print-press, dense text / books       */
+[data-palette="typeset"] {
+  --paper:    #080608;  --paper-1:  #111014;  --paper-2:  #1a1820;
+  --ink:      #f8f6f0;  --ink-2:    #b0aa98;  --ink-3:    #585048;
+  --rule:     rgba(248,246,240,.06);
+  --rule-hi:  rgba(248,246,240,.14);
+  --red:      #c8182c;  --red-dim:    rgba(200,24,44,.10);
+  --cli:      #4a8080;  --cli-dim:    rgba(74,128,128,.07);
+  --blue:     #304870;  --blue-dim:   rgba(48,72,112,.09);
+  --amber:    #c08840;  --amber-dim:  rgba(192,136,64,.10);
+}
+@media(prefers-color-scheme:light) {
+  [data-palette="typeset"]:not([data-theme="dark"]) {
+    --paper:    #f8f4ec;  --paper-1:  #ede8dc;  --paper-2:  #e0dace;
+    --ink:      #14100c;  --ink-2:    #48403a;  --ink-3:    #907068;
+    --rule:     rgba(20,16,12,.07);  --rule-hi:  rgba(20,16,12,.16);
+    --red:      #a01020;  --red-dim:    rgba(160,16,32,.09);
+    --cli:      #285858;  --cli-dim:    rgba(40,88,88,.08);
+    --blue:     #1c304c;  --blue-dim:   rgba(28,48,76,.09);
+    --amber:    #7a5020;  --amber-dim:  rgba(122,80,32,.09);
+  }
+}
+[data-palette="typeset"][data-theme="light"] {
+  --paper:    #f8f4ec;  --paper-1:  #ede8dc;  --paper-2:  #e0dace;
+  --ink:      #14100c;  --ink-2:    #48403a;  --ink-3:    #907068;
+  --rule:     rgba(20,16,12,.07);  --rule-hi:  rgba(20,16,12,.16);
+  --red:      #a01020;  --red-dim:    rgba(160,16,32,.09);
+  --cli:      #285858;  --cli-dim:    rgba(40,88,88,.08);
+  --blue:     #1c304c;  --blue-dim:   rgba(28,48,76,.09);
+  --amber:    #7a5020;  --amber-dim:  rgba(122,80,32,.09);
+}
+
+/* ── SIGNAL — scientific instrument / phosphor ── */
+/* Character: precise, data-forward, scientific / quantitative      */
+[data-palette="signal"] {
+  --paper:    #030508;  --paper-1:  #080c14;  --paper-2:  #0e1520;
+  --ink:      #e0eaf8;  --ink-2:    #6a8090;  --ink-3:    #344050;
+  --rule:     rgba(224,234,248,.06);
+  --rule-hi:  rgba(224,234,248,.14);
+  --red:      #f03060;  --red-dim:    rgba(240,48,96,.10);
+  --cli:      #10e880;  --cli-dim:    rgba(16,232,128,.07);
+  --blue:     #4090f8;  --blue-dim:   rgba(64,144,248,.09);
+  --amber:    #f8a820;  --amber-dim:  rgba(248,168,32,.10);
+}
+@media(prefers-color-scheme:light) {
+  [data-palette="signal"]:not([data-theme="dark"]) {
+    --paper:    #f4f6fc;  --paper-1:  #eaecf4;  --paper-2:  #dce0ec;
+    --ink:      #0c1020;  --ink-2:    #3a4560;  --ink-3:    #7a8898;
+    --rule:     rgba(12,16,32,.07);  --rule-hi:  rgba(12,16,32,.16);
+    --red:      #c01848;  --red-dim:    rgba(192,24,72,.09);
+    --cli:      #086840;  --cli-dim:    rgba(8,104,64,.08);
+    --blue:     #0848c8;  --blue-dim:   rgba(8,72,200,.09);
+    --amber:    #b86808;  --amber-dim:  rgba(184,104,8,.09);
+  }
+}
+[data-palette="signal"][data-theme="light"] {
+  --paper:    #f4f6fc;  --paper-1:  #eaecf4;  --paper-2:  #dce0ec;
+  --ink:      #0c1020;  --ink-2:    #3a4560;  --ink-3:    #7a8898;
+  --rule:     rgba(12,16,32,.07);  --rule-hi:  rgba(12,16,32,.16);
+  --red:      #c01848;  --red-dim:    rgba(192,24,72,.09);
+  --cli:      #086840;  --cli-dim:    rgba(8,104,64,.08);
+  --blue:     #0848c8;  --blue-dim:   rgba(8,72,200,.09);
+  --amber:    #b86808;  --amber-dim:  rgba(184,104,8,.09);
+}
+
+/* ── ARCHIVE — historical parchment ── */
+/* Character: dignified, documentary, primary sources / history     */
+[data-palette="archive"] {
+  --paper:    #0c0a08;  --paper-1:  #151210;  --paper-2:  #1e1a16;
+  --ink:      #e8e0d0;  --ink-2:    #908070;  --ink-3:    #504840;
+  --rule:     rgba(232,224,208,.06);
+  --rule-hi:  rgba(232,224,208,.14);
+  --red:      #a83820;  --red-dim:    rgba(168,56,32,.10);
+  --cli:      #6a8050;  --cli-dim:    rgba(106,128,80,.07);
+  --blue:     #485870;  --blue-dim:   rgba(72,88,112,.09);
+  --amber:    #b89040;  --amber-dim:  rgba(184,144,64,.10);
+}
+@media(prefers-color-scheme:light) {
+  [data-palette="archive"]:not([data-theme="dark"]) {
+    --paper:    #f4ede0;  --paper-1:  #e8dece;  --paper-2:  #dcd0be;
+    --ink:      #1c1408;  --ink-2:    #504038;  --ink-3:    #988068;
+    --rule:     rgba(28,20,8,.07);  --rule-hi:  rgba(28,20,8,.16);
+    --red:      #882a14;  --red-dim:    rgba(136,42,20,.09);
+    --cli:      #3a5030;  --cli-dim:    rgba(58,80,48,.08);
+    --blue:     #2c3848;  --blue-dim:   rgba(44,56,72,.09);
+    --amber:    #7a5a10;  --amber-dim:  rgba(122,90,16,.09);
+  }
+}
+[data-palette="archive"][data-theme="light"] {
+  --paper:    #f4ede0;  --paper-1:  #e8dece;  --paper-2:  #dcd0be;
+  --ink:      #1c1408;  --ink-2:    #504038;  --ink-3:    #988068;
+  --rule:     rgba(28,20,8,.07);  --rule-hi:  rgba(28,20,8,.16);
+  --red:      #882a14;  --red-dim:    rgba(136,42,20,.09);
+  --cli:      #3a5030;  --cli-dim:    rgba(58,80,48,.08);
+  --blue:     #2c3848;  --blue-dim:   rgba(44,56,72,.09);
+  --amber:    #7a5a10;  --amber-dim:  rgba(122,90,16,.09);
+}
+
 /* ── Theme-aware ghost numbers ── */
 [data-theme="light"] .ghost,
 @media(prefers-color-scheme:light) { :root:not([data-theme="dark"]) .ghost { color: rgba(28,28,26,.030) } }
@@ -934,12 +1144,14 @@ Place the script inline in `<head>`, before any CSS.
 
 ```html
 <script>
-// Run before paint — no flash of wrong theme
+// Run before paint — no flash of wrong theme, tier, or palette
 (function() {
   var stored = localStorage.getItem('il-theme');
   var sys = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', stored || sys);
   document.documentElement.setAttribute('data-tier', localStorage.getItem('il-tier') || 'rich');
+  var pal = localStorage.getItem('il-palette');
+  if (pal) document.documentElement.setAttribute('data-palette', pal);
 })();
 </script>
 ```
@@ -969,7 +1181,17 @@ HTML in sticky nav (right-aligned group):
     <button class="tier-btn" data-t="balanced" onclick="setTier('balanced')">b</button>
     <button class="tier-btn" data-t="rich"     onclick="setTier('rich')">r</button>
   </div>
-  <button id="theme-btn" class="nav-icon-btn" onclick="toggleTheme()" title="Toggle theme">◑</button>
+  <button id="theme-btn"   class="nav-icon-btn" onclick="toggleTheme()"        title="Toggle theme">◑</button>
+  <button id="palette-btn" class="nav-icon-btn" onclick="togglePalettePicker()" title="Choose palette">◉</button>
+</div>
+<!-- Palette picker popover (hidden by default) -->
+<div id="palette-pop" class="palette-pop" style="display:none">
+  <button class="pal-swatch" data-p="illuminate" onclick="setPalette('illuminate')" title="Illuminate"></button>
+  <button class="pal-swatch" data-p="claude"     onclick="setPalette('claude')"     title="Claude"></button>
+  <button class="pal-swatch" data-p="greenhouse" onclick="setPalette('greenhouse')" title="Greenhouse"></button>
+  <button class="pal-swatch" data-p="typeset"    onclick="setPalette('typeset')"    title="Typeset"></button>
+  <button class="pal-swatch" data-p="signal"     onclick="setPalette('signal')"     title="Signal"></button>
+  <button class="pal-swatch" data-p="archive"    onclick="setPalette('archive')"    title="Archive"></button>
 </div>
 ```
 
@@ -999,6 +1221,96 @@ CSS:
 .tier-btn:hover { background: var(--rule); color: var(--ink-2); }
 .tier-btn.active { background: var(--red-dim); color: var(--red); }
 ```
+
+---
+
+### Palette System
+
+Six curated palettes, each tuned for a different reading character and source type.
+The illuminate palette is the default (no `[data-palette]` needed). The others are applied
+via `[data-palette="X"]` on `<html>` — orthogonal to `[data-theme]` and `[data-tier]`.
+
+**Palette personality + best source types:**
+
+| Palette | Dark ground | Editorial accent | `--cli` | Best source types |
+|---|---|---|---|---|
+| `illuminate` | `#070708` cold near-black | `#ff1e1e` editorial red | `#00ff88` neon | any; pure Swiss editorial |
+| `claude` | `#1a1714` warm near-black | `#e8633a` terracotta | `#6ac5a0` seafoam | general-purpose; conversations; AI |
+| `greenhouse` | `#060807` near-black + green | `#d44f40` warm red | `#8fbcb3` eucalyptus | systems architecture; technical |
+| `typeset` | `#080608` cold press black | `#c8182c` printer's red | `#4a8080` teal | books; long-form; dense text |
+| `signal` | `#030508` space black | `#f03060` hot magenta | `#10e880` phosphor | scientific; quantitative; data |
+| `archive` | `#0c0a08` aged dark | `#a83820` rust/terra cotta | `#6a8050` sage | historical; documentary; primary sources |
+
+**Key design principle:** the illuminate grammar is fixed (`--cli` = evidence always; `--red` = editorial accent always). The palette shifts the *character* of the reading experience, not the structure. A `signal` artifact reads like a scientific instrument. An `archive` artifact feels like handling primary sources. The argument hierarchy is unchanged.
+
+**JS: `setPalette()` + picker:**
+```javascript
+var PALETTES = ['illuminate','claude','greenhouse','typeset','signal','archive'];
+
+function setPalette(p) {
+  if (p === 'illuminate') {
+    document.documentElement.removeAttribute('data-palette');
+    localStorage.removeItem('il-palette');
+  } else {
+    document.documentElement.setAttribute('data-palette', p);
+    localStorage.setItem('il-palette', p);
+  }
+  document.querySelectorAll('.pal-swatch').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.p === (p || 'illuminate'));
+  });
+  document.getElementById('palette-pop').style.display = 'none';
+}
+
+function togglePalettePicker() {
+  var pop = document.getElementById('palette-pop');
+  pop.style.display = pop.style.display === 'none' ? 'flex' : 'none';
+}
+
+// Close picker when clicking outside
+document.addEventListener('click', function(e) {
+  var pop = document.getElementById('palette-pop');
+  var btn = document.getElementById('palette-btn');
+  if (pop && btn && !pop.contains(e.target) && e.target !== btn) {
+    pop.style.display = 'none';
+  }
+});
+
+// Init swatch active state
+(function() {
+  var cur = document.documentElement.getAttribute('data-palette') || 'illuminate';
+  document.querySelectorAll('.pal-swatch').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.p === cur);
+  });
+})();
+```
+
+**CSS: palette picker popover:**
+```css
+.palette-pop {
+  position: absolute; top: calc(100% + 6px); right: 0;
+  background: var(--paper-1); border: 1px solid var(--rule-hi); border-radius: 6px;
+  padding: 8px; display: flex; gap: 6px; flex-wrap: wrap; width: 148px;
+  z-index: 100; box-shadow: 0 4px 16px rgba(0,0,0,.4);
+}
+.pal-swatch {
+  width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer;
+  transition: border-color var(--dur-fast), transform var(--dur-fast);
+}
+.pal-swatch:hover  { transform: scale(1.15); }
+.pal-swatch.active { border-color: var(--red); }
+/* Swatch background colors (dark-mode representative tones): */
+.pal-swatch[data-p="illuminate"] { background: #070708; box-shadow: 0 0 0 1px #404040 inset; }
+.pal-swatch[data-p="claude"]     { background: #1a1714; box-shadow: 0 0 0 1px #e8633a inset; }
+.pal-swatch[data-p="greenhouse"] { background: #060807; box-shadow: 0 0 0 1px #8fbcb3 inset; }
+.pal-swatch[data-p="typeset"]    { background: #080608; box-shadow: 0 0 0 1px #c8182c inset; }
+.pal-swatch[data-p="signal"]     { background: #030508; box-shadow: 0 0 0 1px #4090f8 inset; }
+.pal-swatch[data-p="archive"]    { background: #0c0a08; box-shadow: 0 0 0 1px #b89040 inset; }
+```
+
+**Cascade guarantee:**
+The palette token rules appear AFTER the `[data-theme]` rules in the CSS. Since `[data-palette="X"]` has equal attribute-selector specificity, source order makes them win. Light-mode palette rules (`[data-palette="X"][data-theme="light"]` and the `@media` fallback) use higher specificity (two attribute selectors) and always win over both the base palette and the illuminate light rules.
+
+No other CSS needs to change — every downstream rule already uses semantic tokens (`var(--red)`, `var(--cli)`, etc.).
 
 ---
 
@@ -1497,7 +1809,7 @@ Operator confirms the file works live in a browser. Not self-certified.
 
 ```
 [ILLUMINATE:GATE] Phase 6 PASS (operator-confirmed) | File: <filename>.html | Size: <KB>
-Theme: dark+light verified | Tiers: simple/balanced/rich verified
+Palette: <name> | Theme: dark+light verified | Tiers: simple/balanced/rich verified
 Techniques: parallax / 3D-cards / ascii-interactive / accordion / evidence-drawer
 Dynamic blocks: focus-mode / signal-view / confidence-meter / related-highlights
 ```
@@ -1513,7 +1825,7 @@ rtk read /tmp/illuminate-anchor.md  # line 1: anchored GT
 ```
 Paraphrase drift = failure. Fix before proceeding.
 
-**17-item checklist (run in rich+dark by default; then spot-check tiers and light mode):**
+**22-item checklist (run in rich+dark by default; then spot-check tiers, light mode, and palette):**
 
 *Content and hierarchy*
 - [ ] GT immediately legible on load, above fold, without interaction
@@ -1525,7 +1837,13 @@ Paraphrase drift = failure. Fix before proceeding.
 - [ ] Theme toggle button (`◑`/`◐`) visible in nav; click switches correctly
 - [ ] No flash of wrong theme on hard reload (inline `<head>` script fires before paint)
 - [ ] All semantic colors (`--red`, `--cli`, `--amber`, `--blue`) legible in light mode
-- [ ] `--cli` (evidence/ASCII) is deep green in light mode, not neon
+- [ ] `--cli` (evidence/ASCII) is deep/muted in light mode, not neon (all palettes)
+
+*Palette*
+- [ ] Palette picker (◉) visible in nav; opens popover with 6 swatches on click
+- [ ] Active palette swatch highlighted; switching palette changes tokens without page reload
+- [ ] Chosen palette persists across hard reload (localStorage `il-palette` applied in boot script)
+- [ ] In the operator's chosen palette, all semantic tokens maintain WCAG AA contrast in both themes
 
 *Render tiers*
 - [ ] Tier selector (`s·b·r`) visible in nav; active tier highlighted in editorial red
@@ -1573,16 +1891,18 @@ When any checklist item fails, do not silently fix and re-mark PASS. Use the str
 ```
 [ILLUMINATE:CLOSE] File: <filename>.html
 ──────────────────────────────────────────────────────────────────────
-Stage I    Phase 0  context-audit    PASS  source: <type>, density: <H/M/L>
+Stage I    Phase 0  config+audit     PASS  palette: <name> | tier: <r/b/s>
+                                           source: <type>, density: <H/M/L>
            Phase 1  signal-extract   PASS  <N> entries, <N> insights, refs: <N>
            Phase 1b faithful-source  PASS  <N> contested, <N> refuted, <N> hedged
 Stage II   Phase 2  concept-map      PASS  hubs: <N>, issue-tree: <N> sub-Qs
            Phase 3  pyramid          PASS  GT confirmed, KL: <N>, MECE: <type>
            Phase 4  audit            PASS  10/10 · 3-skeptic: all resolved
-Stage III  Phase 5  architecture     PASS  wireframe: <N> sections, 13 components
+Stage III  Phase 5  architecture     PASS  wireframe: <N> sections, 14 components
            Phase 6  engineering      PASS  operator-confirmed, <KB> [corrections: <N>]
-                                           theme: dark+light | tiers: simple/balanced/rich
-           Phase 7  verify           PASS  GT drift: none · 19/19
+                                           palette: <name> | theme: dark+light
+                                           tiers: simple/balanced/rich
+           Phase 7  verify           PASS  GT drift: none · 22/22
 ──────────────────────────────────────────────────────────────────────
 Output: <filename>.html (<KB>)
 Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate-anchor.md
@@ -1599,21 +1919,25 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
    monospace (evidence/ASCII). 12-column CSS grid with visible column overlay. Editorial red accent,
    `--cli` token for evidence only (deep green in light mode). Ghost section numbers in Futura at ~20vw.
    Custom cursor with `mix-blend-mode:difference` (rich tier). Progress stripe anchored to nav bottom.
-4. **Dual-mode theme** — dark (default) + light, togglable via `◑`/`◐` in sticky nav. No flash on
-   load. All semantic tokens maintain WCAG AA contrast in both modes. `--cli` in light mode is deep
-   forest green (`#006e38`), never neon. Light mode is warm cream, not clinical white.
-5. **Render tier selector** — `s·b·r` buttons in nav. Defaults to `rich`. Persists in localStorage.
+4. **Named palette** — operator chooses from 6 curated palettes in Phase 0. Default is `illuminate`
+   (Swiss editorial cold). Others: `claude` (terracotta), `greenhouse` (eucalyptus), `typeset`
+   (printer's ink), `signal` (phosphor), `archive` (parchment). Each has dark+light variants; all
+   semantic tokens maintain WCAG AA in both modes. Picker (◉) lives in sticky nav.
+5. **Dual-mode theme** — dark (default) + light, togglable via `◑`/`◐` in sticky nav. No flash on
+   load. `--cli` is always de-saturated in light mode (never neon). Light mode ground matches the
+   chosen palette's character — warm cream (claude), cool paper (signal), parchment (archive), etc.
+6. **Render tier selector** — `s·b·r` buttons in nav. Defaults to `rich`. Persists in localStorage.
    CSS guards + JS helpers ensure every feature degrades cleanly at lower tiers.
-6. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
-7. **Parallax hero** — 3 layers (rich) / 2 layers (balanced) / none (simple)
-8. **3D card physics** — all cards (rich) / KL cards only (balanced) / none (simple)
-9. **Interactive ASCII** — full animation + hover nodes (rich) / 2× speed animation (balanced) / instant (simple)
-10. **Accordion** — scan-line + nested components (rich) / height transition (balanced) / instant (simple)
-11. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
+7. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
+8. **Parallax hero** — 3 layers (rich) / 2 layers (balanced) / none (simple)
+9. **3D card physics** — all cards (rich) / KL cards only (balanced) / none (simple)
+10. **Interactive ASCII** — full animation + hover nodes (rich) / 2× speed animation (balanced) / instant (simple)
+11. **Accordion** — scan-line + nested components (rich) / height transition (balanced) / instant (simple)
+12. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
     (active on all tiers — navigation features, not decoration)
-10. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
-11. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
-12. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
+13. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
+14. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
+15. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
 
 ---
 
