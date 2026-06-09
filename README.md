@@ -1,78 +1,249 @@
 # illuminate
 
-**Dense source in. Self-contained interactive HTML out.**
+```
+  ██████████████████████████████████████████████████████████
+  ██                                                      ██
+  ██   dense source in.  self-contained HTML out.         ██
+  ██                                                      ██
+  ██   /illuminate <source>                               ██
+  ██                                                      ██
+  ██████████████████████████████████████████████████████████
+```
 
-`/illuminate` transforms any complex source — research corpus, book, codebase, multi-file dump, conversation archive — into a single interactive HTML artifact that makes the argument's logical structure navigable, alive, and permanently legible.
+A Claude Code skill. Three stages. One file. No dependencies. Opens in any browser, forever.
 
 ---
 
-## What you get
-
-A single `.html` file. Zero dependencies. Opens in any browser, forever.
+## The Arc
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│  STAGE I — INPUT                                                     │
-│  Multi-source ingestion · signal stratification · provenance audit  │
-├─────────────────────────────────────────────────────────────────────┤
-│  STAGE II — PROCESS                                                  │
-│  Concept mapping · Barbara Minto Pyramid · MECE issue tree          │
-│  3-skeptic adversarial audit                                        │
-├─────────────────────────────────────────────────────────────────────┤
-│  STAGE III — OUTPUT                                                  │
-│  Parallax · 3D card physics · animated ASCII art · evidence drawer  │
-│  Confidence meters · keyboard navigation · progressive disclosure   │
-└─────────────────────────────────────────────────────────────────────┘
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  STAGE I  ·  INPUT                                              │
+  │                                                                 │
+  │   source ──▶ audit ──▶ angle 1 (structural)                    │
+  │                    ──▶ angle 2 (synthesis + insight)           │
+  │                    ──▶ angle 3 (adversarial)                   │
+  │                    ──▶ provenance trace (mandatory)            │
+  │                    ──▶ faithful-sourcing gate                  │
+  │                                                                 │
+  │   output: S-001 … S-NNN  stratified signal block               │
+  │           SOURCE · INSIGHT · METRIC · PRINCIPLE                │
+  │           SYNTHESIS · GAP · CONTESTED · REFUTED                │
+  ├─────────────────────────────────────────────────────────────────┤
+  │  STAGE II  ·  PROCESS                                           │
+  │                                                                 │
+  │   signal block ──▶ hub detection (rank by degree)              │
+  │               ──▶ issue tree  "Why is [GT] true?"              │
+  │               ──▶ MECE type  process / structure / situation   │
+  │               ──▶ Minto Pyramid  SCQA + Key Lines              │
+  │               ──▶ 3-skeptic adversarial audit                  │
+  │                   Structuralist · Bayesian · Pragmatist        │
+  │                                                                 │
+  │   output: pyramid anchor  (written to disk before gate)        │
+  ├─────────────────────────────────────────────────────────────────┤
+  │  STAGE III  ·  OUTPUT                                           │
+  │                                                                 │
+  │   pyramid anchor ──▶ build HTML                                │
+  │      · boot overlay + terminal sequence                        │
+  │      · SCQA hero  ·  GT typewriter  ·  sticky GT strip        │
+  │      · stats strip  ·  KL sections  ·  confidence meters      │
+  │      · insight callouts  ·  evidence drawer                    │
+  │      · ASCII art engine  ·  3D card physics                   │
+  │      · parallax (4 layers)  ·  keyboard nav                   │
+  │                                                                 │
+  │   output: single .html — zero deps — permanently legible       │
+  └─────────────────────────────────────────────────────────────────┘
 ```
 
-**Evidence discipline contract (non-negotiable):**
-- `ASSERT` only claims tracing to a specific `S-NNN` signal block entry
-- `HEDGE` contested or version-fragile claims
-- `EXCLUDE` anything unverifiable — named, not silently dropped
+---
+
+## Fork Topology
+
+> Derived from graphify traversal of `orky/governance.py` + `orky/agent.py`.
+> Nodes: CorrectionRegister (degree 13), Membrane (degree 10), run() (degree 11).
+
+```
+  /illuminate invoked
+        │
+        ▼
+  ┌─────────────┐
+  │  Phase 0    │  environment + source audit
+  │  gate       │
+  └──────┬──────┘
+         │ PASS                          FAIL ──▶ halt · name reason · do not proceed
+         ▼
+  ┌─────────────┐      ┌─────────────────────────────────────────┐
+  │  Phase 1    │      │  run() calls:                           │
+  │  gate       │      │    Membrane.sanitize()                  │
+  └──────┬──────┘      │    Membrane.check_output()              │
+         │ PASS        │    SoilTracker                          │
+         │             │    MemorySubstrate                      │
+         │  FAIL       │    CorrectionRegister.attempt()  ──┐    │
+         │    │        │    CorrectionRegister.remaining() ─┤    │
+         │    │        │    CorrectionRegister.exhausted() ─┘    │
+         │    │        └─────────────────────────────────────────┘
+         │    │
+         │    └──▶ CorrectionRegister.attempt()
+         │              │
+         │         attempt 1 ──▶ re-run phase
+         │         attempt 2 ──▶ re-run phase
+         │         attempt 3 ──▶ re-run phase
+         │         .exhausted() == true
+         │              │
+         │              ▼
+         │         [ILLUMINATE:ESCALATE]  ──▶ operator must intervene
+         │         correction register frozen for this problem
+         │
+         ▼
+  ┌─────────────┐
+  │  Phase 2    │  concept map · issue tree · pyramid
+  │  gate       │
+  └──────┬──────┘
+         │ PASS                          FAIL ──▶ CorrectionRegister (same path)
+         ▼
+  ┌─────────────┐
+  │  Phase 3    │  3-skeptic audit · HTML build
+  │  gate       │
+  └──────┬──────┘
+         │ PASS                          FAIL ──▶ CorrectionRegister (same path)
+         ▼
+  ┌─────────────────────────────────────────┐
+  │  AccountabilityChain.log(gate-pass)     │
+  │  RewardSignal (clean close only)        │
+  │  LLMJudge (self-cert guard)             │
+  │  output: <source-name>.html             │
+  └─────────────────────────────────────────┘
+```
+
+**Key graphify paths:**
+
+```
+  CorrectionRegister  <──calls──  run()  ──calls──▶  LLMJudge
+      (2 hops)
+
+  Membrane  <──calls──  PhaseGate  ──calls──▶  Membrane.check_output()
+  Membrane  ──implements──▶  XPIA Defense (Cross-Prompt Injection)
+
+  CorrectionRegister  ──implements──▶  3-Attempt Circuit Breaker
+  CorrectionRegister  ──implements──▶  Blast Radius Bounding
+```
+
+---
+
+## Signal Stratification
+
+```
+  every extracted entry gets one primary tag:
+
+  ┌──────────────┬───────────────────────────────────────────────────┐
+  │  SOURCE      │  directly stated in the material                  │
+  │  INSIGHT  ★  │  counter-intuitive · reverses an assumption       │
+  │  METRIC      │  quantified claim with a stated source            │
+  │  PRINCIPLE   │  generalizable rule stated or implied             │
+  │  SYNTHESIS   │  implied by the combination of ≥2 SOURCE entries  │
+  │  GAP         │  what the source doesn't address                  │
+  └──────────────┴───────────────────────────────────────────────────┘
+
+  secondary flags (applied on top):
+
+  [CONTESTED:unverified]    figure cited without a checkable reference
+  [CONTESTED:absolute]      "always / never / all" universal claim
+  [CONTESTED:contradiction] conflicts with another entry (tag both)
+  [ASSUMPTION:basis-unknown] treated as background truth, never defended
+  [REFUTED]                 primary source checked; claim is false
+
+  ★  INSIGHT entries are the best candidates for Key Lines.
+     They carry the most argumentative weight.
+     A pyramid without at least one INSIGHT is a summary, not an argument.
+```
+
+---
+
+## Evidence Discipline Contract
+
+```
+  ┌────────────┬──────────────────────────────────────────────────────┐
+  │  ASSERT    │  only claims that trace to a specific S-NNN entry    │
+  │  HEDGE     │  claims where evidence is partial or contested       │
+  │  EXCLUDE   │  claims where the trace cannot be established        │
+  └────────────┴──────────────────────────────────────────────────────┘
+
+  violations in any phase are removed and the gap is named.
+  confidence is not evidence.
+  leaving a claim unchallenged because it seems plausible is a violation.
+```
 
 ---
 
 ## Install
 
 ```bash
-# Option 1: clone and symlink
-git clone https://github.com/marcomorettim/illuminate
-ln -s $(pwd)/illuminate ~/.claude/skills/illuminate
+# clone into Claude Code skills directory
+git clone https://github.com/marcomorettim/illuminate ~/.claude/skills/illuminate
+```
 
-# Option 2: Claude Code skill install (when registry is available)
-claude skills install gh:marcomorettim/illuminate
+Then in Claude Code:
+
+```
+/illuminate <path-to-source>
 ```
 
 ---
 
 ## Usage
 
-```
-/illuminate <source>
-```
+Works on any source type:
 
-Works on:
-- Single documents (`.md`, `.pdf`, `.txt`)
-- Multi-file directories (`/illuminate src/`)
-- Research corpora with provenance chains (`/illuminate corpus/ --arc`)
-- Pasted content (start a conversation, then `/illuminate`)
+```
+/illuminate whitepaper.md          → research corpus
+/illuminate book.pdf               → long-form (chapter chunked)
+/illuminate src/                   → codebase provenance chain
+/illuminate corpus/ --arc          → multi-doc evolution arc
+```
 
 ---
 
-## Output anatomy
+## Output Anatomy
 
-| Component | What it does |
-|---|---|
-| Boot overlay | Terminal-style startup sequence |
-| SCQA hero | Situation / Complication / Question / Answer cards |
-| Governing Thought | Full-width typewriter animation, sticky strip on scroll |
-| Stats strip | 6 key numbers computed from the signal block |
-| Key Lines (KL1–KLn) | MECE structure, each with confidence meter + evidence chips |
-| Insight callouts | Counter-intuitive findings with before/after strikethrough |
-| Evidence drawer | Click any `S-NNN` chip → full signal block entry slides in |
-| ASCII art engine | Character-by-character renderer, `prefers-reduced-motion` aware |
-| 3D card physics | `perspective + rotateX/Y` on mousemove delta |
-| Keyboard nav | `j/k` scroll sections · `f` focus mode · `s` signal mode · `Escape` close drawer |
+```
+  ┌─ single .html file ───────────────────────────────────────────┐
+  │                                                               │
+  │  [boot overlay]  terminal sequence → fades after 2s          │
+  │                                                               │
+  │  [hero]          SCQA cards                                   │
+  │                  S ── Situation (dim border)                  │
+  │                  C ── Complication (amber border)             │
+  │                  Q ── Question (accent border)                │
+  │                  GT ── Governing Thought (full-width,         │
+  │                        typewriter animation, cursor blink)    │
+  │                                                               │
+  │  [stats strip]   6 computed numbers from signal block         │
+  │                                                               │
+  │  [sticky GT]     appears on scroll past hero                  │
+  │                                                               │
+  │  [KL sections]   per Key Line:                                │
+  │                    80px ghost section number                  │
+  │                    scan sweep animation on entry              │
+  │                    CSS confidence bar (animates on scroll)    │
+  │                    HEDGE block if < 4/4                       │
+  │                    insight callout (before / after)           │
+  │                    ASCII art (character-by-character build)   │
+  │                    evidence chips → click → drawer            │
+  │                    accordions for detail + evidence           │
+  │                                                               │
+  │  [evidence drawer]  slides in from right                      │
+  │                     S-NNN title · tag · full signal body      │
+  │                     Escape or backdrop click to close         │
+  │                                                               │
+  │  [OP cards]      CSS progress bars per open problem           │
+  │                  amber pulse glow on OPEN status              │
+  │                  click to expand detail                       │
+  │                                                               │
+  └───────────────────────────────────────────────────────────────┘
+
+  keyboard nav:  j/k → section  ·  f → focus mode  ·  s → signal mode
+                 Escape → close drawer
+```
 
 ---
 
@@ -81,7 +252,7 @@ Works on:
 **Hero — SCQA + boot sequence**
 ![Hero](screenshots/hero.png)
 
-**Key Line section — confidence bar + insight callout**
+**Key Line — confidence bar + insight callout + ASCII art**
 ![KL section](screenshots/kl-section.png)
 
 **Open Problems — CSS progress bars + OP3 amber pulse**
@@ -91,59 +262,41 @@ Works on:
 
 ## Examples
 
-Three real artifacts produced by `/illuminate`:
+Three real artifacts, open locally — no server required:
 
 | Artifact | Source | Size |
 |---|---|---|
-| [agentic-os-evolution.html](examples/agentic-os-evolution.html) | 34,600-word whitepaper + 6-document evolution arc | 83KB |
+| [agentic-os-evolution.html](examples/agentic-os-evolution.html) | 34,600-word whitepaper + 6-doc evolution arc | 83KB |
 | [agentic-os-whitepaper.html](examples/agentic-os-whitepaper.html) | Same whitepaper, single-document run | 60KB |
 | [greenhouse-memory.html](examples/greenhouse-memory.html) | Greenhouse memory architecture corpus | 70KB |
 
-Open any of these locally — no server required.
-
 ---
 
-## Stage detail
+## The Haunting Problem
 
-### Stage I — Signal extraction
+```
+  the greenhouse is haunted by the model that built it.
 
-Three mandatory angles:
-1. **Structural** — every named claim, fact, figure, argument, principle
-2. **Synthesis + insight** — what the combination implies; counter-intuitive reversals
-3. **Adversarial** — gaps, assumptions, falsifiable edges
+  every enforcement mechanism — confidence grades, phase gates,
+  correction register, adversarial audits — is executed by the
+  same language model they are designed to constrain.
 
-Six signal tags: `SOURCE · INSIGHT · METRIC · PRINCIPLE · SYNTHESIS · GAP`
+  the model grades itself.
+  the model passes its own gates.
+  the model reports its own drift.
 
-Secondary flags: `CONTESTED:unverified · CONTESTED:absolute · ASSUMPTION · REFUTED`
+  the correction register (max 3 attempts, then escalate) prevents
+  infinite loops. it cannot prevent rationalization.
 
-### Stage II — Minto Pyramid
+  the honest response: make the ghost visible. never self-certify.
 
-- Hub detection: rank concepts by connection count
-- Issue tree: decompose "Why is [GT] true?" into sub-questions → KL candidates
-- MECE type: `process / structure / situation` (must not mix)
-- 3-skeptic adversarial audit: Structuralist, Bayesian, Pragmatist — each tries to collapse the pyramid
+    · HEDGE and EXCLUDE are surfaced, not hidden
+    · confidence scores show their evidence traces
+    · KL3 at 3/4 names what it cannot claim at 4/4
+    · [ILLUMINATE:ESCALATE] fires rather than silently looping
 
-All four SCQA quality tests run before the anchor writes to disk:
-- **S**: would the reader nod without thinking?
-- **C**: does it follow FROM S, not alongside it?
-- **Q**: does it emerge inevitably from S+C?
-- **A**: does it directly resolve the S+C tension?
-
-### Stage III — HTML artifact
-
-- Vanilla HTML + CSS + JS — zero external dependencies
-- Single file, self-contained, permanently legible
-- All animation respects `prefers-reduced-motion`
-- Parallax: 4 layers (hex canvas, amber fragments, scan lines, content)
-- Evidence drawer: slides in from right, `Escape` closes
-
----
-
-## The haunting problem
-
-Every enforcement mechanism — confidence grades, phase gates, adversarial audits — is executed by the same model they constrain. The model grades itself. The correction register (max 3 attempts, then escalate) prevents infinite loops but cannot prevent rationalization. `/illuminate` makes this visible: confidence scores are shown with their evidence traces; `HEDGE` and `EXCLUDE` tags are surfaced, not hidden; KL3 that scored 3/4 shows the unconditional claim it cannot make.
-
-The incompleteness is the honesty.
+  the incompleteness is the honesty.
+```
 
 ---
 
