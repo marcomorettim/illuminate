@@ -1341,7 +1341,7 @@ function setTier(t) {
 | Feature | simple | balanced | rich |
 |---|---|---|---|
 | Parallax | ✗ | 2 layers | 3+ layers |
-| 3D card tilt | ✗ | KL sections only | everywhere |
+| 3D card tilt | ✗ | ✗ | ✗ |
 | ASCII animation | instant | 2× speed | full speed + hover nodes |
 | GT reveal | fade-in | typewriter | scramble |
 | Accordion open | instant | height transition | scan-line + nested |
@@ -1362,9 +1362,6 @@ across all tiers — these are navigation features, not decoration.
 [data-tier="simple"] .bg-grid,
 [data-tier="simple"] .hero-ascii,
 [data-tier="simple"] .hero-gt { transform: none !important; will-change: auto !important; }
-
-/* 3D cards */
-[data-tier="simple"] .card { transform: none !important; box-shadow: none !important; }
 
 /* Custom cursor */
 [data-tier="simple"] #cur,
@@ -1427,49 +1424,6 @@ initParallax();
 Background grid: CSS `background-image: repeating-linear-gradient(...)` at `--paper-2`
 contrast, shifted by scroll. In light mode: use the `--paper-2` var (auto-switches).
 Creates the sensation of depth under the text layers.
-
----
-
-### 3D Card Physics (mandatory on KL sections)
-
-Cards in KL sections have 3D hover tilt based on mouse position. Use `perspective` on the
-section container and `rotateX/rotateY` on cards from mouse delta.
-
-```javascript
-// 3D card physics — tier-aware
-// simple: disabled (CSS guard + skip wiring)
-// balanced: KL section cards only; no blend-mode cursor
-// rich: all cards
-function wire3D(card) {
-  if (!isBalancedUp()) return;
-  card.addEventListener('mousemove', function(e) {
-    var r = card.getBoundingClientRect();
-    var x = (e.clientX - r.left) / r.width  - 0.5;
-    var y = (e.clientY - r.top)  / r.height - 0.5;
-    card.style.transform = [
-      'perspective(800px)',
-      'rotateY(' + (x * 8) + 'deg)',
-      'rotateX(' + (-y * 6) + 'deg)',
-      'translateZ(4px)',
-    ].join(' ');
-    card.style.boxShadow = (-x * 12) + 'px ' + (-y * 12) + 'px 24px rgba(0,0,0,0.22)';
-  });
-  card.addEventListener('mouseleave', function() {
-    card.style.transform = '';
-    card.style.boxShadow = '';
-  });
-}
-// balanced: KL cards only; rich: all cards
-var cardSel = isRich() ? '.card' : '.kl .card';
-document.querySelectorAll(cardSel).forEach(wire3D);
-```
-
-CSS prerequisite: `.card { transition: transform 0.12s var(--ease-out), box-shadow 0.12s; }`
-
-**Note on light mode:** `box-shadow` uses `rgba(0,0,0,…)` — this works in both modes since
-shadow is always darker than the surface. No token needed.
-
-Disable for `prefers-reduced-motion`.
 
 ---
 
@@ -1697,8 +1651,7 @@ Cards are not simple height-toggle accordions. Each has:
 
 1. **Scan-line open** — on trigger click: a `height: 2px` gradient strip scales from 0 to 1
    across the card top over 250ms. On complete: body height animates open.
-2. **3D tilt on header hover** (from the 3D card system above).
-3. **Nested sub-sections** — cards can contain further collapsible blocks (2-level depth max).
+2. **Nested sub-sections** — cards can contain further collapsible blocks (2-level depth max).
    Level 2 uses a simpler `▸/▾ toggle` with a 120ms height transition.
 4. **Evidence tags** — `S-NNN` traces render as clickable chips. On click: a slide-in panel
    from the right shows the full signal block entry for that S-NNN (stored in a `DATA` object
@@ -1810,7 +1763,7 @@ Operator confirms the file works live in a browser. Not self-certified.
 ```
 [ILLUMINATE:GATE] Phase 6 PASS (operator-confirmed) | File: <filename>.html | Size: <KB>
 Palette: <name> | Theme: dark+light verified | Tiers: simple/balanced/rich verified
-Techniques: parallax / 3D-cards / ascii-interactive / accordion / evidence-drawer
+Techniques: parallax / ascii-interactive / accordion / evidence-drawer
 Dynamic blocks: focus-mode / signal-view / confidence-meter / related-highlights
 ```
 
@@ -1825,7 +1778,7 @@ rtk read /tmp/illuminate-anchor.md  # line 1: anchored GT
 ```
 Paraphrase drift = failure. Fix before proceeding.
 
-**22-item checklist (run in rich+dark by default; then spot-check tiers, light mode, and palette):**
+**21-item checklist (run in rich+dark by default; then spot-check tiers, light mode, and palette):**
 
 *Content and hierarchy*
 - [ ] GT immediately legible on load, above fold, without interaction
@@ -1848,12 +1801,11 @@ Paraphrase drift = failure. Fix before proceeding.
 *Render tiers*
 - [ ] Tier selector (`s·b·r`) visible in nav; active tier highlighted in editorial red
 - [ ] **simple**: page fully readable; no broken layout from missing animations
-- [ ] **balanced**: parallax (2 layers) and typewriter GT visible; 3D tilt on KL cards
+- [ ] **balanced**: parallax (2 layers) and typewriter GT visible
 - [ ] **rich**: full scramble GT; 3 parallax layers; scan-line accordion; evidence drawer
 
 *Interactivity*
 - [ ] Parallax layers move at different speeds on scroll (rich tier)
-- [ ] 3D tilt fires on card hover (desktop, balanced+)
 - [ ] Evidence drawer opens on S-NNN click, shows correct entry (balanced+)
 - [ ] Focus mode `f` and signal view `s` toggles work on all tiers
 
@@ -1902,7 +1854,7 @@ Stage III  Phase 5  architecture     PASS  wireframe: <N> sections, 14 component
            Phase 6  engineering      PASS  operator-confirmed, <KB> [corrections: <N>]
                                            palette: <name> | theme: dark+light
                                            tiers: simple/balanced/rich
-           Phase 7  verify           PASS  GT drift: none · 22/22
+           Phase 7  verify           PASS  GT drift: none · 21/21
 ──────────────────────────────────────────────────────────────────────
 Output: <filename>.html (<KB>)
 Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate-anchor.md
@@ -1930,14 +1882,13 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
    CSS guards + JS helpers ensure every feature degrades cleanly at lower tiers.
 7. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
 8. **Parallax hero** — 3 layers (rich) / 2 layers (balanced) / none (simple)
-9. **3D card physics** — all cards (rich) / KL cards only (balanced) / none (simple)
-10. **Interactive ASCII** — full animation + hover nodes (rich) / 2× speed animation (balanced) / instant (simple)
-11. **Accordion** — scan-line + nested components (rich) / height transition (balanced) / instant (simple)
-12. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
+9. **Interactive ASCII** — full animation + hover nodes (rich) / 2× speed animation (balanced) / instant (simple)
+10. **Accordion** — scan-line open + nested components (rich) / height transition (balanced) / instant (simple)
+11. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
     (active on all tiers — navigation features, not decoration)
-13. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
-14. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
-15. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
+12. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
+13. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
+14. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
 
 ---
 
