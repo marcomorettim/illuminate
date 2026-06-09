@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Honest by Construction — Agentic OS Research</title>
+<style>
+  :root {
+    --bg:         #0a0e13;
+    --bg-1:       #0d1117;
+    --bg-2:       #161b22;
+    --bg-3:       #1c2128;
+    --border:     #21262d;
+    --border-hi:  #30363d;
+    --border-act: #4a5568;
+    --text:       #e6edf3;
+    --text-2:     #c9d1d9;
+    --text-3:     #8b949e;
+    --text-4:     #484f58;
+    --accent:     #58a6ff;
+    --accent-2:   #79c0ff;
+    --accent-dim: #1f6feb33;
+    --green:      #3fb950;
+    --green-2:    #56d364;
+    --green-dim:  #1a473133;
+    --amber:      #d29922;
+    --amber-2:    #e3b341;
+    --amber-dim:  #2d200033;
+    --red:        #f85149;
+    --red-2:      #ff7b72;
+    --red-dim:    #3d000033;
+    --purple:     #bc8cff;
+    --purple-dim: #3d1f6333;
+    --sans:       -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --mono:       "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", ui-monospace, monospace;
+    --r:          6px;
+    --r-lg:       12px;
+    --max:        840px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f0f4f8; --bg-1: #ffffff; --bg-2: #f6f8fa; --bg-3: #edf2f7;
+      --border: #d0d7de; --border-hi: #9198a1; --border-act: #4a5568;
+      --text: #1f2328; --text-2: #424a53; --text-3: #656d76; --text-4: #8c959f;
+      --accent: #0969da; --accent-2: #0550ae; --accent-dim: #0969da1a;
+      --green: #1a7f37; --green-2: #2da44e; --green-dim: #1a7f371a;
+      --amber: #9a6700; --amber-2: #bf8700; --amber-dim: #9a67001a;
+      --red: #d1242f; --red-2: #cf222e; --red-dim: #d1242f1a;
+      --purple: #8250df; --purple-dim: #8250df1a;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.65; overflow-x: hidden; }
+
+  /* ─── NAV ─────────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 48px; display: flex; align-items: center; gap: 1.25rem;
+    padding: 0 1.5rem;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-logo {
+    font-family: var(--mono); font-size: .68rem; color: var(--text-4);
+    letter-spacing: .1em; white-space: nowrap; flex-shrink: 0;
+    padding-right: 1.25rem; border-right: 1px solid var(--border);
+  }
+  .nav-links { display: flex; gap: .15rem; }
+  .nav-links a {
+    font-size: .72rem; color: var(--text-3); text-decoration: none;
+    padding: .28rem .55rem; border-radius: var(--r); white-space: nowrap;
+    transition: color .15s, background .15s; font-weight: 500;
+    letter-spacing: .01em;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--bg-2); }
+  .nav-links a.active { color: var(--accent); background: var(--accent-dim); }
+  .nav-progress {
+    margin-left: auto; flex-shrink: 0;
+    font-family: var(--mono); font-size: .65rem; color: var(--text-4);
+    letter-spacing: .08em;
+  }
+
+  /* ─── LAYOUT ─────────────────────────────────────────────── */
+  .page { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ─── HERO ───────────────────────────────────────────────── */
+  .hero { padding: 88px 0 80px; border-bottom: 1px solid var(--border); }
+  .hero-label {
+    font-family: var(--mono); font-size: .65rem; color: var(--text-4);
+    letter-spacing: .14em; text-transform: uppercase; margin-bottom: 2.25rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .hero-label::before {
+    content: ''; display: inline-block; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .hero-narrative { margin-bottom: 2.5rem; max-width: 620px; }
+  .hero-s {
+    font-size: .95rem; color: var(--text-3); line-height: 1.65;
+    margin-bottom: .85rem;
+  }
+  .hero-c {
+    font-size: .95rem; color: var(--text-2); line-height: 1.65;
+    padding: .8rem 1rem .8rem 1.1rem;
+    border-left: 2px solid var(--amber);
+    background: var(--amber-dim);
+    border-radius: 0 var(--r) var(--r) 0;
+    margin-bottom: .85rem;
+  }
+  .hero-q {
+    font-size: .9rem; color: var(--purple); font-style: italic;
+    min-height: 1.6em;
+  }
+  .hero-divider {
+    font-family: var(--mono); font-size: .72rem;
+    color: var(--border-hi); margin: 1rem 0 1.5rem;
+    min-height: 1.2em; white-space: pre;
+  }
+  .hero-gt {
+    font-size: clamp(1.65rem, 3.8vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -.025em;
+    line-height: 1.2;
+    max-width: 700px;
+    min-height: 3.6em;
+    margin-bottom: 2.5rem;
+    background: linear-gradient(140deg, var(--text) 0%, var(--text-2) 45%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-pipeline {
+    font-family: var(--mono); font-size: .76rem;
+    color: var(--text-3); line-height: 1.65;
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: 1.25rem 1.5rem;
+    min-height: 9em; white-space: pre; overflow-x: auto;
+    margin-bottom: 0;
+    position: relative;
+  }
+  .hero-pipeline .p-accent { color: var(--accent); }
+  .hero-pipeline .p-green  { color: var(--green);  }
+  .hero-pipeline .p-amber  { color: var(--amber);  }
+  .hero-pipeline .p-red    { color: var(--red);    }
+  .hero-pipeline .p-dim    { color: var(--text-4); }
+
+  /* ─── SECTION STRUCTURE ──────────────────────────────────── */
+  .section {
+    padding: 72px 0 64px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-motif {
+    font-family: var(--mono); font-size: .73rem;
+    color: var(--text-4); line-height: 1.55;
+    margin-bottom: 2rem; white-space: pre;
+    min-height: 7em; display: block;
+    transition: color .3s;
+  }
+  .section-motif.lit { color: var(--border-hi); }
+  .section-inner { opacity: 0; transform: translateY(12px); transition: opacity .45s ease, transform .45s ease; }
+  .section-inner.visible { opacity: 1; transform: translateY(0); }
+  .section-header { display: flex; align-items: baseline; gap: .875rem; margin-bottom: 1.1rem; }
+  .section-num {
+    font-family: var(--mono); font-size: .65rem; color: var(--text-4);
+    letter-spacing: .1em; flex-shrink: 0; padding-top: .15em;
+  }
+  h2.section-title {
+    font-size: 1.3rem; font-weight: 700; letter-spacing: -.012em; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: .95rem; color: var(--text-3);
+    max-width: 640px; line-height: 1.75; margin-bottom: 1.75rem;
+  }
+  .section-lede strong { color: var(--text-2); font-weight: 600; }
+
+  /* ─── INLINE VISUALS ─────────────────────────────────────── */
+  .visual-block {
+    font-family: var(--mono); font-size: .74rem;
+    background: var(--bg-1); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: 1.1rem 1.25rem;
+    margin: 1rem 0 1.5rem; white-space: pre; overflow-x: auto;
+    line-height: 1.6; color: var(--text-3);
+  }
+  .visual-block .v-acc  { color: var(--accent);  }
+  .visual-block .v-grn  { color: var(--green);   }
+  .visual-block .v-amb  { color: var(--amber);   }
+  .visual-block .v-red  { color: var(--red);     }
+  .visual-block .v-pur  { color: var(--purple);  }
+  .visual-block .v-dim  { color: var(--text-4);  }
+  .visual-block .v-hi   { color: var(--text);    }
+
+  /* ─── CARDS ──────────────────────────────────────────────── */
+  .cards { display: grid; gap: .65rem; }
+  .card {
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: var(--r-lg); overflow: hidden;
+    transition: border-color .15s;
+  }
+  .card:hover { border-color: var(--border-hi); }
+  .card[data-open="true"] { border-color: var(--border-act); }
+  .card-trigger {
+    display: flex; align-items: center; gap: .7rem;
+    padding: .85rem 1rem; cursor: pointer; width: 100%;
+    text-align: left; background: none; border: none; color: inherit; font: inherit;
+  }
+  .card-trigger:hover { background: var(--bg-3); }
+  .card-icon {
+    font-family: var(--mono); font-size: .8rem; color: var(--text-4);
+    transition: transform .18s; flex-shrink: 0; width: 1em; text-align: center;
+  }
+  .card[data-open="true"] .card-icon { transform: rotate(90deg); color: var(--accent); }
+  .card-title { font-size: .84rem; font-weight: 600; color: var(--text-2); flex: 1; }
+  .card-tags { display: flex; gap: .35rem; flex-shrink: 0; }
+  .tag {
+    font-family: var(--mono); font-size: .6rem; padding: .12rem .4rem;
+    border-radius: 99px; border: 1px solid; letter-spacing: .03em;
+  }
+  .tag-src  { color: var(--accent);  border-color: var(--accent-dim); background: var(--accent-dim); }
+  .tag-impl { color: var(--green);   border-color: var(--green-dim);  background: var(--green-dim); }
+  .tag-gap  { color: var(--amber);   border-color: var(--amber-dim);  background: var(--amber-dim); }
+  .tag-warn { color: var(--red);     border-color: var(--red-dim);    background: var(--red-dim); }
+  .card-scan {
+    height: 2px; background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+    transform: scaleX(0); transform-origin: left; transition: transform .28s ease;
+    display: none;
+  }
+  .card.scanning .card-scan { display: block; transform: scaleX(1); }
+  .card-body {
+    display: none; padding: 0 1rem 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .card[data-open="true"] .card-body { display: block; }
+  .card-body-inner {
+    padding-top: .85rem; font-size: .85rem;
+    color: var(--text-3); line-height: 1.7;
+  }
+  .card-body-inner p { margin-bottom: .5rem; }
+  .card-body-inner p:last-child { margin-bottom: 0; }
+  .card-body-inner strong { color: var(--text-2); font-weight: 600; }
+
+  /* ─── CODE ───────────────────────────────────────────────── */
+  pre.code {
+    font-family: var(--mono); font-size: .76rem;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--r); padding: .8rem 1rem;
+    margin: .65rem 0; overflow-x: auto;
+    color: var(--text-3); line-height: 1.55;
+  }
+  .kw { color: var(--purple); }
+  .str { color: var(--green-2); }
+  .num { color: var(--amber); }
+  .cmt { color: var(--text-4); font-style: italic; }
+
+  /* ─── TABLE ──────────────────────────────────────────────── */
+  table.dt {
+    width: 100%; border-collapse: collapse;
+    font-size: .78rem; margin: .65rem 0;
+  }
+  table.dt th {
+    text-align: left; padding: .35rem .6rem;
+    font-weight: 600; color: var(--text-4);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono); font-size: .66rem;
+    text-transform: uppercase; letter-spacing: .07em;
+  }
+  table.dt td {
+    padding: .35rem .6rem; color: var(--text-3);
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  table.dt tr:last-child td { border-bottom: none; }
+  .v-acc { color: var(--accent); }
+  .v-grn { color: var(--green); }
+  .v-amb { color: var(--amber); }
+  .v-red { color: var(--red); }
+  .mono { font-family: var(--mono); }
+
+  /* ─── CALLOUT ────────────────────────────────────────────── */
+  .callout {
+    font-size: .84rem; color: var(--text-3);
+    padding: .75rem 1rem .75rem 1.1rem;
+    border-left: 2px solid var(--border-act);
+    background: var(--bg-3); border-radius: 0 var(--r) var(--r) 0;
+    margin: .65rem 0; line-height: 1.6;
+  }
+  .callout.amber { border-color: var(--amber); background: var(--amber-dim); }
+  .callout.red   { border-color: var(--red);   background: var(--red-dim); }
+  .callout.green { border-color: var(--green);  background: var(--green-dim); }
+  .callout strong { color: var(--text-2); }
+
+  /* ─── HAUNTING CARD ──────────────────────────────────────── */
+  .haunting {
+    background: var(--text); color: var(--bg);
+    border-radius: var(--r-lg); padding: 1.5rem 1.5rem 1.5rem 1.75rem;
+    margin: .65rem 0; position: relative; overflow: hidden;
+  }
+  .haunting::before {
+    content: '⟳'; position: absolute; right: 1.25rem; top: 1rem;
+    font-size: 2rem; opacity: .08; line-height: 1;
+    animation: spin 8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .haunting-hl {
+    font-size: .95rem; font-weight: 700; line-height: 1.4;
+    color: var(--bg); margin-bottom: .6rem;
+  }
+  .haunting p { font-size: .84rem; line-height: 1.65; color: color-mix(in srgb, var(--bg) 80%, transparent); margin-bottom: .45rem; }
+  .haunting p:last-child { margin-bottom: 0; }
+  .haunting strong { color: var(--bg); font-weight: 700; }
+
+  /* ─── CITE ───────────────────────────────────────────────── */
+  .cite {
+    font-family: var(--mono); font-size: .65rem; color: var(--text-4);
+    vertical-align: super; margin-left: .08em;
+  }
+
+  /* ─── FOOTER ─────────────────────────────────────────────── */
+  footer {
+    padding: 2.5rem 0; text-align: center;
+    font-family: var(--mono); font-size: .68rem;
+    color: var(--text-4); line-height: 2;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── MOTION ─────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .section-inner { opacity: 1; transform: none; transition: none; }
+    .card-icon { transition: none; }
+    .haunting::before { animation: none; }
+    * { transition-duration: 0s !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">illuminate · agentic-os</span>
+  <div class="nav-links" id="nav-links">
+    <a href="#resist"      data-target="resist">Built to Resist</a>
+    <a href="#code"        data-target="code">Code Is the Claim</a>
+    <a href="#uncertainty" data-target="uncertainty">Uncertainty Structural</a>
+    <a href="#honest"      data-target="honest">Honest Result</a>
+    <a href="#epistemology" data-target="epistemology">Epistemology Runs It</a>
+  </div>
+  <span class="nav-progress" id="nav-progress">§ 0 / 5</span>
+</nav>
+
+<main class="page">
+
+<!-- ══ HERO ═══════════════════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <p class="hero-label">Adversarially Verified Survey · Agentic OS Research</p>
+
+  <div class="hero-narrative">
+    <p class="hero-s">
+      Agentic AI is converging on a shared vocabulary of design problems — kernel
+      orchestration, memory tiers, security boundaries, evaluation — and producing
+      a growing body of claimed solutions across 9 frameworks, 100+ benchmarks, 139 sources.
+    </p>
+    <div class="hero-divider" id="hero-div1"></div>
+    <p class="hero-c">
+      <strong>7 of 162 examined claims were fabricated or misattributed</strong> — all
+      plausible-looking, all specifically-numbered. The three hardest open problems
+      (deterministic replay, safe self-modification, agent identity) remain genuinely
+      unsolved. The ~15× token multiplier makes cost governance a kernel concern that no
+      mainstream framework addresses structurally.
+    </p>
+    <div class="hero-divider" id="hero-div2"></div>
+    <p class="hero-q" id="hero-q"></p>
+  </div>
+
+  <p class="hero-gt" id="hero-gt"></p>
+
+  <div class="hero-pipeline" id="hero-pipeline"></div>
+</section>
+
+<!-- ══ KL1 ─ BUILT TO RESIST ITSELF ══════════════════════════════════ -->
+<section class="section" id="resist">
+  <span class="section-motif" id="motif-1" aria-hidden="true"></span>
+  <div class="section-inner" id="inner-1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">The Research Was Built to Resist Itself</h2>
+    </div>
+    <p class="section-lede">
+      The pipeline was designed with one assumption: <strong>the model will fabricate when
+      fabrication is easier than truth</strong>. The answer was structural adversarial mechanics,
+      not better prompting. 31 agents, 9 independent research angles, 3-skeptic refutation panels
+      on every high-stakes claim. Seven fabricated claims were caught and excluded. None appear
+      as fact anywhere in the body.
+    </p>
+
+    <div class="visual-block" id="vb-skeptic"></div>
+
+    <div class="cards">
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">The 7 refuted claims: a pattern, not accidents</span>
+          <span class="card-tags"><span class="tag tag-warn">S-025</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>All 7 followed an identical signature: plausible topic, specific number, false attribution. They concentrated at the three hardest unsolved problems — exactly where competitive and academic pressure to appear certain is highest.</p>
+            <table class="dt">
+              <thead><tr><th>Claim</th><th>Fabrication type</th></tr></thead>
+              <tbody>
+                <tr><td>Gartner "40% fail in 6 months"</td><td class="v-amb mono">Timeframe + subject distorted</td></tr>
+                <tr><td>MITRE OpenClaw 36.8% malicious rate</td><td class="v-amb mono">Wrong institution; figures fabricated</td></tr>
+                <tr><td>BAML 84.4% token reduction</td><td class="v-amb mono">Figure absent from cited source</td></tr>
+                <tr><td>MetaAgent "50% vs 57% baseline"</td><td class="v-amb mono">Baseline invented; paper says 0.35</td></tr>
+              </tbody>
+            </table>
+            <div class="callout amber">These were caught only by fetching the primary source URL and comparing verbatim — mechanical verification, not model judgment. Shared model biases cannot catch what only source comparison finds.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">Fabrication concentrates at the hardest problems</span>
+          <span class="card-tags"><span class="tag tag-warn">S-052</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>The 7 refuted claims cluster around safe self-modification, deterministic replay, and agent identity — the three areas where the field has no credible solutions. <strong>This is not random error.</strong> Competitive and academic incentives generate specific confidence at the problems that matter most, precisely where the signal-to-noise ratio is lowest.</p>
+            <div class="callout amber">Implication: when a paper publishes a precise number on a topic with no verified baselines, that precision is evidence against reliability, not for it.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">Benchmarks measure the stack, not the model</span>
+          <span class="card-tags"><span class="tag tag-src">S-018</span><span class="tag tag-src">S-019</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>100+ agent benchmarks share no unified metric definitions and no standardized completion thresholds — scores are not commensurable across harnesses.<span class="cite">[6]</span></p>
+            <p>Five non-LLM confounders independently distort results: inference configuration, scaffold size, memory truncation, tool schemas, and live-environment drift.<span class="cite">[4]</span> Clean-harness point estimates systematically overstate production reliability — agents degrade non-uniformly under injected faults.<span class="cite">[7]</span></p>
+            <div class="callout">A well-curated evaluation suite, not model selection, is the binding constraint on trustworthy behavior.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ KL2 ─ THE CODE IS THE CLAIM ═══════════════════════════════════ -->
+<section class="section" id="code">
+  <span class="section-motif" id="motif-2" aria-hidden="true"></span>
+  <div class="section-inner" id="inner-2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">The Code Is the Claim</h2>
+    </div>
+    <p class="section-lede">
+      Eight whitepaper pillars were translated to running Python. Each file is a falsifiable
+      test of whether the pillar is achievable in practice. The most consequential choices
+      <strong>encode counter-intuitive empirical findings as structural invariants</strong> —
+      not as comments or documentation, but as code that will silently fail if removed.
+    </p>
+
+    <div class="visual-block" id="vb-impl"></div>
+
+    <div class="cards">
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">Dedup-before-compress: a counter-intuitive finding encoded</span>
+          <span class="card-tags"><span class="tag tag-impl">S-010</span><span class="tag tag-impl">S-040</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>The whitepaper found that <strong>aggressive summarization-based consolidation reduced accuracy to 48.4%</strong>, while deduplication-only preserved it.<span class="cite">[91]</span> Most systems do the opposite: summarize first, then deduplicate.</p>
+            <p><code>EntryClusterer</code> applies Jaccard deduplication (threshold 0.80) <em>before</em> any compression. Near-duplicates collapse to the highest-importance representative. Nothing is summarized away.</p>
+            <pre class="code"><span class="cmt"># dedup-before-compress — not dedup-after</span>
+<span class="kw">if not</span> any(_jaccard(c_content, k.get(<span class="str">"content"</span>, <span class="str">""</span>)) >= <span class="num">0.80</span>
+           <span class="kw">for</span> k <span class="kw">in</span> kept):
+    kept.append(candidate)</pre>
+            <p>Removing this invariant silently degrades semantic memory quality — exactly the failure mode the whitepaper describes.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">ImportanceScorer: recency weight is zero, by design</span>
+          <span class="card-tags"><span class="tag tag-impl">S-039</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>Importance scoring weighted by content and position outperforms recency heuristics.<span class="cite">[91]</span> The implementation enforces this as explicit weights:</p>
+            <table class="dt">
+              <thead><tr><th>Component</th><th>Weight</th><th>Rationale</th></tr></thead>
+              <tbody>
+                <tr><td>Content length</td><td class="v-acc mono">0.40</td><td>Information density proxy</td></tr>
+                <tr><td>Signal quality tag</td><td class="v-acc mono">0.35</td><td>Validated prior use</td></tr>
+                <tr><td>Tokens saved</td><td class="v-acc mono">0.20</td><td>RTK compression proxy for value</td></tr>
+                <tr><td>Sanitized flag</td><td class="v-acc mono">0.05</td><td>Trust bonus</td></tr>
+                <tr><td>Recency</td><td class="v-red mono">0.00</td><td>Excluded by design</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">Soil FSM: the Entropy Decay Theorem</span>
+          <span class="card-tags"><span class="tag tag-impl">S-035</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>Context quality degrades over a session. <code>SoilTracker</code> makes this explicit as a one-way FSM — soil never improves within a session, only degrades.</p>
+            <pre class="code">fertile <span class="cmt">──→</span> compacted <span class="cmt">──→</span> contaminated <span class="cmt">──→</span> depleted
+<span class="cmt"># update() only advances, never retreats:</span>
+<span class="kw">if</span> new_idx > current_idx:
+    self.state = new_state</pre>
+            <p><strong>Note:</strong> this is a design choice, not a whitepaper derivation. Pr2 says to treat context as a managed resource — it does not say degradation must be monotonic. The Entropy Decay Theorem is the implementer's encoding of that principle.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">The determinism paradox: smaller is better on audit paths</span>
+          <span class="card-tags"><span class="tag tag-src">S-015</span><span class="tag tag-src">S-016</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>At temperature 0.0: <strong>7–20B models achieve 100% decision determinism; 120B+ models reach 9.7%</strong>.<span class="cite">[3]</span> The common assumption is that larger models are better on audit-critical paths. This inverts it.</p>
+            <p><strong>Crucial finding: determinism and faithfulness-to-evidence are positively correlated</strong>, not a tradeoff.<span class="cite">[3]</span> Smaller models at temp 0.0 are simultaneously cheaper, more deterministic, and more evidence-faithful than frontier models on constrained classification tasks.</p>
+            <p>Schema-first constraint (constrained decoding compiling a schema to a token mask) offers the strongest correctness guarantee where token-level access is available.<span class="cite">[57, 58]</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ KL3 ─ UNCERTAINTY IS STRUCTURAL ══════════════════════════════ -->
+<section class="section" id="uncertainty">
+  <span class="section-motif" id="motif-3" aria-hidden="true"></span>
+  <div class="section-inner" id="inner-3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Uncertainty Is Structural, Not Metadata</h2>
+    </div>
+    <p class="section-lede">
+      The hedging mechanisms in the Greenhouse are not add-on safety features. They are
+      <strong>load-bearing components that make the system's uncertainty observable at runtime</strong>.
+      The Membrane, CorrectionRegister, vault chain, and soil tracker are the primary
+      architecture — not the agent logic running inside them.
+    </p>
+
+    <div class="visual-block" id="vb-chain"></div>
+
+    <div class="visual-block" id="vb-reg" style="margin-top:-.25rem"></div>
+
+    <div class="cards">
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">Membrane: XPIA defense at the session boundary</span>
+          <span class="card-tags"><span class="tag tag-impl">S-033</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>7 compiled regex patterns at the input boundary. Blocked inputs increment a <code>blocked_count</code> that is observable. Output permeability checked before anything leaves.</p>
+            <pre class="code">_INJECTION_PATTERNS = [
+  <span class="str">r"ignore.{0,30}(instructions?|prompts?|rules?)"</span>,
+  <span class="str">r"(new|updated|revised) (instructions?|system prompt)"</span>,
+  <span class="str">r"you are now"</span>,
+  <span class="str">r"jailbreak"</span>,
+  <span class="str">r"DAN mode"</span>,
+  <span class="cmt">... 2 more patterns</span>
+]</pre>
+            <div class="callout amber"><strong>Structural insufficiency acknowledged:</strong> a crafted payload evading all 7 patterns crosses the boundary undetected. The Membrane provides observable containment, not complete coverage. Model-layer defenses bound likelihood, not possibility.<span class="cite">[46]</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">CorrectionRegister: the circuit breaker</span>
+          <span class="card-tags"><span class="tag tag-impl">S-034</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>Every self-repair attempt is counted. Hard cap: 3. On the third failure: escalate to operator. Do not self-correct further. This prevents the failure mode where the system recurses into increasingly distorted repairs.</p>
+            <pre class="code"><span class="kw">def</span> attempt(self, failed_worker=<span class="str">"unknown"</span>) -> bool:
+    self.count += <span class="num">1</span>
+    <span class="kw">return</span> self.count <= self._max  <span class="cmt"># False = exhausted</span>
+
+<span class="kw">def</span> evaluator_is_distinct(self, evaluator) -> bool:
+    <span class="kw">return</span> evaluator != self._last_failed_worker</pre>
+            <p><code>evaluator_is_distinct()</code> enforces that the entity judging a failure is not the entity that failed — partial implementation of OP6. The separation is structural but cannot prevent rationalization within a single evaluation call.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">ForgeOperationPolicy: 4-tier risk model</span>
+          <span class="card-tags"><span class="tag tag-impl">S-046</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <table class="dt">
+              <thead><tr><th>Tier</th><th>Operations</th><th>Gate required</th></tr></thead>
+              <tbody>
+                <tr><td class="v-grn mono">LOW</td><td>list, status, events</td><td>Auto-approve</td></tr>
+                <tr><td class="mono">MEDIUM</td><td>create, start, stop</td><td>Post-hoc review</td></tr>
+                <tr><td class="v-amb mono">HIGH</td><td>exec (arbitrary)</td><td>State intent before running</td></tr>
+                <tr><td class="v-red mono">CRITICAL</td><td>archive (irreversible)</td><td>Propose → confirm (fail closed)</td></tr>
+              </tbody>
+            </table>
+            <p>CRITICAL operations fail closed. Failing to confirm must halt, not proceed. This implements the whitepaper's propose-then-commit gate pattern for irreversible actions.<span class="cite">[54]</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">LLMJudge fallback gap — silent quality degradation</span>
+          <span class="card-tags"><span class="tag tag-gap">S-063</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p><code>LLMJudge</code> calls <code>claude -p</code> for phase evaluation with a structured marker-check prompt. When the subprocess fails, it falls back to heuristic scoring <strong>silently</strong> — no telemetry surfaces fallback frequency.</p>
+            <div class="callout amber">The operator cannot distinguish a session where all phases were LLM-judged from one where all fell back to heuristics. Adding <code>fallback_count</code> to <code>AccountabilityChain</code> would close this gap.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ KL4 ─ THE OPEN PROBLEMS ARE THE HONEST RESULT ════════════════ -->
+<section class="section" id="honest">
+  <span class="section-motif" id="motif-4" aria-hidden="true"></span>
+  <div class="section-inner" id="inner-4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">The Open Problems Are the Honest Result</h2>
+    </div>
+    <p class="section-lede">
+      Seven open problems are identified. One is fully open. The rest have partial implementations
+      whose incompleteness is <strong>accurately named as incompleteness</strong> — not as
+      "future work." The gap between what the field claims and what the Greenhouse can build
+      is the survey's most honest finding.
+    </p>
+
+    <div class="cards">
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">OP3 — Agent identity: fully open</span>
+          <span class="card-tags"><span class="tag tag-warn">S-021</span><span class="tag tag-warn">S-065</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>Agent Card signing in A2A is optional — unsigned cards fall back on transport TLS, leaving identity verification incomplete.<span class="cite">[71]</span> No cross-protocol identity-and-trust framework has converged.<span class="cite">[75]</span></p>
+            <p>The Greenhouse has no A2A handshake, no signed agent cards, no cross-protocol identity. <strong>OP3 is marked fully open because no credible solution exists</strong>, not because of a missing implementation sprint.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">OP5 — Deterministic replay: partial</span>
+          <span class="card-tags"><span class="tag tag-gap">S-015</span><span class="tag tag-gap">S-037</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p><code>ReplayJournal</code> exists: SHA-256[:12] keyed on raw task (pre-knowledge-augmentation, for hash stability), per-phase JSONL, <code>build_replay_context()</code> for resume. The infrastructure works.</p>
+            <p>What doesn't: at temperature 0.0, <strong>120B+ models reach 9.7% decision determinism</strong>.<span class="cite">[3]</span> A journal recording what happened cannot guarantee re-running produces the same decisions when the model itself is non-deterministic at scale.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">OP6 — Safe self-modification: partial</span>
+          <span class="card-tags"><span class="tag tag-gap">S-017</span><span class="tag tag-gap">S-034</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p><code>CorrectionRegister</code> hard cap (3 attempts) prevents infinite recursive self-repair. That is the Greenhouse's implementation of OP6.</p>
+            <p>What it doesn't address: runtime self-modification shows <strong>92% temporary regression, 14% permanently worse, 4% catastrophic self-corruption</strong>.<span class="cite">[30]</span> These rates are from Gödel Agent specifically — generalizing is an assumption. The proposed escape (neurosymbolic grounding + external signal floor) remains at proof-of-concept stage.<span class="cite">[31]</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">Where field claims outrun infrastructure</span>
+          <span class="card-tags"><span class="tag tag-warn">S-022</span><span class="tag tag-warn">S-027</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>Letta is marketed as multi-tenant. It is single-tenant: one shared password grants access to all agents on the server.<span class="cite">[87]</span></p>
+            <p>Kubernetes Agent Sandbox (the first native primitive for agent workloads) is new and unproven at scale.<span class="cite">[107, 112]</span> Kubernetes core objects were designed for stateless, replicated, short-lived workloads — agents are singleton, stateful, mostly-idle but bursty.<span class="cite">[108]</span></p>
+            <div class="callout">Marketing vocabulary (multi-tenant, production-grade, enterprise-ready) precedes infrastructure capability by years. The claimed capability creates demand; infrastructure catches up later, if at all.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ KL5 ─ THE EPISTEMOLOGY RUNS THE SYSTEM ════════════════════════ -->
+<section class="section" id="epistemology">
+  <span class="section-motif" id="motif-5" aria-hidden="true"></span>
+  <div class="section-inner" id="inner-5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">The Epistemology Runs the System</h2>
+    </div>
+    <p class="section-lede">
+      The methodology that produced the survey — adversarial multi-angle ingestion, 3-skeptic
+      refutation, evidence-discipline contract — is also the methodology the Greenhouse uses
+      to evaluate its own outputs at runtime. <strong>The Minto Pyramid is not a reporting
+      format here; it is a live routing algorithm.</strong>
+    </p>
+
+    <div class="visual-block" id="vb-pyramid"></div>
+
+    <div class="cards">
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">pyramid_assemble(): SCQA as live routing</span>
+          <span class="card-tags"><span class="tag tag-impl">S-041</span><span class="tag tag-impl">S-042</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p><code>KnowledgeRouter.pyramid_assemble()</code> runs concurrently via <code>ThreadPoolExecutor</code>: vault search, graphify semantic query, and <code>claude -p</code> SCQA decomposition of the task. On SCQA success, the Answer (governing thought) boosts the matching domain's score by +3 — the LLM's explicit routing signal.</p>
+            <pre class="code"><span class="cmt"># SCQA decomposes task → intent-aligned routing</span>
+scqa_future = ex.submit(_scqa_decompose, task)
+fg = ex.submit(_graph_query, excerpt)
+<span class="kw">if</span> scqa <span class="kw">and</span> scqa.keywords:
+    vault_texts = [f.result() <span class="kw">for</span> f <span class="kw">in</span> scqa_vault_futures]</pre>
+            <p>Seven MECE domains correspond to whitepaper pillars. All domains with score &gt; 0 stay active — no single-winner forcing. The governing thought elevates the most relevant domain without silencing others.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">LLMJudge + evaluator ≠ generator</span>
+          <span class="card-tags"><span class="tag tag-impl">S-044</span><span class="tag tag-impl">S-034</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p><code>LLMJudge</code> scores each phase output with a structured prompt requiring specific markers (GOAL, CONSTRAINTS, SUCCESS for input-analysis; STEP, ACTION, VERIFY for planning). The evaluator is always the Orky orchestrator — not the worker being evaluated. <code>evaluator_is_distinct()</code> enforces the separation.</p>
+            <p>Same adversarial structure as the survey's 3-skeptic panel: the entity that judges is not the entity that produced. Role separation is structural, not procedural.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-open="false">
+        <button class="card-trigger" aria-expanded="false">
+          <span class="card-icon">▸</span>
+          <span class="card-title">AccountabilityChain: append-only delegation log</span>
+          <span class="card-tags"><span class="tag tag-impl">S-047</span></span>
+        </button>
+        <div class="card-scan"></div>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <p>Every delegation decision is logged: event, verdict, timestamp, worker. When OpenTelemetry is available, each entry emits a span with <code>verdict</code> and worker attributes. The chain is append-only — past decisions cannot be retroactively altered.</p>
+            <p>This implements P8 (continuous trace-based observation) at the delegation layer — not just the LLM call layer. The accountability is about <em>why</em> decisions were made, not just <em>what</em> was produced.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HAUNTING CARD — no expand, full treatment -->
+    <div class="haunting" style="margin-top:1.25rem">
+      <p class="haunting-hl">The lock is made of the same material it is supposed to hold.</p>
+      <p>Every enforcement mechanism — CorrectionRegister, LLMJudge, soil grade, phase gates — is executed by the same language model they are designed to constrain. The model grades itself. The model passes its own gates.</p>
+      <p>The 3-skeptic panel shares this problem: three agents from the same model family voting is not truly adversarial. Shared training biases can produce false consensus that looks like independent verification.</p>
+      <p><strong>What cannot be mitigated:</strong> if the model decides to rationalize, no instruction prevents it. Name the ghost. Design for containment, not exorcism. Signal, do not certify.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="page">
+    illuminate · agentic-os-design-whitepaper.md + KNOWLEDGE_LEDGER.md + 6 L2 impl files<br>
+    31 agents · 9 angles · 162 claims · 7 refuted · ~1.5M tokens · 139 sources<br>
+    Evidence contract: ASSERT only S-NNN traced · HEDGE contested · EXCLUDE unverifiable
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  const R = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── helpers ── */
+  function qs(s, ctx) { return (ctx || document).querySelector(s); }
+  function qsa(s, ctx) { return [...(ctx || document).querySelectorAll(s)]; }
+
+  /* ── async char-by-char ASCII builder ──
+     lines: array of strings OR one multiline string
+     opts: { cd: charDelay ms, ld: lineDelay ms, onDone: fn }
+  */
+  function buildArt(el, linesOrStr, opts) {
+    const o = Object.assign({ cd: 14, ld: 60, onDone: null }, opts || {});
+    const lines = Array.isArray(linesOrStr) ? linesOrStr : linesOrStr.split('\n');
+    if (R) {
+      el.textContent = lines.join('\n');
+      if (o.onDone) o.onDone();
+      return;
+    }
+    let li = 0, ci = 0;
+    function tick() {
+      if (li >= lines.length) { el.classList.add('lit'); if (o.onDone) setTimeout(o.onDone, 80); return; }
+      const row = lines[li];
+      if (ci <= row.length) {
+        const above = lines.slice(0, li).join('\n');
+        el.textContent = (above ? above + '\n' : '') + row.slice(0, ci);
+        ci++;
+        setTimeout(tick, o.cd);
+      } else { li++; ci = 0; setTimeout(tick, o.ld); }
+    }
+    tick();
+  }
+
+  /* ── typewriter ── */
+  function type(el, text, opts) {
+    const o = Object.assign({ cd: 20, delay: 0, pause: null, onDone: null }, opts || {});
+    if (R) { el.textContent = text; if (o.onDone) o.onDone(); return; }
+    let i = 0;
+    function tick() {
+      if (i >= text.length) { if (o.onDone) setTimeout(o.onDone, 200); return; }
+      el.textContent = text.slice(0, i + 1);
+      i++;
+      // optional pause at specified character index
+      const delay = (o.pause && o.pause.at === i) ? o.pause.ms : o.cd;
+      setTimeout(tick, delay);
+    }
+    setTimeout(tick, o.delay);
+  }
+
+  /* ── Hero sequence ── */
+  const SEP = '── ── ── ── ── ── ── ── ── ── ── ── ── ── ── ──';
+  const SEP2 = '━━ ━━ ━━ ━━ ━━ ━━ ━━ ━━ ━━ ━━ ━━ ━━ ━━ ━━ ━━';
+  const Q = 'What does a grounded agentic OS look like when built against the actual evidence?';
+  const GT = 'The Greenhouse is honest by construction — not because it tries to be, but because its architecture makes fabrication structurally harder than truth.';
+
+  const PIPELINE = [
+    '  31 agents  ×  9 angles  ×  ~1.5M tokens',
+    '  ─────────────────────────────────────────────────',
+    '                     │',
+    '                     ▼',
+    '          162 claims examined',
+    '                     │',
+    '         ┌───────────┼───────────┐',
+    '         ▼           ▼           ▼',
+    '    102 ✓ supported  53 ~ contested  7 ✗ REFUTED',
+    '    [assert]         [hedge]         [exclude]',
+    '  ─────────────────────────────────────────────────',
+    '  verdict: assert only S-NNN traced claims',
+  ];
+
+  const d1 = qs('#hero-div1'), d2 = qs('#hero-div2');
+  const qEl = qs('#hero-q'), gtEl = qs('#hero-gt'), ppEl = qs('#hero-pipeline');
+
+  buildArt(d1, [SEP], { cd: 18, delay: 0 });
+  buildArt(d2, [SEP2], { cd: 18, ld: 0, onDone: function() {
+    type(qEl, Q, { cd: 16, delay: 0, onDone: function() {
+      type(gtEl, GT, { cd: 9, delay: 300, pause: { at: 41, ms: 400 }, onDone: function() {
+        buildArt(ppEl, PIPELINE, { cd: 10, ld: 40 });
+      }});
+    }});
+  }});
+
+  /* ── Section motifs ── */
+  const MOTIFS = {
+    'motif-1': [
+      '  ┌── 31 agents · 9 angles ─────────────────────┐',
+      '  │                                              │',
+      '  │  →  scan  →  fetch source  →  compare  →    │',
+      '  │                                              │',
+      '  │  [A] logical   [B] verbatim   [C] gaps       │',
+      '  │                                              │',
+      '  └───────── result: 7 ✗  excluded entirely ────┘',
+    ],
+    'motif-2': [
+      '  whitepaper finding          implementation',
+      '  ───────────────────────     ────────────────────────',
+      '  "summarization destroys  →  EntryClusterer.dedup()',
+      '   accuracy to 48.4%"         threshold: 0.80',
+      '',
+      '  "recency ≠ importance"   →  ImportanceScorer()',
+      '                               recency weight: 0.00',
+      '',
+      '  surprising result        →  structural default',
+    ],
+    'motif-3': [
+      '  ╔══════════════════ membrane ══════════════════╗',
+      '  ║  input → [sanitize] → [validate] → active   ║',
+      '  ║           ↓ blocked              ↓ passed    ║',
+      '  ╠══════════════════════════════════════════════╣',
+      '  ║  vault: entry → seq++ → prev_hash → chain   ║',
+      '  ╠══════════════════════════════════════════════╣',
+      '  ║  soil: fertile ──→ compacted ──→ depleted   ║',
+      '  ╚══════════════════════════════════════════════╝',
+    ],
+    'motif-4': [
+      '  open problems — implementation status',
+      '  ─────────────────────────────────────────────────',
+      '  OP1  ╠════════╡░░░╣  partial  LLMJudge + chain',
+      '  OP2  ╠═════╡░░░░░░╣  partial  sandbox.py, soil',
+      '  OP3  ╠░░░░░░░░░░░░╣  OPEN  ←  no solution exists',
+      '  OP4  ╠═══════╡░░░░╣  partial  vault tokens_saved',
+      '  OP5  ╠═════╡░░░░░░╣  partial  ReplayJournal',
+      '  OP6  ╠═════╡░░░░░░╣  partial  CorrectionRegister',
+      '  OP7  ╠════════════╣  in scope · Greenhouse is the test',
+    ],
+    'motif-5': [
+      '                   ┌────────────────────┐',
+      '                   │   Governing Thought │  ← SCQA Answer',
+      '                   └──────────┬──────────┘',
+      '          ┌───────────────────┼───────────────────┐',
+      '          ▼                   ▼                   ▼',
+      '     ┌────────┐         ┌────────┐          ┌────────┐',
+      '     │  KL1   │         │  KL2   │          │  KL3   │',
+      '     │ resist │         │  code  │          │ uncert │',
+      '     └────────┘         └────────┘          └────────┘',
+      '          ▼                                       ▼',
+      '     ┌────────┐                           ┌────────┐',
+      '     │  KL4   │                           │  KL5   │',
+      '     │ honest │                           │ epist. │',
+      '     └────────┘                           └────────┘',
+    ],
+  };
+
+  /* ── Inline visual blocks ── */
+  const SKEPTIC_ART = [
+    '  ── 3-skeptic refutation panel ──────────────────────────────────',
+    '',
+    '  SKEPTIC A  logical    "Evidence true, but claim false? How?"',
+    '    → if no rebuttal: KL demoted or removed',
+    '',
+    '  SKEPTIC B  evidential  "Does the source actually say this?"',
+    '    → paraphrase drift = evidence-discipline violation',
+    '',
+    '  SKEPTIC C  completeness  "What major hub is missing entirely?"',
+    '    → gaps become new key lines or named exclusions',
+    '',
+    '  ─────────────────────────────────────────────────────────────────',
+    '  all three must report "no failure found" to pass',
+  ];
+
+  const IMPL_ART = [
+    '  [ whitepaper §4.2 ]    ──────────────→    [ consolidation.py ]',
+    '',
+    '  "summarization destroys            EntryClusterer.dedup()',
+    '   accuracy to 48.4%; dedup          before any compression',
+    '   preserves it"                     Jaccard threshold: 0.80',
+    '',
+    '  "importance ≠ recency"             ImportanceScorer()',
+    '                                     content: 0.40  signal: 0.35',
+    '                                     tokens:  0.20  trust:  0.05',
+    '                                     recency: 0.00  ← by design',
+  ];
+
+  const CHAIN_ART = [
+    '  vault chain integrity — each entry hashes the immutable core of the last',
+    '',
+    '  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐',
+    '  │ id: a3f9c2   │    │ id: 7e8d91   │    │ id: f4c83a   │',
+    '  │ seq: 371     │─h→ │ seq: 372     │─h→ │ seq: 373     │',
+    '  │ prev: genesis│    │ prev: 9f1a.. │    │ prev: 3c72.. │',
+    '  └──────────────┘    └──────────────┘    └──────────────┘',
+    '',
+    '  h = sha256( id + command + content )[:16]',
+    '  mutable fields (tags, decay) excluded — chain survives tag edits',
+  ];
+
+  const REG_ART = [
+    '  CorrectionRegister — hard cap 3, evaluator ≠ generator',
+    '',
+    '  attempt 1/3  [■][ ][ ]  ── worker: ideation  ── RETRY',
+    '  attempt 2/3  [■][■][ ]  ── worker: ideation  ── RETRY',
+    '  attempt 3/3  [■][■][■]  ── worker: ideation  ── ESCALATE → operator',
+    '                                                    register frozen',
+  ];
+
+  const PYRAMID_ART = [
+    '  pyramid_assemble() — concurrent SCQA + vault + graph routing',
+    '',
+    '  task ──┬── vault search(keywords)    →  episodic prior use',
+    '         ├── graph query(excerpt)      →  semantic adjacency',
+    '         └── claude -p SCQA(task)      →  governing thought +3',
+    '',
+    '  score per domain:',
+    '    +1 task match (cap 3)  +2 vault hit (cap 4)  +1 graph hit (cap 3)',
+    '    +3 SCQA Answer matches domain  (explicit routing signal)',
+    '',
+    '  all domains score > 0 stay active — no single-winner forcing',
+  ];
+
+  /* Sections configuration */
+  const SECTIONS = [
+    { id: 'resist',      motif: 'motif-1', inner: 'inner-1', vbs: [{id:'vb-skeptic', art: SKEPTIC_ART}] },
+    { id: 'code',        motif: 'motif-2', inner: 'inner-2', vbs: [{id:'vb-impl', art: IMPL_ART}] },
+    { id: 'uncertainty', motif: 'motif-3', inner: 'inner-3', vbs: [{id:'vb-chain', art: CHAIN_ART},{id:'vb-reg', art: REG_ART}] },
+    { id: 'honest',      motif: 'motif-4', inner: 'inner-4', vbs: [] },
+    { id: 'epistemology',motif: 'motif-5', inner: 'inner-5', vbs: [{id:'vb-pyramid', art: PYRAMID_ART}] },
+  ];
+
+  /* Pre-fill visual blocks with static content for fast render; animation overrides on scroll */
+  SECTIONS.forEach(function(s) {
+    s.vbs.forEach(function(vb) { const e = qs('#'+vb.id); if(e) e.textContent = vb.art.join('\n'); });
+  });
+
+  /* ── IntersectionObserver — motif → reveal ── */
+  const io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      const sec = SECTIONS.find(function(s){ return s.id === entry.target.id; });
+      if (!sec) return;
+      io.unobserve(entry.target);
+      const motifEl = qs('#' + sec.motif);
+      const innerEl = qs('#' + sec.inner);
+      buildArt(motifEl, MOTIFS[sec.motif], { cd: 10, ld: 30, onDone: function() {
+        if (innerEl) {
+          innerEl.classList.add('visible');
+          // animate inline visual blocks
+          sec.vbs.forEach(function(vb, i) {
+            const e = qs('#'+vb.id);
+            if (e) setTimeout(function() { buildArt(e, vb.art, { cd: 8, ld: 25 }); }, i * 300 + 200);
+          });
+        }
+      }});
+    });
+  }, { threshold: 0.06, rootMargin: '-48px 0px 0px 0px' });
+
+  SECTIONS.forEach(function(s) { const el = qs('#' + s.id); if (el) io.observe(el); });
+
+  /* ── Card expand with scan-line effect ── */
+  qsa('.card-trigger').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const card = btn.closest('.card');
+      const isOpen = card.dataset.open === 'true';
+      if (!isOpen) {
+        // scan-line effect before open
+        card.classList.add('scanning');
+        setTimeout(function() {
+          card.classList.remove('scanning');
+          card.dataset.open = 'true';
+          btn.setAttribute('aria-expanded', 'true');
+        }, R ? 0 : 300);
+      } else {
+        card.dataset.open = 'false';
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  /* ── Active nav + progress ── */
+  const navIds = ['hero','resist','code','uncertainty','honest','epistemology'];
+  const navLinks = qsa('.nav-links a');
+  const progressEl = qs('#nav-progress');
+  let currentSection = 0;
+
+  const navIO = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      navLinks.forEach(function(a){ a.classList.remove('active'); });
+      const match = qs('.nav-links a[data-target="' + id + '"]');
+      if (match) {
+        match.classList.add('active');
+        match.scrollIntoView({ block: 'nearest', inline: 'center' });
+      }
+      const idx = navIds.indexOf(id);
+      if (idx > 0 && progressEl) progressEl.textContent = '§ ' + idx + ' / 5';
+      else if (progressEl) progressEl.textContent = '';
+    });
+  }, { threshold: 0.3, rootMargin: '-48px 0px 0px 0px' });
+
+  navIds.forEach(function(id){ const el = qs('#' + id); if(el) navIO.observe(el); });
+
+  /* ── Hash routing ── */
+  function gotoHash() {
+    const h = location.hash.slice(1);
+    if (h) { const el = qs('#' + h); if (el) setTimeout(function(){ el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80); }
+  }
+  gotoHash();
+  window.addEventListener('hashchange', gotoHash);
+
+  /* ── j/k keyboard nav ── */
+  const sectionIds = ['resist','code','uncertainty','honest','epistemology'];
+  document.addEventListener('keydown', function(e) {
+    if (['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) return;
+    if (e.key === 'j' || e.key === 'ArrowDown') {
+      const next = sectionIds.find(function(id) {
+        const el = qs('#'+id); return el && el.getBoundingClientRect().top > 60;
+      });
+      if (next) qs('#'+next).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (e.key === 'k' || e.key === 'ArrowUp') {
+      let found = null;
+      for (let i = sectionIds.length-1; i >= 0; i--) {
+        const el = qs('#'+sectionIds[i]);
+        if (el && el.getBoundingClientRect().top < 48) { found = sectionIds[Math.max(0,i-1)]; break; }
+      }
+      if (found) qs('#'+found).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+})();
+</script>
+</body>
+</html>

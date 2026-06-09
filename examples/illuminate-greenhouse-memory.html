@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Is Control — Greenhouse Agentic OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080d08;
+    --surface: #0f160f;
+    --surface-2: #162016;
+    --border: #1e2e1e;
+    --border-hover: #2d462d;
+    --accent: #4ade80;
+    --accent-dim: #22c55e;
+    --accent-glow: rgba(74, 222, 128, 0.12);
+    --accent-glow-strong: rgba(74, 222, 128, 0.22);
+    --text: #e2f0e2;
+    --text-muted: #7a9e7a;
+    --text-dim: #4a6b4a;
+    --amber: #fbbf24;
+    --amber-dim: rgba(251, 191, 36, 0.15);
+    --size-xs: 0.75rem;
+    --size-sm: 0.875rem;
+    --size-base: 1rem;
+    --size-lg: 1.125rem;
+    --size-xl: 1.5rem;
+    --size-2xl: 2.25rem;
+    --size-3xl: 3.5rem;
+    --size-4xl: 4.5rem;
+    --nav-w: 260px;
+    --radius: 6px;
+    --radius-lg: 10px;
+    --transition: 150ms ease;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f0f7f0;
+      --surface: #ffffff;
+      --surface-2: #f5fbf5;
+      --border: #d0e8d0;
+      --border-hover: #aacfaa;
+      --accent: #16a34a;
+      --accent-dim: #15803d;
+      --accent-glow: rgba(22, 163, 74, 0.08);
+      --accent-glow-strong: rgba(22, 163, 74, 0.16);
+      --text: #0f2010;
+      --text-muted: #3d6b3d;
+      --text-dim: #7a9e7a;
+      --amber: #d97706;
+      --amber-dim: rgba(217, 119, 6, 0.12);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: var(--size-base);
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--nav-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.25rem;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .nav-brand {
+    font-size: var(--size-sm);
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-section-label {
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .nav-section-label:first-of-type { margin-top: 0; }
+
+  nav a {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius);
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+    line-height: 1.4;
+    margin-bottom: 0.15rem;
+  }
+
+  nav a:hover {
+    background: var(--accent-glow);
+    color: var(--text);
+  }
+
+  nav a.active {
+    background: var(--accent-glow-strong);
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+
+  .nav-num {
+    font-size: var(--size-xs);
+    color: var(--text-dim);
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  nav a.active .nav-num { color: var(--accent-dim); }
+
+  /* ─── MAIN ─── */
+  main {
+    margin-left: var(--nav-w);
+    flex: 1;
+    max-width: 100%;
+  }
+
+  .section-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 5rem 3rem;
+  }
+
+  /* ─── BREADCRUMB ─── */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--size-xs);
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .breadcrumb a { color: var(--text-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .breadcrumb .sep { color: var(--text-dim); }
+
+  /* ─── HERO ─── */
+  #hero { background: var(--bg); }
+  #hero .section-wrap { padding-top: 5rem; padding-bottom: 4rem; }
+
+  .hero-eyebrow {
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-size: clamp(var(--size-2xl), 4vw, var(--size-4xl));
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .scqa-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .scqa-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+
+  .scqa-block:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .scqa-label {
+    font-size: var(--size-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .scqa-s .scqa-label { color: var(--text-muted); }
+  .scqa-c .scqa-label { color: var(--amber); }
+  .scqa-q .scqa-label { color: #60a5fa; }
+  .scqa-a .scqa-label { color: var(--accent); }
+
+  .scqa-block p {
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+
+  .pull-quote {
+    border-left: 3px solid var(--accent);
+    padding: 1.5rem 2rem;
+    background: var(--accent-glow);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    margin: 2rem 0;
+  }
+
+  .pull-quote p {
+    font-size: clamp(var(--size-lg), 2vw, var(--size-xl));
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.5;
+    max-width: 60ch;
+  }
+
+  .pull-quote .attribution {
+    font-size: var(--size-sm);
+    color: var(--accent-dim);
+    margin-top: 0.75rem;
+    font-style: italic;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .hero-stat .num {
+    font-size: var(--size-2xl);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .hero-stat .label {
+    font-size: var(--size-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ─── SECTION DIVIDER ─── */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ─── KEY LINE SECTIONS ─── */
+  .key-line-section {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .key-line-section .section-wrap { padding: 4rem 3rem; }
+
+  .section-kicker {
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .kicker-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-size: clamp(var(--size-xl), 2.5vw, var(--size-2xl));
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+    max-width: 68ch;
+  }
+
+  .section-lead {
+    font-size: var(--size-lg);
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 68ch;
+    margin-bottom: 2rem;
+  }
+
+  /* ─── DETAIL CARDS ─── */
+  .details-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .detail-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+  }
+
+  .detail-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px var(--accent-glow);
+  }
+
+  .detail-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    gap: 1rem;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    color: var(--text);
+    font-family: inherit;
+  }
+
+  .detail-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .detail-toggle-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .detail-tag {
+    font-size: var(--size-xs);
+    font-weight: 700;
+    color: var(--accent-dim);
+    background: var(--accent-glow);
+    border-radius: 3px;
+    padding: 0.15rem 0.4rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .detail-title {
+    font-size: var(--size-sm);
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .detail-chevron {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    color: var(--text-dim);
+    transition: transform var(--transition);
+  }
+
+  .detail-toggle[aria-expanded="true"] .detail-chevron {
+    transform: rotate(180deg);
+    color: var(--accent);
+  }
+
+  .detail-toggle[aria-expanded="true"] + .detail-body {
+    background: var(--surface-2);
+  }
+
+  .detail-body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 320ms ease;
+    border-top: 0px solid var(--border);
+  }
+
+  .detail-body.open {
+    border-top-width: 1px;
+  }
+
+  .detail-body-inner {
+    padding: 1.25rem;
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    line-height: 1.65;
+    max-width: 62ch;
+  }
+
+  .detail-body-inner p + p { margin-top: 0.75rem; }
+
+  .detail-body-inner strong { color: var(--text); font-weight: 600; }
+
+  .detail-body-inner .code {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-size: var(--size-xs);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    overflow-x: auto;
+    line-height: 1.5;
+    color: var(--accent);
+    white-space: pre;
+  }
+
+  /* ─── REFUTED CLAIMS GALLERY ─── */
+  .refuted-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .refuted-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.75rem 1rem;
+  }
+
+  .refuted-claim {
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .refuted-why { font-size: var(--size-sm); color: var(--text-muted); line-height: 1.4; }
+
+  /* ─── MEMORY TIERS ─── */
+  .tier-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .tier-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .tier-name {
+    font-size: var(--size-xs);
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .tier-desc { font-size: var(--size-sm); color: var(--text-muted); }
+
+  /* ─── IMPORTANCE SCORER ─── */
+  .scorer-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .scorer-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .scorer-label {
+    font-size: var(--size-xs);
+    color: var(--text-muted);
+    width: 100px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .scorer-bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .scorer-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+    transition: width 800ms cubic-bezier(0.23, 1, 0.32, 1);
+    width: 0;
+  }
+
+  .scorer-bar-fill.animated { width: var(--w); }
+
+  .scorer-val {
+    font-size: var(--size-xs);
+    font-weight: 700;
+    color: var(--accent);
+    width: 2.5rem;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scorer-note {
+    font-size: var(--size-xs);
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* ─── KNOWLEDGE LEDGER ─── */
+  .ledger {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 40px 90px 1fr;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    transition: background var(--transition);
+  }
+
+  .ledger-row:last-child { border-bottom: none; }
+  .ledger-row:hover { background: var(--surface-2); }
+
+  .ledger-layer {
+    font-size: var(--size-xs);
+    font-weight: 700;
+    color: var(--accent);
+    text-align: center;
+  }
+
+  .ledger-name {
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .ledger-desc { font-size: var(--size-xs); color: var(--text-dim); }
+
+  /* ─── LOOP DIAGRAM ─── */
+  .loop-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1rem 0;
+  }
+
+  .loop-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .loop-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 2rem;
+  }
+
+  .loop-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--accent);
+    flex-shrink: 0;
+    margin-top: 0.3rem;
+  }
+
+  .loop-line {
+    width: 2px;
+    flex: 1;
+    min-height: 2rem;
+    background: var(--border);
+    margin: 0.25rem 0;
+  }
+
+  .loop-label {
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.2rem;
+  }
+
+  .loop-detail { font-size: var(--size-sm); color: var(--text-muted); margin-bottom: 0.75rem; }
+
+  /* ─── REVEAL ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 480ms ease, transform 480ms ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 60ms; }
+  .reveal-delay-2 { transition-delay: 120ms; }
+  .reveal-delay-3 { transition-delay: 180ms; }
+  .reveal-delay-4 { transition-delay: 240ms; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { display: none; }
+    main { margin-left: 0; }
+    .section-wrap { padding: 3rem 1.5rem; }
+    .scqa-grid { grid-template-columns: 1fr; }
+    .hero-meta { gap: 1.5rem; }
+    .tier-row { grid-template-columns: 1fr; gap: 0.25rem; }
+    .ledger-row { grid-template-columns: 40px 1fr; }
+    .ledger-name { display: none; }
+    .scorer-label { width: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── SIDEBAR NAV ─── -->
+<nav aria-label="Primary navigation">
+  <div class="nav-brand">Greenhouse · Illuminate</div>
+
+  <div class="nav-section-label">Governing Thought</div>
+  <a href="#hero" data-target="hero">
+    <span class="nav-num">GT</span>
+    Memory Is Control
+  </a>
+
+  <div class="nav-section-label">Arguments</div>
+  <a href="#the-research" data-target="the-research">
+    <span class="nav-num">01</span>
+    The Research Was the Pattern
+  </a>
+  <a href="#memory-findings" data-target="memory-findings">
+    <span class="nav-num">02</span>
+    What Memory Must Be Built As
+  </a>
+  <a href="#greenhouse-proof" data-target="greenhouse-proof">
+    <span class="nav-num">03</span>
+    The Greenhouse as Live Proof
+  </a>
+  <a href="#feedback-loop" data-target="feedback-loop">
+    <span class="nav-num">04</span>
+    The Self-Stabilizing Loop
+  </a>
+  <a href="#hedging-architecture" data-target="hedging-architecture">
+    <span class="nav-num">05</span>
+    Hedged by Design
+  </a>
+</nav>
+
+<!-- ─── MAIN ─── -->
+<main>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <div class="section-wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#hero">Greenhouse</a>
+        <span class="sep">›</span>
+        <span>Memory Is Control</span>
+      </nav>
+
+      <div class="hero-eyebrow">Adversarially Verified Survey · Greenhouse</div>
+
+      <h1 class="hero-title">Memory Is Control,<br>Not Storage</h1>
+
+      <div class="scqa-grid" role="region" aria-label="Narrative arc">
+        <div class="scqa-block scqa-s">
+          <div class="scqa-label">Context</div>
+          <p>AI practitioners face a field saturated with vendor-authored statistics, quarterly framework churn, and benchmark scores that measure harness quality more than agent capability. The signal-to-noise ratio is structurally low.</p>
+        </div>
+        <div class="scqa-block scqa-c">
+          <div class="scqa-label">The Problem</div>
+          <p>A 31-agent adversarial pipeline examined 162 claims and refuted 7 outright — fabricated figures, distorted projections, false citations. The durable findings were structural. The most consequential: no surveyed system fully implemented the memory architecture the evidence called for.</p>
+        </div>
+        <div class="scqa-block scqa-q">
+          <div class="scqa-label">The Question</div>
+          <p>What does it actually look like when an agentic system operationalizes its own research findings — and what does the loop between research, implementation, and self-generated literature teach us about memory?</p>
+        </div>
+        <div class="scqa-block scqa-a">
+          <div class="scqa-label">Governing Thought</div>
+          <p>The adversarially-verified survey proved that memory requires a tiered control architecture driven by importance, not recency — and the Greenhouse validates this by enacting it: a pipeline that researched memory became a self-verifying memory system whose literature auto-generates from its own promoted facts.</p>
+        </div>
+      </div>
+
+      <div class="pull-quote" role="note">
+        <p>A pipeline that researched memory became a memory system whose literature auto-generates from its own promoted facts — closing the loop the whitepaper described but no surveyed system had achieved.</p>
+        <div class="attribution">Governing Thought · derived from adversarial survey of 139 sources, 162 verified claims</div>
+      </div>
+
+      <div class="hero-meta" aria-label="Pipeline statistics">
+        <div class="hero-stat">
+          <span class="num">31</span>
+          <span class="label">Autonomous agents</span>
+        </div>
+        <div class="hero-stat">
+          <span class="num">1.53M</span>
+          <span class="label">Tokens processed</span>
+        </div>
+        <div class="hero-stat">
+          <span class="num">162</span>
+          <span class="label">Claims examined</span>
+        </div>
+        <div class="hero-stat">
+          <span class="num">7</span>
+          <span class="label">Claims refuted</span>
+        </div>
+        <div class="hero-stat">
+          <span class="num">94</span>
+          <span class="label">Semantic facts promoted</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ═══ KEY LINE 1 ═══ -->
+  <section id="the-research" class="key-line-section">
+    <div class="section-wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#hero">Governing Thought</a>
+        <span class="sep">›</span>
+        <span>The Research Was the Pattern</span>
+      </nav>
+
+      <div class="section-kicker">
+        <span class="kicker-num">01</span>
+      </div>
+      <h2 class="section-title reveal">The Research Was the Pattern It Studied</h2>
+      <p class="section-lead reveal reveal-delay-1">The 31-agent adversarial pipeline instantiated the exact orchestrator-worker + adversarial verification architecture the whitepaper identifies as the gold standard — before the whitepaper was written. The method and the finding were the same thing.</p>
+
+      <div class="details-grid">
+
+        <article class="detail-card reveal reveal-delay-1">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d1-1">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">1.1</span>
+              <span class="detail-title">9 angles × 3 stages: the adversarial pipeline anatomy</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d1-1" role="region">
+            <div class="detail-body-inner">
+              <p>The research decomposed into <strong>9 angles</strong> — 8 design pillars (kernel/orchestration, multi-tenancy/isolation, coordination/lifecycle, data/memory, language/DSL, self-recursion, security/sovereignty, observability/evaluation) plus a framework-landscape angle.</p>
+              <p>Each angle ran 3 independent stages in sequence:</p>
+              <div class="code">1. Search    — broad web search, biased toward primary docs + arXiv
+2. Deep-read  — full source fetch; dense dossier of findings +
+                falsifiable claims tagged with stake level + URL
+3. Verify     — separate fact-checker instructed to REFUTE,
+                not agree; re-fetched primary sources</div>
+              <p>A 3-skeptic refutation panel then challenged the framework matrix for bias, version drift, and overstatement. Total: <strong>31 agents · ~1.53M tokens · 595 tool calls · 139 unique sources</strong>.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-2">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d1-2">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">1.2</span>
+              <span class="detail-title">7 refuted claims: what fabricated statistics actually look like</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d1-2" role="region">
+            <div class="detail-body-inner">
+              <p>Each refuted claim was a plausible, specifically-numbered assertion with a real-looking citation. On inspection, the source did not contain the figure.</p>
+              <div class="refuted-gallery">
+                <div class="refuted-item">
+                  <div class="refuted-claim">Distorted projection</div>
+                  <div class="refuted-why">"40% of multi-agent pilots fail within six months" — actually a Gartner projection about project <em>cancellations by 2027</em>. Wrong timeframe, wrong metric, wrong framing.</div>
+                </div>
+                <div class="refuted-item">
+                  <div class="refuted-claim">Fabricated investigation</div>
+                  <div class="refuted-why">MITRE "OpenClaw investigation (Feb 2026), 36.8% malicious-skill rate" — numbers originate from a Shandong University preprint that used MITRE only to derive terminology. No investigation exists.</div>
+                </div>
+                <div class="refuted-item">
+                  <div class="refuted-claim">Non-existent benchmark</div>
+                  <div class="refuted-why">BAML "84.4% token reduction (632→99 tokens)" — cited repo contains no benchmarks named TaskDecomposition or ResearchExecution. No such figure anywhere in the source.</div>
+                </div>
+                <div class="refuted-item">
+                  <div class="refuted-claim">Fabricated baseline</div>
+                  <div class="refuted-why">MetaAgent "50% higher checkpoint rate vs human-designed" — the cited table shows no ~57% baseline anywhere. The "50%" in the abstract refers to absolute count, not a comparison to a fabricated figure.</div>
+                </div>
+              </div>
+              <p><strong>Result:</strong> 102 supported · 53 contested · 7 refuted from 162 examined. The 53 contested claims appear in the whitepaper body only with explicit attribution and hedging.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-3">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d1-3">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">1.3</span>
+              <span class="detail-title">Why structural findings outlast benchmark numbers</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d1-3" role="region">
+            <div class="detail-body-inner">
+              <p>The whitepaper states directly: <strong>"The quantitative texture of this domain is unreliable by default: headline numbers frequently originate with a commercially interested party, drift within a quarter, or cannot be traced to their cited source."</strong></p>
+              <p>Benchmark scores measure the deployment stack as much as the model: inference configuration variance, prompt scaffold size (200–2,000 words), memory truncation strategy, tool schema choices, and live environment drift each independently distort results.</p>
+              <p>The durable output is the tensions — design principles that resolve structural conflicts. Example: <em>context isolation is non-negotiable at scale</em> (15× token multiplier), not because one framework showed a number but because it follows necessarily from the economics of multi-agent context.</p>
+              <p>This is the same reason the Greenhouse consolidation policy weights content length (0.4) over recency (minimal discriminative value) — structural signal outlasts temporal signal.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ═══ KEY LINE 2 ═══ -->
+  <section id="memory-findings" class="key-line-section">
+    <div class="section-wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#hero">Governing Thought</a>
+        <span class="sep">›</span>
+        <span>What Memory Must Be Built As</span>
+      </nav>
+
+      <div class="section-kicker">
+        <span class="kicker-num">02</span>
+      </div>
+      <h2 class="section-title reveal">What Memory Must Be Built As</h2>
+      <p class="section-lead reveal reveal-delay-1">Not what to store, but how to govern what moves between tiers. The consolidation transition from episodic to semantic is the most consequential, most underbuilt, and most consistently misunderstood layer in the surveyed literature — and its failure mode is invisible.</p>
+
+      <div class="details-grid">
+
+        <article class="detail-card reveal reveal-delay-1">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d2-1">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">2.1</span>
+              <span class="detail-title">Five distinct memory types, five distinct substrates</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d2-1" role="region">
+            <div class="detail-body-inner">
+              <p>The Portable Agent Memory protocol and independent surveys converge on five types, each demanding a different substrate and retrieval mechanism:</p>
+              <div class="tier-list">
+                <div class="tier-row">
+                  <span class="tier-name">Working</span>
+                  <span class="tier-desc">The context window itself. Bounded by model architecture. Transient goals and scratch computation.</span>
+                </div>
+                <div class="tier-row">
+                  <span class="tier-name">Episodic</span>
+                  <span class="tier-desc">Time-stamped interaction records. Vector or structured time-series stores. The vault in Greenhouse.</span>
+                </div>
+                <div class="tier-row">
+                  <span class="tier-name">Semantic</span>
+                  <span class="tier-desc">Factual subject–predicate–object structure abstracted across episodes. Knowledge-graph or parametric form.</span>
+                </div>
+                <div class="tier-row">
+                  <span class="tier-name">Procedural</span>
+                  <span class="tier-desc">Reusable skills and workflows. Executable skill repository. Voyager's 15.3× faster milestone progression came from this tier.</span>
+                </div>
+                <div class="tier-row">
+                  <span class="tier-name">Identity</span>
+                  <span class="tier-desc">Persistent persona and preference state. Long-lived assistant configuration.</span>
+                </div>
+              </div>
+              <p>A single RAG layer conflates all five. The engineering consequence: each type fails differently, silently.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-2">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d2-2">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">2.2</span>
+              <span class="detail-title">The consolidation finding: deduplication beats compression</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d2-2" role="region">
+            <div class="detail-body-inner">
+              <p><strong>The counter-intuitive result:</strong> aggressive summarization-based consolidation reduced LongMemEval accuracy to <strong>48.4%</strong>. Deduplication-only preserved or improved accuracy while shrinking the store.</p>
+              <p>The mechanism: lossy compression silently discards low-frequency details. An agent's edge-case competence lives in those details. Summarization collapses variance before it can be promoted.</p>
+              <p>The second counter-intuitive finding: <strong>recency provides minimal discriminative value</strong> as an importance signal. Importance scoring that weights content length and turn position most heavily outperforms recency-centric heuristics.</p>
+              <p>With adaptive forgetting (exponential decay + interference-based removal): <strong>97.2% retention precision</strong> and 58% store reduction on a 13K-issue dataset. The store self-regulates at 300–500 events regardless of input volume.</p>
+              <p>Greenhouse implements this directly. <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">EntryClusterer</code> deduplicates at Jaccard ≥ 0.80 before any compression. 364 vault entries → 94 semantic facts, 234 near-duplicates collapsed.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-3">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d2-3">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">2.3</span>
+              <span class="detail-title">ImportanceScorer: the spec and the implementation</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d2-3" role="region">
+            <div class="detail-body-inner">
+              <p>The whitepaper's §4.2 recommendation maps directly to four components in <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">orky/consolidation.py</code>:</p>
+              <div class="scorer-bars" aria-label="ImportanceScorer component weights">
+                <div class="scorer-row">
+                  <span class="scorer-label">Content length</span>
+                  <div class="scorer-bar-track">
+                    <div class="scorer-bar-fill" style="--w:40%" data-animate></div>
+                  </div>
+                  <span class="scorer-val">0.40</span>
+                </div>
+                <div class="scorer-row">
+                  <span class="scorer-label">Signal quality</span>
+                  <div class="scorer-bar-track">
+                    <div class="scorer-bar-fill" style="--w:35%" data-animate></div>
+                  </div>
+                  <span class="scorer-val">0.35</span>
+                </div>
+                <div class="scorer-row">
+                  <span class="scorer-label">Tokens saved</span>
+                  <div class="scorer-bar-track">
+                    <div class="scorer-bar-fill" style="--w:20%" data-animate></div>
+                  </div>
+                  <span class="scorer-val">0.20</span>
+                </div>
+                <div class="scorer-row">
+                  <span class="scorer-label">Trust (sanitized)</span>
+                  <div class="scorer-bar-track">
+                    <div class="scorer-bar-fill" style="--w:5%" data-animate></div>
+                  </div>
+                  <span class="scorer-val">0.05</span>
+                </div>
+              </div>
+              <p class="scorer-note">Recency: intentionally excluded. Length saturates at 300 chars → 1.0. Signal score: 1.0 for [signal]-tagged entries, 0.3 otherwise.</p>
+              <p>The promotion threshold is 0.4. Accessed facts have their <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">access_count</code> incremented on every retrieval — and are immune to decay regardless of importance score.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-4">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d2-4">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">2.4</span>
+              <span class="detail-title">Provenance as a first-class primitive</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d2-4" role="region">
+            <div class="detail-body-inner">
+              <p>Three independent protocol lines converge on cryptographically-anchored memory lineage:</p>
+              <p><strong>Portable Agent Memory</strong> serializes the 5-type model as a Merkle-DAG with Ed25519 root signatures. Transfer Continuity Score: 0.84–0.88 across heterogeneous model pairs (vs. 0.28–0.45 baseline without the protocol).</p>
+              <p><strong>MemLineage</strong> attaches RFC-6962 Merkle logs of per-principal Ed25519-signed entries. Sensitive-action gates refuse dispatches whose justification descends from untrusted external ancestors. The only evaluated configuration to <strong>reduce attack success to 0%</strong> across all tested memory-poisoning workloads.</p>
+              <p><strong>Event-sourced agent state (ESAA)</strong>: agents emit validated JSON intentions rather than mutating state directly. Deterministic orchestrator persists them. SHA-256 projection verification. Zero rejected outputs across two case studies.</p>
+              <p>The convergence of three independent groups on Merkle-anchored signatures indicates this is becoming a baseline expectation, not a research curiosity.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ═══ KEY LINE 3 ═══ -->
+  <section id="greenhouse-proof" class="key-line-section">
+    <div class="section-wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#hero">Governing Thought</a>
+        <span class="sep">›</span>
+        <span>The Greenhouse as Live Proof</span>
+      </nav>
+
+      <div class="section-kicker">
+        <span class="kicker-num">03</span>
+      </div>
+      <h2 class="section-title reveal">The Greenhouse as Live Proof</h2>
+      <p class="section-lead reveal reveal-delay-1">The KNOWLEDGE_LEDGER traces every artifact from whitepaper pillar to live HTML surface. Not as a documentation exercise — as an enforcement mechanism. The ledger is the architecture; the implementation is the argument that the whitepaper's structural findings are actually buildable.</p>
+
+      <div class="details-grid">
+
+        <article class="detail-card reveal reveal-delay-1">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d3-1">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">3.1</span>
+              <span class="detail-title">L0→L4: the provenance chain</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d3-1" role="region">
+            <div class="detail-body-inner">
+              <div class="ledger">
+                <div class="ledger-row">
+                  <span class="ledger-layer">L0</span>
+                  <span class="ledger-name">Root anchors</span>
+                  <span class="ledger-desc">P1–P8 whitepaper pillars + Pr1–Pr11 design principles + OP1–OP7 open problems</span>
+                </div>
+                <div class="ledger-row">
+                  <span class="ledger-layer">L1</span>
+                  <span class="ledger-name">Synthesis</span>
+                  <span class="ledger-desc">agentic-os-design-whitepaper.md + framework-comparison-matrix.md + sources.md + research-log.md + INSIGHTS.md (live bridge)</span>
+                </div>
+                <div class="ledger-row">
+                  <span class="ledger-layer">L2</span>
+                  <span class="ledger-name">Implementation</span>
+                  <span class="ledger-desc">orky/agent.py · governance.py · knowledge_router.py · consolidation.py · mem_palace.py · replay.py · soil.py · rtk_vault.py</span>
+                </div>
+                <div class="ledger-row">
+                  <span class="ledger-layer">L3</span>
+                  <span class="ledger-name">Literature</span>
+                  <span class="ledger-desc">5 HTML pages that render L1 knowledge — read-only from a content perspective; source of truth is the .md file they derive from</span>
+                </div>
+                <div class="ledger-row">
+                  <span class="ledger-layer">L4</span>
+                  <span class="ledger-name">Live surfaces</span>
+                  <span class="ledger-desc">insights.html · rtk_dashboard.html · soil_state.json → site/index.html · semantic-graph · graphify_insights.html — never hand-authored</span>
+                </div>
+              </div>
+              <p>Propagation rule: any change to a file in Layer N must trigger updates in all downstream layers. <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">check_freshness.py</code> exits 1 if any tracked HTML is stale relative to its source.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-2">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d3-2">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">3.2</span>
+              <span class="detail-title">GEN slots and DP-1: enforced auto-derivation</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d3-2" role="region">
+            <div class="detail-body-inner">
+              <p><strong>DP-1 (Data Over Prose Law):</strong> All operator-facing HTML surfaces must derive every quantitative fact from a generator script reading a single live source of truth. Hardcoded metrics in HTML are a violation.</p>
+              <p>The render pipeline enforces this in sequence:</p>
+              <div class="code">python3 gen_literature.py    # fills GEN slots in HTML from .md sources
+python3 gen_insights.py      # patches live stat blocks
+python3 check_freshness.py   # exits 1 if any tracked page is stale
+python3 gen_site_registry.py --strict  # exits 1 if unregistered artifacts</div>
+              <p>GEN slots use a comment syntax: <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">&lt;!-- GEN source="file.md" section="§N" --&gt;</code>. The pipeline fills the slot from the markdown source on every run. The HTML can never drift from the source.</p>
+              <p>This is the same invariant the whitepaper recommends for memory provenance: the source of truth must be structurally upstream of the rendered form, not the other way around.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-3">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d3-3">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">3.3</span>
+              <span class="detail-title">Consolidation run: 364 → 94 facts, 234 collapsed</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d3-3" role="region">
+            <div class="detail-body-inner">
+              <p>First live run of the whitepaper's §4.2 consolidation policy against the Greenhouse vault:</p>
+              <div class="code">Input:    364 episodic vault entries (RTK command history)
+Process:  EntryClusterer — Jaccard ≥ 0.80 deduplication
+          ImportanceScorer — 4-component weighted scoring
+          ConsolidationPolicy — promote if importance ≥ 0.4
+Output:   94 semantic facts promoted
+          234 near-duplicates collapsed
+          36 entries decayed (access_count = 0, aged out)</div>
+              <p>The semantic facts are stored at <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">~/.greenhouse/semantic_store.jsonl</code>. Each fact carries topic, importance score, source_ids tracing back to vault entries, and access_count.</p>
+              <p>The 94 facts are now available to <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">knowledge_router.py</code> as <strong>[L3 · SEMANTIC — consolidated]</strong> — the third tier in the Minto Pyramid context assembly, injected before vault hits and graph results.</p>
+              <p>Obsidian export: 94 markdown pages with verb-prefix wikilinks written to <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">~/Documents/Obsidian Vault/Greenhouse/</code>. 87/94 files have live wikilinks.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-4">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d3-4">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">3.4</span>
+              <span class="detail-title">Semantic graph: structure visible, not just stored</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d3-4" role="region">
+            <div class="detail-body-inner">
+              <p><code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">gen_semantic_graph.py</code> builds a D3 v7 force-directed graph from the semantic store. The graph has two edge types mirroring the retrieval-layer fork in §4.3:</p>
+              <p><strong>Verb-cluster edges</strong> (solid gray): connect facts that share a verb prefix in their topic key — structural proximity by operation type. 76 edges.</p>
+              <p><strong>Graphify community edges</strong> (amber dashed): connect facts that mention files from the same code-review-graph community — structural proximity by codebase region. 46 edges.</p>
+              <p>Node radius: <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">5 + importance × 12 + min(access_count, 8) × 1.5</code>. Use-driven weight is visible in the graph: facts retrieved more often are physically larger.</p>
+              <p>This is the hybrid retrieval pattern from §4.3 made tangible: semantic similarity (verb clusters) + relational reasoning (code communities) in a single navigable surface. Registered in the cockpit TOOLS array; tracked by <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">check_freshness.py</code>.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ═══ KEY LINE 4 ═══ -->
+  <section id="feedback-loop" class="key-line-section">
+    <div class="section-wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#hero">Governing Thought</a>
+        <span class="sep">›</span>
+        <span>The Self-Stabilizing Loop</span>
+      </nav>
+
+      <div class="section-kicker">
+        <span class="kicker-num">04</span>
+      </div>
+      <h2 class="section-title reveal">The Self-Stabilizing Loop</h2>
+      <p class="section-lead reveal reveal-delay-1">The whitepaper's Entropy Decay theorem says closed-loop self-improvement collapses without an external signal floor. The Greenhouse literature pipeline is that floor — enforced by a freshness gate, not by convention.</p>
+
+      <div class="details-grid">
+
+        <article class="detail-card reveal reveal-delay-1">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d4-1">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">4.1</span>
+              <span class="detail-title">Entropy Decay theorem: why closed-loop systems collapse</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d4-1" role="region">
+            <div class="detail-body-inner">
+              <p>A mathematical treatment proposes two results bounding closed-loop self-improvement:</p>
+              <p><strong>Entropy Decay:</strong> recursive self-training on finite self-generated data monotonically reduces distributional diversity — forgetting rare events and tails first.</p>
+              <p><strong>Variance Amplification:</strong> the mean distribution executes a random walk and drifts from ground truth — both holding under a vanishing-external-signal condition.</p>
+              <p>These dynamics do <em>not</em> apply when a <strong>strictly positive external signal floor</strong> is maintained. Independent empirical work corroborates: pure closed-loop self-play hits diminishing returns, and hybrid approaches combining synthetic with human-verified data consistently outperform closed-loop variants.</p>
+              <p>The practical engineering recommendation — keep at least ~20% human-verified ground truth in any self-improving loop — appears as a near-universal condition, not an optional enhancement.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-2">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d4-2">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">4.2</span>
+              <span class="detail-title">The GEN pipeline as enforced external grounding</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d4-2" role="region">
+            <div class="detail-body-inner">
+              <p>The GEN slot pipeline prevents the Entropy Decay failure mode structurally:</p>
+              <p><strong>gen_literature.py reads .md source files</strong> — which are human-authored, adversarially verified documents, not previously generated HTML. The HTML is always downstream of the markdown. The markdown is the external ground truth.</p>
+              <p><code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">check_freshness.py</code> enforces this as a hard gate: if any tracked HTML is newer than its source .md, the exit code is 1 and the commit is blocked. This is the external grounding invariant made mechanical.</p>
+              <p>The loop cannot collapse into generating HTML from HTML. The direction of information flow is enforced by the CI pipeline, not by convention.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-3">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d4-3">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">4.3</span>
+              <span class="detail-title">Access-count feedback: use-driven grounding</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d4-3" role="region">
+            <div class="detail-body-inner">
+              <p>The semantic store's access-count mechanism implements the external grounding requirement at the fact level:</p>
+              <p>Every time a semantic fact is retrieved into the working context, <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">SemanticStore.record_access()</code> increments the fact's <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">access_count</code> and bumps <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">ts_updated</code>. Accessed facts are <strong>immune to decay</strong> regardless of their importance score.</p>
+              <p>This means: facts that are useful in practice survive. Facts that are never retrieved decay. The store self-selects for relevance without requiring a human to curate it.</p>
+              <p>The access signal is the external grounding signal. Not time, not a curator, not a recency heuristic — actual usage in actual sessions. This is use-driven grounding, the one form of external signal an autonomous system can generate without fabrication.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-4">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d4-4">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">4.4</span>
+              <span class="detail-title">The complete loop: research to context injection</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d4-4" role="region">
+            <div class="detail-body-inner">
+              <div class="loop-diagram" role="list">
+                <div class="loop-step" role="listitem">
+                  <div class="loop-connector">
+                    <div class="loop-dot"></div>
+                    <div class="loop-line"></div>
+                  </div>
+                  <div>
+                    <div class="loop-label">Whitepaper (L1)</div>
+                    <div class="loop-detail">31-agent adversarial pipeline produces 139 sources, 102 verified claims. Structural findings extracted.</div>
+                  </div>
+                </div>
+                <div class="loop-step" role="listitem">
+                  <div class="loop-connector">
+                    <div class="loop-dot"></div>
+                    <div class="loop-line"></div>
+                  </div>
+                  <div>
+                    <div class="loop-label">Implementation (L2)</div>
+                    <div class="loop-detail">orky/consolidation.py, mem_palace.py, knowledge_router.py — each pillar's structural finding becomes running code. KNOWLEDGE_LEDGER maps every line to a whitepaper anchor.</div>
+                  </div>
+                </div>
+                <div class="loop-step" role="listitem">
+                  <div class="loop-connector">
+                    <div class="loop-dot"></div>
+                    <div class="loop-line"></div>
+                  </div>
+                  <div>
+                    <div class="loop-label">Literature (L3)</div>
+                    <div class="loop-detail">gen_literature.py fills GEN slots in HTML from the .md sources. check_freshness enforces no drift. 5 HTML artifacts derive from verified content.</div>
+                  </div>
+                </div>
+                <div class="loop-step" role="listitem">
+                  <div class="loop-connector">
+                    <div class="loop-dot"></div>
+                    <div class="loop-line"></div>
+                  </div>
+                  <div>
+                    <div class="loop-label">Semantic Store (L4)</div>
+                    <div class="loop-detail">ConsolidationPolicy promotes vault entries to semantic facts. 364 → 94 facts. access_count feedback makes the store use-adaptive.</div>
+                  </div>
+                </div>
+                <div class="loop-step" role="listitem">
+                  <div class="loop-connector">
+                    <div class="loop-dot"></div>
+                    <div class="loop-line" style="background:var(--accent);opacity:0.3;"></div>
+                  </div>
+                  <div>
+                    <div class="loop-label">Context Injection</div>
+                    <div class="loop-detail">knowledge_router.pyramid_assemble() queries semantic store concurrently with vault + graph. Future sessions receive [L3 · SEMANTIC — consolidated] before vault hits — the promoted findings from the research injected as tier-3 context.</div>
+                  </div>
+                </div>
+                <div class="loop-step" role="listitem">
+                  <div class="loop-connector">
+                    <div class="loop-dot" style="background:var(--accent);box-shadow:0 0 8px var(--accent);"></div>
+                  </div>
+                  <div>
+                    <div class="loop-label" style="color:var(--accent);">↩ Loop closes</div>
+                    <div class="loop-detail">Sessions that use the promoted facts increment access_count. Useful facts strengthen; unused facts decay. The system self-selects for relevance using real usage as its signal.</div>
+                  </div>
+                </div>
+              </div>
+              <p style="margin-top:1rem;font-size:var(--size-sm);color:var(--text-muted);">This is the architecture the whitepaper said was missing: memory as a tiered control policy, not a storage add-on, with a principled consolidation transition and an enforced external grounding floor.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ═══ ARGUMENT 5 ═══ -->
+  <section id="hedging-architecture" class="key-line-section">
+    <div class="section-wrap">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#hero">Governing Thought</a>
+        <span class="sep">›</span>
+        <span>Hedged by Design</span>
+      </nav>
+
+      <div class="section-kicker">
+        <span class="kicker-num">05</span>
+      </div>
+      <h2 class="section-title reveal">The System Hedges Its Own Memory by Design</h2>
+      <p class="section-lead reveal reveal-delay-1">Every tier of the memory architecture includes a mechanism that limits its own trust. Not by convention, not by documentation, not by operator discipline — structurally, in code. The vault sanitizes before storing. The soil degrades before it depletes. The correction register breaks before it loops. The chain hashes before it archives. These are not safety features layered on top of a working system. They are what makes the system work.</p>
+
+      <div class="details-grid">
+
+        <article class="detail-card reveal reveal-delay-1">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d5-1">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">5.1</span>
+              <span class="detail-title">The rhabdomant: scanning inward and outward</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d5-1" role="region">
+            <div class="detail-body-inner">
+              <p>The vault's soil probe — the rhabdomant — operates on a dual-direction scan. It reads <em>inward</em> across the current session context, identifying what is still signal-bearing versus exhausted token mass. It reads <em>outward</em> across incoming material at the session membrane before any new signal enters the active soil.</p>
+              <p><code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">rtk_vault.py</code> implements this via <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">sanitize()</code>: a REDACT_PATTERNS filter that scrubs tokens matching credential, key, and injection patterns before storage. The vault never stores a raw artifact — every entry passes through the membrane before it is archived.</p>
+              <p>The chain integrity mechanism enforces this after the fact: <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">entry_chain_hash()</code> covers only immutable fields, and each entry carries a <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">prev_hash</code> linking it to its predecessor. If any entry in the chain is tampered with, the chain breaks. The vault is not just append-only in intent — it is append-only in verification.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-2">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d5-2">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">5.2</span>
+              <span class="detail-title">The soil FSM: monotonic degradation, no recovery within session</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d5-2" role="region">
+            <div class="detail-body-inner">
+              <p><code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">orky/soil.py</code> implements a strict finite state machine over the session's logical context state. The FSM has four states in a fixed degradation order: <strong>fertile → compacted → contaminated → depleted</strong>.</p>
+              <p>Transitions are monotonic: a fertile session can compact; a compacted session can become contaminated; but a contaminated session cannot self-recover to fertile within the same session. The FSM enforces asymmetry between degradation and recovery — the same asymmetry the whitepaper found absent in every surveyed runtime.</p>
+              <p>This is not a heuristic. The <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">_SOIL_ORDER</code> list enforces traversal direction in code. Improvement requires a new session, not a correction attempt.</p>
+              <div style="margin:1rem 0;padding:1rem;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);font-family:monospace;font-size:var(--size-xs);color:var(--text-muted);">
+                fertile → compacted → contaminated → depleted<br>
+                <span style="color:var(--accent-dim);"># one-directional within session</span><br>
+                <span style="color:var(--text-dim);"># recovery only at session boundary</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-3">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d5-3">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">5.3</span>
+              <span class="detail-title">CorrectionRegister: the circuit breaker against infinite loops</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d5-3" role="region">
+            <div class="detail-body-inner">
+              <p>The whitepaper's governance section identifies recursive self-correction as a structural risk: a model that corrects itself, finds the correction insufficient, and corrects again — iterating until the context is exhausted. The Greenhouse resolves this mechanically.</p>
+              <p><code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">orky/governance.py</code> implements <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">CorrectionRegister</code> with a hard cap: <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">max=3</code>. Each correction attempt against a named problem increments the register. On the third attempt with no resolution, the register is frozen for that problem and escalation to the operator is mandatory — the system cannot self-certify resolution or attempt a fourth pass.</p>
+              <p>This is the same circuit-breaker pattern used in distributed systems to prevent retry storms. Applied to self-correction loops, it transforms an unbounded recursion risk into a bounded, observable, escalation event.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="detail-card reveal reveal-delay-4">
+          <button class="detail-toggle" aria-expanded="false" aria-controls="d5-4">
+            <div class="detail-toggle-inner">
+              <span class="detail-tag">5.4</span>
+              <span class="detail-title">The Membrane: XPIA defense at the session boundary</span>
+            </div>
+            <svg class="detail-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="detail-body" id="d5-4" role="region">
+            <div class="detail-body-inner">
+              <p>Cross-Prompt Injection Attacks (XPIA) — where malicious instructions embedded in retrieved documents are executed as operator commands — represent the primary security vector for memory-augmented agents. The Greenhouse addresses this at the session entry boundary.</p>
+              <p><code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">governance.py</code>'s <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">Membrane</code> class applies <code style="font-family:monospace;font-size:var(--size-xs);color:var(--accent);">_INJECTION_RE</code> — a compiled regex pattern set — against incoming material at the session membrane before any retrieved content enters the active context. Content that matches injection patterns is flagged before it can influence the model's behavior.</p>
+              <p>This is the rhabdomant's outward scan instantiated in code. The vault sanitizes what goes in. The membrane scans what comes back out into context. Both directions of information flow are gated. The control is structural, not reliant on the model detecting its own manipulation after the fact.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // ─── HASH ROUTING + SCROLL SPY ───
+  const navLinks = document.querySelectorAll('nav a[data-target]');
+  const sections = document.querySelectorAll('section[id]');
+
+  function setActive(id) {
+    navLinks.forEach(a => {
+      const active = a.dataset.target === id;
+      a.classList.toggle('active', active);
+      if (active) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+  }
+
+  // init from hash
+  const initHash = location.hash.slice(1) || 'hero';
+  setActive(initHash);
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) setActive(e.target.id);
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+
+  navLinks.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.getElementById(a.dataset.target);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+        history.pushState(null, '', '#' + a.dataset.target);
+        setActive(a.dataset.target);
+      }
+    });
+  });
+
+  // ─── SCROLL REVEAL ───
+  const reveals = document.querySelectorAll('.reveal');
+
+  // mark elements already in viewport as visible without animation
+  const inViewport = (el) => {
+    const r = el.getBoundingClientRect();
+    return r.top < window.innerHeight && r.bottom > 0;
+  };
+
+  reveals.forEach(el => {
+    if (inViewport(el)) el.classList.add('visible');
+  });
+
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  reveals.forEach(el => {
+    if (!el.classList.contains('visible')) revealObserver.observe(el);
+  });
+
+  // ─── EXPAND / COLLAPSE ───
+  const STORAGE_KEY = 'illuminate-greenhouse-expanded';
+
+  function getSaved() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch { return {}; }
+  }
+
+  function setSaved(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch {}
+  }
+
+  function setCardState(btn, body, open) {
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) {
+      body.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+      // animate scorer bars inside
+      body.querySelectorAll('.scorer-bar-fill[data-animate]').forEach(bar => {
+        setTimeout(() => bar.classList.add('animated'), 50);
+      });
+    } else {
+      body.classList.remove('open');
+      body.style.maxHeight = '0';
+    }
+  }
+
+  const saved = getSaved();
+  const state = {};
+
+  document.querySelectorAll('.detail-toggle').forEach(btn => {
+    const bodyId = btn.getAttribute('aria-controls');
+    const body = document.getElementById(bodyId);
+    if (!body) return;
+
+    state[bodyId] = saved[bodyId] || false;
+    setCardState(btn, body, state[bodyId]);
+
+    btn.addEventListener('click', () => {
+      state[bodyId] = !state[bodyId];
+      setCardState(btn, body, state[bodyId]);
+      setSaved(state);
+      // recalculate maxHeight after content settles
+      if (state[bodyId]) {
+        requestAnimationFrame(() => {
+          body.style.maxHeight = body.scrollHeight + 'px';
+        });
+      }
+    });
+
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
+      }
+    });
+  });
+
+  // ─── SCORER BAR INTERSECTION ───
+  const barObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.scorer-bar-fill[data-animate]').forEach(bar => {
+          bar.classList.add('animated');
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.scorer-bars').forEach(el => barObserver.observe(el));
+
+})();
+</script>
+
+</body>
+</html>
