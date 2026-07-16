@@ -118,6 +118,7 @@ Every gate emits a structured signal:
 [ILLUMINATE:FORMAT] model: multi-page|single-scroll | pages: <N>  ← Phase 2.0 (written to disk)
 [ILLUMINATE:DEPTH] per-concept parts/variants/mechanisms/code → developed  ← Phase 2.0 (Part G1)
 [ILLUMINATE:ARTDIR] register | ink/paper/accent (oklch) | type | scale/radius/shadow/grid  ← Phase 5 (Part H1)
+[ILLUMINATE:RENDERGATE] pages:<n> PASS | FAIL <reasons>  ← Phase 7 blocking gate (Part H6.5); FAIL = not shippable
 [ILLUMINATE:HUBS] ... [/ILLUMINATE:HUBS]          ← Phase 2 anchor (written to disk)
 [ILLUMINATE:PYRAMID] ... [/ILLUMINATE:PYRAMID]    ← Phase 3 anchor (written to disk)
 [ILLUMINATE:GATE] Phase <N> PASS | Anchor: <path> | Next: <phase>
@@ -158,12 +159,17 @@ tier are chosen.
 [ILLUMINATE] Configuring.
 
 Choose palette — visual identity of the artifact:
-  1. illuminate  (default) — Swiss editorial cold; pure editorial contrast; any source
-  2. claude                — warm terracotta; approachable intelligence; general-purpose
-  3. greenhouse            — eucalyptus membrane; living systems; technical/architectural sources
-  4. typeset               — printer's ink + aged paper; authoritative; dense text / books
-  5. signal                — phosphor instrument; precise; scientific / quantitative sources
-  6. archive               — historical parchment; dignified; documentary / primary sources
+  0. swiss     (DEFAULT) — neutral near-white / near-black, one red; high contrast; any source (H6.1)
+  1. illuminate          — Swiss editorial cold (near-black ground); pure editorial contrast
+  2. claude              — warm terracotta; approachable; SELECTABLE for warm sources — never the default
+  3. greenhouse          — eucalyptus membrane; living systems; technical/architectural sources
+  4. typeset             — printer's ink + aged paper; authoritative; dense text / books
+  5. signal              — phosphor instrument; precise; scientific / quantitative sources
+  6. archive             — historical parchment; SELECTABLE for archival sources — never the default
+
+Default to `swiss` unless the source's domain gives a strong reason to pick another. Warm-cream +
+warm-orange (`claude`/`archive`) is BANNED as a default — selecting it requires a genuinely warm/
+archival source, stated in `[ILLUMINATE:ARTDIR]`.
 
 Choose render tier:
   e · editorial (default) — polished shadcn/ui + Swiss typography; purposeful motion + ASCII;
@@ -977,6 +983,48 @@ Commit the contract before wireframing:
                   | typeface: self-hosted (not system-ui) | tells-checked: none
 ```
 
+**H6 · Enforcement — concrete edits + a blocking gate (without this, H does not land).** A prose
+target loses to a hard-coded default: given the full spec but not these enforcement edits, the model
+reverted to warm-cream + terracotta in the system font with a colored headline word and pastel nodes
+and a clipped value. So H1–H5 are enforced as **token defaults, template rules, and a build-blocking
+gate**, not guidance:
+
+- **H6.1 · Palette (already in the token architecture):** the default light `:root` is the neutral
+  `#FAFAF8`/`#17181C`/`#D22E1E` set, and `[data-palette="swiss"]` is the Phase-0a default. Warm-cream
+  (`#f*f*e*`/`#f*f*f0`) paired with a warm `--red` (hue ~15–45) is the H2 tell and **fails the render
+  gate**. `claude`/`archive` stay selectable, never default.
+- **H6.2 · Type — forbid system fonts, self-host a grotesque.** No text/display token may contain
+  `-apple-system`, `system-ui`, `BlinkMacSystemFont`, `"SF Pro"*`, `"Segoe UI"`. Keep Helvetica but
+  self-host it so it never falls back to the OS: `--hn:'HN','Helvetica Neue',Helvetica,Arial,sans-serif`
+  with an embedded **Nimbus Sans** (open Helvetica-metric clone) as base64 woff2, Latin-subset
+  ~12 KB/weight (400+700) via `fonttools`; treat `--ft` the same (embed, or `--ft:var(--hn)` for a
+  pure-Swiss register). Pattern:
+  ```css
+  @font-face{font-family:'HN';font-weight:400;font-display:swap;
+    src:url('data:font/woff2;base64,<subset-woff2>') format('woff2');}
+  @font-face{font-family:'HN';font-weight:700;font-display:swap;
+    src:url('data:font/woff2;base64,<subset-woff2>') format('woff2');}
+  ```
+  Still one offline file. The render gate greps emitted CSS for the forbidden tokens and fails on a hit.
+- **H6.3 · Headings — no colored words.** Inside `h1/h2/h3` the accent color is forbidden; the emphasis
+  span may change **weight only** (`font-weight:700`, same `--ink`). No `color:var(--red)`/`var(--accent)`
+  on any heading descendant. Gate: computed color of every heading descendant must equal the heading's
+  own `--ink`.
+- **H6.4 · Diagrams — ink-on-paper, not pastel nodes.** Node fills use `--paper`/`--paper-1` with a
+  hairline `--rule-hi` border + a typographic label; category is encoded by a mark/label/position,
+  never a pale category fill (sage/mauve/peach). Gate: no diagram node `background` outside the neutral
+  paper ramp.
+- **H6.5 · The render gate must run and BLOCK.** Headless-render every page and **fail the build** on:
+  (a) any mockup text node clipping (`scrollWidth > clientWidth`); (b) a banned-palette signature
+  (H6.1); (c) a forbidden font token (H6.2); (d) an accent-colored heading descendant (H6.3); (e) a
+  pastel diagram node (H6.4); (f) any console error; (g) an interactive control whose effect can't be
+  proven (H4). Emit and gate on:
+  ```
+  [ILLUMINATE:RENDERGATE] pages:<n> PASS | FAIL <reasons>
+  ```
+  A `FAIL` is **not shippable** — it re-enters the correction register. This is G5/H5 made mechanical
+  and blocking, the only form that survives the model's defaults.
+
 ---
 
 Design before building. Write a text wireframe first. Every visual decision must serve
@@ -1708,6 +1756,80 @@ contents / positions trace to S-NNN.
 
 ---
 
+## The Replicable-Component & Motion Menu (Part I — the full drawable universe)
+
+The four families above are the *authoritative spec*; this is the **superset catalog + detection map**
+they fold into. The rebuilds proved the skill renders convincing mockups but its vocabulary collapsed
+to **phones** — a phone is one member of a large family. **The filter for "replicable":** one
+self-contained offline file, no raster/external images, zero network — so every component is
+**CSS / inline-SVG / `<canvas>` / small-JS drawable**. That *includes* essentially every screen,
+document, chart, diagram and device chrome (line-art + type + fills) and *excludes* only photographic
+content. **This is a MENU, not a build-all** (E2 still governs): select the few that fit the source,
+image-free, at the H2 editorial bar (neutral `swiss` default, no pastel auto-flowchart, no
+colored-word headings), honoring the ≤2-tap limit (B9).
+
+**I.1 · Fidelity surface mockups — *the medium is drawn* (chrome matched per medium, G4/H3):**
+`PHONE` (lock/push/SMS/in-app/home/app-store) · `WEARABLE` · `BROWSER-WINDOW` · `DESKTOP-APP-WINDOW` ·
+`TABLET` · `TV-OTT` · `EMAIL-CLIENT` · `NEWSLETTER` · `CHAT` (Slack/Teams/Discord/WA-business) ·
+`CHATBOT` · `SPREADSHEET` · `DOCUMENT-PAGE` · `SLIDE` · `KANBAN-CARD` · `CALENDAR` · `GANTT` ·
+`CODE-EDITOR` · `TERMINAL` · `DIFF` · `PR-REVIEW` · `LOG-STREAM` · `API-CONSOLE` · `PRODUCT-PAGE` ·
+`CART-CHECKOUT` · `RECEIPT-INVOICE` · `PRICING-TABLE` · `PAYWALL` · `BANK-STATEMENT` · `LEDGER` ·
+`PAYMENT-CARD` · `POS-ATM` · `TRADING-TERMINAL` · `TICKER` · `ID-BADGE` · `BOARDING-PASS` ·
+`EVENT-TICKET` · `CERTIFICATE` · `FORM` · `LETTER-MEMO` · `QR-BARCODE` (drawn, non-functional) ·
+`MAP` (pins/route/choropleth) · `TRANSIT` · `RIDESHARE` · `SOCIAL-POST` (X/IG/LinkedIn/TikTok) ·
+`FEED` · `STORY` · `AD-UNIT` · `COMMENT-THREAD` · `PROFILE` · `SERP` · `HELPDESK-TICKET` ·
+`CRM-RECORD` · `KB-ARTICLE` · `EHR-CHART` · `THERMOSTAT` · `SMART-HOME-PANEL` · `IN-CAR-HUD` ·
+`NEWSPAPER-COLUMN` · `MAGAZINE-SPREAD` · `POSTER` · `INDEX-CARD`.
+
+**I.2 · Data / evidence:** `STAT-TILE` · `SPARKLINE` · `BULLET` · `LINE`/`AREA` ·
+`BAR`/`COLUMN`/`STACKED`/`GROUPED` · `WATERFALL` · `FUNNEL` · `COHORT-RETENTION` · `HEATMAP` ·
+`TREEMAP` · `SANKEY` · `CHORD` · `RADAR` · `SCATTER`/`BUBBLE` · `CANDLESTICK` ·
+`GAUGE-DIAL`/`PROGRESS-RING` · `SMALL-MULTIPLES` · `DATA-TABLE` · `COMPARISON-MATRIX` · `SPEC-SHEET` ·
+`CHOROPLETH` · `TIMELINE-ROADMAP`. *Pick by data shape: trend→line, composition→treemap/stacked,
+conversion→funnel/cohort, distribution→scatter/heatmap, comparison→matrix.*
+
+**I.3 · Structure / diagram** *(composed as editorial infographics per H2 — never pastel auto-flowchart):*
+`FLOW` (branching) · `PIPELINE` · `DECISION-TREE` · `STATE-MACHINE` · `SWIMLANE` · `NETWORK-GRAPH` ·
+`MIND-MAP` · `ORG-CHART` · `TREE-HIERARCHY` · `ARCHITECTURE` · `SEQUENCE` · `ER-DIAGRAM` · `VENN` ·
+`MATRIX-2×2` · `PYRAMID` · `CYCLE-LOOP` · `SCHEMATIC` (exploded/anatomy) · `BEFORE-AFTER-SLIDER` ·
+`SPECTRUM-SCALE`.
+
+**I.4 · Technical artifacts** *(render the code — G3):* `CODE-CONFIG` · `QUERY` (SQL) · `FORMULA-MATH`
+(KaTeX-class, drawn) · `PSEUDOCODE` · `API-SCHEMA` · `DATA-SCHEMA` · `REGEX` · `DIFF`.
+
+**I.5 · Editorial / narrative** *(always available; carry the argument between heavier components):*
+`PULL-QUOTE` · `CALLOUT-ASIDE` · `FOOTNOTE`/`MARGIN-NOTE` · `DEFINITION-GLOSSARY` · `EPIGRAPH` ·
+`ANNOTATION-PIN` · `EVIDENCE-DRAWER` · `STAT-IN-PROSE` · `CAPTION`.
+
+**I.6 · Motion — a first-class, selectable layer.**
+*Doctrine (binding):* motion is **purposeful** (reveals structure, data, or state), never decorative;
+every animated element has a **static `prefers-reduced-motion` equivalent**; state transitions
+**< 300 ms**; **no autoplay competes with reading**; parallax is demoted (F1). **Baseline-safe in 2026,
+use directly:** same-document View Transitions, `@starting-style`/`transition-behavior`, native
+`<details>`, Popover, `light-dark()`, `text-wrap`, container queries, OKLCH/`color-mix`, variable
+fonts. **Not yet Baseline — behind `@supports` with a fallback:** scroll-driven animations
+(`animation-timeline: view()/scroll()`), cross-document View Transitions.
+*Pattern menu:* `SCROLL-REVEAL` · `VIEW-TRANSITION` · `COUNT-UP`/`ODOMETER` · `GAUGE-FILL`/`BAR-GROW` ·
+`SVG-PATH-DRAW` · `STAGGER-REVEAL` · `TEXT-CLIP-REVEAL` · `KINETIC-TYPE` · `TYPEWRITER`/`TERMINAL-TYPING`
+· `LIVE-TICK` (simulated ticker/metric/log) · `PULSE` · `SKELETON→CONTENT` · `HOVER-HIGHLIGHT` ·
+`TOOLTIP-POPOVER` · `PINNED-STEP-THROUGH` · `PARAM-SLIDER→live recompute` · `BEFORE-AFTER-DRAG` ·
+`PROCESS-REPLAY` (auto-walk a flow once) · `SIMULATED-CURSOR-TAP`. Any I.1 mockup may be static or
+animated, always with a static fallback.
+
+**I.7 · Selection & detection (extends Phase 1 + E2).** Phase-1 detection map from source nouns/verbs →
+candidate components: *email/push/SMS/campaign* → device mockups; *query/schema/config/formula* → I.4;
+*over time/trend* → line/area (+`SVG-PATH-DRAW`); *share/composition* → treemap/stacked;
+*funnel/conversion/retention* → funnel/cohort; *comparison/vs* → matrix/`BEFORE-AFTER`;
+*process/journey/pipeline* → flow/pipeline (+`PROCESS-REPLAY`); *geography/region* → map/choropleth;
+*price/trade/market* → candlestick/ticker (+`LIVE-TICK`); *org/team/hierarchy* → org-chart/tree;
+*definitions/glossary* → I.5. **Select the few that fit; never build-all** (E2); honor ≤2-tap (B9);
+every animated pick ships its reduced-motion static state. New components inherit the existing tokens
+and must render image-free in the neutral `swiss` default and one other palette. This menu is what stops
+the skill reaching for a phone by default when the source calls for a ledger, a Sankey, a terminal, or
+a ticking market tape.
+
+---
+
 ## Phase 6 — Frontend Engineering
 
 Build the Phase 5 wireframe as a **single self-contained HTML file, internally multi-page by
@@ -1859,9 +1981,11 @@ token names in Phase 6 CSS — consistent naming makes the design system auditab
 ```css
 /* ── Typefaces ── */
 :root {
-  --hn:   'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --ft:   Futura, 'Century Gothic', 'Trebuchet MS', var(--hn);
-  --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+  /* H6.2: lead with self-hosted 'HN' (embedded Nimbus Sans woff2) so type never falls to the OS.
+     Forbidden anywhere in a text/display token: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro", "Segoe UI". */
+  --hn:   'HN', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ft:   var(--hn);   /* pure-Swiss register; embed a display face here only if the register needs one (never Futura→system) */
+  --mono: 'Space Mono', ui-monospace, 'SF Mono', 'JetBrains Mono', monospace;
 
   /* ── Dark palette (default) ── */
   --paper:    #070708;  --paper-1:  #0f0f11;  --paper-2:  #171719;
@@ -1900,28 +2024,28 @@ token names in Phase 6 CSS — consistent naming makes the design system auditab
 }
 
 /* ── Light palette — system preference (no manual override) ── */
-/* Values chosen for WCAG AA on warm-cream ground #f5f4f0.         */
-/* --cli shifts neon→deep forest; --red deepens for contrast.       */
+/* H6.1: NEUTRAL near-white/near-black default, one red. The old warm-cream    */
+/* #f5f4f0 ground is the H2-banned "cheap template" tell and is NOT the default.*/
 @media(prefers-color-scheme:light) {
   :root:not([data-theme="dark"]) {
-    --paper:    #f5f4f0;  --paper-1:  #eeede8;  --paper-2:  #e4e3de;
-    --ink:      #1c1c1a;  --ink-2:    #56564f;  --ink-3:    #9a9a92;
-    --rule:     rgba(28,28,26,.07);
-    --rule-hi:  rgba(28,28,26,.16);
-    --red:      #c8190e;  --red-dim:    rgba(200,25,14,.09);
+    --paper:    #FAFAF8;  --paper-1:  #F1F1EE;  --paper-2:  #E7E7E3;
+    --ink:      #17181C;  --ink-2:    #5B5D64;  --ink-3:    #8B8D94;
+    --rule:     rgba(23,24,28,.10);
+    --rule-hi:  rgba(23,24,28,.22);
+    --red:      #D22E1E;  --red-dim:    rgba(210,46,30,.08);
     --cli:      #006e38;  --cli-dim:    rgba(0,110,56,.08);
     --blue:     #1457a0;  --blue-dim:   rgba(20,87,160,.09);
     --amber:    #8a5e00;  --amber-dim:  rgba(138,94,0,.09);
   }
 }
 
-/* ── Manual light override (takes precedence over system pref) ── */
+/* ── Manual light override (takes precedence over system pref) — neutral (H6.1) ── */
 [data-theme="light"] {
-  --paper:    #f5f4f0;  --paper-1:  #eeede8;  --paper-2:  #e4e3de;
-  --ink:      #1c1c1a;  --ink-2:    #56564f;  --ink-3:    #9a9a92;
-  --rule:     rgba(28,28,26,.07);
-  --rule-hi:  rgba(28,28,26,.16);
-  --red:      #c8190e;  --red-dim:    rgba(200,25,14,.09);
+  --paper:    #FAFAF8;  --paper-1:  #F1F1EE;  --paper-2:  #E7E7E3;
+  --ink:      #17181C;  --ink-2:    #5B5D64;  --ink-3:    #8B8D94;
+  --rule:     rgba(23,24,28,.10);
+  --rule-hi:  rgba(23,24,28,.22);
+  --red:      #D22E1E;  --red-dim:    rgba(210,46,30,.08);
   --cli:      #006e38;  --cli-dim:    rgba(0,110,56,.08);
   --blue:     #1457a0;  --blue-dim:   rgba(20,87,160,.09);
   --amber:    #8a5e00;  --amber-dim:  rgba(138,94,0,.09);
@@ -1945,6 +2069,24 @@ token names in Phase 6 CSS — consistent naming makes the design system auditab
    applies within the palette via the combined selectors below.
    Palette rules come AFTER theme rules so they win in the cascade.
    ════════════════════════════════════════════════════════════════════ */
+
+/* ── SWISS — neutral near-white / near-black, one red. THE DEFAULT (H6.1). ──
+   Character: designed editorial, high figure/ground contrast, zero warmth.
+   Applied by the Phase-0a boot when no domain reason selects another palette.
+   Warm-cream + warm-orange is BANNED as a default; claude/archive stay
+   *selectable* for genuinely warm/archival sources, never the fallback. */
+[data-palette="swiss"][data-theme="light"], [data-palette="swiss"]:not([data-theme="dark"]) {
+  --paper:#FAFAF8; --paper-1:#F1F1EE; --paper-2:#E7E7E3;
+  --ink:#17181C;   --ink-2:#5B5D64;  --ink-3:#8B8D94;
+  --rule:rgba(23,24,28,.10); --rule-hi:rgba(23,24,28,.22);
+  --red:#D22E1E; --red-dim:rgba(210,46,30,.08);
+}
+[data-palette="swiss"][data-theme="dark"] {
+  --paper:#131417; --paper-1:#1A1B1F; --paper-2:#232429;   /* neutral near-black, NOT warm, NOT #000 */
+  --ink:#F0F0EC;   --ink-2:#9A9CA2;  --ink-3:#5E6066;
+  --rule:rgba(240,240,236,.12); --rule-hi:rgba(240,240,236,.24);
+  --red:#F0563E; --red-dim:rgba(240,86,62,.12);            /* lifted for the dark ground */
+}
 
 /* ── CLAUDE — warm terracotta intelligence ── */
 /* Character: approachable, considered, general-purpose             */
@@ -2187,8 +2329,8 @@ Place the script inline in `<head>`, before any CSS.
   var sys = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', stored || sys);
   document.documentElement.setAttribute('data-tier', localStorage.getItem('il-tier') || 'editorial');
-  var pal = localStorage.getItem('il-palette');
-  if (pal) document.documentElement.setAttribute('data-palette', pal);
+  // H6.1: default to the neutral `swiss` palette unless a domain reason selected another at build.
+  document.documentElement.setAttribute('data-palette', localStorage.getItem('il-palette') || 'swiss');
 })();
 </script>
 ```
@@ -2263,7 +2405,7 @@ CSS:
 
 ### Palette System
 
-Six curated palettes, each tuned for a different reading character and source type.
+Seven curated palettes (neutral **`swiss`** is the default — H6.1), each tuned for a different reading character and source type.
 The illuminate palette is the default (no `[data-palette]` needed). The others are applied
 via `[data-palette="X"]` on `<html>` — orthogonal to `[data-theme]` and `[data-tier]`.
 
@@ -2282,18 +2424,14 @@ via `[data-palette="X"]` on `<html>` — orthogonal to `[data-theme]` and `[data
 
 **JS: `setPalette()` + picker:**
 ```javascript
-var PALETTES = ['illuminate','claude','greenhouse','typeset','signal','archive'];
+var PALETTES = ['swiss','illuminate','claude','greenhouse','typeset','signal','archive'];  // swiss = default (H6.1)
 
 function setPalette(p) {
-  if (p === 'illuminate') {
-    document.documentElement.removeAttribute('data-palette');
-    localStorage.removeItem('il-palette');
-  } else {
-    document.documentElement.setAttribute('data-palette', p);
-    localStorage.setItem('il-palette', p);
-  }
+  // H6.1: `swiss` is the neutral default; every palette (incl. swiss) is applied explicitly.
+  document.documentElement.setAttribute('data-palette', p);
+  localStorage.setItem('il-palette', p);
   document.querySelectorAll('.pal-swatch').forEach(function(b) {
-    b.classList.toggle('active', b.dataset.p === (p || 'illuminate'));
+    b.classList.toggle('active', b.dataset.p === (p || 'swiss'));
   });
   document.getElementById('palette-pop').style.display = 'none';
 }
@@ -2336,6 +2474,7 @@ document.addEventListener('click', function(e) {
 .pal-swatch:hover  { transform: scale(1.15); }
 .pal-swatch.active { border-color: var(--red); }
 /* Swatch background colors (dark-mode representative tones): */
+.pal-swatch[data-p="swiss"]      { background: #FAFAF8; box-shadow: 0 0 0 1px #D22E1E inset; }
 .pal-swatch[data-p="illuminate"] { background: #070708; box-shadow: 0 0 0 1px #404040 inset; }
 .pal-swatch[data-p="claude"]     { background: #1a1714; box-shadow: 0 0 0 1px #e8633a inset; }
 .pal-swatch[data-p="greenhouse"] { background: #060807; box-shadow: 0 0 0 1px #8fbcb3 inset; }
@@ -2876,6 +3015,7 @@ interactivity, accessibility:
 - [ ] **Designed publication, not template** (H5a): judged against H1–H3 — if it reads as a generic tech-doc, re-compose.
 - [ ] **Every interactive control provably performs its effect** (H4/H5b): export, drawers, theme, router each **exercised in render**; no success message fires without the effect; the export button really exports (new-tab-to-save in a sandbox) or is not shown.
 - [ ] **No clipped/ellipsised value in any mockup** (H5c): the G4 sample-value rule is enforced in pixels, not assumed from source.
+- [ ] **`[ILLUMINATE:RENDERGATE]` ran and returned PASS** (H6.5) — the **build-blocking** mechanical gate: headless-render every page and FAIL on any (a) mockup clip, (b) banned-palette signature (warm-cream + warm-`--red`), (c) forbidden font token (`-apple-system`/`system-ui`/`SF Pro`/`Segoe UI`), (d) accent-colored heading descendant, (e) pastel diagram node, (f) console error, (g) unprovable interactive control. A FAIL is **not shippable** — re-enter the correction register.
 
 *Content and hierarchy*
 - [ ] Governing object (GT / question / phenomenon) immediately legible on load, above fold, without interaction
@@ -2951,7 +3091,7 @@ interactivity, accessibility:
 - [ ] Metric components show no untraced numbers (untraced → `00.0%` / `—` placeholder)
 - [ ] Components degrade cleanly at simple/balanced; content identical across tiers
 - [ ] Annotation pins open the correct evidence-drawer entry; every pin resolves to a real S-NNN
-- [ ] Components use `var(--…)` tokens only — correct in all 6 palettes, both themes (spot-check 2)
+- [ ] Components use `var(--…)` tokens only — correct in all 7 palettes, both themes (spot-check 2)
 
 *Deck-only (when Mode = deck):*
 - [ ] No slide content overflow (overflow = argument too long = gate failure → shorten + re-run Phase 3)
@@ -3027,7 +3167,7 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
    monospace evidence, editorial red accent, ghost numerals — is one register; warm/archival/print/
    phosphor are others. **The rounded-card SaaS-dashboard look is a failure mode.** Any JS/CSS
    library that enhances legibility is fine; the offline default stays self-contained vanilla.
-4. **Named palette** — operator chooses from 6 curated palettes in Phase 0. Default is `illuminate`
+4. **Named palette** — operator chooses from 7 curated palettes in Phase 0. Default is neutral `swiss` (H6.1)
    (Swiss editorial cold). Others: `claude` (terracotta), `greenhouse` (eucalyptus), `typeset`
    (printer's ink), `signal` (phosphor), `archive` (parchment). Each has dark+light variants; all
    semantic tokens maintain WCAG AA in both modes. Picker (◉) lives in sticky nav.
@@ -3162,3 +3302,7 @@ Design for containment, not exorcism. Signal, do not certify.
 31. **No named cheap tells (H2).** Each hard-fails the render gate: muddy earth-tone-on-cream palette; pastel flowchart node fills; auto-flowchart aesthetic (rounded-rect + 1px + elbow + centered label); box-in-box; system-default typeface; timid accent; flat grey-fill fake shadows; **two-tone accent-word headlines** (titles are single-ink; emphasis by weight/size, never hue). Diagrams are composed editorial infographics, not default-flowchart-tool output.
 32. **Mockups read as renders (H3).** Real device shadow + correct bezel radius; **drawn** status-bar glyphs (SVG signal/wifi/battery, never the literal "9:41 … 62%" string in body type); real header proportion. A grey box with a colored header is a fail.
 33. **No interaction theater (H4).** A control performs its real effect in the target or is not offered; a success message fires only when the effect provably occurred. Export uses a path that works in the sandbox (new-tab-to-save) and confirms only on the real event — never an unconditional "Downloaded". If no path works, don't render the button. Verified by clicking it in render (H5).
+34. **Enforcement over guidance (H6) — art direction is baked into defaults, not left to interpretation.** The neutral **`swiss`** palette is the default (warm-cream `#f*f*e*` + warm-`--red` is a banned default and a render-gate fail); text/display tokens contain **no** `-apple-system`/`system-ui`/`SF Pro`/`Segoe UI` and self-host a real grotesque (`'HN'` = embedded Nimbus Sans woff2); no `h1/h2/h3` descendant carries the accent color (weight-only emphasis); diagram nodes use the neutral paper ramp (no pastel fills). The **`[ILLUMINATE:RENDERGATE]`** step is a **required, build-blocking** render check — it FAILs (not shippable) on any clip, banned-palette signature, forbidden font token, colored heading, pastel node, console error, or unprovable control. This is the only form of H that survives the model's baked-in defaults.
+
+**Component & motion menu (Part I)**
+35. **The component is chosen to match the source's medium/data-shape, never defaulting to a phone (Part I).** Select from the wide image-free catalog (device mockups · data viz — Sankey/treemap/cohort/candlestick/ticker/… · diagrams · technical artifacts · editorial) by the Phase-1 detection map; a markets source yields a ticker/candlestick, a data source a Sankey/treemap, an engineering source a terminal/diff, a document source a letter/spreadsheet. It is a **menu, not build-all** (E2) — pick the few that fit. **Motion is a first-class, purposeful, selectable layer** (draw-in, count-up, live-tick, step-through) — never decorative, `<300ms`, no reading-competing autoplay, and **every animated element ships a `prefers-reduced-motion` static equivalent**; scroll-driven/cross-document transitions are `@supports`-gated with a fallback.
