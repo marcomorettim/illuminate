@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Timed Sequence · Lifecycle Email, Illuminated</title>
+<style>
+:root{
+  --bg:#f6f4ef; --bg-2:#efece5; --surface:#ffffff; --surface-2:#fbfaf6;
+  --ink:#211d18; --ink-2:#5c564c; --ink-3:#948c7e;
+  --line:rgba(33,29,24,.08); --line-2:rgba(33,29,24,.14);
+  --accent:#c07d16; --accent-2:#9a6210; --accent-soft:rgba(192,125,22,.10);
+  --sage:#5f7f68; --sage-soft:rgba(95,127,104,.12); --blue:#3f6f8a; --blue-soft:rgba(63,111,138,.12);
+  --sans:-apple-system,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono",monospace;
+  --spring:cubic-bezier(.22,.72,.24,1); --r:16px; --r-lg:24px; --r-xl:30px;
+  --sh-1:0 1px 2px rgba(60,48,30,.05),0 4px 10px -4px rgba(60,48,30,.06);
+  --sh-2:0 2px 4px rgba(60,48,30,.05),0 22px 44px -22px rgba(60,48,30,.16);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#14120f; --bg-2:#1c1915; --surface:#1e1b16; --surface-2:#24201a;
+  --ink:#f3efe7; --ink-2:#b7ada0; --ink-3:#847c70;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --accent:#e0a84a; --accent-2:#f0c076; --accent-soft:rgba(224,168,74,.14);
+  --sage:#8fa085; --sage-soft:rgba(143,160,133,.14); --blue:#7fa8c0; --blue-soft:rgba(127,168,192,.14);
+  --sh-1:0 1px 2px rgba(0,0,0,.3),0 4px 10px -4px rgba(0,0,0,.4);
+  --sh-2:0 2px 4px rgba(0,0,0,.3),0 22px 44px -22px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{--bg:#14120f;--bg-2:#1c1915;--surface:#1e1b16;--surface-2:#24201a;--ink:#f3efe7;--ink-2:#b7ada0;--ink-3:#847c70;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);--accent:#e0a84a;--accent-2:#f0c076;--accent-soft:rgba(224,168,74,.14);--sage:#8fa085;--sage-soft:rgba(143,160,133,.14);--blue:#7fa8c0;--blue-soft:rgba(127,168,192,.14);--sh-1:0 1px 2px rgba(0,0,0,.3),0 4px 10px -4px rgba(0,0,0,.4);--sh-2:0 2px 4px rgba(0,0,0,.3),0 22px 44px -22px rgba(0,0,0,.5);}
+:root[data-theme="light"]{--bg:#f6f4ef;--bg-2:#efece5;--surface:#ffffff;--surface-2:#fbfaf6;--ink:#211d18;--ink-2:#5c564c;--ink-3:#948c7e;--line:rgba(33,29,24,.08);--line-2:rgba(33,29,24,.14);--accent:#c07d16;--accent-2:#9a6210;--accent-soft:rgba(192,125,22,.10);--sage:#5f7f68;--sage-soft:rgba(95,127,104,.12);--blue:#3f6f8a;--blue-soft:rgba(63,111,138,.12);--sh-1:0 1px 2px rgba(60,48,30,.05),0 4px 10px -4px rgba(60,48,30,.06);--sh-2:0 2px 4px rgba(60,48,30,.05),0 22px 44px -22px rgba(60,48,30,.16);}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.62;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;transition:background .5s var(--spring),color .5s var(--spring)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(50% 38% at 88% -4%,var(--accent-soft),transparent 60%),radial-gradient(44% 34% at 2% 20%,var(--sage-soft),transparent 60%)}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(24px,5vw,60px)}
+.mono{font-family:var(--mono)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:5px}
+
+/* nav */
+.nav{position:fixed;top:20px;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none;padding:0 16px}
+.nav-pill{pointer-events:auto;display:flex;align-items:center;gap:18px;background:color-mix(in oklab,var(--surface) 78%,transparent);backdrop-filter:saturate(160%) blur(18px);border:1px solid var(--line);border-radius:999px;padding:8px 8px 8px 20px;box-shadow:var(--sh-1)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:.9rem;white-space:nowrap}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{font-size:.86rem;color:var(--ink-3);text-decoration:none;padding:8px 14px;border-radius:999px;transition:.3s var(--spring);white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}.nav-links a.active{color:var(--ink);background:var(--bg-2)}
+.theme-btn{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;transition:transform .3s var(--spring),color .3s;box-shadow:var(--sh-1)}
+.theme-btn:hover{color:var(--ink);transform:translateY(-1px)}.theme-btn svg{width:17px;height:17px}
+.nav-cta{display:flex;align-items:center;gap:9px;background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:9px 9px 9px 17px;font:550 .84rem var(--sans);cursor:pointer;transition:transform .3s var(--spring);white-space:nowrap}
+.nav-cta:hover{transform:translateY(-1px)}.nav-cta .ic{width:25px;height:25px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:.8rem}
+@media(max-width:860px){.nav-links{display:none}}
+
+/* hero */
+.hero{padding:clamp(140px,18vw,200px) 0 clamp(40px,6vw,70px)}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 16px 7px 13px;font-size:.82rem;color:var(--ink-2);margin-bottom:32px;box-shadow:var(--sh-1)}
+.eyebrow .d{width:6px;height:6px;border-radius:50%;background:var(--accent)}.eyebrow b{color:var(--accent-2);font-weight:600}
+.lead{font-size:1.28rem;line-height:1.5;color:var(--ink-2);max-width:60ch;margin:0 0 22px;text-wrap:pretty}.lead b{color:var(--ink);font-weight:560}
+.q{font-size:1.42rem;line-height:1.4;color:var(--ink);max-width:48ch;margin:0 0 40px;font-weight:450}.q .hl{color:var(--accent-2);font-weight:600}
+.gt{font-weight:400;font-size:clamp(2.6rem,6vw,4.8rem);line-height:1.04;letter-spacing:-.035em;margin:0;max-width:18ch;text-wrap:balance}.gt .k{color:var(--accent)}
+.gt-sub{margin:32px 0 0;font-size:1.2rem;line-height:1.55;color:var(--ink-2);max-width:56ch;text-wrap:pretty}.gt-sub b{color:var(--ink);font-weight:560}
+
+/* section */
+.section{padding:clamp(78px,10vw,140px) 0}.section+.section{border-top:1px solid var(--line)}
+.sec-grid{display:grid;grid-template-columns:1fr;gap:clamp(32px,4vw,56px)}
+@media(min-width:940px){.sec-grid{grid-template-columns:1fr 1fr;align-items:start}}
+.tag{display:inline-flex;align-items:center;gap:9px;background:var(--accent-soft);color:var(--accent-2);border-radius:999px;padding:6px 15px 6px 11px;font-size:.82rem;font-weight:600;margin-bottom:22px}
+.tag .n{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:.72rem}
+.sec-title{font-weight:440;font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.12;letter-spacing:-.026em;margin:0 0 22px;max-width:20ch;text-wrap:balance}.sec-title b{font-weight:600;color:var(--accent-2)}
+.lede{color:var(--ink-2);font-size:1.14rem;line-height:1.64;max-width:56ch;margin:0 0 18px;text-wrap:pretty}.lede b{color:var(--ink);font-weight:560}
+.aside{position:sticky;top:96px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.chip{font:550 .72rem var(--mono);color:var(--accent-2);background:var(--accent-soft);border:0;border-radius:999px;padding:5px 11px;cursor:pointer;transition:.25s var(--spring)}
+.chip:hover{background:var(--accent);color:#fff;transform:translateY(-1px)}
+
+/* ── shared component chrome ── */
+.mock-tag{display:inline-flex;align-items:center;gap:6px;font:600 .6rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);border:1px dashed var(--line-2);border-radius:6px;padding:3px 8px}
+.mock-tag::before{content:"";width:6px;height:6px;border-radius:1px;background:var(--ink-3)}
+.cap{font-size:.9rem;color:var(--ink-3);margin:14px 2px 0;line-height:1.5;text-wrap:pretty}.cap b{color:var(--ink-2);font-weight:560}
+.ph{font-family:var(--mono);font-size:.9em;color:var(--sage);background:var(--sage-soft);border-radius:4px;padding:0 5px}
+
+/* ── Family A: EMAIL-CLIENT mockup + annotation pins ── */
+.annot{position:relative}
+.mock-email{border:1px solid var(--line-2);border-radius:var(--r-lg);background:var(--surface);overflow:hidden;box-shadow:var(--sh-2)}
+.mock-bar{display:flex;align-items:center;gap:6px;padding:11px 15px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.mock-bar .dot{width:11px;height:11px;border-radius:50%;background:var(--line-2)}
+.mock-bar-t{font:.66rem var(--mono);color:var(--ink-3);letter-spacing:.06em;margin-left:8px}
+.em-hd{display:flex;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.em-av{width:40px;height:40px;border-radius:50%;background:var(--accent-soft);color:var(--accent-2);font:700 .9rem var(--sans);display:grid;place-items:center;flex:0 0 auto}
+.em-from{font-size:.84rem;color:var(--ink)}.em-from span{color:var(--ink-3)}
+.em-subj{font-size:.98rem;font-weight:600;color:var(--ink);margin-top:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.em-pre{font-size:.82rem;color:var(--ink-2);margin-top:3px}
+.em-time{font:.66rem var(--mono);color:var(--ink-3);margin-left:auto;flex:0 0 auto}
+.em-body{padding:20px 18px;font-size:.92rem;line-height:1.6;color:var(--ink-2)}
+.em-body p{margin:0 0 14px}
+.em-cta{display:inline-block;background:var(--accent);color:#fff;font-weight:600;font-size:.86rem;padding:10px 20px;border-radius:10px;text-decoration:none}
+.em-foot{padding:12px 18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.cite-sm{font:600 .66rem var(--mono);color:var(--accent-2);background:var(--accent-soft);border:0;border-radius:5px;padding:2px 6px;cursor:pointer}
+.pin{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;border:1.5px solid var(--accent);background:var(--surface);color:var(--accent-2);font:700 .72rem var(--mono);cursor:pointer;z-index:5;box-shadow:var(--sh-1)}
+.pin:hover{background:var(--accent);color:#fff}
+
+/* ── Family B: TIMELINE ── */
+.timeline{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);padding:26px 24px 20px;box-shadow:var(--sh-1)}
+.tl-track{position:relative;height:3px;background:var(--line-2);border-radius:2px;margin:34px 8px 8px}
+.tl-fill{position:absolute;inset:0 auto 0 0;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:2px;width:0;transition:width 1.1s var(--spring)}
+.timeline.in .tl-fill{width:100%}
+.tl-dot{position:absolute;top:50%;transform:translate(-50%,-50%);left:var(--x);width:16px;height:16px;border-radius:50%;background:var(--surface);border:2.5px solid var(--accent);z-index:2;cursor:pointer;transition:transform .25s var(--spring)}
+.tl-dot:hover{transform:translate(-50%,-50%) scale(1.25)}
+.tl-lab{position:absolute;top:-30px;left:var(--x);transform:translateX(-50%);font:.66rem var(--mono);color:var(--ink-3);white-space:nowrap}
+.tl-lab b{color:var(--ink);display:block;font-family:var(--sans);font-size:.72rem;font-weight:600}
+.tl-axis{display:flex;justify-content:space-between;font:.64rem var(--mono);color:var(--ink-3);margin:0 8px}
+
+/* ── Family B: trigger-flow ── */
+.flow{display:flex;flex-direction:column;gap:10px}
+.flow-row{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:8px}
+.fnode{border:1px solid var(--line-2);border-radius:12px;background:var(--surface);padding:11px 13px;font-size:.82rem;color:var(--ink);box-shadow:var(--sh-1)}
+.fnode small{display:block;font:.62rem var(--mono);color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.fnode.trig small{color:var(--sage)}.fnode.goal small{color:var(--accent-2)}
+.farr{color:var(--ink-3);font-size:.9rem}
+@media(max-width:520px){.flow-row{grid-template-columns:1fr;text-align:center}.farr{transform:rotate(90deg)}}
+
+/* ── Family D: COMPARE-MATRIX ── */
+.matrix{width:100%;border-collapse:separate;border-spacing:0;font-size:.86rem;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-1);background:var(--surface)}
+.matrix th,.matrix td{padding:13px 14px;text-align:left;border-bottom:1px solid var(--line)}
+.matrix thead th{background:var(--surface-2);font:600 .68rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
+.matrix tbody th{font-weight:600;color:var(--ink);position:sticky;left:0;background:var(--surface)}
+.matrix td{color:var(--ink-2)}.matrix tr:last-child td,.matrix tr:last-child th{border-bottom:0}
+.matrix tbody tr:hover td,.matrix tbody tr:hover th{background:var(--surface-2)}
+.mx-goal{font-weight:600;color:var(--accent-2)}
+
+/* ── Family C: KPI tiles (placeholder discipline) ── */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kpi{border:1px dashed var(--line-2);border-radius:16px;background:var(--surface);padding:18px 16px;text-align:center}
+.kpi-val{font:300 2.1rem var(--sans);color:var(--ink-3);letter-spacing:-.02em}
+.kpi-lab{font-size:.76rem;color:var(--ink-3);margin-top:4px}
+@media(max-width:520px){.kpi-row{grid-template-columns:1fr}}
+
+/* evidence sheet + tooltip (shared) */
+.scrim{position:fixed;inset:0;background:rgba(33,25,15,.34);backdrop-filter:blur(3px);z-index:70;opacity:0;pointer-events:none;transition:opacity .4s var(--spring)}.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;top:0;right:0;height:100%;width:min(520px,94vw);z-index:80;background:var(--bg);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .5s var(--spring);display:flex;flex-direction:column;box-shadow:var(--sh-2)}.sheet.on{transform:none}
+.sheet-head{padding:22px 24px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.sheet-head h3{margin:0;font-size:1.02rem;font-weight:600}.sheet-head .count{font:.72rem var(--mono);color:var(--accent-2)}
+.sheet-close{margin-left:auto;width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;box-shadow:var(--sh-1)}
+.sheet-list{overflow-y:auto;padding:8px 0}
+.ev{padding:15px 24px;border-bottom:1px solid var(--line)}.ev.flash{background:var(--accent-soft)}
+.ev-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}.ev-id{font:700 .76rem var(--mono);color:var(--accent-2)}
+.ev-tag{font:600 .6rem var(--mono);letter-spacing:.04em;color:var(--ink-3);border:1px solid var(--line-2);border-radius:999px;padding:2px 8px;text-transform:uppercase}
+.ev-claim{font-size:.94rem;color:var(--ink-2);line-height:1.5}
+.tip{position:fixed;z-index:95;max-width:300px;background:var(--surface);border:1px solid var(--line-2);border-radius:12px;padding:11px 14px;font-size:.86rem;line-height:1.46;color:var(--ink-2);box-shadow:var(--sh-2);opacity:0;transform:translateY(6px);transition:.22s var(--spring);pointer-events:none}.tip.on{opacity:1;transform:none}
+.tip .tid{font:700 .66rem var(--mono);color:var(--accent-2);display:block;margin-bottom:4px}
+
+footer{padding:60px 0 90px;color:var(--ink-3);font-size:.92rem;line-height:1.6;border-top:1px solid var(--line)}footer b{color:var(--ink-2)}
+.rv{opacity:0;transform:translateY(24px);filter:blur(5px);transition:opacity .8s var(--spring),transform .8s var(--spring),filter .8s var(--spring)}.rv.in{opacity:1;transform:none;filter:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none}.tl-fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="nav"><div class="nav-pill">
+  <span class="brand"><span class="dot"></span>Illuminate</span>
+  <div class="nav-links" id="nav-links">
+    <a href="#top" class="active">Overview</a><a href="#s1">Trigger</a><a href="#s2">The email</a><a href="#s3">Cadence</a><a href="#s4">Four plays</a>
+  </div>
+  <button class="theme-btn" id="theme" aria-label="Toggle theme"></button>
+  <button class="nav-cta" id="ev-open">Evidence <span class="ic">→</span></button>
+</div></div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow"><span class="d"></span>A study of <b>lifecycle email sequences</b> · four plays, one grammar</span>
+    <p class="lead">A single email is a shout into an inbox. A <b>sequence</b> is a conversation staged over days: welcome, nurture, win-back, onboard. The source lays out four of them, each a fixed number of emails on a deliberate cadence.</p>
+    <p class="q">So what actually makes a sequence work, as opposed to a pile of emails sent on a timer?</p>
+    <h1 class="gt">A sequence is a <span class="k">timed argument</span>: trigger, escalation, cadence, and a play chosen for the moment.</h1>
+    <p class="gt-sub">Every sequence begins at a lifecycle trigger that fixes its goal, moves each email a step from <b>value toward the ask</b>, and spaces them so the timing itself carries meaning.</p>
+  </div>
+</header>
+
+<main>
+  <!-- KL1 · TRIGGER — Family B flow -->
+  <section class="section" id="s1">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">1</span> The trigger</span>
+        <h2 class="sec-title">Every sequence starts at a lifecycle event that <b>fixes its goal</b>.</h2>
+        <p class="lede">A sequence isn't chosen; it's provoked. Someone signs up, downloads a magnet, or goes quiet, and that event determines both which sequence fires and what it is trying to achieve. The trigger and the goal are two ends of the same wire.</p>
+        <p class="lede">That is why the four sequences aren't interchangeable. Re-engagement only makes sense after inactivity; a welcome only makes sense at signup. The moment picks the play.</p>
+        <div class="chips"><button class="chip" data-ev="S-10">S-10</button><button class="chip" data-ev="S-01">S-01</button><button class="chip" data-ev="S-07">S-07</button></div>
+      </div>
+      <div class="aside rv">
+        <div class="flow">
+          <div class="flow-row"><div class="fnode trig"><small>Trigger</small>Signup</div><span class="farr">→</span><div class="fnode"><small>Sequence</small>Welcome</div><span class="farr">→</span><div class="fnode goal"><small>Goal</small>Activate</div></div>
+          <div class="flow-row"><div class="fnode trig"><small>Trigger</small>Magnet download</div><span class="farr">→</span><div class="fnode"><small>Sequence</small>Lead nurture</div><span class="farr">→</span><div class="fnode goal"><small>Goal</small>Sell</div></div>
+          <div class="flow-row"><div class="fnode trig"><small>Trigger</small>30–60d inactive</div><span class="farr">→</span><div class="fnode"><small>Sequence</small>Re-engagement</div><span class="farr">→</span><div class="fnode goal"><small>Goal</small>Win back</div></div>
+          <div class="flow-row"><div class="fnode trig"><small>Trigger</small>Product signup</div><span class="farr">→</span><div class="fnode"><small>Sequence</small>Onboarding</div><span class="farr">→</span><div class="fnode goal"><small>Goal</small>Adopt</div></div>
+        </div>
+        <p class="cap">Trigger → sequence → goal, for all four. Every label traces to the source <button class="chip" data-ev="S-10" style="padding:2px 8px">S-10</button></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KL2 · THE EMAIL — Family A EMAIL-CLIENT + pins -->
+  <section class="section" id="s2">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">2</span> The email</span>
+        <h2 class="sec-title">Inside a sequence, each email escalates from <b>value to ask</b>.</h2>
+        <p class="lede">The welcome sequence opens by <em>delivering</em>: whatever was promised at signup, with a single next action and a note on what's coming. No pitch. The pitch is earned later, at email seven, once quick wins, story, proof, and objection-handling have done their work.</p>
+        <p class="lede">Here is that first email, rendered. The numbered pins mark the four things the source says email one must do; hover a pin to read the exact instruction it depicts.</p>
+        <div class="chips"><button class="chip" data-ev="S-04">S-04</button><button class="chip" data-ev="S-03">S-03</button><button class="chip" data-ev="S-09">S-09</button></div>
+      </div>
+      <div class="aside rv">
+        <div class="annot">
+          <figure class="mock-email" style="margin:0">
+            <div class="mock-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="mock-bar-t">Inbox · Welcome</span></div>
+            <header class="em-hd">
+              <div class="em-av">P</div>
+              <div>
+                <div class="em-from"><b style="color:var(--ink)">[Product] Team</b> <span>&lt;hello@product.com&gt;</span></div>
+                <div class="em-subj">Welcome to <span class="ph">[Product]</span> — here's your first step <button class="cite-sm" data-ev="S-04">S-04</button></div>
+                <div class="em-pre">Your <span class="ph">[lead magnet]</span> is inside, plus what to expect next.</div>
+              </div>
+              <time class="em-time">now</time>
+            </header>
+            <div class="em-body">
+              <p>Thanks for joining. As promised, here's your <span class="ph">[lead magnet]</span>, ready below.</p>
+              <p><a class="em-cta">Get your <span class="ph">[first result]</span> →</a></p>
+              <p style="color:var(--ink-3);font-size:.84rem">Over the next two weeks I'll send a few short notes to help you get value fast. That's it for today.</p>
+            </div>
+            <div class="em-foot"><span class="mock-tag">Illustration · not a live send</span><span style="font:.66rem var(--mono);color:var(--ink-3)">Email 1 of 7</span></div>
+          </figure>
+          <button class="pin" style="--x:58%;--y:20%" data-ev="S-04" aria-label="Subject line">1</button>
+          <button class="pin" style="--x:26%;--y:60%" data-ev="S-04" aria-label="Deliver what was promised">2</button>
+          <button class="pin" style="--x:30%;--y:71%" data-ev="S-09" aria-label="Single next action">3</button>
+          <button class="pin" style="--x:64%;--y:83%" data-ev="S-04" aria-label="Set expectations">4</button>
+        </div>
+        <p class="cap"><b>Every concrete string traces or is placeholder.</b> Cited copy (the subject) carries an <span class="chip" style="padding:2px 8px" >S-NNN</span> chip; anything the source leaves as a variable renders as visible <span class="ph">[placeholder]</span>. The frame wears its <span class="mock-tag">Illustration</span> tag because a rendered email is a depiction, never a live send.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KL3 · CADENCE — Family B TIMELINE -->
+  <section class="section" id="s3">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">3</span> The cadence</span>
+        <h2 class="sec-title">The spacing is designed; <b>the timing carries the message</b>.</h2>
+        <p class="lede">Seven emails, immediate to day fourteen. The gaps aren't filler. The immediate welcome rides the moment of intent; the mid-sequence beats leave room to act on a quick win before the next nudge; the conversion ask waits until value has accumulated.</p>
+        <p class="lede">Read left to right, the timeline is the argument's pacing made visible. Every marker's day is the source's, not invented.</p>
+        <div class="chips"><button class="chip" data-ev="S-02">S-02</button><button class="chip" data-ev="S-11">S-11</button></div>
+      </div>
+      <div class="aside rv">
+        <div class="timeline" id="tl">
+          <div class="tl-track">
+            <div class="tl-fill"></div>
+            <span class="tl-dot" style="--x:2%"  data-ev="S-04"></span><span class="tl-lab" style="--x:2%;transform:translateX(0)">Day 0<b>Welcome</b></span>
+            <span class="tl-dot" style="--x:14%" data-ev="S-03"></span><span class="tl-lab" style="--x:20%">D1–2<b>Quick win</b></span>
+            <span class="tl-dot" style="--x:26%" data-ev="S-03"></span>
+            <span class="tl-dot" style="--x:40%" data-ev="S-03"></span><span class="tl-lab" style="--x:40%">D5–6<b>Proof</b></span>
+            <span class="tl-dot" style="--x:54%" data-ev="S-03"></span>
+            <span class="tl-dot" style="--x:70%" data-ev="S-03"></span><span class="tl-lab" style="--x:70%">D9–11<b>Feature</b></span>
+            <span class="tl-dot" style="--x:96%" data-ev="S-05"></span><span class="tl-lab" style="--x:96%;transform:translateX(-80%)">D12–14<b>Convert</b></span>
+          </div>
+          <div class="tl-axis"><span>immediate</span><span>~14 days</span></div>
+        </div>
+        <p class="cap">The welcome sequence, plotted on its 14-day axis <button class="chip" data-ev="S-02" style="padding:2px 8px">S-02</button>. Hover a marker for the email it stands for. Evidence-bearing: the days are the source's, so it wears citation chips, not the Illustration tag.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KL4 · FOUR PLAYS — Family D COMPARE-MATRIX + Family C placeholder -->
+  <section class="section" id="s4">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">4</span> Four plays</span>
+        <h2 class="sec-title">The four sequences are <b>distinct plays for distinct moments</b>.</h2>
+        <p class="lede">Same grammar, different jobs. They differ by trigger, by length, by tone, and by the single outcome each is built to produce. Nurture teaches on the way to a sale; re-engagement is short and blunt and willing to let you go.</p>
+        <p class="lede">The matrix reads them side by side. Below it, the one thing the source pointedly does <em>not</em> provide.</p>
+        <div class="chips"><button class="chip" data-ev="S-01">S-01</button><button class="chip" data-ev="S-06">S-06</button><button class="chip" data-ev="S-07">S-07</button><button class="chip" data-ev="S-08">S-08</button></div>
+      </div>
+      <div class="aside rv">
+        <div style="overflow-x:auto"><table class="matrix">
+          <thead><tr><th>Sequence</th><th>Trigger</th><th>Length</th><th>Goal</th></tr></thead>
+          <tbody>
+            <tr><th>Welcome</th><td>Signup</td><td>7 · ~14d</td><td class="mx-goal">Activate</td></tr>
+            <tr><th>Lead nurture</th><td>Magnet download</td><td>8 · ~21d</td><td class="mx-goal">Sell</td></tr>
+            <tr><th>Re-engagement</th><td>30–60d inactive</td><td>4 · ~14d</td><td class="mx-goal">Win back</td></tr>
+            <tr><th>Onboarding</th><td>Product signup</td><td>7 · ~14d+</td><td class="mx-goal">Adopt</td></tr>
+          </tbody>
+        </table></div>
+        <p class="cap">Every cell traces to the source <button class="chip" data-ev="S-01" style="padding:2px 8px">S-01</button> <button class="chip" data-ev="S-06" style="padding:2px 8px">S-06</button> <button class="chip" data-ev="S-07" style="padding:2px 8px">S-07</button>.</p>
+
+        <div style="margin-top:26px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span class="mock-tag">Illustration · no source data</span></div>
+          <div class="kpi-row">
+            <div class="kpi"><div class="kpi-val">—</div><div class="kpi-lab">Open rate</div></div>
+            <div class="kpi"><div class="kpi-val">00.0%</div><div class="kpi-lab">Click rate</div></div>
+            <div class="kpi"><div class="kpi-val">—</div><div class="kpi-lab">Conversion</div></div>
+          </div>
+          <p class="cap"><b>The anti-fabrication rule, made visible.</b> A dashboard here would be the most believable lie in the document. The source specifies no rates <button class="chip" data-ev="S-13" style="padding:2px 8px">S-13</button>, so these tiles render as <span class="ph">—</span> / <span class="ph">00.0%</span> placeholders and wear the Illustration tag. No plausible number is invented.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <p><b>Illuminate.</b> Source: <span class="mono">emails/references/sequence-templates.md</span>, a how-to whose subject is renderable artifacts, so Stage III is component-led. Every mockup, timeline, matrix cell, and pin is an ILLUSTRATE surface: its concrete content traces to a numbered signal or renders as visible placeholder. Open the evidence explorer to read the block.</p>
+</div></footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" aria-hidden="true">
+  <div class="sheet-head"><h3>The signal block</h3><span class="count" id="sheet-count">14 kept</span><button class="sheet-close" id="sheet-close" aria-label="Close">✕</button></div>
+  <div class="sheet-list" id="sheet-list"></div>
+</aside>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+(function(){const r=document.documentElement,b=document.getElementById('theme');
+  const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>';
+  const MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>';
+  const cur=()=>r.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  function set(t){r.dataset.theme=t;b.innerHTML=t==='dark'?SUN:MOON;try{localStorage.setItem('il-em-theme',t)}catch(e){}}
+  let s=null;try{s=localStorage.getItem('il-em-theme')}catch(e){}set(s||cur());
+  b.onclick=()=>set(cur()==='dark'?'light':'dark');})();
+
+const SIGNALS=[
+ ["S-01","Four sequence types: Welcome (post-signup), Lead Nurture (pre-sale), Re-Engagement, Onboarding (product users).","source"],
+ ["S-02","Welcome sequence = 7 emails from immediate to ~Day 12–14.","source"],
+ ["S-03","Welcome arc: Welcome → Quick Win → Story/Why → Social Proof → Overcome Objection → Core Feature → Conversion.","source"],
+ ["S-04","Email 1 (immediate): subject 'Welcome to [Product] — here's your first step'; deliver what was promised; single next action; set expectations.","source"],
+ ["S-05","Email 7 (Day 12–14): summarize value, clear offer, urgency if appropriate, risk reversal (guarantee, trial).","source"],
+ ["S-06","Lead Nurture = 8 emails over ~21 days, educational not salesy, building toward the product.","source"],
+ ["S-07","Re-Engagement triggers at 30–60 days of inactivity; 4 emails ending in 'Should we stop emailing you?' and list cleaning.","source"],
+ ["S-08","Onboarding coordinates with in-app onboarding: 'email supports, doesn't duplicate.'","source"],
+ ["S-09","Each email carries a single next action / CTA.","principle"],
+ ["S-10","Every sequence is defined by a trigger (signup, download, inactivity) and an end-goal (activate, sell, win back, adopt).","synthesis"],
+ ["S-11","Timing is a designed cadence (immediate, Day 1–2, Day 3–4 …), not an arbitrary schedule.","principle"],
+ ["S-12","The re-engagement 'Should we stop emailing you?' email deliberately offers the exit — honesty as re-engagement + list hygiene.","insight"],
+ ["S-13","The source specifies no open rates, conversion rates, or benchmarks; it is structural, not measured.","gap"],
+ ["S-14","Re-engagement subjects escalate: 'Is everything okay?' → 'Remember when you…' → 'We miss you' → 'Should we stop emailing you?'","source"],
+];
+const SIGMAP=Object.fromEntries(SIGNALS.map(s=>[s[0],s]));
+const list=document.getElementById('sheet-list');
+list.innerHTML=SIGNALS.map(([id,claim,tag])=>`<div class="ev" id="ev-${id}"><div class="ev-top"><span class="ev-id">${id}</span><span class="ev-tag">${tag}</span></div><div class="ev-claim">${claim}</div></div>`).join('');
+const scrim=document.getElementById('scrim'),sheet=document.getElementById('sheet');
+function openSheet(id){sheet.classList.add('on');scrim.classList.add('on');sheet.setAttribute('aria-hidden','false');
+  if(id){const el=document.getElementById('ev-'+id);if(el){el.scrollIntoView({block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1500);}}}
+function closeSheet(){sheet.classList.remove('on');scrim.classList.remove('on');sheet.setAttribute('aria-hidden','true');}
+document.getElementById('ev-open').onclick=()=>openSheet();
+document.getElementById('sheet-close').onclick=closeSheet;scrim.onclick=closeSheet;
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();});
+
+/* every data-ev element: hover tooltip + click drawer (chips AND pins AND dots) */
+const tip=document.getElementById('tip');let tHide;
+function showTip(el){const s=SIGMAP[el.dataset.ev];if(!s)return;clearTimeout(tHide);
+  tip.innerHTML=`<span class="tid">${el.dataset.ev} · ${s[2]}</span>${s[1]}`;
+  const r=el.getBoundingClientRect();tip.style.left=Math.min(Math.max(8,r.left),innerWidth-316)+'px';tip.style.top=(r.bottom+9)+'px';tip.classList.add('on');}
+function hideTip(){tHide=setTimeout(()=>tip.classList.remove('on'),80);}
+document.querySelectorAll('[data-ev]').forEach(el=>{el.addEventListener('click',()=>openSheet(el.dataset.ev));
+  el.addEventListener('mouseenter',()=>showTip(el));el.addEventListener('mouseleave',hideTip);
+  if(el.tagName==='BUTTON'){el.addEventListener('focus',()=>showTip(el));el.addEventListener('blur',hideTip);}});
+// build-check: every pin's data-ev must resolve to a real S-NNN
+document.querySelectorAll('.pin[data-ev]').forEach(p=>{if(!SIGMAP[p.dataset.ev])console.error('Unresolved pin:',p.dataset.ev);});
+
+/* reveal + timeline + spy */
+function ensure(){const vh=innerHeight||800;document.querySelectorAll('.rv:not(.in)').forEach(el=>{if(el.getBoundingClientRect().top<vh*.92)el.classList.add('in');});
+  const tl=document.getElementById('tl');if(tl&&tl.getBoundingClientRect().top<vh*.9)tl.classList.add('in');}
+document.querySelectorAll('.rv').forEach(el=>{const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.14});o.observe(el);});
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.3}).observe(document.getElementById('tl'));
+addEventListener('scroll',ensure,{passive:true});addEventListener('load',ensure);ensure();
+const links=[...document.querySelectorAll('#nav-links a')];
+const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}),{rootMargin:'-45% 0 -50% 0'});
+document.querySelectorAll('section.section,#top').forEach(s=>spy.observe(s));
+</script>
+</body>
+</html>

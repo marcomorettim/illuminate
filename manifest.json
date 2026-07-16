@@ -1,7 +1,7 @@
 {
   "name": "illuminate",
   "version": "1.0.0",
-  "description": "Dense source in. Self-contained interactive HTML out. Three-stage arc: signal extraction (42-entry stratified signal block), Barbara Minto Pyramid construction with MECE adversarial audit, and a parallax interactive HTML artifact with evidence drawer, 3D cards, and ASCII art animation.",
+  "description": "Dense source in. Self-contained interactive HTML out. Three-stage arc: salience-gated signal extraction (per-source thesis test; noise cut before the pyramid, not disclosed lazily), Barbara Minto Pyramid construction with MECE adversarial audit, and a polished editorial HTML artifact (shadcn/ui + Swiss typography) with evidence drawer and interactive ASCII. Editorial restraint; parallax opt-in.",
   "author": "marcomorettim",
   "trigger": "/illuminate",
   "category": "research",
@@ -15,7 +15,7 @@
   "examples": [
     {
       "input": "/illuminate agentic-os-design-whitepaper.md",
-      "output": "Single-file HTML: SCQA hero, GT typewriter, 4 MECE Key Lines, 42-signal evidence drawer, parallax ASCII art, confidence meters"
+      "output": "Single-file HTML: SCQA hero, GT typewriter, 4 MECE Key Lines, salience-gated evidence drawer, editorial ASCII, confidence meters"
     },
     {
       "input": "/illuminate book.pdf",
@@ -27,9 +27,9 @@
     }
   ],
   "capabilities": {
-    "stage_1": "Multi-source ingestion, 6-tag signal stratification (SOURCE/INSIGHT/METRIC/PRINCIPLE/SYNTHESIS/GAP), 3-angle extraction, provenance audit",
+    "stage_1": "Multi-source ingestion, 6-tag signal stratification (SOURCE/INSIGHT/METRIC/PRINCIPLE/SYNTHESIS/GAP), 3-angle extraction, per-source salience gate (KEEP/CONTEXT/CUT against the source thesis; mandatory cut-list), provenance audit",
     "stage_2": "Hub detection, MECE issue tree, Barbara Minto Pyramid, 3-skeptic adversarial audit",
-    "stage_3": "Parallax HTML artifact, animated ASCII art, 3D card physics, evidence drawer, progressive disclosure, keyboard navigation"
+    "stage_3": "Portable self-contained editorial HTML (shadcn/ui vocabulary — Tabs, Accordion, Tooltip, Badge, filterable evidence Sheet), Swiss typography, per-KL diagram↔code toggle with syntax-highlighted mechanism snippets, interactive ASCII/SVG illustrations, Web Animations motion, keyboard navigation; parallax opt-in via rich tier"
   },
   "evidence_contract": {
     "ASSERT": "only claims that trace to a specific S-NNN signal block entry",

@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honest Containment · LLM Failure Modes × Greenhouse</title>
+<style>
+:root{
+  --bg:#f6f4ef; --bg-2:#efece5; --surface:#ffffff; --surface-2:#fbfaf6;
+  --ink:#211d18; --ink-2:#5c564c; --ink-3:#948c7e;
+  --line:rgba(33,29,24,.08); --line-2:rgba(33,29,24,.14);
+  --accent:#c07d16; --accent-2:#9a6210; --accent-soft:rgba(192,125,22,.10); --accent-glow:rgba(192,125,22,.16);
+  --sage:#6f7f68; --sage-soft:rgba(111,127,104,.12);
+  --sans:-apple-system,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono",monospace;
+  --spring:cubic-bezier(.22,.72,.24,1);
+  --r:16px; --r-lg:24px; --r-xl:30px;
+  --sh-1:0 1px 2px rgba(60,48,30,.05), 0 4px 10px -4px rgba(60,48,30,.06);
+  --sh-2:0 2px 4px rgba(60,48,30,.05), 0 22px 44px -22px rgba(60,48,30,.16);
+  --sh-3:0 30px 60px -24px rgba(60,48,30,.22);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#14120f; --bg-2:#1c1915; --surface:#1e1b16; --surface-2:#24201a;
+  --ink:#f3efe7; --ink-2:#b7ada0; --ink-3:#847c70;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --accent:#e0a84a; --accent-2:#f0c076; --accent-soft:rgba(224,168,74,.14); --accent-glow:rgba(224,168,74,.2);
+  --sage:#8fa085; --sage-soft:rgba(143,160,133,.14);
+  --sh-1:0 1px 2px rgba(0,0,0,.3),0 4px 10px -4px rgba(0,0,0,.4);
+  --sh-2:0 2px 4px rgba(0,0,0,.3),0 22px 44px -22px rgba(0,0,0,.5);
+  --sh-3:0 30px 60px -24px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{--bg:#14120f;--bg-2:#1c1915;--surface:#1e1b16;--surface-2:#24201a;
+  --ink:#f3efe7;--ink-2:#b7ada0;--ink-3:#847c70;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
+  --accent:#e0a84a;--accent-2:#f0c076;--accent-soft:rgba(224,168,74,.14);--accent-glow:rgba(224,168,74,.2);--sage:#8fa085;--sage-soft:rgba(143,160,133,.14);
+  --sh-1:0 1px 2px rgba(0,0,0,.3),0 4px 10px -4px rgba(0,0,0,.4);--sh-2:0 2px 4px rgba(0,0,0,.3),0 22px 44px -22px rgba(0,0,0,.5);--sh-3:0 30px 60px -24px rgba(0,0,0,.6);}
+:root[data-theme="light"]{--bg:#f6f4ef;--bg-2:#efece5;--surface:#ffffff;--surface-2:#fbfaf6;
+  --ink:#211d18;--ink-2:#5c564c;--ink-3:#948c7e;--line:rgba(33,29,24,.08);--line-2:rgba(33,29,24,.14);
+  --accent:#c07d16;--accent-2:#9a6210;--accent-soft:rgba(192,125,22,.10);--accent-glow:rgba(192,125,22,.16);--sage:#6f7f68;--sage-soft:rgba(111,127,104,.12);
+  --sh-1:0 1px 2px rgba(60,48,30,.05),0 4px 10px -4px rgba(60,48,30,.06);--sh-2:0 2px 4px rgba(60,48,30,.05),0 22px 44px -22px rgba(60,48,30,.16);--sh-3:0 30px 60px -24px rgba(60,48,30,.22);}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+/* 2026: smooth native accordion via interpolate-size (progressive enhancement) */
+@supports (interpolate-size: allow-keywords){
+  :root{interpolate-size:allow-keywords}
+  .card::details-content{height:0;overflow:hidden;content-visibility:hidden;
+    transition:height .4s var(--spring),content-visibility .4s allow-discrete}
+  .card[open]::details-content{height:auto;content-visibility:visible}
+}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:18px;line-height:1.62;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;
+  transition:background .5s var(--spring),color .5s var(--spring)}
+::selection{background:var(--accent-soft);color:var(--ink)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(50% 38% at 88% -4%, var(--accent-glow), transparent 60%),
+    radial-gradient(44% 34% at 2% 20%, var(--sage-soft), transparent 60%)}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(24px,5vw,60px)}
+.mono{font-family:var(--mono)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:5px}
+
+/* nav */
+.nav{position:fixed;top:20px;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none;padding:0 16px}
+.nav-pill{pointer-events:auto;display:flex;align-items:center;gap:18px;max-width:100%;
+  background:color-mix(in oklab,var(--surface) 78%,transparent);backdrop-filter:saturate(160%) blur(18px);
+  border:1px solid var(--line);border-radius:999px;padding:8px 8px 8px 20px;box-shadow:var(--sh-1)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:.9rem;white-space:nowrap}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{font-size:.86rem;color:var(--ink-3);text-decoration:none;padding:8px 14px;border-radius:999px;transition:.3s var(--spring);white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}.nav-links a.active{color:var(--ink);background:var(--bg-2)}
+.nav-cta{display:flex;align-items:center;gap:9px;background:var(--ink);color:var(--bg);border:0;border-radius:999px;
+  padding:9px 9px 9px 17px;font-family:var(--sans);font-size:.84rem;font-weight:550;cursor:pointer;transition:transform .3s var(--spring);white-space:nowrap}
+.nav-cta:hover{transform:translateY(-1px)}.nav-cta:active{transform:scale(.97)}
+.nav-cta .ic{width:25px;height:25px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:.8rem;transition:transform .3s var(--spring)}
+.nav-cta:hover .ic{transform:translate(2px,-1px)}
+.theme-btn{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);
+  cursor:pointer;display:grid;place-items:center;transition:transform .3s var(--spring),color .3s var(--spring);box-shadow:var(--sh-1);flex:0 0 auto}
+.theme-btn:hover{color:var(--ink);transform:translateY(-1px)}
+.theme-btn svg{width:17px;height:17px}
+@media(max-width:820px){.nav-links{display:none}}
+
+/* hero */
+.hero{padding:clamp(140px,18vw,200px) 0 clamp(48px,7vw,80px)}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);
+  border-radius:999px;padding:7px 16px 7px 13px;font-size:.82rem;color:var(--ink-2);margin-bottom:32px;box-shadow:var(--sh-1)}
+.eyebrow .d{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.eyebrow b{color:var(--accent-2);font-weight:600}
+.lead{font-size:1.28rem;line-height:1.5;color:var(--ink-2);max-width:60ch;margin:0 0 22px;text-wrap:pretty}.lead b{color:var(--ink);font-weight:560}
+.q{font-size:1.42rem;line-height:1.4;color:var(--ink);max-width:46ch;margin:0 0 40px;font-weight:450}.q .hl{color:var(--accent-2);font-weight:600}
+.gt{font-weight:400;font-size:clamp(2.7rem,6.4vw,5.2rem);line-height:1.03;letter-spacing:-.035em;margin:0;max-width:16ch;text-wrap:balance}
+.gt .k{color:var(--accent)}
+.gt-sub{margin:32px 0 0;font-size:1.2rem;line-height:1.55;color:var(--ink-2);max-width:56ch}.gt-sub b{color:var(--ink);font-weight:560}
+
+/* ladder */
+.ladder{margin:clamp(56px,7vw,92px) 0 0}
+.ladder-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 4px 18px;flex-wrap:wrap;gap:8px}
+.ladder-head h3{margin:0;font-size:1.2rem;font-weight:600;letter-spacing:-.02em}
+.ladder-head span{font-size:.9rem;color:var(--ink-3)}
+.ladder-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:clamp(22px,3vw,40px);box-shadow:var(--sh-2)}
+#ladder{width:100%;height:auto;display:block}
+#ladder .lbl{font-family:var(--sans);font-size:15px;font-weight:600;fill:var(--ink);transition:fill .3s}
+#ladder .fm{font-family:var(--sans);font-size:12px;fill:var(--ink-3)}
+#ladder .guar{font-family:var(--sans);font-size:12px;fill:var(--ink-3)}
+#ladder .track{fill:var(--bg-2)}
+#ladder .fill{transition:width .85s var(--spring)}
+#ladder .node{fill:var(--accent)}
+#ladder .spine{stroke:var(--line-2);stroke-width:1.5}
+#ladder .rung{cursor:pointer;transition:opacity .3s}
+#ladder .rung.dim{opacity:.4}
+#ladder .rung:hover .lbl,#ladder .rung:focus-visible .lbl{fill:var(--accent-2)}
+.ladder-foot{text-align:center;color:var(--ink-3);font-size:.86rem;margin-top:18px}
+
+/* section */
+.section{padding:clamp(80px,10vw,150px) 0}
+.section+.section{border-top:1px solid var(--line)}
+.sec-grid{display:grid;grid-template-columns:1fr;gap:clamp(34px,4vw,60px)}
+@media(min-width:940px){.sec-grid{grid-template-columns:1.05fr .95fr;align-items:start}}
+.tag{display:inline-flex;align-items:center;gap:9px;background:var(--accent-soft);color:var(--accent-2);border-radius:999px;padding:6px 15px 6px 11px;font-size:.82rem;font-weight:600;margin-bottom:22px}
+.tag .n{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:.72rem}
+.sec-title{font-weight:440;font-size:clamp(2rem,3.8vw,2.9rem);line-height:1.1;letter-spacing:-.028em;margin:0 0 24px;max-width:20ch;text-wrap:balance}
+.sec-title b{font-weight:600;color:var(--accent-2)}
+.lede{color:var(--ink-2);font-size:1.16rem;line-height:1.66;max-width:56ch;margin:0 0 20px;text-wrap:pretty}.lede b{color:var(--ink);font-weight:560}
+.gauge{display:flex;align-items:center;gap:14px;margin:28px 0}
+.gauge .lab{font-size:.86rem;color:var(--ink-3);font-weight:500}
+.gauge .track{flex:1;max-width:200px;height:8px;border-radius:999px;background:var(--bg-2);overflow:hidden}
+.gauge .track i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.gauge .val{font-size:.86rem;color:var(--ink-2);font-weight:550}
+.aside{position:sticky;top:96px}
+
+/* accordion cards */
+.disc{display:flex;flex-direction:column;gap:12px;margin-top:34px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-1);transition:box-shadow .35s var(--spring),transform .35s var(--spring)}
+.card:hover{box-shadow:var(--sh-2);transform:translateY(-1px)}
+.card summary{list-style:none;cursor:pointer;padding:20px 22px;display:flex;align-items:center;gap:15px;font-size:1.06rem;font-weight:550;color:var(--ink)}
+.card summary::-webkit-details-marker{display:none}
+.card .plus{margin-left:auto;width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:var(--bg-2);display:grid;place-items:center;position:relative;transition:background .3s var(--spring)}
+.card[open] .plus{background:var(--accent-soft)}
+.card .plus::before,.card .plus::after{content:"";position:absolute;background:var(--ink-3);transition:transform .35s var(--spring),opacity .3s,background .3s}
+.card .plus::before{width:11px;height:1.6px}.card .plus::after{width:1.6px;height:11px}
+.card[open] .plus::after{transform:rotate(90deg);opacity:0}.card[open] .plus::before{background:var(--accent-2)}
+.card .body{padding:0 22px 22px;color:var(--ink-2);font-size:1.02rem;line-height:1.65;max-width:60ch;text-wrap:pretty}
+.card .body code{font-family:var(--mono);font-size:.86em;background:var(--bg-2);color:var(--accent-2);padding:2px 6px;border-radius:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{font-size:.78rem;font-weight:550;color:var(--accent-2);background:var(--accent-soft);border-radius:999px;padding:5px 12px;cursor:pointer;border:0;transition:.25s var(--spring)}
+.chip:hover{background:var(--accent);color:#fff;transform:translateY(-1px)}
+
+/* code block */
+.code{border-radius:var(--r-lg);overflow:hidden;background:#1e1b16;border:1px solid rgba(255,255,255,.06);box-shadow:var(--sh-2)}
+.code-bar{display:flex;align-items:center;gap:9px;padding:14px 17px;border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .dots{display:flex;gap:7px}.code-bar .dots i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.16)}
+.code-bar .fn{margin-left:7px;font-family:var(--mono);font-size:.76rem;color:rgba(255,255,255,.5)}
+.code-bar .copy{margin-left:auto;font-family:var(--mono);font-size:.72rem;color:rgba(255,255,255,.5);background:none;border:0;cursor:pointer;transition:color .25s}
+.code-bar .copy:hover{color:#fff}
+.code pre{margin:0;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.8;color:rgba(255,255,255,.82)}
+.tok-kw{color:#e5b567}.tok-str{color:#9db787}.tok-com{color:rgba(255,255,255,.38);font-style:italic}.tok-num{color:#d99a6c}
+.aside-note{font-size:.98rem;color:var(--ink-2);line-height:1.6;margin:18px 2px 0;max-width:52ch}.aside-note b{color:var(--ink);font-weight:560}
+
+/* callout (KL4) */
+.callout{border-radius:var(--r-xl);padding:38px 34px;background:linear-gradient(150deg,var(--accent-soft),transparent 70%),var(--surface);border:1px solid var(--line);box-shadow:var(--sh-2)}
+.callout .mark{font-size:.82rem;font-weight:600;color:var(--accent-2);margin-bottom:18px}
+.callout blockquote{margin:0;font-size:1.7rem;font-weight:400;line-height:1.28;letter-spacing:-.02em;color:var(--ink)}
+.callout blockquote b{font-weight:600;color:var(--accent-2)}
+.callout .src{margin-top:20px;font-size:.98rem;color:var(--ink-3);line-height:1.5}
+
+/* evidence sheet */
+.scrim{position:fixed;inset:0;background:rgba(33,25,15,.34);backdrop-filter:blur(3px);z-index:70;opacity:0;pointer-events:none;transition:opacity .4s var(--spring)}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;top:0;right:0;height:100%;width:min(540px,94vw);z-index:80;background:var(--bg);border-left:1px solid var(--line);
+  transform:translateX(100%);transition:transform .5s var(--spring);display:flex;flex-direction:column;box-shadow:var(--sh-3)}
+.sheet.on{transform:none}
+.sheet-head{padding:24px 26px 18px;border-bottom:1px solid var(--line)}
+.sheet-title{display:flex;align-items:center;gap:12px}
+.sheet-title h3{margin:0;font-size:1.1rem;font-weight:600}
+.sheet-title .count{font-size:.82rem;color:var(--accent-2);font-weight:550}
+.sheet-close{margin-left:auto;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;font-size:1rem;transition:.3s var(--spring);box-shadow:var(--sh-1)}
+.sheet-close:hover{color:var(--ink);transform:rotate(90deg)}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.filt{font-size:.76rem;font-weight:500;color:var(--ink-3);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;transition:.25s var(--spring)}
+.filt:hover{color:var(--ink)}.filt.on{color:#fff;background:var(--accent);border-color:var(--accent)}
+.sheet-list{overflow-y:auto;padding:10px 0;flex:1}
+.ev{padding:16px 26px;border-bottom:1px solid var(--line);transition:background .3s}
+.ev.hide{display:none}.ev.flash{background:var(--accent-soft)}
+.ev-top{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.ev-id{font-size:.8rem;color:var(--accent-2);font-weight:700}
+.ev-tag{font-size:.64rem;font-weight:600;letter-spacing:.04em;color:var(--ink-3);border:1px solid var(--line-2);border-radius:999px;padding:2px 9px;text-transform:uppercase}
+.ev-tag.warn{color:var(--accent-2);border-color:var(--accent)}
+.ev-claim{font-size:.98rem;color:var(--ink-2);line-height:1.5}
+.ev-conf{margin-top:10px;display:flex;align-items:center;gap:10px}
+.ev-conf .bar{width:86px;height:6px;border-radius:999px;background:var(--bg-2);overflow:hidden}
+.ev-conf .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.ev-conf span{font-size:.72rem;color:var(--ink-3);font-weight:500}
+
+/* tooltip */
+.tip{position:fixed;z-index:95;max-width:300px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 16px;
+  font-size:.9rem;line-height:1.5;color:var(--ink-2);box-shadow:var(--sh-2);opacity:0;transform:translateY(6px);transition:opacity .22s var(--spring),transform .22s var(--spring);pointer-events:none}
+.tip.on{opacity:1;transform:none}
+.tip .tid{font-size:.72rem;color:var(--accent-2);font-weight:700;display:block;margin-bottom:5px}
+
+footer{padding:64px 0 96px;color:var(--ink-3);font-size:.94rem;line-height:1.62;border-top:1px solid var(--line)}
+footer b{color:var(--ink-2);font-weight:550}footer .fine{font-size:.84rem;margin-top:10px}
+
+.rv{opacity:0;transform:translateY(26px);filter:blur(4px);transition:opacity .8s var(--spring),transform .8s var(--spring),filter .8s var(--spring)}
+.rv.in{opacity:1;transform:none;filter:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none}}
+</style>
+</head>
+<body>
+<div class="nav"><div class="nav-pill">
+  <span class="brand"><span class="dot"></span>Illuminate</span>
+  <div class="nav-links" id="nav-links">
+    <a href="#top" class="active">Overview</a><a href="#s1">Prevent</a><a href="#s2">Gate</a><a href="#s3">Observe</a><a href="#s4">Unmitigated</a>
+  </div>
+  <button class="theme-btn" id="theme" aria-label="Toggle light or dark theme"></button>
+  <button class="nav-cta" id="ev-open">Evidence <span class="ic">→</span></button>
+</div></div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow"><span class="d"></span>A study of <b>Greenhouse OS</b> · eight failure modes, honestly accounted</span>
+    <p class="lead">Andrej Karpathy catalogued eight systematic ways that LLM coding agents fail, from quietly assuming the wrong requirement to patching a bug they never reproduced. Greenhouse is an operating system that runs exactly these agents, which means the thing most likely to fail is running <b>inside</b> the machine built to keep it honest.</p>
+    <p class="q">So the real question is simple: does Greenhouse actually <span class="hl">contain</span> these failures, or does it merely <span class="hl">document</span> them?</p>
+    <h1 class="gt">It enforces on a <span class="k">descending ladder</span>, and every rung names the gap it can't close.</h1>
+    <p class="gt-sub">Four tiers of control, each weaker than the one above it: code-level prevention, prompt-level gates, log-only observation, and one failure left completely open. What makes it trustworthy isn't that it catches everything. It's that it <b>tells you exactly what it doesn't</b>.</p>
+
+    <div class="ladder rv">
+      <div class="ladder-head"><h3>The enforcement ladder</h3><span>each rung's brightness and length show how strong its guarantee really is</span></div>
+      <div class="ladder-card">
+        <svg id="ladder" viewBox="0 0 720 300" role="img" aria-label="Four-tier enforcement ladder from strongest to weakest">
+          <line class="spine" x1="42" y1="30" x2="42" y2="266"/>
+        </svg>
+      </div>
+      <p class="ladder-foot">Select any rung to jump to the tier it belongs to.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- 01 PREVENT -->
+  <section class="section" id="s1">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">1</span> Prevention</span>
+        <h2 class="sec-title">The failures that can do real damage are <b>stopped in hardware</b>.</h2>
+        <p class="lede">The failures that actually cause harm all share one trait: to do damage, they have to <b>do</b> something. Write a file, escalate a permission, mutate shared state. Greenhouse treats that as the moment to intervene. Instead of trying to reason an agent out of a bad write, it simply removes the ability to write wherever a write isn't warranted.</p>
+        <p class="lede">This is the load-bearing distinction in the entire system. Model-layer defenses can only ever bound the <em>likelihood</em> of a failure, because they operate on a model that can always be wrong. Deterministic controls bound its <b>consequence</b>, because they operate on capabilities the model simply doesn't hold.</p>
+        <div class="gauge"><span class="lab">Guarantee strength</span><span class="track"><i style="width:96%"></i></span><span class="val">Deterministic</span></div>
+        <div class="disc">
+          <details class="card" open><summary>Least privilege stops speculative code before it can be written<span class="plus"></span></summary>
+            <div class="body">The input-analyzer and plan-agent are granted read access only. Even if one of them hallucinates a feature nobody asked for, it has no tool with which to build it; the capability isn't in its permission set at all. Writing is reserved entirely for the execute-agent, which takes its scope from the plan-agent's structured output rather than its own judgment. The <code>PhaseGate</code> between planning and execution is where that boundary is enforced: nothing crosses from "proposed" to "written" without passing through it.
+              <div class="chips"><button class="chip" data-ev="S-009">S-009</button><button class="chip" data-ev="S-005">S-005</button></div></div></details>
+          <details class="card"><summary>Irreversibility is, by itself, a form of control<span class="plus"></span></summary>
+            <div class="body">Session health is tracked by a one-way state machine that has no <code>reset()</code>. Context can move from fertile to compacted to contaminated to depleted, but it can never move back. That sounds like a limitation, and it is, yet it is also the enforcement: because the degradation can't be silently undone, a session that has drifted stays visibly drifted until a human intervenes, rather than quietly papering over its own decay.
+              <div class="chips"><button class="chip" data-ev="S-018">S-018</button></div></div></details>
+        </div>
+      </div>
+      <div class="aside rv">
+        <div class="code">
+          <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fn">correction_register.py</span><button class="copy">copy</button></div>
+          <pre><code data-code="cd1"></code></pre>
+        </div>
+        <p class="aside-note">The mechanism, in code. A self-repair attempt only counts against the cap when it carries proof it was verified, so an agent that keeps guessing without ever reproducing the bug is <b>refused and escalated</b> rather than allowed to spin through patches.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 GATE -->
+  <section class="section" id="s2">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">2</span> Gating</span>
+        <h2 class="sec-title">Failures that fire before any action meet a gate only as strong as the model's <b>willingness to obey it</b>.</h2>
+        <p class="lede">Some failures never touch a tool at all. A silent assumption, a quietly chosen interpretation, an unstated approach: these happen entirely inside the model's reasoning, before a single action is taken. There is nothing physical to intercept, so prevention has to move upstream, into the shape of the request itself.</p>
+        <p class="lede">Greenhouse does this with a typed gate. The input-analyzer must return an explicit list of interpretations, and when more than one plausible reading exists, the orchestrator stops and asks. It works, but it lives at the prompt level, which means it holds only for as long as the model chooses to honor it. This is the softest kind of guarantee the system offers.</p>
+        <div class="gauge"><span class="lab">Guarantee strength</span><span class="track"><i style="width:58%"></i></span><span class="val">Model must comply</span></div>
+        <div class="disc">
+          <details class="card" open><summary>A typed field forces the model to stop and ask<span class="plus"></span></summary>
+            <div class="body">Since June 2026, the input-analyzer returns a mandatory <code>INTERPRETATIONS</code> field. When it lists more than one reading, the orchestrator emits a <code>DISAMBIGUATION REQUIRED</code> signal and halts before the ideation phase can begin, waiting for the user to confirm a single interpretation. The typed field is the contract; the halt is its enforcement.
+              <div class="chips"><button class="chip" data-ev="S-006">S-006</button><button class="chip" data-ev="S-004">S-004</button></div></div></details>
+          <details class="card"><summary>Why this rung is softer than it looks<span class="plus"></span></summary>
+            <div class="body">The catch is where the gate lives. It runs at the orchestrator's prompt, not in code, so in principle the model could decide an ambiguous request is unambiguous and sail straight past it. Only the irreversible-action boundary has been hardened into a code-level check; disambiguation itself still rests on cooperation.
+              <div class="chips"><button class="chip" data-ev="S-004">S-004</button></div></div></details>
+        </div>
+      </div>
+      <div class="aside rv">
+        <div class="code">
+          <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fn">orky/gate.py</span><button class="copy">copy</button></div>
+          <pre><code data-code="cd2"></code></pre>
+        </div>
+        <p class="aside-note">A typed contract the model is asked to fill. The halt is real, but its reliability rests on the model actually <b>surfacing</b> the ambiguity rather than resolving it silently.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 OBSERVE -->
+  <section class="section" id="s3">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">3</span> Observation</span>
+        <h2 class="sec-title">The quiet failures are caught in the record, but only <b>after they have already happened</b>.</h2>
+        <p class="lede">Over-abstraction, drive-by refactoring, a vaguely chosen approach: these don't announce themselves. Each one happens in the middle of a legitimate, authorized piece of work, inside what the agent genuinely believes is just doing the task. There is no obvious moment to intercept, because from the inside nothing looks wrong.</p>
+        <p class="lede">So Greenhouse records rather than prevents. Every delegation is logged, the cost of over-abstraction shows up in the token accounting, and the trace is there to review. But all of it lands after the fact. The control can see the failure; it cannot stop it. Closing that gap would take a real-time check that doesn't yet exist.</p>
+        <div class="gauge"><span class="lab">Guarantee strength</span><span class="track"><i style="width:34%"></i></span><span class="val">Seen, not stopped</span></div>
+        <div class="disc">
+          <details class="card" open><summary>The log records what was decided, never why<span class="plus"></span></summary>
+            <div class="body">The accountability chain captures which approach was chosen and at what point in the run, append-only, so nothing can be quietly rewritten later. What it doesn't capture is the reasoning. Vague Approach is precisely the failure that a rationale would expose, and the absence of that field is the whole of the gap.
+              <div class="chips"><button class="chip" data-ev="S-012">S-012</button><button class="chip" data-ev="S-014">S-014</button></div></div></details>
+          <details class="card"><summary>The membrane's blind spot is self-generated premises<span class="plus"></span></summary>
+            <div class="body">There is a second blind spot here. The membrane strips injected premises at the perimeter, but a premise the model invents on its own trips no pattern, because it never came from outside. Nothing at runtime catches it; only the human sitting at the escalation boundary does.
+              <div class="chips"><button class="chip" data-ev="S-013">S-013</button><button class="chip" data-ev="S-011">S-011</button></div></div></details>
+        </div>
+      </div>
+      <div class="aside rv">
+        <div class="code">
+          <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fn">accountability_chain.py</span><button class="copy">copy</button></div>
+          <pre><code data-code="cd3"></code></pre>
+        </div>
+        <p class="aside-note">The gap made visible: the log faithfully records <b>what</b> was decided and when, but never <b>why</b>. The one field that would make a vague approach auditable is the field that was never written.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 UNMITIGATED -->
+  <section class="section" id="s4">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">4</span> Unmitigated</span>
+        <h2 class="sec-title">One failure sits below every control, and the system's <b>honesty about it</b> is the only safeguard left.</h2>
+        <p class="lede">Style drift is the slow migration of a codebase away from its own conventions: naming that shifts, comment density that creeps, formatting that wanders. It fires no injection pattern and triggers no delegation event, so it falls beneath every mechanism the system has. There is, quite simply, no runtime control for it.</p>
+        <p class="lede">What Greenhouse does instead is refuse to pretend otherwise. The documentation states it plainly. That admission is itself the safeguard, because a control that names its own blind spot can be audited and planned around, in a way that a silent, falsely-complete one never can.</p>
+        <div class="gauge"><span class="lab">Guarantee strength</span><span class="track"><i style="width:9%"></i></span><span class="val">None</span></div>
+        <div class="disc">
+          <details class="card" open><summary>The same honesty extends to the gaps it did close<span class="plus"></span></summary>
+            <div class="body">The fix for fix-without-reproducing proves a verification was <em>specified</em>, not that it actually ran and passed. And no gap in the whole taxonomy has been shown exploited in practice; the map is architectural, drawn from design rather than from incident data. The document says so, which is exactly the point.
+              <div class="chips"><button class="chip" data-ev="S-008">S-008</button><button class="chip" data-ev="S-019">S-019</button></div></div></details>
+        </div>
+      </div>
+      <div class="aside rv">
+        <div class="callout">
+          <div class="mark">FM6 · Style drift</div>
+          <blockquote>"None at runtime. <b>Genuinely unmitigated.</b>"</blockquote>
+          <p class="src">The document's own words about its one uncovered failure, printed plainly rather than papered over.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Illuminate.</b> This study kept the 20 load-bearing signals from the source, set aside 16 as restatement or noise, and held 19 more as context. Every claim above traces to a numbered signal; open the evidence explorer to read the full block and filter it by type.</p>
+    <p class="fine">Source: greenhouse-os/FAILURE-MODES.md. The governing thesis is a synthesis across the eight failure rows, not a single quoted sentence. Figures marked contested lack a checkable reference in the source and are hedged accordingly.</p>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" aria-hidden="true" aria-label="Evidence explorer">
+  <div class="sheet-head">
+    <div class="sheet-title"><h3>The signal block</h3><span class="count" id="sheet-count">20 kept</span>
+      <button class="sheet-close" id="sheet-close" aria-label="Close">✕</button></div>
+    <div class="filters" id="filters"></div>
+  </div>
+  <div class="sheet-list" id="sheet-list"></div>
+</aside>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* light/dark toggle */
+(function(){const root=document.documentElement,tbtn=document.getElementById('theme');
+  const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>';
+  const MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>';
+  const cur=()=>root.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  function set(t){root.dataset.theme=t;tbtn.innerHTML=t==='dark'?SUN:MOON;try{localStorage.setItem('il-theme',t)}catch(e){}}
+  let stored=null;try{stored=localStorage.getItem('il-theme')}catch(e){}
+  set(stored||cur());
+  tbtn.onclick=()=>set(cur()==='dark'?'light':'dark');})();
+
+const SIGNALS=[
+ ["S-001","Maps Karpathy's eight coding failure modes each to a Greenhouse control and a named residual gap.","source",1],
+ ["S-002","A governance system openly documents a genuinely unmitigated failure; the honesty is the stance.","insight",.7],
+ ["S-003","Silent Assumption reframed as the benign cousin of XPIA: same mechanism, lower threat actor.","insight",.7],
+ ["S-004","The three Think-Before-Coding failures are enforced at prompt level, not code level.","synthesis",.7],
+ ["S-005","Model-layer defenses bound likelihood; only deterministic controls bound consequence.","principle",1],
+ ["S-006","FM2 mitigated in June 2026: a typed INTERPRETATIONS field plus a disambiguation gate that halts before ideation.","source",1],
+ ["S-007","FM8 gap closed: a correction counts toward the cap of 3 only when it carries a repro/verify marker.","source",1],
+ ["S-008","Even the closed gap is hedged: the marker proves verification was specified, not that it passed.","insight",.7],
+ ["S-009","FM4 bounded by a worker permission ladder: analyzer and planner read-only, only the executor writes.","source",1],
+ ["S-010","FM3: the token multiplier makes over-abstraction expensive but not prevented; the cost signal lags.","source",1],
+ ["S-011","FM5: the accountability chain logs delegations after the fact; no real-time diff-scope gate exists.","source",1],
+ ["S-012","FM7: the chain records what was decided, not why; a rationale field would close it.","source",1],
+ ["S-013","FM1: the membrane catches injected premises, not self-generated ones; only the human gate catches those.","source",1],
+ ["S-014","A recurring gap shape across FM1/FM2/FM5/FM7: the control observes the failure but does not prevent it.","synthesis",.7],
+ ["S-015","Part II names seven multi-agent-level failures with no Karpathy equivalent.","source",1],
+ ["S-016","Curse of Recursion: 92% of self-improving runs regress; 14% end permanently worse.","metric·contested",.35],
+ ["S-017","XPIA: about 0.1% success per attempt, compounding toward near-certainty across sessions.","metric·contested",.35],
+ ["S-018","Entropy Decay enforced by a one-way SoilTracker with no reset: irreversibility is the control.","principle",1],
+ ["S-019","No gap is shown exploited in practice; the taxonomy is architectural, not empirical.","gap",.25],
+ ["S-020","Karpathy's eight modes are treated as a complete taxonomy whose completeness is never defended.","assumption",.25],
+];
+const CONF=v=>v>=.9?"high":v>=.6?"medium":v>=.3?"low":"hedge";
+const SIGMAP=Object.fromEntries(SIGNALS.map(s=>[s[0],s]));
+
+/* Machine Experience (MX): emit the pyramid + signal block as JSON-LD so an agent
+   can parse GT -> Key Lines -> evidence, with confidence tiers, without reading prose. */
+(function emitLD(){
+  const GT="It enforces on a descending ladder, and every rung names the gap it can't close.";
+  const KL=[["Code-level prevention","deterministic",.96],["Prompt-level gates","model must comply",.58],
+            ["Log-only observation","seen, not stopped",.34],["Unmitigated","below every threshold",.09]];
+  const ld={"@context":"https://schema.org","@type":"Report",
+    name:"Honest Containment: LLM Failure Modes × Greenhouse",
+    abstract:GT, isBasedOn:"greenhouse-os/FAILURE-MODES.md",
+    hasPart:KL.map((k,i)=>({"@type":"WebPageElement","position":i+1,name:k[0],
+      additionalProperty:[{"@type":"PropertyValue",name:"guarantee",value:k[1]},
+                          {"@type":"PropertyValue",name:"guaranteeStrength",value:k[2]}]})),
+    citation:SIGNALS.map(([id,claim,tag,conf])=>({"@type":"Claim",identifier:id,text:claim,
+      additionalProperty:[{"@type":"PropertyValue",name:"tag",value:tag},
+                          {"@type":"PropertyValue",name:"confidence",value:CONF(conf)}]}))};
+  const el=document.createElement('script');el.type='application/ld+json';
+  el.textContent=JSON.stringify(ld);(document.head||document.body).appendChild(el);
+})();
+
+/* code */
+const KW=new Set('class def return if else elif for while import from not in is and or None True False self'.split(' '));
+function hl(src){const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  return src.split('\n').map(line=>{let code=line,com='';const m=line.match(/#.*/);
+    if(m){code=line.slice(0,m.index);com='<span class="tok-com">'+esc(m[0])+'</span>';}
+    let html='',t;const re=/("[^"]*"|'[^']*'|\b\d+\b|[A-Za-z_]\w*|\s+|[^\s\w])/g;
+    while((t=re.exec(code))){const s=t[0];
+      if(/^["']/.test(s))html+='<span class="tok-str">'+esc(s)+'</span>';
+      else if(/^\d+$/.test(s))html+='<span class="tok-num">'+esc(s)+'</span>';
+      else if(KW.has(s))html+='<span class="tok-kw">'+esc(s)+'</span>';else html+=esc(s);}
+    return html+com;}).join('\n');}
+const SNIP={
+ cd1:`class CorrectionRegister:
+    MAX = 3
+    def attempt(self, problem_id, *, verified):
+        if not verified:
+            return False        # refused, bounded -> escalate
+        self.counts[problem_id] += 1
+        return self.counts[problem_id] <= self.MAX`,
+ cd2:`out = {"INTERPRETATIONS": ["deploy staging", "deploy prod"]}
+
+if len(out["INTERPRETATIONS"]) > 1:
+    emit("DISAMBIGUATION REQUIRED")
+    halt()                      # never reaches ideation`,
+ cd3:`chain.append({
+    "phase":   "execute",
+    "verdict": "APPROVED",
+    "ts":      now(),
+    # "rationale": ...          the gap: never written
+})`};
+document.querySelectorAll('code[data-code]').forEach(c=>c.innerHTML=hl(SNIP[c.dataset.code]));
+document.querySelectorAll('.copy').forEach((b,i)=>{const key=['cd1','cd2','cd3'][i];
+  b.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(SNIP[key]||'');b.textContent='copied';setTimeout(()=>b.textContent='copy',1300);};});
+
+/* evidence explorer */
+const list=document.getElementById('sheet-list');
+list.innerHTML=SIGNALS.map(([id,claim,tag,conf])=>{const warn=/contested|gap|assumption/.test(tag)?' warn':'';
+  return `<div class="ev" id="ev-${id}" data-tag="${tag.split('·')[0]}">
+    <div class="ev-top"><span class="ev-id">${id}</span><span class="ev-tag${warn}">${tag}</span></div>
+    <div class="ev-claim">${claim}</div>
+    <div class="ev-conf"><span class="bar"><i style="width:${Math.round(conf*100)}%"></i></span><span>${CONF(conf)}</span></div></div>`;}).join('');
+const TAGS=[...new Set(SIGNALS.map(s=>s[2].split('·')[0]))];
+const filters=document.getElementById('filters');
+filters.innerHTML=`<button class="filt on" data-t="all">All · 20</button>`+
+  TAGS.map(t=>`<button class="filt" data-t="${t}">${t[0].toUpperCase()+t.slice(1)} · ${SIGNALS.filter(s=>s[2].split('·')[0]===t).length}</button>`).join('');
+filters.onclick=e=>{const b=e.target.closest('.filt');if(!b)return;
+  filters.querySelectorAll('.filt').forEach(f=>f.classList.toggle('on',f===b));
+  document.querySelectorAll('.ev').forEach(ev=>ev.classList.toggle('hide',b.dataset.t!=='all'&&ev.dataset.tag!==b.dataset.t));};
+const scrim=document.getElementById('scrim'),sheet=document.getElementById('sheet');
+function openSheet(id){sheet.classList.add('on');scrim.classList.add('on');sheet.setAttribute('aria-hidden','false');
+  if(id){const el=document.getElementById('ev-'+id);if(el){el.classList.remove('hide');el.scrollIntoView({block:'center'});
+    el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1500);}}}
+function closeSheet(){sheet.classList.remove('on');scrim.classList.remove('on');sheet.setAttribute('aria-hidden','true');}
+document.getElementById('ev-open').onclick=()=>openSheet();
+document.getElementById('sheet-close').onclick=closeSheet;scrim.onclick=closeSheet;
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();});
+
+/* tooltips */
+const tip=document.getElementById('tip');let tHide;
+function showTip(el){const s=SIGMAP[el.dataset.ev];if(!s)return;clearTimeout(tHide);
+  tip.innerHTML=`<span class="tid">${s[0]} · ${s[2]}</span>${s[1]}`;
+  const r=el.getBoundingClientRect();tip.style.left=Math.min(r.left,innerWidth-316)+'px';tip.style.top=(r.bottom+9)+'px';tip.classList.add('on');}
+function hideTip(){tHide=setTimeout(()=>tip.classList.remove('on'),80);}
+document.querySelectorAll('.chip[data-ev]').forEach(c=>{c.onclick=()=>openSheet(c.dataset.ev);
+  c.addEventListener('mouseenter',()=>showTip(c));c.addEventListener('mouseleave',hideTip);
+  c.addEventListener('focus',()=>showTip(c));c.addEventListener('blur',hideTip);});
+
+/* ladder */
+const NS='http://www.w3.org/2000/svg',ladder=document.getElementById('ladder');
+const RUNGS=[
+ {k:'s1',lbl:'Code-level prevention',fm:'Speculative features · fix-without-repro · entropy · injection',guar:'Deterministic',s:.96},
+ {k:'s2',lbl:'Prompt-level gates',fm:'Silent assumption · interpretation · vague approach',guar:'Model must comply',s:.58},
+ {k:'s3',lbl:'Log-only observation',fm:'Over-abstraction · drive-by refactor',guar:'Seen, not stopped',s:.34},
+ {k:'s4',lbl:'Unmitigated',fm:'Style drift',guar:'Below every threshold',s:.09}];
+const TX=250,TW=380,Y0=62,DY=64,fills=[];
+RUNGS.forEach((r,i)=>{const y=Y0+i*DY,op=(0.4+0.6*r.s).toFixed(2);
+  const g=document.createElementNS(NS,'g');g.setAttribute('class','rung');g.setAttribute('tabindex','0');
+  g.setAttribute('role','button');g.setAttribute('aria-label',r.lbl+', '+r.guar);
+  g.innerHTML=`<line class="spine" x1="42" y1="${y}" x2="66" y2="${y}"/><circle class="node" cx="42" cy="${y}" r="5"/>
+    <text class="lbl" x="82" y="${y-8}">${r.lbl}</text><text class="fm" x="82" y="${y+14}">${r.fm}</text>
+    <rect class="track" x="${TX}" y="${y-6}" width="${TW}" height="10" rx="5"/>
+    <rect class="fill" x="${TX}" y="${y-6}" width="0" height="10" rx="5" fill="var(--accent)" style="opacity:${op}"/>
+    <text class="guar" x="${TX+TW}" y="${y+17}" text-anchor="end">${r.guar}</text>`;
+  ladder.appendChild(g);fills.push({el:g.querySelector('.fill'),w:TW*r.s});
+  const go=()=>document.getElementById(r.k).scrollIntoView({behavior:'smooth'});
+  g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
+  g.addEventListener('mouseenter',()=>ladder.querySelectorAll('.rung').forEach(o=>o.classList.toggle('dim',o!==g)));
+  g.addEventListener('mouseleave',()=>ladder.querySelectorAll('.rung').forEach(o=>o.classList.remove('dim')));});
+let ran=false;function runLadder(){if(ran)return;ran=true;fills.forEach((f,i)=>setTimeout(()=>f.el.setAttribute('width',f.w),reduce?0:280+i*200));}
+
+/* reveal + spy */
+function ensure(){const vh=innerHeight||800;document.querySelectorAll('.rv:not(.in)').forEach(el=>{if(el.getBoundingClientRect().top<vh*.92)el.classList.add('in');});
+  if(document.querySelector('.ladder').getBoundingClientRect().top<vh*.92)runLadder();}
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');if(e.target.classList.contains('ladder'))runLadder();}}),{threshold:.14})
+  &&document.querySelectorAll('.rv').forEach(el=>{const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');if(e.target.classList.contains('ladder'))runLadder();}}),{threshold:.14});o.observe(el);});
+addEventListener('scroll',ensure,{passive:true});addEventListener('load',ensure);ensure();
+const links=[...document.querySelectorAll('#nav-links a')];
+const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}),{rootMargin:'-45% 0 -50% 0'});
+document.querySelectorAll('section.section,#top').forEach(s=>spy.observe(s));
+</script>
+</body>
+</html>

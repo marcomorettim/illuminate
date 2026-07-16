@@ -1,6 +1,6 @@
 ---
 name: illuminate
-description: Dense source in. Self-contained interactive HTML out. Three-stage arc — INPUT (multi-source ingestion, signal stratification, faithful provenance), PROCESS (Barbara Minto Pyramid + MECE issue-tree, 3-skeptic adversarial audit), OUTPUT (parallax hero, 3D card physics, interactive ASCII diagrams, advanced UX). Maximum dynamism — any JS/CSS library that enhances the experience is allowed.
+description: Dense source in. Self-contained interactive HTML out. Three-stage arc — INPUT (multi-source ingestion, per-source salience gate against the source's own thesis, faithful provenance), PROCESS (Barbara Minto Pyramid + MECE issue-tree, 3-skeptic adversarial audit), OUTPUT (polished editorial site — shadcn/ui, Swiss typography, interactive ASCII, evidence drawer; parallax opt-in). Editorial restraint — every effect must earn its place by aiding understanding.
 trigger: /illuminate
 ---
 
@@ -25,17 +25,31 @@ gate conditions. The stages are not phases to rush through — they are the meth
 │  3-skeptic adversarial audit                                        │
 ├─────────────────────────────────────────────────────────────────────┤
 │  STAGE III — OUTPUT                                                  │
-│  Visual architecture · Advanced frontend engineering                │
-│  Parallax · 3D · interactive ASCII · progressive disclosure         │
+│  Visual architecture · editorial frontend (shadcn/ui)               │
+│  Swiss typography · interactive ASCII · progressive disclosure      │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**Technical stance: maximum dynamism.** The goal is the most animated, interactive, visually
-alive artifact possible. Any JS or CSS library, framework, or component that enhances the
-experience is allowed — GSAP, Three.js, Alpine.js, Framer Motion, Tailwind, anything. No
-restriction. A build step (Vite, esbuild, Parcel) is acceptable when deploying to a served
-site; prefer to avoid it only when the artifact needs to be self-contained for offline use.
-Vanilla HTML/CSS/JS is fine when it's the fastest path — not because it's purer.
+**Technical stance: polished editorial restraint.** The goal is the best interactive support
+for *understanding* a complex argument — a well-designed editorial website, not a demo reel.
+Restraint is the taste: every effect must earn its place by making the argument more legible.
+If an animation doesn't help the reader understand, it's noise, and the same discipline that
+cuts noise from the signal block cuts it from the page.
+
+- **Component vocabulary: shadcn/ui** (Radix primitives + Tailwind, the shadcn patterns —
+  Accordion, Tabs, Tooltip, ScrollArea, Table, Dialog, Separator, Card). Use the shadcn
+  composition patterns, not hand-rolled berserk. Self-contained builds inline the same
+  primitives; the *patterns* are the standard either way.
+- **Motion:** purposeful only — reveal-on-scroll, state transitions, the GT fade-in. The Emil
+  Kowalski motion standard below governs it. No decorative motion.
+- **Parallax:** allowed, but a deliberate choice, off by default — enable only when depth
+  genuinely aids the reading (see Parallax Depth System). Never automatic.
+- **Cut for editorial support:** no 3D card physics, no scramble/glitch text reveals. Both
+  are too edgy for a tool whose job is calm comprehension. The GT *fades* in; it never scrambles.
+
+Any JS/CSS library is permitted when it serves legibility (D3/Observable Plot for real data
+viz, for instance). A build step (Vite, esbuild) is fine for served sites; avoid it when the
+artifact must be self-contained offline. Vanilla is fine when it's the fastest legible path.
 
 ---
 
@@ -44,14 +58,30 @@ Vanilla HTML/CSS/JS is fine when it's the fastest path — not because it's pure
 This contract governs the entire arc. It is not a phase — it is the law.
 
 ```
-ASSERT   only claims that trace to a specific S-NNN signal block entry.
-HEDGE    claims where the evidence is partial, contested, or version-fragile.
-EXCLUDE  claims where the trace cannot be established.
+ASSERT     only claims that trace to a specific S-NNN signal block entry.
+HEDGE      claims where the evidence is partial, contested, or version-fragile.
+EXCLUDE    claims where the trace cannot be established.
+ILLUSTRATE visual representations (mockups, flow diagrams, metric enactments) that DEPICT
+           what a claim describes. An illustration is never itself evidence. Every concrete
+           label, figure, quote, or string inside it either traces to an S-NNN entry, or it
+           renders as visibly-generic placeholder — greeked text, %%token%%, 00.0%.
 ```
 
 Violations in any phase are removed and the gap is named. Confidence is not evidence.
 Paraphrasing a weak claim into apparent support is a violation. Leaving a claim unchallenged
 because it seems plausible is a violation.
+
+A component that invents a specific number, quote, or result the source does not contain is the
+most dangerous violation of all — because it is the most believable. A reader will trust a
+rendered open-rate on a rendered dashboard. Illustrations are held to the same trace discipline
+as prose; they simply fail more invisibly. This governs the entire Component Library: every
+fidelity mockup, funnel, KPI tile, and flow node is an ILLUSTRATE surface, and its concrete
+content is bounded by the signal block.
+
+**The visible-marker rule.** Every component carries a small, persistent ILLUSTRATION tag
+(`.mock-tag`) unless all of its concrete content traces to S-NNN entries — in which case it may
+instead carry its S-NNN traces as citation chips. The reader must always be able to tell "this is
+a faithful depiction" from "this is live/verified data." Never blur the two.
 
 ---
 
@@ -110,17 +140,26 @@ Choose palette — visual identity of the artifact:
   6. archive               — historical parchment; dignified; documentary / primary sources
 
 Choose render tier:
-  r · rich      (default) — full parallax, 3D, ASCII animation, scramble GT
-  b · balanced            — interactive but lean; 2-layer parallax, typewriter GT
-  s · simple              — content-first; no animation; maximum legibility
+  e · editorial (default) — polished shadcn/ui + Swiss typography; purposeful motion + ASCII;
+                            no parallax, no 3D, no scramble. The calm-comprehension default.
+  r · rich                — editorial + opt-in parallax depth where it aids the reading.
+  s · simple              — content-first; no animation; maximum legibility / print.
 
-Confirm palette + tier to proceed.
+Choose output mode:
+  w · web    (default) — interactive HTML; Swiss editorial; ASCII + evidence drawer
+  d · doc              — single-column learning doc; print-ready; shadcn primitives; 72ch; minimal motion
+  p · deck             — KL-per-slide; 16:9; keyboard nav + PDF; illuminate identity in slide frames
+
+Parallax is opt-in via the rich tier only; it is never automatic. 3D card physics and
+scramble/glitch text reveals are not offered — too edgy for editorial support.
+
+Confirm palette + tier + mode to proceed.
 ```
 
-Boot script will apply both selections before first paint. Persist in `localStorage`.
+Boot script will apply all three selections before first paint. Persist in `localStorage`.
 
 ```
-[ILLUMINATE:GATE] Phase 0a PASS | Palette: <name> | Tier: <r/b/s>
+[ILLUMINATE:GATE] Phase 0a PASS | Palette: <name> | Tier: <e/r/s> | Mode: <web/doc/deck>
 ```
 
 ---
@@ -129,7 +168,8 @@ Boot script will apply both selections before first paint. Persist in `localStor
 
 ```
 Tool-enriched environment (if available):
-  rtk vault search <topic>         → prior signal; tag as [VAULT] in Phase 1
+  vault search <topic>             → prior signal; tag as [VAULT] in Phase 1
+  (RTK users: rtk vault search <topic>; non-RTK: skip gracefully if vault unavailable)
   /faithful-sourcing skill         → invoke at Phase 1b close
   graphify / semantic_search_nodes → structural relationships; tag as [GRAPH] in Phase 2
 
@@ -155,6 +195,11 @@ Bare environment (no tools):
 - Referenced documents or files: list every `see also`, `implemented in`, `references:` → these
   are MANDATORY reads in Phase 1. An unclosed provenance chain is a gate failure.
 - Signal budget: if source > ~30k tokens, decide chunking strategy now. Never silently truncate.
+- Concrete artifacts: does the source describe a *renderable* artifact — an email, screen, message,
+  UI, config, metric, dashboard, or process/flow? List each. These are FIDELITY-MOCKUP / component
+  candidates for Stage III (see the Component Library). A how-to / product / process source where the
+  subject IS a visual artifact is the strongest case for component-heavy output. Record the list in
+  the Phase 1 signal-block header as "Artifact candidates: <list>".
 
 ```
 [ILLUMINATE] Opening.
@@ -176,8 +221,21 @@ If contamination detected: halt. Name the specific pattern. Do not proceed.
 
 ## Phase 1 — Signal Extraction
 
-This phase produces the **named signal block**: every load-bearing idea in the source,
+This phase produces the **named signal block**: only the load-bearing ideas in the source,
 stratified by type, with adversarial extraction surfacing what the source does not say.
+
+Extraction is not the goal — *survival* is. Tagging noise cleanly still ships noise; a fast,
+well-labelled pipe for material that doesn't matter is the failure mode this phase exists to
+prevent. So salience is judged per source, against the source's own thesis, and everything
+that isn't load-bearing is cut **before** the pyramid — not disclosed lazily behind an
+accordion downstream. There is no signal-count target: the right number of survivors is
+"as few as the argument needs," and a block that cut nothing is a gate failure (Phase 1a).
+
+**Thesis capture (do this first, before the angles):**
+State, in one sentence, the single claim the source exists to argue — the sentence its author
+would endorse as the core. Write it down. This is the bar every later signal is measured
+against: a signal is *load-bearing* only if removing it would weaken, qualify, or break a
+path to this thesis (and, downstream, to the Governing Thought). Everything else is context.
 
 **Signal stratification — 6 tag types:**
 
@@ -250,8 +308,39 @@ For sources with explicit provenance chains: follow every implementation-level r
 A signal block that hasn't traced all referenced sources is **incomplete → gate failure**.
 Missing hubs: the most common consequence of skipping this step. Do not let it happen.
 
+**Phase 1a — Salience gate (mandatory; the survival filter):**
+Run after the three angles, before faithful-sourcing. This is where noise dies.
+
+The three angles extract *inclusively* — that is correct, extract greedily. This gate then
+decides what survives. Judge every candidate against the captured thesis and partition it:
+
+| Verdict | Test | Fate |
+|---|---|---|
+| `KEEP` | Removing it would weaken, qualify, or break a path to the thesis / a Key Line. | Enters the signal block. Gets an S-NNN. |
+| `CONTEXT` | True and traceable, but the argument stands without it. Background, not beam. | Held in an appendix list, not the pyramid. Available if a KL later needs it. |
+| `CUT` | Restates a KEEP, is generic-true (would be true of any source in the domain), or is detail no argument path reaches. | Dropped. Not disclosed later. |
+
+One-line reason per verdict — no bare labels. The reason *is* the anti-rationalization check:
+"load-bearing because…" must name the thesis-path it serves, or it isn't KEEP.
+
+**The cut is not optional.** A greedy three-angle pass over a real source always surfaces
+restatement and generic-true filler. A signal block where `CUT` is empty means the gate
+didn't run — the model kept everything and rationalized. **Empty CUT list = Phase 1 gate
+failure.** (Same law as the greenhouse membrane: never self-certify. The cut-list is the
+visible evidence that a judgment happened, not just a relabelling.)
+
+Salience is a per-source judgment, not a fixed heuristic — a metric that's decorative in one
+source is the load-bearing beam in another. The thesis is what makes the call local and honest.
+
+Emit before proceeding:
+```
+[ILLUMINATE:SALIENCE] Thesis: <one sentence>
+Candidates: <N> → KEEP: <N> | CONTEXT: <N> | CUT: <N>
+Cut sample: <2–3 cut entries + reason>   (empty = gate failure)
+```
+
 **Phase 1b — Faithful-sourcing verification:**
-Run after the three angles, before writing the disk anchor.
+Run after the salience gate, before writing the disk anchor.
 
 *If /faithful-sourcing skill is available:* invoke it on the completed signal block.
 Contested entries flagged → mark `[CONTESTED:sourcing]`.
@@ -269,6 +358,7 @@ Domain: <domain label>
 Source: <type> | Length: <N> | Density: <H/M/L> | Strategy: <type>
 References traced: <list of additional files read, or "none">
 Insights found: <N> (these drive Phase 3 KL candidates)
+Artifact candidates: <list of renderable artifacts the source describes, or "none">
 Redacted: <list, or "none">
 Conflicts: <list, or "none">
 ─────────────────────────────────────────────────────────────────────
@@ -286,14 +376,12 @@ INSIGHT inventory: <N> entries, <N> passed durability test
 ```
 
 Write to disk (required before gate passes):
-```bash
-rtk write /tmp/illuminate-signal.md
-# content: full signal block above
-```
+Use the Write tool to save the full signal block above to `/tmp/illuminate-signal.md`.
 
 ```
 [ILLUMINATE:GATE] Phase 1 PASS | Anchor: /tmp/illuminate-signal.md | Next: concept-map
-Block: <N> total | SOURCE: <N> | INSIGHT: <N> | METRIC: <N> | SYNTHESIS: <N> | GAP: <N>
+Block: <N> KEEP | SOURCE: <N> | INSIGHT: <N> | METRIC: <N> | SYNTHESIS: <N> | GAP: <N>
+Salience: KEEP <N> | CONTEXT <N> | CUT <N>   (CUT 0 = FAIL, do not pass)
 Contested: <N> | Refuted: <N> | References traced: <N>
 ```
 
@@ -392,9 +480,7 @@ Downstream check:
 ```
 
 Write to disk:
-```bash
-rtk write /tmp/illuminate-hubs.md
-```
+Use the Write tool to save the hub/issue-tree block above to `/tmp/illuminate-hubs.md`.
 
 ```
 [ILLUMINATE:GATE] Phase 2 PASS | Anchor: /tmp/illuminate-hubs.md
@@ -464,9 +550,8 @@ Pyramid rules:
 - INSIGHT entries (from Phase 1) must appear as supporting detail. Insights drive retention.
 
 **Pyramid anchor format:**
-```bash
-rtk write /tmp/illuminate-anchor.md
-# content:
+Write to `/tmp/illuminate-anchor.md` using the Write tool:
+```
 # GT: <exact governing thought>
 # S:  <situation>
 # C:  <complication>
@@ -582,6 +667,42 @@ a specific function in making the pyramid's argument structure legible.
 | Minto Pyramid | Logical hierarchy: GT > KLs > detail | GT: most visually prominent element on the page. KLs: identical visual weight (MECE enacted visually). Detail: smaller, behind progressive disclosure. Scale = logical authority. | Show all hierarchy levels at once |
 | MECE | Exhaustive, non-overlapping coverage | KL sections structurally identical (same anatomy, same typographic weight, same card structure). Visual equality = logical equality. | Give KLs different visual weights or colors |
 
+**Components enact the pyramid — the governing rule for what to build where.**
+
+The pyramid is a top-down drill: GT → Key Lines → supporting detail → evidence. Progressive-
+disclosure components are that drill rendered as navigation. Static prose forces one linear path
+through a non-linear structure; disclosure components let the structure stay a structure and let
+the reader descend exactly the branch they choose, in the order the pyramid ordains. **This is
+why the components aid comprehension rather than decorate — so choose each one by the pyramid
+layer it serves, never for flair.**
+
+| Pyramid layer | Reader's move | Component | Disclosure state |
+|---|---|---|---|
+| **Governing Thought** | receives the answer | hero pull-quote, oversized, dominant | always visible — top of pyramid, unmissable |
+| **Key Lines (MECE)** | scans the whole structure | section headers at equal weight **+ one overview component** showing all KLs at once (e.g. a diagram/ladder/matrix) | always visible — the second tier as a single map |
+| **Supporting detail** | drills into one KL | `Accordion` / `Tabs` | collapsed by default; expands the chosen branch |
+| **Evidence (S-NNN)** | verifies a claim | `Tooltip` (hover preview) → `Sheet`/`Dialog` (full block, filterable) | deepest layer; summoned on demand |
+
+Corollaries:
+- **Ordain, don't compress.** The pyramid organizes richness into a navigable order; it is not a
+  compression pass. The salience gate (Phase 1a) removes *noise* — restatement, generic-true filler —
+  but everything that survives gets its **full** treatment: real explanatory prose at each level, drilled
+  into, not shrunk to fragments or bullet stubs. A lede is two honest paragraphs that reason from the
+  claim into the mechanism, not a one-line label. Terse output is a failure mode, not the goal — the
+  reader came to *understand* a complex thing, and understanding needs the substance, well-ordered.
+- **Depth = disclosure.** The deeper the pyramid layer, the more hidden-until-asked it is. Never
+  show evidence detail at the same altitude as a Key Line — it flattens the hierarchy the pyramid
+  worked to build.
+- **One overview component per artifact** materialises the whole second tier at a glance (the KLs
+  and their relationship). It is the single most load-bearing illustration; spend the animation budget here.
+- **Match the component to the content, not a template.** A KL whose mechanism is code gets a code
+  block; a KL that turns on a single admission gets a callout; a KL that is a flow gets a diagram.
+  Do not stamp the identical widget kit onto every section — that is decoration, and the reader feels it.
+  *This does not violate MECE.* MECE equality lives in the **shell**: every KL keeps the same altitude,
+  header weight, section frame, and disclosure pattern (so no KL reads as more important than a peer).
+  The **supporting artifact inside** the shell varies by what that KL's content actually is. Equal frames,
+  content-fitted contents.
+
 **Component inventory (mandatory; build all of these):**
 
 **Hero components:**
@@ -601,12 +722,22 @@ a specific function in making the pyramid's argument structure legible.
 6. `SECTION-HEADER` — KL number (tiny, monospace) + title (argument statement, not label) +
    optional signal-strength indicator (count of S-NNN entries supporting this KL).
 7. `SECTION-LEDE` — standalone argument paragraph. Comprehensible without reading other sections.
-8. `INLINE-VISUAL` — at least one interactive visualization per KL:
-   - Data grids (not flat text), comparison tables with highlight states
-   - Inline ASCII diagrams that respond to hover (highlight connected nodes)
-   - Progress bars built from `█▓▒░` or `═` fill characters
-   - Before/after sliders for insight reversals
-   - Connection maps linking this KL to adjacent concepts
+8. `INLINE-VISUAL` — at least one visualization per KL. Four illustration tiers:
+
+   **ASCII (default):** illuminate signature; zero-weight; theme-aware. Technical/architectural sources; CLI content; code-adjacent arguments.
+   **Inline SVG:** concept diagrams, flow charts, argument maps, architecture. Use `currentColor` + CSS token vars — no hardcoded colors.
+   **CSS illustration:** abstract/geometric argument structure; before/after; spectrums. Zero-weight; token-aware.
+   **Data viz:** quantitative KLs with METRIC entries (≥3 data points). Hand-authored inline SVG (bars/lines/scatter with token vars) is the self-contained default — no chart-lib CDN. Only in a React/claude.ai artifact target may you use a bundled lib (Recharts/Observable Plot).
+
+   ASCII is the default. Elect SVG/CSS/DataViz when ASCII cannot carry the argument with sufficient precision:
+   | KL argument type | Preferred visualization |
+   |---|---|
+   | Sequential process / pipeline | ASCII flow OR SVG flowchart |
+   | Before/after / reversal (INSIGHT) | CSS split-panel OR SVG before/after |
+   | Quantitative comparison | `█▓░` bars (≤4 items) OR D3/Chart.js (≥5 items) |
+   | System architecture | SVG box-drawing with hover highlights |
+   | Chain / linked structure | SVG/CSS node-link diagram |
+   | Binary classification | ASCII grid OR CSS dot matrix |
 9. `ACCORDION-CARDS` — progressive disclosure. Each card: scan-line open animation,
    nested sub-sections, evidence tags (`S-NNN`), code snippets where relevant.
 
@@ -622,8 +753,8 @@ a specific function in making the pyramid's argument structure legible.
     `localStorage`. Applies via `[data-theme="dark|light"]` on `<html>`. Smooth surface
     transition (background/border only — no text transition flash).
 13. `TIER-SELECTOR` — render complexity selector in sticky nav: three inline buttons
-    `s · b · r` (simple / balanced / rich). Defaults to `rich`. Persists in `localStorage`.
-    Applies via `[data-tier="simple|balanced|rich"]` on `<html>`. Active button highlighted
+    `s · e · r` (simple / editorial / rich). Defaults to `editorial`. Persists in `localStorage`.
+    Applies via `[data-tier="simple|editorial|rich"]` on `<html>`. Active button highlighted
     in editorial red. Controls which features activate — see Render Tier Architecture.
 14. `PALETTE-PICKER` — compact palette selector in sticky nav. A small colored swatch circle
     (◉) shows the active palette; click opens a 6-swatch popover. Selected palette name
@@ -655,12 +786,52 @@ NAVIGATION
   [STICKY-NAV] GT → KL1 / KL2 / KL3 / ...
   [DEPTH-INDICATOR]
   [THEME-TOGGLE] ◑/◐ — right-aligned in nav
-  [TIER-SELECTOR] s · b · r — right-aligned in nav, beside theme toggle
+  [TIER-SELECTOR] s · e · r — right-aligned in nav, beside theme toggle
   [PALETTE-PICKER] ◉ — swatch button right of tier selector; opens palette popover
 ```
 
 Confirm wireframe maps to pyramid exactly. Each KL = one section. No section without a KL.
 No KL without a section.
+
+**doc mode wireframe** (when Mode = doc):
+```
+[DATELINE]    monospace · /illuminate · source · date
+[GT-BLOCK]    Helvetica Neue 300, 2.5rem, uppercase — fades in (NOT scrambled); 72ch, text-wrap:balance
+[SCQA-STACK]  Linear four-block: S → C → Q → GT as pull-quote (72ch col)
+[TOC-RAIL]    Sticky left rail ≥900px; KL titles; scroll-spy (Radix ScrollArea)
+[KL-SECTION ×N]
+  rule           2px --ink border-bottom
+  header         KL number (Futura micro caps, --red) · KL title (Futura 700)
+  lede           72ch max; Helvetica Neue; text-wrap:pretty — standalone argument
+  illustration   ASCII / SVG / CSS / DataViz elected per KL type; no parallax
+  evidence       Radix Table: S-NNN | Claim | Tag | Confidence
+  accordion      Radix Accordion: detail cards; evidence chips (Radix Tooltip)
+[FOOTER]      Pool size · generation date · anchor paths
+```
+Evidence inline (not slide-in drawer). Motion: `@starting-style` entry only. Keyboard: j/k section nav, s signal, f focus.
+
+**deck mode wireframe** (when Mode = deck):
+```html
+<main class="deck" data-mode="deck">
+  <section class="slide" id="slide-gt">   <!-- GT hero -->
+    [GT-PULLQUOTE]  typewriter (editorial/rich) OR fade (simple)
+    [SCQA-ROW]      S / C / Q / A as 4 horizontal columns
+    [PIPELINE-VIZ]  ASCII OR SVG — key quantitative anchor
+  </section>
+  <section class="slide" id="slide-klN">  <!-- one per KL -->
+    [SLIDE-NUM]     top-right · Futura micro caps · --ink-3
+    [KL-MOTIF]      ASCII 4-6 lines OR compact SVG · builds on slide enter
+    [KL-TITLE]      Futura 700 · left-aligned (NOT centered) · max 2 lines
+    [KEY-CLAIM]     Helvetica Neue 300 · 2-3 lines max
+    [EVIDENCE-ROW]  3 S-NNN chips (Radix Tooltip; speaker notes on n)
+    [CONFIDENCE]    █▓░ bar · bottom-right
+  </section>
+</main>
+```
+CSS: `.slide { aspect-ratio: 16/9; overflow: hidden; }` — overflow = gate failure (argument too long → shorten → re-run Phase 3).
+Keyboard: → / ← slide; f fullscreen; n speaker notes; Esc close notes.
+Motion: `clip-path: inset(0 0 0 100%)` → `inset(0)` with `--ease-drawer` 200ms on slide enter; motif builds after.
+Print: `@media print { .slide { page-break-after: always; aspect-ratio: unset; } }` — strips controls, removes animation.
 
 ---
 
@@ -815,27 +986,316 @@ it will collide with the nav background at the same `top:0` position.
 .hero-dateline::after { content: ''; flex: 1; height: 1px; background: var(--rule-hi); max-width: 200px }
 ```
 
-**GT reveal — answer-first, scramble animation:**
+**GT reveal — answer-first, calm assembly:**
 The GT is the first element built, not the SCQA. Editorial convention: answer leads.
+Assembly is a quiet typewriter (editorial/rich) or a plain fade (simple) — never a scramble.
 ```javascript
-// Each character cycles through ░▓█│─┼╬ before landing — mechanical typesetting feel
-// Sequence: GT scramble → on complete → SCQA slides in → pipeline builds
-const SCRAMBLE_CHARS = '█▓▒░│─┼╬═■◆●▸◉⊕◇□';
-// cd: 4ms per char, sc: 2 scramble cycles per char → GT builds in ~2-3s
-scrambleReveal(gtEl, GT_TEXT, { cd: 4, sc: 2, onDone: () => {
+// Sequence: GT types (or fades) → on complete → SCQA slides in → pipeline builds
+revealGT(gtEl, GT_TEXT, () => {   // see GT Reveal section — typewriter / fade only
   scqaEl.classList.add('in');
   buildPipeline();
-}});
+});
 ```
 GT CSS: `font-weight: 300` (ultra-light Helvetica), uppercase, gradient applies as `.done`
-class on completion. This is the inverse of the classical typewriter GT (which used weight 800)
-— Swiss editorial uses ultra-light at large size for maximum editorial tension.
+class on completion. Ultra-light at large size carries the editorial tension — the reveal
+stays calm; the *type*, not motion, does the work.
 
 ```
 [ILLUMINATE:GATE] Phase 5 PASS | Wireframe confirmed | KLs: <N> | Components: 14
                                 | Editorial: Swiss grid · Helvetica Neue + Futura · editorial red
-                                | Theme: dark+light | Tiers: simple/balanced/rich declared
+                                | Theme: dark+light | Tiers: simple/editorial/rich declared
 ```
+
+---
+
+## The Component Library — Argument-Enacting Components
+
+*(Informs Phase 5 selection and Phase 6 implementation.)*
+
+A KL's INLINE-VISUAL slot (or any supporting card) may be filled by a component from this library.
+A component is chosen because it **enacts a specific KL argument type** — never for decoration, never
+repeated across sections (the existing "one visualization type per KL" rule extends to components).
+
+Three jobs these components do that prose and ASCII can't (and a fourth):
+- **Make the abstract concrete** — you see the actual email / screen / message (fidelity mockups).
+- **Make a process navigable** — you follow the journey / lifecycle / decision (process & flow).
+- **Make a number felt** — you sense the drop-off / magnitude / rate (metrics & funnels).
+- **Make a choice legible** — decision & compare.
+
+Every component obeys **four laws**:
+1. **Self-contained** — HTML/CSS/SVG/JS only, no external images. Device chrome, charts, phone
+   frames, and flow edges are drawn in CSS/SVG. This is what keeps the artifact one offline file.
+2. **Palette-tokened** — colors are `var(--…)` only (`--paper*`, `--ink*`, `--rule*`, `--red`,
+   `--cli`, `--blue`, `--amber`, or whatever the active palette defines). No component hard-codes a hex.
+3. **Tier-degradable** — rich = animated + interactive; balanced/editorial = interactive but lean;
+   simple = static and fully legible. Use the existing `isRich()` / `isEditorialUp()` helpers.
+4. **Evidence-governed** — an ILLUSTRATE surface (see the contract). Concrete content traces to
+   S-NNN or is visibly generic; the component wears its ILLUSTRATION tag or its citation chips.
+
+### Family A — Fidelity Mockups (make the abstract concrete)
+
+Self-contained replicas of the actual artifact, inside recognizable chrome. Evidence class:
+ILLUSTRATE (all). Content bounded by the signal block; carries the ILLUSTRATION tag.
+
+| Component | Enacts | Notes |
+|---|---|---|
+| `EMAIL-CLIENT` | "here is the email/message the campaign sends" | mail shell: from / subject / preheader / timestamp + rendered body |
+| `PHONE-PUSH` | "here is the push notification, on a lock screen" | phone frame + status bar + notification card |
+| `SMS-THREAD` | "here is the SMS, in a real thread" | chat bubbles with sender + timestamp |
+| `BROWSER-PAGE` | "here is the landing page / CloudPage" | address bar + tab chrome wrapping a page mock |
+| `APP-UI` | "here is the screen the user configures this in" | generic app window: sidebar + toolbar + canvas |
+| `DATA-DASHBOARD` | "here is what the report screen looks like" | tiles + a chart; numbers must trace or be `00.0%` |
+| `CODE-CONFIG` | "here is the config / snippet / query" | editor/terminal chrome, monospace, line numbers |
+
+**Reference — EMAIL-CLIENT:**
+```html
+<figure class="mock mock-email">
+  <div class="mock-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>
+    <span class="mock-bar-t">Inbox — Marketing</span></div>
+  <header class="em-hd">
+    <div class="em-av">AC</div>
+    <div class="em-meta">
+      <div class="em-from">Acme Campaigns <span>&lt;news@acme.com&gt;</span></div>
+      <div class="em-subj">Your July offer is inside
+        <button class="cite" data-cite="S-014">S-014</button></div>
+      <div class="em-pre">Preheader copy exactly as the source specifies…</div>
+    </div>
+    <time class="em-time">09:24</time>
+  </header>
+  <div class="em-body"><!-- rendered email HTML; every string ∈ signal block --></div>
+  <span class="mock-tag">ILLUSTRATION · not a live send</span>
+</figure>
+```
+```css
+.mock { position: relative; border: 1px solid var(--rule-hi); border-radius: 8px;
+  background: var(--paper-1); overflow: hidden; }
+.mock-bar { display:flex; align-items:center; gap:6px; padding:8px 12px;
+  background: var(--paper-2); border-bottom: 1px solid var(--rule); }
+.mock-bar .dot { width:9px; height:9px; border-radius:50%; background: var(--ink-3); opacity:.5; }
+.mock-bar-t { font-family: var(--mono); font-size:.66rem; color: var(--ink-3);
+  letter-spacing:.08em; margin-left:8px; }
+.em-hd { display:flex; gap:12px; padding:14px 16px; border-bottom:1px solid var(--rule); }
+.em-av { width:38px; height:38px; border-radius:50%; background: var(--red-dim);
+  color: var(--red); font-family:var(--ft); font-weight:700; display:grid; place-items:center; }
+.em-from { font-size:.82rem; color: var(--ink); } .em-from span { color: var(--ink-3); }
+.em-subj { font-size:.9rem; font-weight:600; color: var(--ink); margin-top:2px; }
+.em-pre { font-size:.78rem; color: var(--ink-2); margin-top:2px; }
+.em-time { font-family:var(--mono); font-size:.66rem; color: var(--ink-3); margin-left:auto; }
+.em-body { padding:18px 16px; font-size:.86rem; line-height:1.5; color: var(--ink-2); }
+.mock-tag { position:absolute; bottom:8px; right:10px; font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.1em; text-transform:uppercase; color: var(--amber);
+  background: var(--amber-dim); padding:2px 7px; border-radius:4px; }
+/* rich: subtle tilt on hover — depth, not decoration */
+[data-tier="rich"] .mock { transition: transform var(--dur) var(--ease); transform-style:preserve-3d; }
+[data-tier="rich"] .mock:hover { transform: perspective(1200px) rotateX(2deg) rotateY(-2deg); }
+```
+
+**Reference — PHONE-PUSH + SMS-THREAD (one phone frame):**
+```html
+<figure class="mock mock-phone">
+  <div class="ph-frame">
+    <div class="ph-status"><span>9:41</span><span class="ph-sig">▮▮▮ ◗</span></div>
+    <div class="push">
+      <div class="push-app"><i class="dot"></i> ACME · now</div>
+      <div class="push-t">Flash sale ends tonight</div>
+      <div class="push-b">Tap to see your offer <button class="cite" data-cite="S-019">S-019</button></div>
+    </div>
+    <div class="sms"><div class="sms-b in">Your code: <b>SAVE20</b>
+      <button class="cite" data-cite="S-021">S-021</button></div></div>
+  </div>
+  <span class="mock-tag">ILLUSTRATION</span>
+</figure>
+```
+```css
+.ph-frame { width:230px; margin:0 auto; border:9px solid var(--paper-2); border-radius:34px;
+  background: var(--paper); padding:10px; min-height:340px; }
+.ph-status { display:flex; justify-content:space-between; font-family:var(--mono);
+  font-size:.6rem; color: var(--ink-3); padding:2px 8px 10px; }
+.push, .sms-b { background: var(--paper-1); border:1px solid var(--rule); border-radius:14px;
+  padding:10px 12px; }
+.push-app { font-family:var(--mono); font-size:.6rem; color: var(--ink-3); text-transform:uppercase;
+  letter-spacing:.08em; display:flex; align-items:center; gap:5px; }
+.push-app .dot { width:8px; height:8px; border-radius:2px; background: var(--red); }
+.push-t { font-size:.82rem; font-weight:600; color: var(--ink); margin-top:5px; }
+.push-b { font-size:.76rem; color: var(--ink-2); margin-top:2px; }
+.sms { margin-top:14px; display:flex; }
+.sms-b.in { background: var(--blue-dim); border-color: transparent; border-radius:14px 14px 14px 4px;
+  font-size:.8rem; color: var(--ink); max-width:80%; }
+/* rich: push slides in on reveal */
+[data-tier="rich"] .push { animation: pushIn .5s var(--spring) both; }
+@keyframes pushIn { from { opacity:0; transform: translateY(-10px) scale(.96); } }
+```
+
+`BROWSER-PAGE`, `APP-UI`, `CODE-CONFIG` follow the same pattern: a `.mock-bar` chrome (address bar
+with a favicon + URL for browser; sidebar/toolbar for app; traffic-lights + filename for code), a
+tokened body, and the ILLUSTRATION tag. `DATA-DASHBOARD` composes `KPI-TILE-ROW` (Family C) inside
+a `.mock` shell — and inherits Family C's hard rule that numbers trace or render as `00.0%`.
+
+### Family B — Process & Flow (make a process navigable)
+
+For arguments that are sequences, lifecycles, or branching decisions ("how to manage X").
+Evidence class: the structure depicts the source's described process; each node label traces to an
+S-NNN. Edges are SVG paths between node anchors.
+
+| Component | Enacts |
+|---|---|
+| `FLOW-CANVAS` | a journey / pipeline as nodes + directed edges (e.g. SFMC Journey Builder) |
+| `SWIMLANE` | a process split across actors/systems (rows = lanes, left→right = time) |
+| `SEQUENCE` | ordered message-passing between participants (vertical lifelines) |
+| `STATE-MACHINE` | states + labelled transitions (lifecycle / status models) |
+| `STEP-WIZARD` | a numbered, linear setup path with the current step highlighted |
+| `DECISION-TREE` | branching yes/no logic to an outcome |
+| `TIMELINE / GANTT` | events or workstreams along a time axis |
+
+**Reference — FLOW-CANVAS (anatomy):**
+```html
+<figure class="flow">
+  <svg class="flow-edges" preserveAspectRatio="none"><!-- <path> per edge, drawn between
+       node centers; class .edge, stroke var(--rule-hi) --></svg>
+  <div class="flow-node" data-node="entry">Entry · List join <button class="cite" data-cite="S-030">S-030</button></div>
+  <div class="flow-node" data-node="wait">Wait 1 day</div>
+  <div class="flow-node flow-dec" data-node="dec">Opened? <span class="yn">✓ / ✗</span></div>
+  <div class="flow-node" data-node="send">Send follow-up</div>
+  <span class="mock-tag">ILLUSTRATION</span>
+</figure>
+```
+Nodes are absolutely-positioned (or CSS-grid placed) `.flow-node` boxes: `border:1px solid var(--rule-hi)`,
+`background: var(--paper-1)`, `font-family: var(--ft)` label. Edges: one `<path>` per connection,
+`stroke: var(--rule-hi)`, arrowhead marker in `var(--ink-3)`.
+- **rich:** on IntersectionObserver enter, each edge `stroke-dashoffset` animates full→0 (draws
+  itself); hovering a node brightens its outgoing edges to `var(--cli)` and highlights the KL card
+  citing that step.
+- **balanced:** static edges, hover highlight only. **simple:** static, no hover.
+- Decision nodes (`.flow-dec`) get a diamond accent via `border-left: 2px solid var(--amber)`.
+
+`SWIMLANE` / `SEQUENCE` / `STATE-MACHINE` reuse the same node+SVG-edge engine with different layout
+rules. `TIMELINE` is a horizontal axis (`--cli` hairline) with dot markers; `STEP-WIZARD` is a
+numbered pill row with `.active` in `var(--red)`.
+
+### Family C — Metrics & Funnels (make a number felt)
+
+For arguments about magnitude, rate, or conversion ("how to measure X"). **This family is where
+fabricated precision is most dangerous.** Evidence class: evidence-bearing when every number traces
+to a `[METRIC]` S-NNN (then show citation chips, not the ILLUSTRATION tag); otherwise every value
+renders as `00.0%` / `—` placeholder and the component wears the tag. **Never render a plausible-
+looking number the source doesn't contain.**
+
+| Component | Enacts |
+|---|---|
+| `FUNNEL` | drop-off across stages (sent → opened → clicked → converted) |
+| `KPI-TILE-ROW` | a dashboard row of headline metrics |
+| `COUNTER` | a single animated figure counting up to its value |
+| `COHORT-GRID` | retention/behaviour across cohorts × periods (heat cells) |
+| `GAUGE` | a single value against a target/range (arc or bar) |
+| `SPARKLINE` | inline micro-trend |
+| `WATERFALL` | additive/subtractive contributions to a total |
+
+**Reference — FUNNEL:**
+```html
+<div class="funnel" role="img" aria-label="Conversion funnel">
+  <div class="fn-row"><span class="fn-bar" style="--w:100%"></span>
+    <span class="fn-lab">Sent</span><span class="fn-val" data-cite="S-030">100%</span></div>
+  <div class="fn-row"><span class="fn-bar" style="--w:42%"></span>
+    <span class="fn-lab">Opened</span><span class="fn-val" data-cite="S-031">42.0%</span></div>
+  <div class="fn-row"><span class="fn-bar" style="--w:9%"></span>
+    <span class="fn-lab">Clicked</span><span class="fn-val" data-cite="S-032">9.1%</span></div>
+  <div class="fn-row"><span class="fn-bar" style="--w:2%"></span>
+    <span class="fn-lab">Converted</span><span class="fn-val" data-cite="S-033">1.8%</span></div>
+</div>
+```
+```css
+.fn-row { display:flex; align-items:center; gap:12px; margin:6px 0; }
+.fn-bar { height:26px; width:var(--w); background: var(--blue-dim);
+  border-left:3px solid var(--blue); border-radius:2px; }
+.fn-lab { font-family:var(--ft); font-size:.72rem; text-transform:uppercase;
+  letter-spacing:.08em; color: var(--ink-2); width:90px; }
+.fn-val { font-family:var(--mono); font-size:.8rem; color: var(--ink); }
+/* rich/balanced: bars grow on scroll-in from width:0 → --w */
+[data-tier="rich"] .fn-bar, [data-tier="balanced"] .fn-bar { width:0; transition: width .8s var(--ease); }
+.funnel.in .fn-bar { width: var(--w); }   /* .in added by IntersectionObserver */
+```
+
+**Reference — KPI-TILE + animated COUNTER:**
+```html
+<div class="kpi-row">
+  <div class="kpi"><span class="kpi-val" data-count="42.1">0</span><span class="kpi-u">%</span>
+    <span class="kpi-lab">Open rate</span><button class="cite" data-cite="S-031">S-031</button></div>
+  <div class="kpi"><span class="kpi-val" data-count="1.8">0</span><span class="kpi-u">%</span>
+    <span class="kpi-lab">Conversion</span><button class="cite" data-cite="S-033">S-033</button></div>
+</div>
+```
+```javascript
+// COUNTER — tier + reduced-motion aware. simple/reduced: set final value instantly.
+function runCounters(scope){
+  scope.querySelectorAll('.kpi-val[data-count]').forEach(function(el){
+    var target = parseFloat(el.dataset.count);
+    if (R || !isEditorialUp()) { el.textContent = target; return; }   // R = reduced-motion
+    var t0 = null, dur = 900;
+    function step(ts){ t0 = t0 || ts; var p = Math.min((ts - t0)/dur, 1);
+      el.textContent = (target * (0.5 - Math.cos(p*Math.PI)/2)).toFixed(1);
+      if (p < 1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  });
+}
+```
+**Rule of this family:** if a value has no `[METRIC]` trace, the tile shows `—` or `00.0%`, the
+`data-count` is omitted, and the row wears the ILLUSTRATION tag. A KPI without a source is a layout
+placeholder, never a figure.
+
+### Family D — Decision & Compare (make a choice legible)
+
+For arguments that are a choice among options, a positioning, or a reversal. Evidence class: cell
+contents / positions trace to S-NNN.
+
+| Component | Enacts |
+|---|---|
+| `QUADRANT-2x2` | positioning on two axes (magic-quadrant style) |
+| `COMPARE-MATRIX` | options × criteria, with pass/fail/degree cells |
+| `BEFORE-AFTER` | an INSIGHT reversal (slider divider) — already in the skill; keep it |
+| `SCORECARD` | one option scored across weighted criteria |
+| `TRADEOFF-TABLE` | pros/cons or gains/costs, two-column |
+
+**Reference — QUADRANT-2x2:**
+```html
+<div class="quad">
+  <span class="quad-x">Reach →</span><span class="quad-y">Intent →</span>
+  <i class="quad-h"></i><i class="quad-v"></i>
+  <button class="quad-dot" style="--x:72%;--y:28%" data-cite="S-041">Email</button>
+  <button class="quad-dot" style="--x:30%;--y:74%" data-cite="S-042">SMS</button>
+</div>
+```
+```css
+.quad { position:relative; aspect-ratio:1; border:1px solid var(--rule-hi); background: var(--paper-1); }
+.quad-h, .quad-v { position:absolute; background: var(--rule); }
+.quad-h { left:0; right:0; top:50%; height:1px; } .quad-v { top:0; bottom:0; left:50%; width:1px; }
+.quad-x, .quad-y { position:absolute; font-family:var(--mono); font-size:.62rem; color: var(--ink-3);
+  text-transform:uppercase; letter-spacing:.08em; }
+.quad-x { bottom:6px; right:8px; } .quad-y { top:8px; left:6px; transform:rotate(-90deg); transform-origin:left; }
+.quad-dot { position:absolute; left:var(--x); bottom:var(--y); transform:translate(-50%,50%);
+  background: var(--red); color: var(--paper); font-family:var(--ft); font-size:.66rem;
+  font-weight:700; border:none; border-radius:20px; padding:4px 10px; cursor:pointer; }
+[data-tier="rich"] .quad-dot { animation: settle .6s var(--spring) both; }
+@keyframes settle { from { opacity:0; transform:translate(-50%,50%) scale(.5); } }
+```
+`COMPARE-MATRIX` is a tokened table: sticky first column (options), header row (criteria), cells use
+`✓ / ~ / ✗` glyphs colored `var(--cli)` / `var(--amber)` / `var(--ink-3)`, row hover raises to
+`var(--paper-2)`. Reuse the existing "data grids, not flat text" guidance from INLINE-VISUAL.
+
+### Also in this league (specs, no reference code — same four laws apply)
+
+- **PARAMETER-PLAYGROUND** — a control (slider/select) that reconfigures a diagram or recomputes a
+  number live. The strongest comprehension device there is; use when the source explains a mechanism
+  (e.g. "send-time affects open rate"). All outputs must stay within source-stated ranges.
+- **TABBED-SCENARIO** — one region, N labelled scenarios (e.g. "B2B journey" vs "B2C journey"); tabs
+  swap the content. Enacts situation-type MECE groupings visually.
+- **GLOSSARY-HOVER** — domain terms (`%%AMPscript%%`, "data extension") get a dotted underline; hover
+  reveals a definition popover. Removes jargon friction without breaking the reading line.
+- **SPOTLIGHT / GUIDED-TOUR** — step markers that dim everything but one region and advance on click;
+  reuses the existing focus-mode dimming.
+- **ARCHITECTURE-DIAGRAM (SVG)** — the box-drawing system diagram you already do in ASCII, as SVG with
+  hover-highlighted components, for when the argument is structural.
+- **ENTITY-RELATIONSHIP / LAYERED-STACK** — data-model or layer diagrams (L0→L4 style).
+- **ANNOTATION-LAYER** — cross-cutting; see the annotation / hotspot system in Phase 6.
 
 ---
 
@@ -845,11 +1305,133 @@ Build the Phase 5 wireframe as a single self-contained HTML file, executing ever
 below at the highest standard. This is not a checklist to satisfy minimally — it is the
 standard to exceed. Each technique serves the argument structure. Decoration is not the goal.
 
-**Stance: maximum dynamism.** Use whatever JS or CSS enhances the experience — GSAP for
-animation, Three.js for 3D, Tailwind for layout, Alpine for interactivity, anything. CDN
-delivery or a simple build step (Vite, esbuild) are both fine. The only constraint: don't
-add abstraction that slows you down. If vanilla is faster to write and equally expressive,
-use vanilla. If a library saves time and sharpens the result, use it.
+**Stance: polished editorial restraint.** Use whatever JS or CSS makes the argument more
+legible — shadcn/ui components, Tailwind for layout, D3/Observable Plot for real data viz.
+CDN delivery or a simple build step (Vite, esbuild) are both fine. Two constraints: don't
+add abstraction that slows you down, and don't add motion or effect that doesn't aid
+understanding. If vanilla is faster and equally expressive, use vanilla; if a library
+saves time and sharpens the result, use it.
+
+---
+
+### shadcn/ui Component Vocabulary (mandatory — self-contained, no CDN)
+
+**Design intent (why a website, not a slide):** these artifacts are read the way a consulting
+client reads a complex topic — they *navigate and dig*, opening the facet they care about
+rather than sitting through a linear deck. That only works if the components are genuinely
+interactive: real tabs, real accordions, hover-preview evidence, a diagram↔code toggle. Static
+boxes fail the brief. Build for exploration.
+
+**Hard constraint:** the default output is a **portable single file** (email-able, offline,
+opens forever). The artifact CSP and offline use both forbid external CDNs — so **do not load
+React/Radix from esm.sh or any importmap.** Instead rebuild the shadcn/ui component *vocabulary*
+self-contained in vanilla HTML/CSS/JS: the same anatomy, tokens, radii, and behavior, no runtime
+dependency. (Only when the target is explicitly a React/claude.ai artifact — not the default —
+use literal `shadcn/ui` + Tailwind + Framer Motion instead. Ask before choosing that lane; it
+is not emailable as a file.)
+
+Build these, to shadcn anatomy and with correct ARIA + keyboard:
+
+| Component | Role in illuminate | Self-contained build note |
+|---|---|---|
+| `Card` | Section shells, diagram/code panels | 1px `--line` border, `--r` radius, `--ground-1` surface |
+| `Tabs` | **Diagram ↔ Code** toggle per KL; facet switching | segmented `--ground-2` track; `role="tab"`; WAAPI fade on panel show |
+| `Accordion` | Progressive-disclosure detail cards | single-open per section; height via `grid-template-rows:0fr→1fr`; `aria-expanded` |
+| `Badge` | `S-NNN` evidence chips, tags | mono, `--brass` on `--ground-2`, 1px border |
+| `Tooltip` | Hover-preview a signal's claim (dig without leaving) | `position:fixed`, fade+lift 180ms; also on `focus` for keyboard |
+| `Table` | Evidence block (S-NNN · claim · tag · confidence) | header row `--ink-3` mono; `tabular-nums` on confidence |
+| `Dialog`/`Sheet` | Evidence explorer (filterable) | focus-return, Escape to close, scrim + `aria-hidden` toggling |
+| `Separator` | Section rules | 1px `--line` |
+
+The evidence explorer must be **filterable** (by tag) and each row carries a confidence meter —
+a client digs by facet, so give them the controls to.
+
+### Elevation & contrast baseline (mandatory — palette-agnostic)
+
+Whatever palette is chosen, surfaces must **separate**. The most common failure is placing near-
+equal-luminance layers on each other (a `#131c20` card on a `#0e1417` ground) — it reads as flat,
+muddy, and dated.
+
+- **Three distinct luminance steps**, each a *visible* change: `ground → surface → raised`. If two
+  layers are within ~5% luminance, they are the same layer — merge or push them apart.
+- **Depth = light, not lines.** Prefer a hairline top-highlight (`inset 0 1px 0 rgba(255,255,255,.06)`)
+  plus a soft, diffused shadow (`0 24px 48px -28px rgba(0,0,0,.6)`) over hard 1px grey borders or a
+  visible background grid. On a dark ground, a subtle radial glow gives depth without a grid.
+- **One accent, used sparingly.** Semantic tints (good/warn/critical, or code-token hues) are separate
+  from the accent and stay desaturated. Never a rainbow.
+- **Modern chrome, not 2016 dev-brutalist:** a detached floating nav (not edge-to-edge sticky), pill-
+  shaped eyebrow badges (not bare all-caps mono), generous section whitespace, spring easing
+  (`cubic-bezier(.32,.72,0,1)`), scroll fade-up reveals. Mono is for code and data only, never body.
+
+### Code Snippets (mandatory where the source is technical)
+
+If the source describes mechanisms in code terms (functions, classes, config, protocols),
+render at least one **faithful code snippet** per relevant KL — this is the facet technical
+clients open first. Requirements:
+- shadcn code-block shell: language label + copy button, `--ground-1` surface, mono, `overflow-x:auto`.
+- **Restrained highlighting on-palette:** keywords in the single accent, strings in one muted
+  harmonized hue, comments dim italic — never a rainbow. Inline a small tokenizer (strings and
+  comments consumed before keywords); no highlighter CDN.
+- **Faithful, not fabricated:** the snippet renders the mechanism the source *describes*. If it
+  is illustrative rather than verbatim repo code, a one-line note says so. It must trace to the
+  same S-NNN as its claim.
+- House it behind the `Tabs` (Diagram ↔ Code) so the concept and its implementation share one panel.
+
+**Reference build:** `examples/illuminate-failure-modes.html` is the canonical self-contained
+demonstrator of this whole section — Tabs, Accordion, Tooltip, filterable evidence Sheet,
+per-KL diagram↔code, WAAPI motion. Match its quality bar.
+
+Visual treatments (typewriter GT, ASCII/SVG build, ladder pulse) layer ON TOP of these
+state machines. All motion is Web Animations API + CSS — see Motion Standards below.
+
+---
+
+### 2026 modernization (progressive enhancement — prefer native platform)
+
+Between late 2025 and 2026 the platform absorbed most of what illuminate used to hand-roll in JS.
+**Stance:** keep the vanilla JS versions as the offline/simple fallback; gate the native-CSS versions
+behind `@supports(...)` so modern engines take the better path and older ones degrade cleanly. This
+is a new axis of progressive enhancement, not a rewrite. Market validation for the whole thesis:
+McKinsey is retiring the deck for exactly these searchable, structured, live web hubs — so lead with
+**structure, searchability, evidence-on-demand, one canonical URL**; the motion is only the aid.
+
+*Ranked by leverage (impact × fit):*
+
+1. **OKLCH + relative color** — the biggest reliability win. Author **one** base hue+chroma per
+   palette and derive `-dim`, light-mode, and hover with `oklch(from var(--x) ...)`. Perceptual
+   lightness is uniform, so **WCAG-AA becomes predictable instead of hand-verified** (kills the
+   "never `#00ff88` on light" class of bug). Replace hand-authored hex palettes with this.
+2. **Native scroll-driven animation** — replace `IntersectionObserver` reveals with
+   `animation-timeline: view()` and RAF parallax with `animation-timeline: scroll()`; both run on
+   the compositor and get `prefers-reduced-motion` for free. Behind `@supports (animation-timeline: view())`.
+3. **`text-wrap: balance`** on GT/KL titles, **`text-wrap: pretty`** on ledes/notes (kills widows/
+   orphans), and **`interpolate-size: allow-keywords` + `calc-size()`** to transition `height: 0 → auto`
+   on the compositor — this is the correct fix for the one layout-thrashing animation (never animate
+   `height`/`width` directly). Cheap, high polish.
+4. **Anchor positioning (`anchor()`) + Popover API** for the evidence Sheet and any picker/tooltip:
+   tethering with no offset math, top-layer + Esc for free. Progressive-enhance; keep manual fallback.
+5. **Pinned step-through** (the one net-new component): a graphic pins (`position: sticky`) while
+   captions scroll past and highlight the active node — ideal for the overview diagram/ladder, where
+   each tier highlights as its section enters. Scrollytelling for the argument's spine.
+6. **Variable-font axis bound to hierarchy** — map `font-variation-settings` `--wght`/`--wdth` to
+   pyramid depth: GT heaviest, KLs equal, detail lightest, so logical authority is encoded in the
+   type axis and the Minto hierarchy is legible pre-reading. Rich tier; needs a variable font present.
+7. **Machine Experience (MX)** — the artifact is increasingly read by agents (including illuminate's
+   own second pass), so make the pyramid machine-legible: real `<section>`/`<h2>`/`<h3>` matching
+   pyramid depth, and emit the pyramid + signal block as **JSON-LD** (GT→KL→evidence relationships,
+   `S-NNN` traces, confidence tiers) so structure is readable without parsing prose. Low cost, unique payoff.
+8. **`typeset`-palette serif GT** — a transitional serif display in the `typeset` palette delivers the
+   "authoritative print" register that palette promises. Serif is `typeset`-only; never the default.
+9. **Two-disclosure-levels invariant** (NN/g: three degrades usability) — codify as a mechanical
+   Phase 7 check: *no evidence reachable in more than 2 taps from the GT*. INSIGHT entries are the
+   "primary" tier by definition and never live behind a closed accordion.
+10. **Served-mode GSAP** — GSAP (incl. ScrollTrigger, SplitText, MorphSVG, ScrambleText) went 100%
+    free in 2025. For **served** (non-offline) rich outputs where a build step is already allowed, it
+    is the sanctioned library for cinematic scroll storytelling. **Offline/self-contained stays vanilla**
+    — lighter, no external request. Note this split in Environment Adaptation.
+
+Items 1, 2, 9 remove existing bug/hand-maintenance; 5, 6, 7 are the only net-new capability. None
+change the method or thesis — they modernize the output layer.
 
 ---
 
@@ -889,14 +1471,16 @@ token names in Phase 6 CSS — consistent naming makes the design system auditab
   --t-micro: .68rem;                       /* labels / dateline — Futura caps */
   --t-ghost: clamp(7rem, 20vw, 16rem);    /* ghost section numbers */
 
-  /* ── Motion ── */
-  --ease:     cubic-bezier(.16,1,.3,1);
-  --spring:   cubic-bezier(.34,1.56,.64,1);
-  --ease-out: cubic-bezier(.0,0,.2,1);
+  /* ── Motion (Emil Kowalski — custom curves; built-in easings too weak) ── */
+  --ease:        cubic-bezier(.16,1,.3,1);
+  --spring:      cubic-bezier(.34,1.56,.64,1);
+  --ease-out:    cubic-bezier(0.23,1,0.32,1);    /* UI enter/exit — starts fast */
+  --ease-in-out: cubic-bezier(0.77,0,0.175,1);   /* on-screen movement */
+  --ease-drawer: cubic-bezier(0.32,0.72,0,1);    /* drawer / sheet / deck slide panels */
   --dur:      .5s;
   --dur-fast: .18s;
   --dur-slow: .9s;
-  --stagger:  60ms;
+  --stagger:  60ms;  /* 30-80ms range; never block interaction during stagger */
 }
 
 /* ── Light palette — system preference (no manual override) ── */
@@ -1137,6 +1721,43 @@ html { transition: background-color .25s var(--ease-out); }
 
 ---
 
+### Motion Standards (Emil Kowalski — mandatory)
+
+Run this decision framework before writing any animation code:
+1. **How often?** 100+/day = no animation. Tens/day = reduce. Occasional = standard. Rare = delight.
+2. **What purpose?** Spatial consistency / state indication / feedback / preventing jarring change.
+3. **What easing?** Entering/exiting → `--ease-out`. Moving on screen → `--ease-in-out`. Never ease-in on UI.
+4. **GPU only:** `transform` + `opacity`. No `width` / `height` / `margin` / `padding` animation.
+
+Duration table:
+| Element | Duration |
+|---|---|
+| Button press feedback | 100–160ms |
+| Tooltips, S-NNN chips | 125–200ms |
+| Accordion open/close | 200–300ms |
+| Evidence drawer | 300–400ms |
+| GT reveal (typewriter) | ~1–2s total |
+| ASCII art build | 12ms/char, 40ms/line |
+| Deck slide enter | 200ms (`--ease-drawer`) |
+
+Mandatory techniques:
+- **`@starting-style`** for entry animations (replaces JS mounted-state pattern)
+- **`clip-path: inset()`** for reveal animations (replaces `translateY` where applicable; WAAPI for programmatic)
+- **CSS transitions** over keyframes for interruptible UI (accordion, evidence drawer)
+- **Asymmetric timing:** deliberate user action (open, expand) = slower; system response (close, collapse) = snappy (200ms `--ease-out`)
+- **Stagger:** 30–80ms between items; never block interaction during stagger
+- **Hover guards:** all hover states wrapped in `@media (hover: hover) and (pointer: fine)`
+
+Absolute motion bans:
+- `transition: all` — specify exact properties
+- `ease-in` on any UI element
+- `scale(0)` entry — minimum `scale(0.95)` + `opacity: 0`
+- Framer Motion `x`/`y`/`scale` shorthands — use full `transform` string (shorthands not GPU-accelerated)
+
+Spring config (evidence drawer, Radix Accordion): `{ type: "spring", duration: 0.5, bounce: 0.15 }` (Apple register — professional, subtle)
+
+---
+
 ### Theme Toggle Construction
 
 Boot order: apply theme attribute **before first paint** to prevent flash.
@@ -1149,7 +1770,7 @@ Place the script inline in `<head>`, before any CSS.
   var stored = localStorage.getItem('il-theme');
   var sys = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', stored || sys);
-  document.documentElement.setAttribute('data-tier', localStorage.getItem('il-tier') || 'rich');
+  document.documentElement.setAttribute('data-tier', localStorage.getItem('il-tier') || 'editorial');
   var pal = localStorage.getItem('il-palette');
   if (pal) document.documentElement.setAttribute('data-palette', pal);
 })();
@@ -1178,7 +1799,7 @@ HTML in sticky nav (right-aligned group):
 <div class="nav-controls">
   <div class="tier-select">
     <button class="tier-btn" data-t="simple"   onclick="setTier('simple')">s</button>
-    <button class="tier-btn" data-t="balanced" onclick="setTier('balanced')">b</button>
+    <button class="tier-btn" data-t="editorial" onclick="setTier('editorial')">b</button>
     <button class="tier-btn" data-t="rich"     onclick="setTier('rich')">r</button>
   </div>
   <button id="theme-btn"   class="nav-icon-btn" onclick="toggleTheme()"        title="Toggle theme">◑</button>
@@ -1317,7 +1938,7 @@ No other CSS needs to change — every downstream rule already uses semantic tok
 ### Render Tier Architecture
 
 Three tiers control the intensity of interactive and animated features.
-Applied via `[data-tier="simple|balanced|rich"]` on `<html>`.
+Applied via `[data-tier="simple|editorial|rich"]` on `<html>`.
 
 ```javascript
 function setTier(t) {
@@ -1329,7 +1950,7 @@ function setTier(t) {
 }
 // Sync button state on init
 (function() {
-  var t = document.documentElement.getAttribute('data-tier') || 'rich';
+  var t = document.documentElement.getAttribute('data-tier') || 'editorial';
   document.querySelectorAll('.tier-btn').forEach(function(b) {
     b.classList.toggle('active', b.dataset.t === t);
   });
@@ -1338,12 +1959,11 @@ function setTier(t) {
 
 **Tier capability matrix:**
 
-| Feature | simple | balanced | rich |
+| Feature | simple | editorial | rich |
 |---|---|---|---|
-| Parallax | ✗ | 2 layers | 3+ layers |
-| 3D card tilt | ✗ | ✗ | ✗ |
+| Parallax | ✗ | ✗ | opt-in, 2–3 layers |
 | ASCII animation | instant | 2× speed | full speed + hover nodes |
-| GT reveal | fade-in | typewriter | scramble |
+| GT reveal | fade-in | typewriter | typewriter |
 | Accordion open | instant | height transition | scan-line + nested |
 | Evidence drawer | inline expand | slide-in | full slide-in + transition |
 | Confidence meter | static bars | CSS transition | JS animated fill |
@@ -1352,55 +1972,62 @@ function setTier(t) {
 | Signal view `s` | ✓ | ✓ | ✓ |
 | Related highlights | ✓ | ✓ | ✓ |
 | Progress arc | ✓ | ✓ | ✓ |
+| Component — fidelity mockups | static frame; pins → footnotes | static frame + pins + drawer | + hover tilt, push slide-in, pulsing pins |
+| Component — process & flow | static nodes + edges | static edges + hover highlight | self-drawing edges + hover-propagated highlight |
+| Component — metrics & funnels | final values, static bars | CSS bar/gauge transitions | JS animated fill + count-up |
+| Component — decision & compare | static positions/cells | hover states | dot-settle / cell-reveal animation |
 
 Focus mode, signal view, related highlights, and progress arc are **always active**
 across all tiers — these are navigation features, not decoration.
 
+**All four component families keep content identical across tiers — only motion changes.**
+`prefers-reduced-motion` forces the simple behaviour regardless of selected tier (existing rule).
+
 **CSS tier guards** — disable features without JS:
 ```css
-/* Parallax */
-[data-tier="simple"] .bg-grid,
-[data-tier="simple"] .hero-ascii,
-[data-tier="simple"] .hero-gt { transform: none !important; will-change: auto !important; }
+/* Parallax — rich tier only; simple + editorial render flat */
+[data-tier="simple"] .bg-grid, [data-tier="editorial"] .bg-grid,
+[data-tier="simple"] .hero-ascii, [data-tier="editorial"] .hero-ascii,
+[data-tier="simple"] .hero-gt, [data-tier="editorial"] .hero-gt { transform: none !important; will-change: auto !important; }
 
 /* Custom cursor */
 [data-tier="simple"] #cur,
-[data-tier="balanced"] #cur { display: none; }
+[data-tier="editorial"] #cur { display: none; }
 
-/* Scan-line open (simple + balanced use height transition fallback) */
+/* Scan-line open (simple + editorial use height transition fallback) */
 [data-tier="simple"] .scan-line,
-[data-tier="balanced"] .scan-line { display: none; }
+[data-tier="editorial"] .scan-line { display: none; }
 ```
 
 **JS tier helpers** — use these in every animated component:
 ```javascript
-var TIER = function() { return document.documentElement.dataset.tier || 'rich'; };
+var TIER = function() { return document.documentElement.dataset.tier || 'editorial'; };
 var isRich       = function() { return TIER() === 'rich'; };
-var isBalancedUp = function() { return TIER() !== 'simple'; };
-// Usage: if (!isBalancedUp()) { el.textContent = text; return; }
-//        var speed = isRich() ? 1 : 2;  // balanced = 2× faster
+var isEditorialUp = function() { return TIER() !== 'simple'; };
+// Usage: if (!isEditorialUp()) { el.textContent = text; return; }
+//        var speed = isRich() ? 1 : 2;  // editorial = 2× faster
 ```
 
 ---
 
-### Parallax Depth System (mandatory)
+### Parallax Depth System (opt-in — rich tier only)
 
-The hero has at least 3 depth layers moving at different speeds on scroll. This creates
-the physical sensation that the argument has depth — GT at the front, evidence receding.
+Off by default. When the operator picks the rich tier, the hero gains 2–3 depth layers moving
+at different speeds on scroll — GT at the front, evidence receding. Editorial and simple tiers
+render flat; parallax is never automatic. Enable it only when depth genuinely aids the reading.
 
 ```javascript
 // Parallax engine — tier-aware, RAF-throttled
-// simple: disabled by CSS guard ([data-tier="simple"])
-// balanced: 2 layers (bg-grid + hero-ascii); hero-gt pinned
-// rich: all 3 layers
+// simple + editorial: disabled by CSS guard (no parallax)
+// rich: 2–3 layers
 var PARALLAX_LAYERS = [
   { sel: '.bg-grid',    speed: 0.15 },
   { sel: '.hero-ascii', speed: 0.35 },
   { sel: '.hero-gt',    speed: 0.02 },
 ];
 function initParallax() {
-  if (!isBalancedUp()) return;  // simple: CSS guard handles it, but skip RAF too
-  var maxLayers = isRich() ? 3 : 2;
+  if (!isRich()) return;  // parallax is rich-only; simple + editorial render flat
+  var maxLayers = 3;
   var layers = PARALLAX_LAYERS.slice(0, maxLayers).map(function(l) {
     return { el: document.querySelector(l.sel), speed: l.speed };
   }).filter(function(l) { return l.el; });
@@ -1443,21 +2070,21 @@ diagram must:
 ```javascript
 // buildArt — tier-aware, motion-safe
 // simple:   instant (textContent; no tick)
-// balanced: animated at 2× speed
+// editorial: animated at 2× speed
 // rich:     full speed + hover-node wiring after done
 // opts: { cd, ld, onDone }   cd default 12ms, ld default 40ms
 var R = matchMedia('(prefers-reduced-motion:reduce)').matches;
 function buildArt(el, lines, opts) {
   var o = Object.assign({ cd: 12, ld: 40, onDone: null }, opts);
   var arr = Array.isArray(lines) ? lines : lines.split('\n');
-  if (R || !isBalancedUp()) {
+  if (R || !isEditorialUp()) {
     // simple tier or reduced-motion: instant
     el.textContent = arr.join('\n');
     el.classList.add('art-done');
     if (o.onDone) o.onDone();
     return;
   }
-  var speed = isRich() ? 1 : 2;  // balanced: 2× faster
+  var speed = isRich() ? 1 : 2;  // editorial: 2× faster
   var li = 0, ci = 0;
   function tick() {
     if (li >= arr.length) {
@@ -1507,10 +2134,10 @@ The pyramid's descent must be enacted in the DOM reveal order. Each section:
 ```javascript
 // Section reveal — tier-aware stagger
 // simple:   all sections visible immediately (IntersectionObserver disabled)
-// balanced: motif + header fade-in; visuals appear (no stagger)
+// editorial: motif + header fade-in; visuals appear (no stagger)
 // rich:     full sequence: motif builds → header slides → lede → visuals → cards stagger
 function initSectionReveals() {
-  if (!isBalancedUp()) {
+  if (!isEditorialUp()) {
     // simple: make everything visible immediately
     document.querySelectorAll('.kl').forEach(function(s) {
       s.classList.add('visible');
@@ -1556,61 +2183,25 @@ Situation and Complication; they are primed. The Question appears; then the GT b
 character by character at a pace that creates suspense.
 
 ```javascript
-// GT reveal — 3 modes based on tier
-// simple:   fade-in (CSS opacity transition, no JS animation)
-// balanced: typewriter character by character
-// rich:     scramble reveal (each char cycles through glyphs before landing)
-const SCRAMBLE_CHARS = '█▓▒░│─┼╬═■◆●▸◉⊕◇□';
-
+// GT reveal — 2 modes based on tier (no scramble — too edgy for editorial support)
+// simple:            fade-in (CSS opacity transition, no JS animation)
+// editorial / rich:  typewriter character by character
 function revealGT(gtEl, text, onDone) {
-  if (!isBalancedUp()) {
+  if (!isEditorialUp()) {
     // simple: instant fade-in via CSS class
     gtEl.textContent = text;
     gtEl.classList.add('gt-visible');
     if (onDone) onDone();
     return;
   }
-  if (!isRich()) {
-    // balanced: typewriter
-    var i = 0;
-    function tw() {
-      if (i > text.length) { gtEl.classList.add('done'); if (onDone) onDone(); return; }
-      gtEl.textContent = text.slice(0, i++);
-      setTimeout(tw, 7);
-    }
-    tw();
-    return;
+  // editorial + rich: typewriter
+  var i = 0;
+  function tw() {
+    if (i > text.length) { gtEl.classList.add('done'); if (onDone) onDone(); return; }
+    gtEl.textContent = text.slice(0, i++);
+    setTimeout(tw, 7);
   }
-  // rich: scramble
-  scrambleReveal(gtEl, text, { cd: 4, sc: 2, onDone: onDone });
-}
-
-function scrambleReveal(el, text, opts) {
-  var o = Object.assign({ cd: 4, sc: 2, onDone: null }, opts);
-  var chars = text.split('');
-  var state = chars.map(function() { return { done: false, cycles: 0 }; });
-  var idx = 0;
-  function tick() {
-    if (idx >= chars.length) {
-      el.textContent = text;
-      el.classList.add('done');
-      if (o.onDone) setTimeout(o.onDone, 80);
-      return;
-    }
-    var display = chars.map(function(c, i) {
-      if (state[i].done) return c;
-      if (i < idx) {
-        if (state[i].cycles >= o.sc) { state[i].done = true; return c; }
-        state[i].cycles++;
-        return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-      }
-      return c === ' ' ? ' ' : '░';
-    }).join('');
-    el.textContent = display;
-    idx++;
-    setTimeout(tick, o.cd);
-  }
-  tick();
+  tw();
 }
 
 // Sequence: S+C visible → divider builds → Q types → pause → GT reveals
@@ -1633,7 +2224,7 @@ type(dividerEl, '─'.repeat(48), { cd: 10, onDone: function() {
 /* simple tier: fade-in */
 [data-tier="simple"] .gt-text { opacity: 0; transition: opacity .6s var(--ease); }
 [data-tier="simple"] .gt-text.gt-visible { opacity: 1; }
-/* balanced + rich: gradient on completion */
+/* editorial + rich: gradient on completion */
 .gt-text.done {
   background: linear-gradient(140deg, var(--ink) 0%, var(--ink-2) 60%, var(--red) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -1672,6 +2263,38 @@ qsa('.cite').forEach(function(chip) {
 
 ---
 
+### The annotation / hotspot system (cross-cutting — wires to the evidence drawer)
+
+Any component can carry numbered pins that turn it into a navigational surface into the pyramid.
+This is what upgrades a mockup from "a picture" to "an explanation."
+
+```html
+<div class="annot">                          <!-- wraps a positioned component -->
+  <button class="pin" style="--x:64%;--y:22%" data-cite="S-014"
+          aria-label="Personalization token">1</button>
+  <button class="pin" style="--x:30%;--y:70%" data-cite="S-018"
+          aria-label="Send-time setting">2</button>
+</div>
+```
+```css
+.annot { position:relative; }
+.pin { position:absolute; left:var(--x); top:var(--y); transform:translate(-50%,-50%);
+  width:22px; height:22px; border-radius:50%; border:1px solid var(--red);
+  background: var(--red-dim); color: var(--red); font-family:var(--mono); font-size:.7rem;
+  cursor:pointer; z-index:5; }
+[data-tier="rich"] .pin { animation: pulse 2s var(--ease) infinite; }
+@keyframes pulse { 0%,100%{ box-shadow:0 0 0 0 var(--red-dim);} 50%{ box-shadow:0 0 0 6px transparent;} }
+```
+- Click a pin → `showDrawer(cite, DATA[cite])` — reuse the existing evidence-drawer machinery. A pin
+  is just another `data-cite` trigger, so no new drawer code is needed. Hover shows a one-line
+  tooltip (the S-NNN's claim text).
+- **Tier:** rich = pulsing pins + hover tooltip; balanced = static pins + drawer; **simple = pins
+  become inline numbered footnotes beneath the component** (so nothing depends on positioning/JS).
+- **Evidence:** a pin whose `data-cite` doesn't resolve to a real S-NNN is a **build error** — pins
+  are the tightest binding between illustration and evidence, and must never be decorative.
+
+---
+
 ### Dynamic Contextual Blocks (mandatory — at least 2 per KL)
 
 Beyond static cards: blocks that respond to context and user position.
@@ -1707,15 +2330,28 @@ function renderConfidence(kl) {
 Do not repeat visualization types across sections. Each KL gets the visualization that best
 enacts its specific argument:
 
-| KL argument type | Recommended visualization |
+Components from the Component Library are first-class options here. One component per KL; never
+repeat a component type across KLs.
+
+| KL argument type / topic signal | Recommended visualization / component |
 |---|---|
 | Sequential process / pipeline | ASCII flow diagram with animated arrows |
-| Before/after / reversal (INSIGHT) | Split ASCII panel: left = before, right = after, divider slides |
+| Before/after / reversal (INSIGHT) | Split ASCII panel / Family D `BEFORE-AFTER` slider |
 | Quantitative comparison | `═▓░` progress bars built on scroll-in, colored by value |
 | System architecture | Box-drawing architecture diagram with hover-highlighted components |
 | Chain / linked structure | Linked boxes building left to right, hash/id labels |
 | Counter-intuitive ordering | Ranked list that animates reordering from "expected" to "actual" |
 | Binary classification (true/false, ✓/✗) | ASCII grid with staggered fill |
+| The subject IS a rendered artifact (email, screen, message, UI, config) | Family A fidelity mockup |
+| A sequence, journey, lifecycle, or branching process | Family B flow / swimlane / sequence / decision-tree / timeline |
+| Magnitude, rate, drop-off, or conversion | Family C funnel / KPI tiles / gauge / cohort / waterfall |
+| A choice among options, positioning, or scoring | Family D quadrant / compare-matrix / scorecard |
+| System structure / parts of a whole | ARCHITECTURE-DIAGRAM (ASCII or SVG) |
+| A mechanism with a tunable input | PARAMETER-PLAYGROUND |
+| Mutually-exclusive case categories | TABBED-SCENARIO |
+
+**If no component enacts the KL better than prose + one ASCII motif, use the ASCII** — components
+are earned by the argument, not mandatory per section.
 
 Visualizations are built in place, inside the section, not inside cards. They are visible
 without interaction. Cards are for the evidence behind the visualization.
@@ -1762,7 +2398,7 @@ Operator confirms the file works live in a browser. Not self-certified.
 
 ```
 [ILLUMINATE:GATE] Phase 6 PASS (operator-confirmed) | File: <filename>.html | Size: <KB>
-Palette: <name> | Theme: dark+light verified | Tiers: simple/balanced/rich verified
+Palette: <name> | Theme: dark+light verified | Tiers: simple/editorial/rich verified
 Techniques: parallax / ascii-interactive / accordion / evidence-drawer
 Dynamic blocks: focus-mode / signal-view / confidence-meter / related-highlights
 ```
@@ -1772,10 +2408,7 @@ Dynamic blocks: focus-mode / signal-view / confidence-meter / related-highlights
 ## Phase 7 — Verify
 
 **GT drift check:**
-```bash
-rtk read /tmp/illuminate-anchor.md  # line 1: anchored GT
-# compare verbatim to pull quote in HTML
-```
+Read `/tmp/illuminate-anchor.md` (line 1 = anchored GT). Compare verbatim to the pull quote in the HTML.
 Paraphrase drift = failure. Fix before proceeding.
 
 **21-item checklist (run in rich+dark by default; then spot-check tiers, light mode, and palette):**
@@ -1783,6 +2416,8 @@ Paraphrase drift = failure. Fix before proceeding.
 *Content and hierarchy*
 - [ ] GT immediately legible on load, above fold, without interaction
 - [ ] S, C, Q, A all visible in hero without scrolling or expanding
+- [ ] **Two-disclosure-levels invariant:** no evidence reachable in more than 2 taps from the GT (NN/g — 3 degrades usability). INSIGHT entries are never behind a closed accordion.
+- [ ] Each section's supporting prose is *full* (drilled, not compressed): ledes are real paragraphs, not label fragments
 - [ ] GT gradient text renders correctly in dark mode
 - [ ] GT text fully legible in light mode (no invisible gradient on cream)
 
@@ -1799,20 +2434,63 @@ Paraphrase drift = failure. Fix before proceeding.
 - [ ] In the operator's chosen palette, all semantic tokens maintain WCAG AA contrast in both themes
 
 *Render tiers*
-- [ ] Tier selector (`s·b·r`) visible in nav; active tier highlighted in editorial red
+- [ ] Tier selector (`s·e·r`) visible in nav; active tier highlighted in editorial red
 - [ ] **simple**: page fully readable; no broken layout from missing animations
-- [ ] **balanced**: parallax (2 layers) and typewriter GT visible
-- [ ] **rich**: full scramble GT; 3 parallax layers; scan-line accordion; evidence drawer
+- [ ] **editorial** (default): typewriter GT, purposeful motion, no parallax
+- [ ] **rich**: editorial + opt-in parallax (2–3 layers); scan-line accordion; evidence drawer
 
 *Interactivity*
 - [ ] Parallax layers move at different speeds on scroll (rich tier)
-- [ ] Evidence drawer opens on S-NNN click, shows correct entry (balanced+)
+- [ ] Evidence drawer opens on S-NNN click, shows correct entry (editorial+)
 - [ ] Focus mode `f` and signal view `s` toggles work on all tiers
 
 *Accessibility and hygiene*
 - [ ] `prefers-reduced-motion`: all animations disabled, layout unchanged, content identical
 - [ ] No console errors on any tier or theme combination
 - [ ] Self-contained: no external requests beyond declared CDN libraries
+
+**[ILLUMINATE:IMPECCABLE-CHECK]** (run alongside 21-item checklist):
+
+*Typography:*
+- [ ] Body text ≤72ch (doc: 72ch strict; web/deck: 65–72ch)
+- [ ] `text-wrap: balance` on h1–h3; `text-wrap: pretty` on long prose
+- [ ] Heading clamp max ≤6rem
+- [ ] 4.5:1 contrast body text; 3:1 large text (≥18px or bold ≥14px)
+- [ ] No muted gray body text on tinted near-white
+
+*Motion (Emil Kowalski):*
+- [ ] No `transition: all` — exact properties specified
+- [ ] No `ease-in` on UI — `--ease-out` custom curve only
+- [ ] No `scale(0)` entry — minimum `scale(0.95)` + `opacity: 0`
+- [ ] GPU-only: `transform` + `opacity` animated; no layout props
+- [ ] CSS transitions over keyframes for accordion, evidence drawer
+- [ ] Stagger 30–80ms; interaction never blocked during stagger
+- [ ] `@media (hover: hover) and (pointer: fine)` on all hover states
+
+*Absolute bans (impeccable):*
+- [ ] No side-stripe borders (>1px colored left/right as accent)
+- [EXEMPT — GT only] Gradient text: GT only, intentional, explicitly exempted
+- [ ] No glassmorphism as default decoration
+- [ ] No identical card grids
+- [ ] No eyebrow uppercase kicker above every section (KL numbers are structural hierarchy)
+
+*SVG / illustration:*
+- [ ] All SVG uses `currentColor` + token vars — no hardcoded colors
+- [ ] SVG responds correctly to theme + palette switch
+- [ ] DataViz passes palette token vars to chart config
+
+*Components:*
+- [ ] Each component traces: every concrete label/figure/string is either S-NNN-cited or visibly placeholder
+- [ ] Every component carries an ILLUSTRATION tag OR citation chips — the two registers are never blurred
+- [ ] Metric components show no untraced numbers (untraced → `00.0%` / `—` placeholder)
+- [ ] Components degrade cleanly at simple/balanced; content identical across tiers
+- [ ] Annotation pins open the correct evidence-drawer entry; every pin resolves to a real S-NNN
+- [ ] Components use `var(--…)` tokens only — correct in all 6 palettes, both themes (spot-check 2)
+
+*Deck-only (when Mode = deck):*
+- [ ] No slide content overflow (overflow = argument too long = gate failure → shorten + re-run Phase 3)
+- [ ] `min-h-[100dvh]` on fullscreen, never `h-screen` (iOS Safari bug)
+- [ ] `@media print` verified: page-break-after, no animation, no controls
 
 **Phase 7 failure path — correction register (same 3-attempt, escalate-on-exhaust as Phases 1–4):**
 
@@ -1843,7 +2521,7 @@ When any checklist item fails, do not silently fix and re-mark PASS. Use the str
 ```
 [ILLUMINATE:CLOSE] File: <filename>.html
 ──────────────────────────────────────────────────────────────────────
-Stage I    Phase 0  config+audit     PASS  palette: <name> | tier: <r/b/s>
+Stage I    Phase 0  config+audit     PASS  palette: <name> | tier: <e/r/s> | mode: <web/doc/deck>
                                            source: <type>, density: <H/M/L>
            Phase 1  signal-extract   PASS  <N> entries, <N> insights, refs: <N>
            Phase 1b faithful-source  PASS  <N> contested, <N> refuted, <N> hedged
@@ -1853,8 +2531,9 @@ Stage II   Phase 2  concept-map      PASS  hubs: <N>, issue-tree: <N> sub-Qs
 Stage III  Phase 5  architecture     PASS  wireframe: <N> sections, 14 components
            Phase 6  engineering      PASS  operator-confirmed, <KB> [corrections: <N>]
                                            palette: <name> | theme: dark+light
-                                           tiers: simple/balanced/rich
-           Phase 7  verify           PASS  GT drift: none · 21/21
+                                           tiers: simple/editorial/rich
+                                           Components: <families used — mockup/flow/metric/decision>
+           Phase 7  verify           PASS  GT drift: none · 21/21 · impeccable: PASS
 ──────────────────────────────────────────────────────────────────────
 Output: <filename>.html (<KB>)
 Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate-anchor.md
@@ -1864,7 +2543,7 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 
 ## Output Contract
 
-1. **Tier-scaled dynamism** — `rich` is fully alive; `balanced` is readable and interactive;
+1. **Tier-scaled dynamism** — `rich` is fully alive; `editorial` is readable and interactive;
    `simple` is clean, content-first. No tier produces a broken or unstyled page.
 2. **Libraries freely** — any JS/CSS library that enhances the experience; CDN or build step both fine
 3. **Swiss editorial design** — Helvetica Neue 300 (GT/hero) + Futura 700 (section titles/labels) +
@@ -1878,17 +2557,21 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 5. **Dual-mode theme** — dark (default) + light, togglable via `◑`/`◐` in sticky nav. No flash on
    load. `--cli` is always de-saturated in light mode (never neon). Light mode ground matches the
    chosen palette's character — warm cream (claude), cool paper (signal), parchment (archive), etc.
-6. **Render tier selector** — `s·b·r` buttons in nav. Defaults to `rich`. Persists in localStorage.
+6. **Render tier selector** — `s·e·r` buttons in nav. Defaults to `editorial`. Persists in localStorage.
    CSS guards + JS helpers ensure every feature degrades cleanly at lower tiers.
 7. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
-8. **Parallax hero** — 3 layers (rich) / 2 layers (balanced) / none (simple)
-9. **Interactive ASCII** — full animation + hover nodes (rich) / 2× speed animation (balanced) / instant (simple)
-10. **Accordion** — scan-line open + nested components (rich) / height transition (balanced) / instant (simple)
+8. **Parallax hero** — 3 layers (rich) / 2 layers (editorial) / none (simple)
+9. **Interactive ASCII** — full animation + hover nodes (rich) / 2× speed animation (editorial) / instant (simple)
+10. **Accordion** — scan-line open + nested components (rich) / height transition (editorial) / instant (simple)
 11. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
     (active on all tiers — navigation features, not decoration)
 12. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
 13. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
 14. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
+15. **Component library** — where the KL argument is best enacted by an artifact (fidelity mockup),
+    a process (flow/sequence/timeline), a magnitude (funnel/KPI/gauge), or a choice
+    (quadrant/matrix), a self-contained, tokened, tier-degradable component fills the INLINE-VISUAL
+    slot, governed by the ILLUSTRATE discipline. Mockup/metric content is bounded by the signal block.
 
 ---
 
@@ -1896,7 +2579,7 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 
 | Tool | Phase | How it enriches the arc |
 |---|---|---|
-| `rtk vault search <topic>` | Phase 1 | Prior signal; tag `[VAULT]`; skip re-extraction |
+| vault search `<topic>` | Phase 1 | Prior signal; tag `[VAULT]`; skip re-extraction. RTK: `rtk vault search`; skip gracefully if unavailable |
 | `/faithful-sourcing` skill | Phase 1b | Adversarial provenance check on signal block |
 | graphify / `semantic_search_nodes` | Phase 2 | Structural node relationships; tag `[GRAPH]` |
 | `get_impact_radius` | Phase 2 | Hub propagation through codebase communities |
@@ -1953,12 +2636,19 @@ Design for containment, not exorcism. Signal, do not certify.
 
 **Output quality**
 13. Never label the frameworks in the UI. Sections state arguments, not framework labels.
-14. Never produce a flat scrolling page. The output is a nested navigable site with 3D depth.
+14. Never produce a flat undifferentiated page. The output is a nested, navigable editorial site.
 15. Visual hierarchy enacts the pyramid: GT most prominent, KLs equal peers, detail is depth.
-16. Parallax, 3D physics, interactive ASCII, evidence drawer, focus mode: all mandatory.
+16. Interactive ASCII, evidence drawer, progressive disclosure, focus mode: mandatory. Parallax:
+    opt-in via the rich tier only. 3D physics and scramble reveals: not used (editorial restraint).
 17. Never self-certify Phase 6. Operator confirms in browser. Failures re-enter Phase 6 via the correction register — same 3-attempt, escalate-on-exhaust pattern as Phases 1–4.
 18. The HTML renders the pyramid. It does not expand or improve it.
 
 **Technical constraints**
-19. Any JS or CSS library is allowed — GSAP, Three.js, Tailwind, Alpine, Framer Motion, anything. CDN delivery and build steps (Vite, esbuild) are both fine.
+19. Component vocabulary is shadcn/ui (Radix + Tailwind patterns). Any JS/CSS library is allowed when it serves legibility — D3/Observable Plot for real data viz, Tailwind for layout. CDN and build steps (Vite, esbuild) both fine. Not for decoration: an effect that doesn't aid understanding doesn't ship.
 20. Prefer vanilla only when it is faster to write and equally expressive. Never avoid a library out of principle — avoid it only when it adds complexity without payoff.
+
+**Component library**
+21. Components are earned by the argument, never decorative. One component per KL; never repeat a component type across KLs.
+22. Every component is an ILLUSTRATE surface. Concrete content traces to an S-NNN or renders as visibly-generic placeholder. A fabricated number, quote, or result inside a component is the gravest evidence violation — the most believable one.
+23. Every component is self-contained (no external images), palette-tokened (`var(--…)` only), and tier-degradable (rich/balanced/simple) with content identical across tiers.
+24. Annotation pins are `data-cite` triggers into the existing evidence drawer. A pin without a resolving S-NNN is a build error.
