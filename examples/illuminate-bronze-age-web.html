@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Web, Not a List · The Late Bronze Age Collapse as a Causal Network</title>
+<style>
+:root{
+  --bg:#f4f1ea; --bg-2:#ece7dc; --surface:#fffdf8; --surface-2:#f9f6ee;
+  --ink:#231d15; --ink-2:#5e564a; --ink-3:#968b78;
+  --line:rgba(35,29,21,.09); --line-2:rgba(35,29,21,.15);
+  --accent:#a8611a; --accent-2:#824812; --accent-soft:rgba(168,97,26,.10);
+  --shock:#a8611a; --shock-soft:rgba(168,97,26,.13);
+  --effect:#8f3f1c; --effect-soft:rgba(143,63,28,.13);
+  --transmit:#3f6a72; --transmit-soft:rgba(63,106,114,.14);
+  --substrate:#5c6f4e; --substrate-soft:rgba(92,111,78,.15);
+  --warn:#8f3f1c; --warn-soft:rgba(143,63,28,.12); --sage:#5c6f4e; --sage-soft:rgba(92,111,78,.13);
+  --sans:-apple-system,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono",monospace;
+  --spring:cubic-bezier(.22,.72,.24,1); --r:16px; --r-lg:24px; --r-xl:30px;
+  --sh-1:0 1px 2px rgba(70,50,25,.05),0 4px 10px -4px rgba(70,50,25,.07);
+  --sh-2:0 2px 4px rgba(70,50,25,.05),0 22px 44px -22px rgba(70,50,25,.17);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#161209; --bg-2:#201a10; --surface:#211b11; --surface-2:#282116;
+  --ink:#f2ecdf; --ink-2:#b8ac97; --ink-3:#867a66;
+  --line:rgba(255,250,235,.08); --line-2:rgba(255,250,235,.14);
+  --accent:#d69a4e; --accent-2:#e8b76f; --accent-soft:rgba(214,154,78,.14);
+  --shock:#d69a4e; --shock-soft:rgba(214,154,78,.16);
+  --effect:#d98a5c; --effect-soft:rgba(217,138,92,.16);
+  --transmit:#7fb0ba; --transmit-soft:rgba(127,176,186,.16);
+  --substrate:#93a377; --substrate-soft:rgba(147,163,119,.16);
+  --warn:#d98a5c; --warn-soft:rgba(217,138,92,.15); --sage:#93a377; --sage-soft:rgba(147,163,119,.14);
+  --sh-1:0 1px 2px rgba(0,0,0,.3),0 4px 10px -4px rgba(0,0,0,.4);
+  --sh-2:0 2px 4px rgba(0,0,0,.3),0 22px 44px -22px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{--bg:#161209;--bg-2:#201a10;--surface:#211b11;--surface-2:#282116;--ink:#f2ecdf;--ink-2:#b8ac97;--ink-3:#867a66;--line:rgba(255,250,235,.08);--line-2:rgba(255,250,235,.14);--accent:#d69a4e;--accent-2:#e8b76f;--accent-soft:rgba(214,154,78,.14);--shock:#d69a4e;--shock-soft:rgba(214,154,78,.16);--effect:#d98a5c;--effect-soft:rgba(217,138,92,.16);--transmit:#7fb0ba;--transmit-soft:rgba(127,176,186,.16);--substrate:#93a377;--substrate-soft:rgba(147,163,119,.16);--warn:#d98a5c;--warn-soft:rgba(217,138,92,.15);--sage:#93a377;--sage-soft:rgba(147,163,119,.14);--sh-1:0 1px 2px rgba(0,0,0,.3),0 4px 10px -4px rgba(0,0,0,.4);--sh-2:0 2px 4px rgba(0,0,0,.3),0 22px 44px -22px rgba(0,0,0,.5);}
+:root[data-theme="light"]{--bg:#f4f1ea;--bg-2:#ece7dc;--surface:#fffdf8;--surface-2:#f9f6ee;--ink:#231d15;--ink-2:#5e564a;--ink-3:#968b78;--line:rgba(35,29,21,.09);--line-2:rgba(35,29,21,.15);--accent:#a8611a;--accent-2:#824812;--accent-soft:rgba(168,97,26,.10);--shock:#a8611a;--shock-soft:rgba(168,97,26,.13);--effect:#8f3f1c;--effect-soft:rgba(143,63,28,.13);--transmit:#3f6a72;--transmit-soft:rgba(63,106,114,.14);--substrate:#5c6f4e;--substrate-soft:rgba(92,111,78,.15);--warn:#8f3f1c;--warn-soft:rgba(143,63,28,.12);--sage:#5c6f4e;--sage-soft:rgba(92,111,78,.13);--sh-1:0 1px 2px rgba(70,50,25,.05),0 4px 10px -4px rgba(70,50,25,.07);--sh-2:0 2px 4px rgba(70,50,25,.05),0 22px 44px -22px rgba(70,50,25,.17);}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@supports (interpolate-size: allow-keywords){:root{interpolate-size:allow-keywords}
+  .card::details-content{height:0;overflow:hidden;content-visibility:hidden;transition:height .4s var(--spring),content-visibility .4s allow-discrete}
+  .card[open]::details-content{height:auto;content-visibility:visible}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.64;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;transition:background .5s var(--spring),color .5s var(--spring)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(52% 40% at 86% -4%,var(--accent-soft),transparent 60%),radial-gradient(44% 34% at 4% 22%,var(--sage-soft),transparent 60%)}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(24px,5vw,60px)}
+.wrapn{max-width:960px;margin:0 auto;padding:0 clamp(24px,5vw,60px)}
+.mono{font-family:var(--mono)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:5px}
+
+.nav{position:fixed;top:20px;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none;padding:0 16px}
+.nav-pill{pointer-events:auto;display:flex;align-items:center;gap:15px;background:color-mix(in oklab,var(--surface) 78%,transparent);backdrop-filter:saturate(160%) blur(18px);border:1px solid var(--line);border-radius:999px;padding:8px 8px 8px 20px;box-shadow:var(--sh-1)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:.9rem;white-space:nowrap}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{font-size:.83rem;color:var(--ink-3);text-decoration:none;padding:8px 11px;border-radius:999px;transition:.3s var(--spring);white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}.nav-links a.active{color:var(--ink);background:var(--bg-2)}
+.theme-btn{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;transition:transform .3s var(--spring),color .3s;box-shadow:var(--sh-1)}
+.theme-btn:hover{color:var(--ink);transform:translateY(-1px)}.theme-btn svg{width:17px;height:17px}
+.nav-cta{display:flex;align-items:center;gap:9px;background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:9px 9px 9px 16px;font:550 .82rem var(--sans);cursor:pointer;transition:transform .3s var(--spring);white-space:nowrap}
+.nav-cta:hover{transform:translateY(-1px)}.nav-cta .ic{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:.78rem}
+@media(max-width:980px){.nav-links{display:none}}
+
+/* hero, phenomenon + multiplicity claim (no single-answer GT) */
+.hero{padding:clamp(138px,17vw,188px) 0 clamp(30px,4vw,48px);text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 16px 7px 13px;font-size:.82rem;color:var(--ink-2);margin-bottom:28px;box-shadow:var(--sh-1)}
+.eyebrow .d{width:6px;height:6px;border-radius:50%;background:var(--accent)}.eyebrow b{color:var(--accent-2);font-weight:600}
+.lead{font-size:1.2rem;line-height:1.55;color:var(--ink-2);max-width:60ch;margin:0 auto 30px;text-wrap:pretty}.lead b{color:var(--ink);font-weight:560}
+.claim{font-weight:400;font-size:clamp(2rem,4.6vw,3.6rem);line-height:1.1;letter-spacing:-.03em;margin:0 auto;max-width:20ch;text-wrap:balance}.claim .k{color:var(--accent)}
+.claim-sub{margin:26px auto 0;font-size:1.12rem;line-height:1.56;color:var(--ink-2);max-width:56ch;text-wrap:pretty}.claim-sub b{color:var(--ink);font-weight:560}
+
+/* the causal-web centerpiece */
+.web-sec{padding:clamp(30px,4vw,48px) 0 clamp(56px,7vw,90px)}
+.web-cap{display:flex;justify-content:space-between;align-items:baseline;margin:0 6px 14px;flex-wrap:wrap;gap:8px}
+.web-cap h3{margin:0;font-size:1.1rem;font-weight:600;letter-spacing:-.02em}
+.web-cap span{font-size:.86rem;color:var(--ink-3)}
+.web-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:clamp(12px,2vw,22px);box-shadow:var(--sh-2)}
+#web{width:100%;height:auto;display:block;touch-action:manipulation}
+#web text{font-family:var(--sans);fill:var(--ink);pointer-events:none}
+#web .edge{fill:none;stroke:var(--line-2);stroke-width:1.5;transition:stroke .25s,stroke-width .25s,opacity .25s}
+#web .edge.key{stroke-dasharray:5 4}
+#web .edge-lab{font-family:var(--mono);font-size:9.5px;fill:var(--ink-3);opacity:0;transition:opacity .25s}
+#web .node{cursor:pointer}
+#web .node circle{transition:transform .25s var(--spring),opacity .25s;transform-box:fill-box;transform-origin:center}
+#web .node:hover circle{transform:scale(1.06)}
+#web .node .nlab{font-size:12.5px;font-weight:600}
+#web .node .nrole{font-family:var(--mono);font-size:8.5px;fill:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}
+#web.dimmed .node:not(.on){opacity:.28}
+#web.dimmed .edge:not(.on){opacity:.08}
+#web.dimmed .edge.on{stroke:var(--accent);stroke-width:2.5}
+#web.dimmed .edge.on+.edge-lab,#web .edge-lab.on{opacity:1}
+.web-legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:16px;font-size:.78rem;color:var(--ink-3)}
+.web-legend b{display:inline-flex;align-items:center;gap:6px;font-weight:500;color:var(--ink-2)}
+.web-legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.web-foot{text-align:center;color:var(--ink-3);font-size:.82rem;margin-top:14px}
+
+.section{padding:clamp(70px,9vw,124px) 0}.section+.section{border-top:1px solid var(--line)}
+.section-hd{max-width:60ch;margin:0 auto clamp(30px,4vw,44px);text-align:center}
+.tag{display:inline-flex;align-items:center;gap:9px;background:var(--accent-soft);color:var(--accent-2);border-radius:999px;padding:6px 15px 6px 13px;font-size:.8rem;font-weight:600;margin-bottom:18px}
+.sec-title{font-weight:440;font-size:clamp(1.7rem,3.3vw,2.4rem);line-height:1.14;letter-spacing:-.024em;margin:0 0 16px;text-wrap:balance}.sec-title b{font-weight:600;color:var(--accent-2)}
+.lede{color:var(--ink-2);font-size:1.14rem;line-height:1.66;margin:0 auto;max-width:60ch;text-wrap:pretty}.lede b{color:var(--ink);font-weight:560}.lede em{color:var(--ink);font-style:italic}.lede+.lede{margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;justify-content:center}
+.chip{font:550 .72rem var(--mono);color:var(--accent-2);background:var(--accent-soft);border:0;border-radius:999px;padding:5px 11px;cursor:pointer;transition:.25s var(--spring)}
+.chip:hover{background:var(--accent);color:#fff;transform:translateY(-1px)}.chip.warn{color:var(--warn);background:var(--warn-soft)}
+
+/* factor cards, grouped by role */
+.role-grid{display:grid;grid-template-columns:1fr;gap:12px;max-width:820px;margin:0 auto}
+.disc{display:flex;flex-direction:column;gap:11px;max-width:820px;margin:26px auto 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-1);transition:box-shadow .35s var(--spring),transform .35s var(--spring)}
+.card:hover{box-shadow:var(--sh-2);transform:translateY(-1px)}
+.card summary{list-style:none;cursor:pointer;padding:17px 20px;display:flex;align-items:center;gap:13px;font-size:1.01rem;font-weight:550;color:var(--ink)}
+.card summary::-webkit-details-marker{display:none}
+.role-pill{font:600 .58rem var(--mono);letter-spacing:.05em;text-transform:uppercase;border-radius:5px;padding:2px 7px;flex:0 0 auto}
+.role-pill.shock{color:var(--shock);background:var(--shock-soft)}.role-pill.effect{color:var(--effect);background:var(--effect-soft)}
+.role-pill.transmit{color:var(--transmit);background:var(--transmit-soft)}.role-pill.substrate{color:var(--substrate);background:var(--substrate-soft)}
+.card .plus{margin-left:auto;width:26px;height:26px;flex:0 0 auto;border-radius:50%;background:var(--bg-2);display:grid;place-items:center;position:relative;transition:background .3s var(--spring)}
+.card[open] .plus{background:var(--accent-soft)}
+.card .plus::before,.card .plus::after{content:"";position:absolute;background:var(--ink-3);transition:transform .35s var(--spring),opacity .3s,background .3s}
+.card .plus::before{width:10px;height:1.6px}.card .plus::after{width:1.6px;height:10px}
+.card[open] .plus::after{transform:rotate(90deg);opacity:0}.card[open] .plus::before{background:var(--accent-2)}
+.card .body{padding:0 20px 20px;color:var(--ink-2);font-size:1rem;line-height:1.64;max-width:64ch;text-wrap:pretty}
+.card .body p{margin:.1em 0 .7em}.card .body em{color:var(--ink);font-style:normal;font-weight:560}.card .body i{color:var(--ink);font-style:italic}
+.couple{margin-top:8px;font-size:.9rem;color:var(--ink-3)}.couple b{color:var(--transmit);font-weight:600}
+
+/* the couplings, the edges made explicit */
+.edges{display:grid;grid-template-columns:1fr;gap:10px;max-width:820px;margin:0 auto}
+@media(min-width:720px){.edges{grid-template-columns:1fr 1fr}}
+.edge-item{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--sh-1)}
+.edge-flow{font:600 .8rem var(--mono);color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.edge-flow .ar{color:var(--transmit)}
+.edge-item p{margin:0;font-size:.95rem;color:var(--ink-2);line-height:1.55}
+
+/* embedded debate-map, position cards */
+.debate{display:grid;grid-template-columns:1fr;gap:14px;max-width:960px;margin:0 auto}
+@media(min-width:820px){.debate{grid-template-columns:repeat(3,1fr)}}
+.pos{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px 20px;box-shadow:var(--sh-1);display:flex;flex-direction:column}
+.pos h4{margin:0 0 4px;font-size:1.06rem;font-weight:600}
+.pos .who{font:600 .64rem var(--mono);color:var(--accent-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.pos .steel{font-size:.94rem;color:var(--ink-2);line-height:1.56;flex:1}
+.pos .strain{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:.88rem;color:var(--ink-3);line-height:1.5}.pos .strain b{color:var(--warn);font-weight:600}
+.contention{max-width:820px;margin:26px auto 0;background:var(--accent-soft);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px 24px}
+.contention .lbl{font:600 .66rem var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--accent-2);margin-bottom:10px}
+.contention p{margin:0 0 8px;font-size:1rem;color:var(--ink);line-height:1.6}.contention p:last-child{margin-bottom:0;color:var(--ink-2)}.contention b{font-weight:600}
+
+/* verification ledger */
+.ledger{max-width:820px;margin:clamp(40px,6vw,60px) auto 0;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--sh-1);overflow:hidden}
+.ledger-hd{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line);font:600 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.ledger-hd .d{width:7px;height:7px;border-radius:50%;background:var(--sage)}
+.ledger-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+@media(max-width:720px){.ledger-grid{grid-template-columns:repeat(2,1fr)}}
+.lg-cell{background:var(--surface);padding:18px 20px;text-align:center}
+.lg-val{font:300 1.9rem var(--sans);letter-spacing:-.02em;color:var(--ink)}.lg-val.zero{color:var(--sage)}
+.lg-lab{font-size:.78rem;color:var(--ink-3);margin-top:3px}
+.ledger-note{padding:15px 20px;border-top:1px solid var(--line);font-size:.92rem;color:var(--ink-2);line-height:1.56;text-wrap:pretty}.ledger-note b{color:var(--ink);font-weight:560}
+
+/* evidence sheet + tooltip */
+.scrim{position:fixed;inset:0;background:rgba(35,25,10,.34);backdrop-filter:blur(3px);z-index:70;opacity:0;pointer-events:none;transition:opacity .4s var(--spring)}.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;top:0;right:0;height:100%;width:min(580px,94vw);z-index:80;background:var(--bg);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .5s var(--spring);display:flex;flex-direction:column;box-shadow:var(--sh-2)}.sheet.on{transform:none}
+.sheet-head{padding:22px 24px 14px;border-bottom:1px solid var(--line)}
+.sheet-title{display:flex;align-items:center;gap:12px}.sheet-title h3{margin:0;font-size:1.02rem;font-weight:600}.sheet-title .count{font:.72rem var(--mono);color:var(--accent-2)}
+.sheet-close{margin-left:auto;width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;box-shadow:var(--sh-1)}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.filt{font:500 .66rem var(--mono);color:var(--ink-3);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 11px;cursor:pointer;transition:.25s var(--spring)}
+.filt:hover{color:var(--ink)}.filt.on{color:#fff;background:var(--accent);border-color:var(--accent)}
+.sheet-list{overflow-y:auto;padding:8px 0;flex:1}
+.ev{padding:15px 24px;border-bottom:1px solid var(--line)}.ev.hide{display:none}.ev.flash{background:var(--accent-soft)}
+.ev-top{display:flex;align-items:center;gap:9px;margin-bottom:6px;flex-wrap:wrap}.ev-id{font:700 .76rem var(--mono);color:var(--accent-2)}
+.ev-tag{font:600 .58rem var(--mono);letter-spacing:.04em;color:var(--ink-3);border:1px solid var(--line-2);border-radius:999px;padding:2px 8px;text-transform:uppercase}.ev-tag.warn{color:var(--warn);border-color:var(--warn)}
+.ev-claim{font-size:.94rem;color:var(--ink-2);line-height:1.5}
+.tip{position:fixed;z-index:95;max-width:340px;background:var(--surface);border:1px solid var(--line-2);border-radius:12px;padding:11px 14px;font-size:.86rem;line-height:1.46;color:var(--ink-2);box-shadow:var(--sh-2);opacity:0;transform:translateY(6px);transition:.22s var(--spring);pointer-events:none}.tip.on{opacity:1;transform:none}
+.tip .tid{font:700 .66rem var(--mono);color:var(--accent-2);display:block;margin-bottom:4px}
+
+footer{padding:56px 0 88px;color:var(--ink-3);font-size:.9rem;line-height:1.62;border-top:1px solid var(--line);text-align:center}footer b{color:var(--ink-2)}footer .wrapn{max-width:70ch}
+.rv{opacity:0;transform:translateY(22px);filter:blur(4px);transition:opacity .8s var(--spring),transform .8s var(--spring),filter .8s var(--spring)}.rv.in{opacity:1;transform:none;filter:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none}}
+</style>
+</head>
+<body>
+<div class="nav"><div class="nav-pill">
+  <span class="brand"><span class="dot"></span>Illuminate</span>
+  <div class="nav-links" id="nav-links">
+    <a href="#top" class="active">The web</a><a href="#substrate">The medium</a><a href="#factors">The factors</a><a href="#couplings">The couplings</a><a href="#debate">Can it be explained?</a><a href="#unknown">The unknown</a>
+  </div>
+  <button class="theme-btn" id="theme" aria-label="Toggle theme"></button>
+  <button class="nav-cta" id="ev-open">Evidence <span class="ic">→</span></button>
+</div></div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow"><span class="d"></span>The end of the <b>Late Bronze Age</b> · eastern Mediterranean, c. 1200–1150 BCE</span>
+    <p class="lead">Around 1200 BCE an interconnected world of palaces and trading cities came apart at once, the Hittite Empire, the Mycenaean palaces, the port of Ugarit, and no new power stepped into the vacuum. It is the paradigm case of civilizational collapse, and the most contested, because it resists the two explanatory shapes the mind reaches for.</p>
+    <h1 class="claim">It has <span class="k">no single villain</span>, and no tidy short list. What fits is a <span class="k">web</span>.</h1>
+    <p class="claim-sub">This is not a thesis with an answer at the top. The governing claim is about the <b>shape</b> of the cause: eight factors, structured by role, none of them independent of the others, and a live dispute about whether such a cascade can be explained at all.</p>
+  </div>
+</header>
+
+<!-- THE OVERVIEW COMPONENT: causal-web factor-network -->
+<section class="web-sec" id="web-sec">
+  <div class="wrap rv">
+    <div class="web-cap"><h3>The causal web</h3><span>hover or tap a factor to trace its couplings</span></div>
+    <div class="web-card">
+      <svg id="web" viewBox="0 0 820 560" role="img" aria-label="A causal network of eight interacting factors"></svg>
+    </div>
+    <div class="web-legend">
+      <b><i style="background:var(--substrate)"></i>substrate, the medium</b>
+      <b><i style="background:var(--shock)"></i>shock, external stressor</b>
+      <b><i style="background:var(--transmit)"></i>transmission</b>
+      <b><i style="background:var(--effect)"></i>downstream effect</b>
+    </div>
+    <p class="web-foot">The factors are not a list of independent suspects. They are nodes on a coupled network; the edges are where the story actually lives.</p>
+  </div>
+</section>
+
+<main>
+  <!-- THE MEDIUM (substrate) -->
+  <section class="section" id="substrate">
+    <div class="wrapn">
+      <div class="section-hd">
+        <span class="tag">The medium</span>
+        <h2 class="sec-title">First, why it is a web and <b>not a list</b>.</h2>
+        <p class="lede">A list of causes implies independent switches, any one of which might be flipped. This was not that. The world had been optimized, over three centuries, into a single tightly-coupled system, and that coupling is the reason a local failure could become a general one. The substrate is the precondition for every factor that follows.</p>
+      </div>
+      <div class="disc">
+        <details class="card" open><summary><span class="role-pill substrate">substrate</span>Interconnection &amp; centralized fragility<span class="plus"></span></summary>
+          <div class="body"><p>Two structures made the world rich and the same two made it brittle. Its bronze economy depended on a copper-and-tin supply chain no single polity controlled (the Uluburun wreck carried materials from seven or eight culture zones on one ship). Its palatial states were centralized redistributive bureaucracies that concentrated production, record-keeping, and legitimacy in a single institution. <em>The achievement and the vulnerability were the same thing.</em></p><p>Renfrew's systems-collapse and Tainter's complexity economics both describe this substrate rather than a discrete shock: a system that concentrates function into single points of failure, over-invested in a costly apparatus with thinning returns, does not degrade gracefully. It falls through a threshold. That is why the collapse was <i>categorical</i>, the palace system as such disappeared, rather than changing hands.</p>
+            <p class="couple"><b>couples to →</b> everything: the substrate is the field every shock lands in.</p>
+            <div class="chips"><button class="chip" data-ev="S-04">S-04</button><button class="chip" data-ev="S-07">S-07</button><button class="chip" data-ev="S-18">S-18</button><button class="chip" data-ev="S-26">S-26</button></div></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE FACTORS (nodes by role) -->
+  <section class="section" id="factors">
+    <div class="wrapn">
+      <div class="section-hd">
+        <span class="tag">The factors</span>
+        <h2 class="sec-title">Eight factors, sorted by the <b>role each plays</b>, not eight equal suspects.</h2>
+        <p class="lede">The old literature laid these out as a flat list and asked which one "did it." The honest move is to sort them by function: which are external shocks, which is the transmission channel, which is emergent, and which is not a cause at all but a downstream effect. Each carries a real case and the objection that denies it sole authorship.</p>
+      </div>
+      <div class="disc">
+        <details class="card" open><summary><span class="role-pill shock">shock</span>Drought<span class="plus"></span></summary>
+          <div class="body"><p>The case: Kaniewski's Syrian and Cypriot pollen cores, Dead Sea levels, the Soreq speleothems and Nile proxies read a "3.2 ka BP" aridification, in the strongest formulation a three-century drought. Grain-crisis letters are real: a Hittite ruler calls grain "a matter of life or death," and Egypt ships grain to a starving Hatti.</p><p>The objection (Knapp &amp; Manning, "Crisis in Context," 2016): the proxy chronology is too coarse to show aridification <i>preceded</i> rather than accompanied the collapses; regional signals were over-generalized into one megadrought; correlation was read as causation. <em>A famine letter proves a place was hungry in a year; it does not prove a three-century drought, still less that the drought was the prime mover.</em></p>
+            <p class="couple"><b>couples to →</b> Internal rupture (shortage erodes legitimacy), the "Sea Peoples" (displacement), Trade (harvest failure strains exchange).</p>
+            <div class="chips"><button class="chip warn" data-ev="S-15">S-15</button></div></div></details>
+        <details class="card"><summary><span class="role-pill shock">shock</span>Earthquakes<span class="plus"></span></summary>
+          <div class="body"><p>Nur &amp; Cline proposed an "earthquake storm", a clustered sequence of major quakes c. 1225–1175, a known fault-stress-transfer phenomenon. Several sites preserve quake signatures. But earthquakes destroy buildings, not civilizations; cities are routinely rebuilt. Seismicity can only figure as a <i>stressor on an already-vulnerable system</i>, a trigger or accelerant, not a root cause, and quake damage is hard to distinguish from destruction by human hands.</p>
+            <p class="couple"><b>couples to →</b> the substrate (a shock the fragile system could no longer absorb).</p>
+            <div class="chips"><button class="chip warn" data-ev="S-16">S-16</button></div></div></details>
+        <details class="card"><summary><span class="role-pill shock">shock</span>Military change<span class="plus"></span></summary>
+          <div class="body"><p>Drews (1993) argued a mono-causal military revolution: the chariot aristocracy undone by massed infantry with javelins, the Naue Type II sword, and round shields. Valuable because it is falsifiable and names a mechanism. But the weapon and tactic chronology does not map cleanly onto the destructions, many sites show no such battle, and it cannot explain the non-military dimensions, the drought letters, the trade disruption, the sites abandoned without conquest. An author who overclaimed sufficiency.</p>
+            <p class="couple"><b>couples to →</b> the "Sea Peoples" (some of whom <i>are</i> the new infantry).</p>
+            <div class="chips"><button class="chip warn" data-ev="S-19">S-19</button></div></div></details>
+        <details class="card"><summary><span class="role-pill transmit">transmission</span>Trade contagion<span class="plus"></span></summary>
+          <div class="body"><p>This is less a cause than the wiring. The bronze economy ran on long-distance exchange, so the network was both a candidate victim and a candidate vector: a break in tin degrades bronze production, which weakens military and agricultural capacity, which reduces a polity's ability to protect its routes, which further disrupts supply. Interdependence functions as a channel of contagion, a shock localized in origin becomes general in effect. This is the edge along which every other factor propagates.</p>
+            <p class="couple"><b>couples to →</b> the substrate, Military (bronze supply), Drought (grain exchange).</p>
+            <div class="chips"><button class="chip" data-ev="S-20">S-20</button></div></div></details>
+        <details class="card"><summary><span class="role-pill shock">emergent</span>Internal rupture<span class="plus"></span></summary>
+          <div class="body"><p>Not an external shock but an emergent one: elites presiding over a steeply unequal redistributive order lost the acquiescence of the governed. Prolonged shortage, visible elite consumption amid scarcity, the burden of corvée and taxation, and a center that failed to deliver security and subsistence could erode legitimacy to the point of revolt or abandonment. Some palaces were destroyed while surrounding settlements continued, consistent with rebellion or withdrawal "from below." The palaces did not merely fall to enemies; in places, they were <i>let</i> fall by their own people.</p>
+            <p class="couple"><b>couples to →</b> Drought (shortage is the trigger), the substrate (inequality is a property of the palatial order).</p>
+            <div class="chips"><button class="chip" data-ev="S-21">S-21</button></div></div></details>
+        <details class="card"><summary><span class="role-pill effect">effect</span>The "Sea Peoples", not a cause<span class="plus"></span></summary>
+          <div class="body"><p>The most famous "cause," and most likely an effect. First, the "Sea Peoples" are a modern collective label on a heterogeneous list of names appearing in varying combinations across texts, treating them as a single actor is already an interpretive imposition. Second, some (the Sherden, the Lukka) appear earlier as mercenaries and raiders <i>within</i> the system. Third, and decisively: if drought, harvest failure, and trade breakdown were displacing populations, then the movements are better read as a <em>symptom</em> of a crisis already underway. To name them the cause is to <i>mistake the smoke for the fire</i>. The movements were real, the Peleset became the Philistines, but "there were migrations during the collapse" is a very different claim from "migrations caused the collapse."</p>
+            <p class="couple"><b>couples from ←</b> Drought (displacement) and Military (some were the new infantry). This node points the wrong way in the old story.</p>
+            <div class="chips"><button class="chip warn" data-ev="S-17">S-17</button></div></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE COUPLINGS (the edges made explicit) -->
+  <section class="section" id="couplings">
+    <div class="wrapn">
+      <div class="section-hd">
+        <span class="tag">The couplings</span>
+        <h2 class="sec-title">The story lives in the <b>edges</b>, not the nodes.</h2>
+        <p class="lede">A matrix of independent suspects hides the one thing that matters most: the factors are <em>not independent</em>. Forcing them into tidy separate rows is a category error. Here are the couplings the network encodes, the specific non-independencies that turn a list into a web.</p>
+      </div>
+      <div class="edges">
+        <div class="edge-item"><div class="edge-flow">Drought <span class="ar">→</span> "Sea Peoples"</div><p>The displacement that produced the raiders was itself downstream of harvest failure. The most famous "cause" is causally <i>after</i> a supposed rival cause, which is why neither can be scored as an independent switch.</p></div>
+        <div class="edge-item"><div class="edge-flow">Trade <span class="ar">↔</span> Substrate</div><p>The contagion channel and the fragile system are the same fact seen twice: tight coupling is efficient in calm and, in crisis, exactly the wiring that carries a local break outward with no firebreak.</p></div>
+        <div class="edge-item"><div class="edge-flow">Drought <span class="ar">→</span> Internal rupture</div><p>Shortage is not a separate cause from revolt; it is the shortage that made the redistributive bargain unaffordable and the elite's legitimacy forfeit.</p></div>
+        <div class="edge-item"><div class="edge-flow">Any shock <span class="ar">→</span> Cascade</div><p>Earthquake, harvest failure, or raid: each is survivable in a resilient system. It is the substrate that converts <i>whichever</i> shock arrives into a threshold crossing. The trigger is not privileged over the fragility that made the cascade possible.</p></div>
+      </div>
+      <p class="lede" style="margin-top:28px;text-align:center">The upshot reframes the outcome as well: collapse was not uniform. Ugarit was destroyed and abandoned; Cyprus reoriented and prospered; the coastal cities that became <b>Phoenicia</b> emerged as the Iron Age's dominant traders. That heterogeneity is itself evidence, a decisive single cause cannot explain why similarly-exposed places met opposite fates, which pushes the answer toward <b>local resilience</b> and away from any one external shock.</p>
+      <div class="chips"><button class="chip" data-ev="S-25">S-25</button><button class="chip" data-ev="S-28">S-28</button></div>
+    </div>
+  </section>
+
+  <!-- EMBEDDED DEBATE-MAP -->
+  <section class="section" id="debate">
+    <div class="wrapn">
+      <div class="section-hd">
+        <span class="tag">The embedded debate</span>
+        <h2 class="sec-title">Can a cascade like this <b>be explained at all</b>?</h2>
+        <p class="lede">Underneath every specific dispute is a general one, and it is genuinely unresolved. Three positions contend over what would even <em>count</em> as an adequate explanation of a systemic collapse. Each is steel-manned below; the disagreement between them is located precisely.</p>
+      </div>
+      <div class="debate">
+        <div class="pos"><div class="who">Parsimony</div><h4>Name the fewest causes</h4><p class="steel">A good explanation identifies the smallest set of causes sufficient to produce the effect, ideally one. This is the impulse behind Drews's military thesis and the older Sea Peoples narrative: name the mechanism, and name as few as possible. Its great virtue is falsifiability.</p><p class="strain"><b>Strains against:</b> no single named cause survives contact with the full evidence.</p></div>
+        <div class="pos"><div class="who">Multi-causal realism</div><h4>Honour the whole field</h4><p class="steel">Complex historical outcomes usually have complex causes, and intellectual honesty requires acknowledging the whole interacting field even at the cost of tidiness. Fidelity to the evidence is its strength; it refuses to amputate a real factor for neatness.</p><p class="strain"><b>Strains against:</b> the risk, pressed by Knapp &amp; Manning, of decaying into an unfalsifiable "perfect storm" that absorbs any new factor and so explains nothing.</p></div>
+        <div class="pos"><div class="who">Complexity science</div><h4>A threshold, not a trigger</h4><p class="steel">Model the collapse as a system near criticality: multiple stressors accumulate until it crosses a tipping point and reorganizes abruptly, with hysteresis, it does not revert when the stress is removed. The search for "the cause" is misconceived because the behaviour is emergent.</p><p class="strain"><b>Strains against:</b> it can be redescription rather than explanation, "it crossed a tipping point" restates that it collapsed, and its apparatus is hard to apply to fragmentary data.</p></div>
+      </div>
+      <div class="contention">
+        <div class="lbl">Where the contention actually sits</div>
+        <p>The dispute is not over the facts; all three grant the same evidence. It is over <b>what explanation is</b>: whether the last stressor that triggers a cascade is privileged over the accumulated fragility that made the cascade possible.</p>
+        <p>What would resolve it is not more excavation. It is a prior decision about whether a synchronized systemic collapse admits causal explanation at all, or only description, a methodological question the evidence alone cannot settle. The case is repeatedly borrowed as an analogue for modern systemic risk, which is double-edged: it lends relevance while risking the projection of present anxieties onto evidence that cannot bear them.</p>
+      </div>
+      <div class="chips" style="margin-top:22px"><button class="chip warn" data-ev="S-24">S-24</button><button class="chip" data-ev="S-29">S-29</button><button class="chip warn" data-ev="S-30">S-30</button></div>
+    </div>
+  </section>
+
+  <!-- THE UNKNOWN -->
+  <section class="section" id="unknown">
+    <div class="wrapn">
+      <div class="section-hd">
+        <span class="tag">The unknown</span>
+        <h2 class="sec-title">What stays genuinely <b>out of reach</b>.</h2>
+        <p class="lede">A responsible account marks the boundaries of the knowable, and here they are wide. Conflating the well-established with the merely plausible has been the recurring failing of the popular literature.</p>
+      </div>
+      <div class="disc">
+        <details class="card" open><summary>Four questions the evidence cannot close<span class="plus"></span></summary>
+          <div class="body"><p><em>The chronology.</em> Whether the collapses were tightly synchronized or spread across two or three generations, which bears directly on whether a common cause is even required, cannot be answered at current dating resolution.</p><p><em>The demographic scale.</em> How much of the population died, versus migrating, dispersing to smaller settlements, or simply falling out of the archaeological record, is poorly constrained. Collapse in the material record is not the same as mortality.</p><p><em>The status of drought.</em> Prime mover, contributing stressor, mere accompaniment, or partly a dating artifact, unresolved, and the single most active battlefront, because the environmental evidence improves fastest while staying chronologically blunt.</p><p><em>The "Sea Peoples."</em> Invaders, migrants, refugees, internal rebels, mercenaries, or a construct of Egyptian propaganda, in what proportions, substantially, perhaps irreducibly, uncertain.</p>
+            <div class="chips"><button class="chip warn" data-ev="S-31">S-31</button></div></div></details>
+      </div>
+
+      <div class="ledger rv">
+        <div class="ledger-hd"><span class="d"></span>Verification ledger · how this study treated the source's scholarship</div>
+        <div class="ledger-grid">
+          <div class="lg-cell"><div class="lg-val">32</div><div class="lg-lab">signals represented</div></div>
+          <div class="lg-cell"><div class="lg-val zero">0</div><div class="lg-lab">web fetches performed</div></div>
+          <div class="lg-cell"><div class="lg-val">9</div><div class="lg-lab">flagged contested / open</div></div>
+          <div class="lg-cell"><div class="lg-val zero">0</div><div class="lg-lab">necessity-gate passes</div></div>
+        </div>
+        <p class="ledger-note"><b>Verification is earned by the claim, not owed to the source.</b> This is a synthesis that stages a scholarly debate; its citations (the Amarna letters, the Uluburun wreck, Renfrew, Tainter, Drews, Cline, Kaniewski, Knapp &amp; Manning) are the debate's apparatus, not loose ends to chase. Representing each position faithfully is the task; re-checking a Bronze Age chronology against the live web would be theater. The contested claims are flagged exactly as the source flags them, and left as they stand.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrapn">
+  <p><b>Illuminate · derived structure: causal-web + embedded debate-map.</b> Source: <span class="mono">The Late Bronze Age Collapse</span>, a multi-causal phenomenon with an unresolved methodological controversy. The shape was <em>derived</em>, not imposed: no single-answer thesis, an eight-node network sorted by causal role with the couplings made explicit, and a steel-manned debate over whether the cascade can be explained at all. Every claim traces to the signal block; the source's scholarly citations are represented, never re-fetched.</p>
+</div></footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" aria-hidden="true">
+  <div class="sheet-head"><div class="sheet-title"><h3>The signal block</h3><span class="count" id="sheet-count">32 kept · 0 fetched</span><button class="sheet-close" id="sheet-close" aria-label="Close">✕</button></div>
+    <div class="filters" id="filters"></div></div>
+  <div class="sheet-list" id="sheet-list"></div>
+</aside>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+(function(){const r=document.documentElement,b=document.getElementById('theme');
+  const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>';
+  const MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>';
+  const cur=()=>r.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  function set(t){r.dataset.theme=t;b.innerHTML=t==='dark'?SUN:MOON;try{localStorage.setItem('il-baw-theme',t)}catch(e){}}
+  let s=null;try{s=localStorage.getItem('il-baw-theme')}catch(e){}set(s||cur());
+  b.onclick=()=>set(cur()==='dark'?'light':'dark');})();
+
+/* ── the causal-web factor-network (the derived overview component) ── */
+const NS='http://www.w3.org/2000/svg',web=document.getElementById('web');
+const NODES=[
+ {id:'sub',x:410,y:300,r:58,kind:'substrate',lab:'Tight coupling',role:'the medium',ev:'S-26'},
+ {id:'complex',x:560,y:190,r:30,kind:'substrate',lab:'Complexity cost',role:'substrate',ev:'S-18'},
+ {id:'drought',x:150,y:130,r:40,kind:'shock',lab:'Drought',role:'shock',ev:'S-15'},
+ {id:'quake',x:410,y:96,r:32,kind:'shock',lab:'Earthquakes',role:'shock',ev:'S-16'},
+ {id:'military',x:690,y:300,r:34,kind:'shock',lab:'Military',role:'shock',ev:'S-19'},
+ {id:'trade',x:255,y:305,r:38,kind:'transmit',lab:'Trade contagion',role:'transmission',ev:'S-20'},
+ {id:'internal',x:190,y:475,r:36,kind:'shock',lab:'Internal rupture',role:'emergent',ev:'S-21'},
+ {id:'sea',x:600,y:472,r:42,kind:'effect',lab:'"Sea Peoples"',role:'effect · not cause',ev:'S-17'},
+];
+const EDGES=[
+ {a:'drought',b:'sea',key:1,lab:'displacement'},
+ {a:'drought',b:'internal',lab:'shortage'},
+ {a:'drought',b:'trade',lab:'harvest failure'},
+ {a:'trade',b:'sub',key:1,lab:'the channel'},
+ {a:'trade',b:'military',lab:'bronze supply'},
+ {a:'quake',b:'sub',lab:'a shock it can\'t absorb'},
+ {a:'military',b:'sea',lab:'some were the infantry'},
+ {a:'complex',b:'sub',lab:'over-optimized'},
+ {a:'internal',b:'sub'},
+];
+const NMAP=Object.fromEntries(NODES.map(n=>[n.id,n]));
+const col={substrate:'var(--substrate)',shock:'var(--shock)',transmit:'var(--transmit)',effect:'var(--effect)'};
+const soft={substrate:'var(--substrate-soft)',shock:'var(--shock-soft)',transmit:'var(--transmit-soft)',effect:'var(--effect-soft)'};
+function mk(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+// edges first (under nodes)
+const edgeEls=[];
+EDGES.forEach((ed,i)=>{const A=NMAP[ed.a],B=NMAP[ed.b];
+  const mx=(A.x+B.x)/2,my=(A.y+B.y)/2, dx=B.x-A.x,dy=B.y-A.y, curve=0.12;
+  const cx=mx-dy*curve, cy=my+dx*curve;
+  const p=mk('path',{class:'edge'+(ed.key?' key':''),d:`M${A.x} ${A.y} Q ${cx} ${cy} ${B.x} ${B.y}`});
+  p.dataset.a=ed.a;p.dataset.b=ed.b;web.appendChild(p);edgeEls.push(p);
+  if(ed.lab){const l=mk('text',{class:'edge-lab','text-anchor':'middle',x:cx,y:cy-3});l.textContent=ed.lab;l.dataset.a=ed.a;l.dataset.b=ed.b;web.appendChild(l);}
+});
+// nodes
+NODES.forEach(n=>{const g=mk('g',{class:'node',tabindex:'0',role:'button','aria-label':n.lab+', '+n.role});g.dataset.id=n.id;g.dataset.ev=n.ev;
+  g.appendChild(mk('circle',{cx:n.x,cy:n.y,r:n.r,fill:soft[n.kind],stroke:col[n.kind],'stroke-width':n.kind==='substrate'&&n.id==='sub'?2:1.5}));
+  const t1=mk('text',{class:'nlab','text-anchor':'middle',x:n.x,y:n.y-1});t1.textContent=n.lab;
+  const t2=mk('text',{class:'nrole','text-anchor':'middle',x:n.x,y:n.y+13});t2.textContent=n.role;
+  g.appendChild(t1);g.appendChild(t2);web.appendChild(g);
+  const hi=()=>{web.classList.add('dimmed');g.classList.add('on');
+    edgeEls.forEach((p,i)=>{const on=p.dataset.a===n.id||p.dataset.b===n.id;p.classList.toggle('on',on);
+      const other=p.dataset.a===n.id?p.dataset.b:(p.dataset.b===n.id?p.dataset.a:null);
+      if(other)web.querySelector(`.node[data-id="${other}"]`).classList.add('on');});
+    web.querySelectorAll('.edge-lab').forEach(l=>l.classList.toggle('on',l.dataset.a===n.id||l.dataset.b===n.id));};
+  const lo=()=>{web.classList.remove('dimmed');web.querySelectorAll('.on').forEach(e=>e.classList.remove('on'));};
+  g.addEventListener('mouseenter',hi);g.addEventListener('mouseleave',lo);
+  g.addEventListener('focus',hi);g.addEventListener('blur',lo);
+  g.addEventListener('click',()=>openSheet(n.ev));
+});
+
+/* signals */
+const SIGNALS=[
+ ["S-01","c.1200–1150 BCE the interconnected eastern-Mediterranean palatial world came apart: Hittite Empire dissolved, Mycenaean palaces destroyed (Aegean literacy lost ~4c), Ugarit sacked/never rebuilt, Egypt survived diminished.","source"],
+ ["S-02","The problem is the TOGETHERNESS: so many polities failed in so short a window, over so wide a geography, with no successor hegemon — the collapse ended the whole CATEGORY of palatial state.","insight"],
+ ["S-03","The paradigm case in the archaeology of civilizational failure (Renfrew → Tainter → Cline) and the most contested, because synchronized category-ending collapse makes mono-causal feel inadequate and multi-causal feel unfalsifiable.","source"],
+ ["S-04","Interconnection was not merely backdrop but very likely a MECHANISM of collapse — the argument's spine.","principle"],
+ ["S-05","The pre-collapse world was a 'globalized' system: great kings as 'brothers', shared Akkadian diplomacy (Amarna letters), intercontinental trade.","source"],
+ ["S-06","Uluburun shipwreck (c.1300 BCE): ~10 tons Cypriot copper (354 ingots), ~1 ton tin, goods from 7–8 culture zones. Bronze needed copper+tin; tin travelled enormous distances; the toolkit depended on a supply chain no single polity controlled.","source"],
+ ["S-07","Palatial economies were centralized redistributive bureaucracies (Linear B tracks rations, bronze to named smiths). Efficient but BRITTLE: one institution holds function/info/legitimacy. 'The achievement and the vulnerability were the same thing.'","principle"],
+ ["S-08","The archaeological signal is destruction layers over ~50 years; individual dating rarely precise; radiocarbon leaves decade windows. 'Real uncertainty at its joints.'","source·contested"],
+ ["S-09","Hattusa: largely abandoned in an organized way BEFORE its final burning (~1200 BCE); administration withered. Carchemish persisted as a successor.","source"],
+ ["S-10","Ugarit destroyed ~1190–1185, never rebuilt; RS 20.238 to Cyprus: 'enemy ships have been coming and burning my towns', forces away in Hatti/Lycia. Last tablets found unbaked near a kiln. Whether the letters name the destroyers or general insecurity is uncertain.","source·contested"],
+ ["S-11","Pylos fell ~1180 (archive baked/preserved by fire); some read the final tablets as emergency measures but the readings are debated. Aegean → palace collapse + decline → 'Greek Dark Age'.","source·contested"],
+ ["S-12","Egypt repelled the crisis initially: Merneptah yr5 (~1207) vs Libyans + seafaring allies (first 'Sea Peoples'); Ramesses III yr8 (~1177) at Medinet Habu, listing Hatti/Carchemish/Alashiya as already fallen. Egypt survived but lost its Asiatic empire → New Kingdom fragmented.","source"],
+ ["S-13","Two cautions: (1) coarse chronology — 'synchronization' may partly be an artifact of poor resolution; (2) Egyptian records are ideological monuments, so the 'Sea Peoples' as a unified horde may owe as much to narrative convention as to reality.","principle·contested"],
+ ["S-14","The mature literature recognizes a FIELD of candidate factors, none obviously sufficient, several not independent, whose interactions may matter more than any factor alone. Resist promoting one to sole authorship.","principle"],
+ ["S-15","Drought: Kaniewski proxies argue a '300-year drought' (3.2 ka BP). But Knapp & Manning (2016): proxy chronology too coarse to show it PRECEDED collapse; over-generalized into a megadrought; correlation→causation = determinism. A famine letter proves a place was hungry, not a 3-century drought.","source·contested"],
+ ["S-16","Earthquakes: Nur & Cline 'earthquake storm' (~1225–1175). Accounts for physical destruction + clustering. But quakes destroy buildings, not civilizations; a trigger/accelerant on an already-vulnerable system, not a root cause.","source·contested"],
+ ["S-17","Sea Peoples: modern scholarship dismantled the invasion model. A modern collective label; some were earlier mercenaries WITHIN the system; if drought/trade-breakdown displaced people, the movements may be a SYMPTOM not a cause. 'Naming the smoke as the fire.'","insight·contested"],
+ ["S-18","Systems collapse (Renfrew) + complexity (Tainter): the center is a single point of failure that cascades through subsystems; complexity has rising costs & falling returns. Explains why the collapse was CATEGORICAL. But hard to test; 'too complex, so it failed' describes the outcome as a cause.","source·contested"],
+ ["S-19","Military (Drews, 1993): a mono-causal military revolution — chariot aristocracy undone by massed infantry & the Naue II sword. Falsifiable & specific. But weapon chronology doesn't map; many sites show no such battle; can't explain the non-military collapse. Overclaimed sufficiency.","source·contested"],
+ ["S-20","Trade contagion: a break in tin degrades bronze → weakens military/agriculture → reduces ability to protect routes → further disruption. Interdependence is a channel of CONTAGION. Not a distinct cause but the transmission mechanism.","synthesis"],
+ ["S-21","Internal rupture: elites over an unequal order lost popular acquiescence (shortage, elite consumption, corvée/tax, failure to deliver security). Palaces destroyed while surrounding settlements continued → possibly rebellion 'from below'.","source"],
+ ["S-22","Secondary/speculative factors (epidemic disease; famine-disease loops) are weakly attested. A serious account must distinguish well-attested from plausible-but-unproven from speculative.","gap"],
+ ["S-23","Historiographic arc: (1) catastrophist/mono-causal (Sea Peoples villain); (2) from late 1970s, systemic/multi-causal (Renfrew, Tainter); (3) from ~2010, synthesis (Cline 'perfect storm') vs critique (Knapp & Manning; Middleton: 'collapse' distorts what is better called transformation).","synthesis"],
+ ["S-24","The live methodological problem: the tension between honestly acknowledging many interacting causes and the emptiness of a causal list that cannot be ordered or weighted. No agreed resolution.","principle·contested"],
+ ["S-25","The collapse was NOT uniform — a spectrum: Ugarit (destroyed) → Mycenae/Tiryns (reduced) → Hattusa (decay) → Assyria (endured) → Egypt (slow decline) → Cyprus/Carchemish/Philistines/Phoenicians (adapted/prospered). Heterogeneity pushes explanation toward LOCAL resilience and reframes the outcome as reconfiguration.","insight"],
+ ["S-26","Counter-intuitive: interconnection was the VULNERABILITY, not merely the achievement. Tight coupling transmits shocks fast with few firebreaks. 'The strength was the weakness.' Most often carried into analyses of modern globalized systems.","insight"],
+ ["S-27","Counter-intuitive: absence of a single cause is a FINDING, not a failure. A synchronized systemic collapse genuinely results from interacting stressors none individually sufficient; demanding a single culprit is a category error.","insight"],
+ ["S-28","Counter-intuitive: collapse was also CREATION. The tin-trade collapse incentivized iron; the fall of Linear B/cuneiform → spread of the alphabet. 'The Dark Age was a forge.' Recovery was slow, uneven, non-restorative.","insight"],
+ ["S-29","Epistemology: three positions — parsimony (smallest sufficient cause; none survives), multi-causal realism (honest but risks an unfalsifiable list), complexity-science threshold/criticality (tipping point + hysteresis; but risks redescription).","principle"],
+ ["S-30","The case is invoked as an analogue for modern systemic risk (supply chains, tightly-coupled financial/ecological systems, climate × instability). The analogy is double-edged: risks projecting present anxieties onto evidence that cannot bear them.","principle·contested"],
+ ["S-31","Genuinely unknown: precise chronology/sequence; demographic scale (death vs migration); causal status of drought (the most active battlefront); identity of the 'Sea Peoples' (maybe irreducibly uncertain); and whether a systemic cascade admits causal explanation at all, or only description.","gap"],
+ ["S-32","Referenced apparatus (represented, not chased): Amarna archive; Uluburun (c.1300); Ugarit correspondence incl. RS 20.238; Merneptah (yr5, c.1207); Ramesses III Medinet Habu (yr8, c.1177); Renfrew (1979); Drews (1993); Nur & Cline (2000); Tainter (1988); Kaniewski et al. (2013; 2019); Knapp & Manning (2016); Cline (2014); Middleton.","source"],
+];
+const SIGMAP=Object.fromEntries(SIGNALS.map(s=>[s[0],s]));
+const list=document.getElementById('sheet-list');
+list.innerHTML=SIGNALS.map(([id,claim,tag])=>{const warn=/contested|gap/.test(tag)?' warn':'';
+  return `<div class="ev" id="ev-${id}" data-tag="${tag.split('·')[0]}"><div class="ev-top"><span class="ev-id">${id}</span><span class="ev-tag${warn}">${tag}</span></div><div class="ev-claim">${claim}</div></div>`;}).join('');
+const tagset=[...new Set(SIGNALS.map(s=>s[2].split('·')[0]))];
+const filters=document.getElementById('filters');
+filters.innerHTML=`<button class="filt on" data-t="all">All · 32</button>`+tagset.map(t=>`<button class="filt" data-t="${t}">${t} · ${SIGNALS.filter(s=>s[2].split('·')[0]===t).length}</button>`).join('')+`<button class="filt" data-t="__c">contested/open · ${SIGNALS.filter(s=>/contested|gap/.test(s[2])).length}</button>`;
+filters.onclick=e=>{const b=e.target.closest('.filt');if(!b)return;filters.querySelectorAll('.filt').forEach(f=>f.classList.toggle('on',f===b));
+  document.querySelectorAll('.ev').forEach(ev=>{const s=SIGMAP[ev.id.slice(3)];let show=true;if(b.dataset.t==='__c')show=/contested|gap/.test(s[2]);else if(b.dataset.t!=='all')show=ev.dataset.tag===b.dataset.t;ev.classList.toggle('hide',!show);});};
+const scrim=document.getElementById('scrim'),sheet=document.getElementById('sheet');
+function openSheet(id){sheet.classList.add('on');scrim.classList.add('on');sheet.setAttribute('aria-hidden','false');
+  if(id){const el=document.getElementById('ev-'+id);if(el){el.classList.remove('hide');el.scrollIntoView({block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1500);}}}
+function closeSheet(){sheet.classList.remove('on');scrim.classList.remove('on');sheet.setAttribute('aria-hidden','true');}
+document.getElementById('ev-open').onclick=()=>openSheet();
+document.getElementById('sheet-close').onclick=closeSheet;scrim.onclick=closeSheet;
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();});
+const tip=document.getElementById('tip');let tHide;
+function showTip(el){const s=SIGMAP[el.dataset.ev];if(!s)return;clearTimeout(tHide);tip.innerHTML=`<span class="tid">${el.dataset.ev} · ${s[2]}</span>${s[1]}`;
+  const r=el.getBoundingClientRect();tip.style.left=Math.min(Math.max(8,r.left),innerWidth-350)+'px';tip.style.top=(r.bottom+9)+'px';tip.classList.add('on');}
+function hideTip(){tHide=setTimeout(()=>tip.classList.remove('on'),80);}
+document.querySelectorAll('.chip[data-ev]').forEach(c=>{c.onclick=()=>openSheet(c.dataset.ev);c.addEventListener('mouseenter',()=>showTip(c));c.addEventListener('mouseleave',hideTip);c.addEventListener('focus',()=>showTip(c));c.addEventListener('blur',hideTip);});
+function ensure(){const vh=innerHeight||800;document.querySelectorAll('.rv:not(.in)').forEach(el=>{if(el.getBoundingClientRect().top<vh*.92)el.classList.add('in');});}
+document.querySelectorAll('.rv').forEach(el=>{const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.08});o.observe(el);});
+addEventListener('scroll',ensure,{passive:true});addEventListener('load',ensure);ensure();
+const links=[...document.querySelectorAll('#nav-links a')];
+const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}),{rootMargin:'-45% 0 -50% 0'});
+document.querySelectorAll('section[id],#top').forEach(s=>spy.observe(s));
+</script>
+</body>
+</html>

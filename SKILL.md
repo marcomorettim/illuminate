@@ -1,6 +1,6 @@
 ---
 name: illuminate
-description: Dense source in. Self-contained interactive HTML out. Three-stage arc — INPUT (multi-source ingestion, per-source salience gate against the source's own thesis, faithful provenance), PROCESS (Barbara Minto Pyramid + MECE issue-tree, 3-skeptic adversarial audit), OUTPUT (polished editorial site — shadcn/ui, Swiss typography, interactive ASCII, evidence drawer; parallax opt-in). Editorial restraint — every effect must earn its place by aiding understanding.
+description: Dense source in. Self-contained interactive HTML out. Form follows source — the macro-structure is DERIVED from the source's epistemic shape (debate-map for a controversy, causal web for a multi-causal phenomenon, timeline for a process, tree/matrix/architecture, or the Minto pyramid as the single-thesis default), not imposed as a template. Three-stage arc — INPUT (salience gate against the source's own thesis, faithful provenance, verification earned not manufactured), PROCESS (structure selection → derived structure → 3-skeptic audit), OUTPUT (polished site whose components are selected per argument — evidence explorer + argument-enacting components; nothing mandated). Fidelity is symmetric: no fabrication, no reductive compression.
 trigger: /illuminate
 ---
 
@@ -21,8 +21,8 @@ gate conditions. The stages are not phases to rush through — they are the meth
 │  Multi-source ingestion · signal stratification · provenance audit  │
 ├─────────────────────────────────────────────────────────────────────┤
 │  STAGE II — PROCESS                                                  │
-│  Concept mapping · Barbara Minto Pyramid · MECE issue tree          │
-│  3-skeptic adversarial audit                                        │
+│  Structure selection (shape catalog) · concept mapping              │
+│  derived structure (pyramid = default) · 3-skeptic audit            │
 ├─────────────────────────────────────────────────────────────────────┤
 │  STAGE III — OUTPUT                                                  │
 │  Visual architecture · editorial frontend (shadcn/ui)               │
@@ -114,6 +114,10 @@ Every gate emits a structured signal:
 ```
 [ILLUMINATE] Opening. Source: <type> | Context: <clean/warn/contaminated> | Stage: input
 [ILLUMINATE:SIGNAL] ... [/ILLUMINATE:SIGNAL]      ← Phase 1 anchor (written to disk)
+[ILLUMINATE:STRUCTURE] shape: <type> | arity: <N>  ← Phase 2.0 anchor (written to disk)
+[ILLUMINATE:FORMAT] model: multi-page|single-scroll | pages: <N>  ← Phase 2.0 (written to disk)
+[ILLUMINATE:DEPTH] per-concept parts/variants/mechanisms/code → developed  ← Phase 2.0 (Part G1)
+[ILLUMINATE:ARTDIR] register | ink/paper/accent (oklch) | type | scale/radius/shadow/grid  ← Phase 5 (Part H1)
 [ILLUMINATE:HUBS] ... [/ILLUMINATE:HUBS]          ← Phase 2 anchor (written to disk)
 [ILLUMINATE:PYRAMID] ... [/ILLUMINATE:PYRAMID]    ← Phase 3 anchor (written to disk)
 [ILLUMINATE:GATE] Phase <N> PASS | Anchor: <path> | Next: <phase>
@@ -224,6 +228,12 @@ Bare environment (no tools):
   candidates for Stage III (see the Component Library). A how-to / product / process source where the
   subject IS a visual artifact is the strongest case for component-heavy output. Record the list in
   the Phase 1 signal-block header as "Artifact candidates: <list>".
+- **Technical artifacts (Part G3): does the source contain or imply code, queries, schemas, configs,
+  or formulas** — AMPscript/personalization, a SQL segmentation/dormancy query, a data-extension or
+  table schema, suppression/eligibility logic, a journey/pipeline config, an API payload, a regex?
+  List each. These are `CODE-CONFIG` candidates and are **first-class content, not decoration**: a
+  technical source rendered as prose paraphrase with its code omitted has under-developed (G3). Record
+  as "Code artifacts: <list>" in the signal-block header.
 
 ```
 [ILLUMINATE] Opening.
@@ -420,12 +430,97 @@ Contested: <N> | Refuted: <N> | References traced: <N>
 
 # STAGE II — PROCESS
 
-*Goal: a Minto Pyramid whose Governing Thought is inarguable, whose Key Lines are MECE,
-and whose supporting detail is fully traced, adversarially verified, and logically sufficient.*
+*Goal: a **structure derived from the source's own epistemic shape** — whose governing object is
+inarguable, whose top-level branches match the source's real branching factor, and whose supporting
+detail is fully traced, adversarially verified, and logically sufficient.*
 
-The Process stage applies the Barbara Minto Pyramid Principle with rigorous quality tests —
-not as a template to fill in, but as a discipline that reveals whether the source actually
-contains a coherent argument. Many sources do not. That finding is itself a legitimate output.
+**Form follows source. illuminate is a method that derives structure from content, not a template
+that ingests it.** The Minto Pyramid is *one* rhetorical shape — built for single-thesis
+recommendations. It is the wrong object for a controversy, a multi-causal phenomenon, a historical
+process, a taxonomy, or a system. So Stage II does not begin by building a pyramid; it begins by
+diagnosing what kind of thing the source is, and selects the macro-structure that fits. The pyramid
+is the **default for single-thesis sources**, not the universal output.
+
+---
+
+## Phase 2.0 — Structure Selection (mandatory; runs first, before concept mapping)
+
+Diagnose the source's epistemic shape and select the matching macro-structure. This decision governs
+everything downstream: the governing object, the hero/opening, the quality tests, and which components
+are even eligible. Sources may be **hybrids** — a primary structure with embedded secondary ones
+(e.g. a controversy whose positions each contain a causal web).
+
+**Shape catalog** (the load-bearing design decision):
+
+| Source shape | Detection signals | Macro-structure | Governing object · opening · core quality test |
+|---|---|---|---|
+| **Single-thesis argument / recommendation** | converges on one governing claim; pillars support it | **Minto pyramid** (default) | GT (the single answer) · SCQA · MECE + necessity/sufficiency |
+| **Controversy / competing frameworks** | multiple named positions; unresolved; "X argues… Y counters…" | **Dialectic / debate-map** | the precise question + why it is unresolved · question-and-stakes (NOT an answer) · both positions steel-manned; the point of contention located exactly; "what would resolve it" stated |
+| **Multi-causal phenomenon** | many interacting, non-independent factors; no single sufficient cause | **Causal web / factor-network** | the phenomenon + the thesis about its causal *structure* · the phenomenon + the multiplicity claim · interactions & non-independencies explicit; no factor forced into false MECE independence |
+| **Process / evolution / narrative** | temporal sequence; stages; contingency; turning points | **Timeline / staged narrative** (branching where contingent) | the arc + its pivots · the before→after transformation · turning points identified; contingency not flattened into inevitability |
+| **Taxonomy / decomposition** | nested categorization; "types of / parts of" | **Tree / hierarchy** | the domain + its organizing principle · the whole + its principle of division · division exhaustive & non-overlapping at each level |
+| **System / mechanism** | components + relationships producing a behavior | **Architecture / flow** | the system + the behavior it produces · the system's purpose/behavior · components, interfaces, data/control flow complete & correct |
+| **Comparison / options** | discrete alternatives across criteria | **Matrix / scorecard** | the decision + its criteria · the options and what separates them · criteria complete; no option-criterion cell fabricated |
+
+**Arity rule.** The number of top-level branches (KLs, positions, factors, stages…) equals the
+source's **real branching factor** — it is NOT defaulted to 3–4, and branches are never removed to
+hit a number. When the honest branch count is high, navigability is solved by **grouping / progressive
+disclosure** (cluster branches into a navigable overview that expands), **never by deletion**. (This
+reconciles the ≤2-tap invariant with full content: grouping keeps the spine shallow without amputating
+branches — ties to D2.)
+
+Emit before proceeding, and write to `/tmp/illuminate-structure.md`:
+```
+[ILLUMINATE:STRUCTURE] shape: <type> | arity: <N> | hybrid: <primary + embedded, or none>
+Governing object: <the one thing the whole structure is about>
+Opening/hero: <what the hero enacts for THIS shape>
+Rejected: <the shapes considered and why they don't fit — especially: is this really single-thesis, or was a pyramid the reflex?>
+```
+
+**Format decision (Part F — decouples *single file* from *single page*).** The single-file law
+(portable, offline, zero external requests) is fixed and unchanged. It never meant *single page*.
+A self-contained file can be internally **multi-page** — a client-side-routed app where each
+top-level element of the derived structure is its own page/view, one visible at a time, so each
+concept is developed on its own page rather than crammed into a competing scroll-section. The page
+model is chosen here, from the structure just derived, and carried into Stage III:
+
+- **multi-page (default)** — top-level elements are parallel concepts each meriting depth (plans,
+  systems, taxonomies, comparisons, most deliverables). **Page count = the derived arity** (E1);
+  grouping (E1/D2) still prevents fragmentation when arity is high. Removes single-scroll compression
+  pressure; kills parallax by construction; buys editorial whitespace a crammed page can't.
+- **single-scroll (reserved exception)** — only when the derived shape is a single *linear* argument
+  whose value is the cumulative straight-through read (a tight single-thesis pyramid, a narrative).
+  Never parallax.
+
+Emit alongside the structure decision (write to `/tmp/illuminate-structure.md`):
+```
+[ILLUMINATE:FORMAT] model: multi-page | single-scroll | pages: <N = arity, or 1> | reason: <why THIS source>
+```
+
+**Depth pass (Part G1 — develop, don't skeletonize). Run after Structure and Format are set.**
+Multi-page did not cause thin output — it *exposed* it. A page that is a title over one four-row
+table, or one asset per channel with whitespace below, is **skeletonized**: one component + a caption
+per concept, never developed. D2 forbids *dropping* depth; G1 requires *generating* it —
+**preservation ≠ development.** For **each** top-level concept, before building, enumerate and commit
+to rendering its internal structure:
+```
+[ILLUMINATE:DEPTH] per concept — parts · variants · mechanisms · edge-cases · technical-artifacts · evidence
+<concept-1>: parts=<…> variants=<…> mechanisms=<…> edge-cases=<…> code=<CODE-CONFIG?> → developed:Y
+...
+```
+The named failure mode is **"title + one component + whitespace."** A page is earned by developed
+content, not by being a container; a composed editorial page is *full*. If a concept genuinely has no
+internal structure to develop, it is not a top-level page — fold it in (this ties back to E1 arity /
+grouping). Depth is built by **nesting** (G2) and by rendering the source's **technical artifacts**
+(G3), within the ≤2-tap interaction limit (B9 caps how deep you *tap*, never how much depth *exists*).
+
+If the diagnosis is **single-thesis → Minto pyramid**, Phases 2–4 proceed exactly as written below
+(concept map → SCQA pyramid → MECE audit). For any other shape, read "the pyramid / GT / SCQA / Key
+Lines" in Phases 2–4 as **"the derived structure / its governing object / its opening / its top-level
+branches"**, and apply that shape's core quality test (from the catalog) in place of the pyramid-specific
+SCQA and MECE tests. The 3-skeptic audit (Phase 4) **generalizes**: attack the structure's joints,
+whatever they are (a debate-map's "is the contention located correctly?"; a causal web's "are these
+factors really independent?"; a timeline's "is this contingency being sold as inevitability?").
 
 ---
 
@@ -526,7 +621,14 @@ Hubs: <N> | Issue tree: <N> sub-questions | MECE type: <type> | Downstream files
 
 ---
 
-## Phase 3 — Barbara Minto Pyramid
+## Phase 3 — Building the derived structure (Minto Pyramid = the default case)
+
+**Applies as written when Phase 2.0 selected `single-thesis → Minto pyramid`.** For any other shape,
+build *that* structure to its catalog spec instead — a debate-map's located contention, a causal
+web's factor-network with explicit non-independence, a timeline's pivots, a tree's division, a
+system's flow, a matrix's criteria — and read "GT / SCQA / Key Lines" below as "the derived
+structure's governing object / opening / top-level branches." The arity rule governs: the branch
+count is the source's real branching factor, grouped (never deleted) when high.
 
 Build the Minto Pyramid using SCQA. The pyramid is not a template — it is a claim about the
 logical structure of the source. Every element must earn its place.
@@ -693,8 +795,9 @@ Pass B Skeptic C: <N> gaps assessed, <N> new KLs or named exclusions
 
 # STAGE III — OUTPUT
 
-*Goal: a self-contained HTML artifact that makes the pyramid's argument structure viscerally
-legible — not just readable — through every technique modern browsers support.*
+*Goal: a self-contained **single HTML file — internally multi-page by default** — that makes the
+derived structure's argument viscerally legible, one developed page at a time, through every
+technique modern browsers support.*
 
 The Output stage has two phases: visual architecture (design the experience before building
 it) and frontend engineering (build it to the highest standard). The frameworks are the
@@ -702,12 +805,196 @@ invisible skeleton. The experience is what the reader feels, not what they are t
 
 ---
 
+## Format & page model (Part F — read the `[ILLUMINATE:FORMAT]` decision first)
+
+**Single file ≠ single page.** The single-file law (portable, offline, zero external requests)
+is unchanged. It never required one long scroll. The default output is a self-contained file that
+is **internally multi-page**: a client-side-routed app where each top-level element of the derived
+structure (Phase 2.0) is its own page/view, one visible at a time, each concept developed on its
+own page rather than compressed into a competing scroll-section. This decouples portability from
+pagination, kills parallax by construction, and buys the editorial elegance a crammed page can't.
+
+**Multi-page mechanics (default):**
+- **Router:** a tiny client-side hash router (`#/cohorts`, `#/journey`, …); exactly one
+  `<section data-page>` visible at a time; every page deep-linkable and reloadable by its hash.
+- **Page set = the derived structure.** One page per top-level element; **page count = the derived
+  arity** (Phase 2.0). Grouping (E1/D2) still prevents fragmentation when arity is high — a grouped
+  cluster is one page with in-page disclosure, never a page per leaf.
+- **Transitions:** the View Transitions API for page-to-page moves, behind `@supports`, degrading to
+  a simple opacity fade; `prefers-reduced-motion` disables it entirely.
+- **Persistent global chrome across pages:** the sticky nav becomes the **page index / router** (not
+  scroll-spy); the evidence drawer / signal block is **global and persists** across pages; theme /
+  tier / palette / focus / signal controls persist across navigation.
+- **Keyboard:** `j`/`k` and arrows move *between pages* (not scroll sections); `Esc` still closes the
+  drawer; deep-link hashes restore the exact page on reload.
+- **Per-page composition:** each page owns its space — its own title/cover moment, generous margins,
+  developed depth. Within a page, progressive disclosure (accordions, drawer) still applies; the
+  **page** is the primary unit, the section is not.
+
+**Reference — tiny hash router (self-contained, vanilla):**
+```javascript
+// One <section data-page="cohorts"> per top-level element. One visible at a time.
+var pages = [].slice.call(document.querySelectorAll('[data-page]'));
+function show(id){
+  var target = document.querySelector('[data-page="'+id+'"]') || pages[0];
+  var swap = function(){ pages.forEach(function(p){ p.hidden = (p !== target); });
+    document.querySelectorAll('.nav a').forEach(function(a){
+      a.setAttribute('aria-current', a.hash === '#/'+id ? 'page' : 'false'); });
+    target.focus({preventScroll:true}); window.scrollTo(0,0); };
+  // View Transitions when supported + motion allowed; else instant swap (CSS handles the fade)
+  if (document.startViewTransition && !matchMedia('(prefers-reduced-motion:reduce)').matches)
+    document.startViewTransition(swap); else swap();
+}
+function route(){ show((location.hash.replace(/^#\//,'')) || pages[0].dataset.page); }
+addEventListener('hashchange', route); route();               // deep-link + reload safe
+// j/k / arrows move between PAGES in multi-page mode
+addEventListener('keydown', function(e){
+  if (/input|textarea/i.test(e.target.tagName)) return;
+  var cur = pages.findIndex(function(p){ return !p.hidden; });
+  if (e.key === 'j' || e.key === 'ArrowDown'){ if (cur < pages.length-1) location.hash = '#/'+pages[cur+1].dataset.page; }
+  if (e.key === 'k' || e.key === 'ArrowUp'){ if (cur > 0) location.hash = '#/'+pages[cur-1].dataset.page; }
+});
+```
+```css
+[data-page]{ view-transition-name: page; }           /* View Transitions target */
+@supports not (view-transition-name: page){          /* fallback fade */
+  [data-page]{ animation: pg .28s var(--ease) both; } @keyframes pg{ from{opacity:0} } }
+@media (prefers-reduced-motion: reduce){ [data-page]{ animation: none } }
+```
+The evidence drawer, signal view, focus mode, and theme/tier/palette controls live OUTSIDE any
+`[data-page]` so they persist across navigation.
+
+**Single-scroll (reserved exception):** used only when `[ILLUMINATE:FORMAT] model: single-scroll` —
+a genuinely linear single argument whose point is the cumulative straight-through read. Then the
+sticky nav is scroll-spy as before. **Neither model uses parallax** (it survives, if at all, only as
+a subtle single-scroll touch, never a headline). Still one offline file, no external requests.
+
+---
+
 ## Phase 5 — Visual Architecture
 
-Design before building. Write a text wireframe first. Every visual decision must serve
-a specific function in making the pyramid's argument structure legible.
+**Editorial-bar gate (Part F2 — check before wireframing).** The register/palette is selectable
+(Swiss editorial, warm editorial, archival, print, phosphor…); the **craft bar is fixed and
+non-negotiable regardless of palette**: flatter surfaces, restrained radii, sharp structure,
+generous whitespace, a *felt* column grid, type carrying the hierarchy (strong weight contrast —
+ultralight display vs bold labels — not uniform 600-weight card titles), sophisticated restrained
+semantic color (not a rainbow of subsystem tags), precise detailing. **The rounded-card / soft-shadow
+SaaS-dashboard aesthetic is an explicit failure mode** — competent but generic, and short of
+editorial elegance. Multi-page format (F1) directly enables the whitespace and alignment discipline
+this bar demands. Do not begin the wireframe until the composition clears this bar.
 
-**The three frameworks made visual — translation table:**
+---
+
+### Art Direction — from correct to at-par (Part H)
+
+F2 names the target as *principles* ("restrained color", "felt grid"). Principles do not survive
+contact with the model: told to be "sophisticated", it still ships the muddy earth-tone-on-cream
+default with pastel diagram fills — "cheap old website / student portfolio", the opposite of the
+intent. Part H converts F2's principles into a **locked contract + named anti-patterns that each
+hard-fail the render gate + a mockup fidelity standard** — elegance the model cannot default its way
+out of.
+
+**H1 · Art-direction contract — design the system, don't default into one.** Before build, commit to
+an explicit contract and execute against it. Emit and write to `/tmp/illuminate-artdir.md`:
+```
+[ILLUMINATE:ARTDIR] register:<name> | ink:<oklch> paper:<oklch> accent:<oklch>(one, +≤1 support)
+  | type:<display>/<text>/<mono> | scale:<ratio> | radius:<px> | shadow:<ramp> | grid:<cols/gutter/margin>
+```
+- **Palette is designed, not defaulted.** The warm-beige (`~#f4f0e8`) + terracotta (`~#b5502a`) +
+  pastel-accent set is **banned as a default** — it is the "cheap template" tell. Require **high
+  figure/ground contrast**: near-black ink on true paper-white, *or* a deliberate deep-ink canvas; and
+  **one confident accent used decisively**. Mid-tone muddy backgrounds doing the job of a canvas are
+  prohibited.
+- **A real typeface, not `system-ui`.** Self-host a distinctive display + text face, inlined as a
+  woff2 **data-URI** (still one offline file; subset to keep it small). **System-default sans is a
+  named failure — the single largest contributor to "looks like a template."**
+- **One modular scale** (≈1.25–1.333), a **tight radius scale** (0–10px in editorial registers; soft
+  14–28px rounding is the SaaS tell), **one restrained shadow ramp** (a precise 2-step elevation, *or*
+  deliberately shadowless-with-rules — never flat pale-grey fills faking depth).
+
+**Reference contract — a proven at-par "Swiss International Typographic Style" register** (one strong
+example, not the only permitted one):
+- **Type — one grotesque; hierarchy by weight + size, not by family or color.** `'Helvetica Neue',
+  'Helvetica','Nimbus Sans',Arial,sans-serif` with an embedded subset **Nimbus Sans** (open Helvetica
+  clone, ~12 KB/weight woff2 via `fonttools`) as the offline fallback; code in **Space Mono**. **No
+  `system-ui`; no serif display; no second text family.**
+- **Monochrome headlines — the two-tone accent-word title is a named tell and is banned.** Headlines
+  are a single ink color, flush-left, ragged-right, tight tracking (`-0.03em`), tight leading (`~0.9`);
+  **weight contrast (700 vs 400) carries emphasis, never a colored word.**
+- **One functional accent, red only:** `oklch(0.560 0.205 27)` light / `oklch(0.640 0.190 27)` dark —
+  reserved for section numerals, the kicker mark, active nav, the brand CTA inside mockups, key tags.
+  Everything else is ink on paper. No blue/gold second accent.
+- **Felt Swiss grid:** 12-col with a **left rail carrying the big red section numeral (01/02/03) + a
+  mono label**, content in the main columns; **strong 1–2px solid ink rules** at every section top
+  (not faint hairlines); square corners (0–3px); **flat surfaces** — rules and alignment do the work,
+  not shadows (only the phone keeps a real device shadow).
+- **Light (OKLCH):** paper `0.988 0.001 250`, ink `0.175 0.004 260` (neutral near-black, *not*
+  blue-black), rule = `ink @ 20%`. **Dark:** paper `0.165 0.004 260` (never pure `#000`), ink
+  `0.945 0.003 260`, red lifted; elevation by lightness. Two curated palettes, not a background swap.
+- **Device fidelity:** dark bezel + `inset` rim highlight + two-layer lift shadow; **drawn** status
+  glyphs (signal/wifi/battery as inline SVG), never the literal "9:41 … 62%" string.
+- **Code surface:** deep neutral-ink panel in *both* themes, near-monochrome with red keywords
+  (comments muted, strings dimmed, functions bold-ink) — never pastel-filled.
+
+**H2 · Named cheap tells — banned anti-patterns (each hard-fails the Phase 7 render gate):**
+- **Muddy earth-tone-on-cream** default palette; **pastel node fills** in diagrams (pale
+  sage/mauve/peach boxes = "default flowchart tool").
+- **Auto-flowchart aesthetic:** rounded-rect nodes + 1px borders + elbow connectors + centered labels.
+  Diagrams are composed as **editorial infographics** — typographic labels on a structured grid,
+  precise hairline connectors, hierarchy by type/weight/space, **no baby-colored fills**.
+- **Box-in-box:** flat pale cards stacked inside flat pale cards. Compose with whitespace, alignment,
+  and rules; a card earns itself (one soft elevation, hairline border, tight radius) and never nests
+  three deep.
+- **System-default typeface**; **timid accent** (color reduced to tiny bullet squares); **flat/absent
+  shadows** substituted by grey fills.
+- **Two-tone accent-word headlines** (coloring one/two words of a title in the accent — the
+  "standard-assistant" tell). Titles are a single ink color; emphasis by weight and size, not hue.
+
+**H3 · Fidelity-render standard for mockups (deepens G4/F3c).** Mockups must read as **renders**, not
+colored wireframes: a real device shadow + correct bezel radius; a **drawn status-bar glyph row** (time
++ signal/wifi/battery as SVG glyphs, never the literal string in body type); headers at real proportion
+in a system-like face; content on a device grid. **A phone that looks like a grey box with a colored
+header is a fail.**
+
+**H4 · No interaction theater — affordances must be real (P0, trust).** An interactive control must
+**either perform its actual effect in the render target or not be offered**; a success confirmation
+fires **only** when the effect provably occurred. For export specifically: sandboxed artifact iframes
+block both `<a download>` and popups — use a path that provably works there (`window.open('','_blank')`
+→ `document.write(documentElement.innerHTML)` for the user to save / print-to-PDF), confirm **only when
+the tab actually opened**, else tell the truth ("this embedded view blocks saving — open the file
+directly"). **Never flash "Downloaded" unconditionally.** If no export path works in the target, don't
+render the button. Verified by actually clicking it in render (H5).
+
+**H5 · Render-truth extends to finish and behavior (deepens G5).** After rendering each page,
+additionally: (a) **judge it against H1–H3** — "designed publication, or template? If template,
+re-compose"; (b) **exercise every interactive control** (export, drawers, theme) and confirm each does
+what it claims; (c) **hard-fail any clipped/ellipsised value in a mockup** (the G4 sample-value rule
+exists to prevent exactly this). Finish and behavior are part of the gate, not just absence of breakage.
+
+Commit the contract before wireframing:
+```
+[ILLUMINATE:GATE] Phase 5 ARTDIR committed | register: <name> | palette: designed (not default beige)
+                  | typeface: self-hosted (not system-ui) | tells-checked: none
+```
+
+---
+
+Design before building. Write a text wireframe first. Every visual decision must serve
+a specific function in making **the derived structure's** argument legible.
+
+**The hero/opening is a function of the structure chosen in Phase 2.0** — never a fixed template:
+- pyramid → GT pull-quote + SCQA arc
+- debate-map → the question + stakes, then the competing position cards (no answer up top)
+- causal web → the phenomenon + the multiplicity claim, then the factor-network/map
+- timeline → the arc + its pivots (before→after)
+- tree → the whole + its principle of division
+- architecture → the system + the behavior it produces
+- matrix → the decision + its criteria
+
+The SCQA→GT sequence below is the *pyramid's* opening. For other shapes, open with that shape's
+governing object as listed in the Phase 2.0 catalog.
+
+**The three frameworks made visual — translation table (the pyramid case):**
 
 | Framework | What it encodes | Visual enactment | What NOT to do |
 |---|---|---|---|
@@ -715,19 +1002,22 @@ a specific function in making the pyramid's argument structure legible.
 | Minto Pyramid | Logical hierarchy: GT > KLs > detail | GT: most visually prominent element on the page. KLs: identical visual weight (MECE enacted visually). Detail: smaller, behind progressive disclosure. Scale = logical authority. | Show all hierarchy levels at once |
 | MECE | Exhaustive, non-overlapping coverage | KL sections structurally identical (same anatomy, same typographic weight, same card structure). Visual equality = logical equality. | Give KLs different visual weights or colors |
 
-**Components enact the pyramid — the governing rule for what to build where.**
+**Components enact the derived structure — the governing rule for what to build where.**
 
-The pyramid is a top-down drill: GT → Key Lines → supporting detail → evidence. Progressive-
+Every macro-structure (Phase 2.0) is a drill from a governing object down to evidence. Progressive-
 disclosure components are that drill rendered as navigation. Static prose forces one linear path
 through a non-linear structure; disclosure components let the structure stay a structure and let
-the reader descend exactly the branch they choose, in the order the pyramid ordains. **This is
-why the components aid comprehension rather than decorate — so choose each one by the pyramid
-layer it serves, never for flair.**
+the reader descend exactly the branch they choose, in the order the structure ordains. **This is
+why the components aid comprehension rather than decorate — so choose each one by the structural
+layer it serves, never for flair, and only when an argument calls for it (E2: selected, not mandated).**
+The overview component itself is chosen to fit the *shape*: a pyramid's second tier is a ladder/list;
+a causal web's is a factor-network/map; a debate-map's is paired position cards; a timeline's is the
+arc; a taxonomy's is a tree; a system's is an architecture diagram.
 
-| Pyramid layer | Reader's move | Component | Disclosure state |
+| Structural layer (pyramid names shown) | Reader's move | Component | Disclosure state |
 |---|---|---|---|
-| **Governing Thought** | receives the answer | hero pull-quote, oversized, dominant | always visible — top of pyramid, unmissable |
-| **Key Lines (MECE)** | scans the whole structure | section headers at equal weight **+ one overview component** showing all KLs at once (e.g. a diagram/ladder/matrix) | always visible — the second tier as a single map |
+| **Governing object** (GT) | receives the answer / question / phenomenon | hero, oversized, dominant | always visible — top of the structure, unmissable |
+| **Top-level branches** (Key Lines) | scans the whole structure | section headers at equal weight **+ one overview component** materialising all branches at once, *fitted to the shape* | always visible — the second tier as a single map |
 | **Supporting detail** | drills into one KL | `Accordion` / `Tabs` | collapsed by default; expands the chosen branch |
 | **Evidence (S-NNN)** | verifies a claim | `Tooltip` (hover preview) → `Sheet`/`Dialog` (full block, filterable) | deepest layer; summoned on demand |
 
@@ -751,9 +1041,25 @@ Corollaries:
   The **supporting artifact inside** the shell varies by what that KL's content actually is. Equal frames,
   content-fitted contents.
 
-**Component inventory (mandatory; build all of these):**
+**Component inventory — baseline (always) vs selected (per argument, justified):**
 
-**Hero components:**
+Components split into two classes. **Do not "build all."** A maximally-mandated component set
+produces maximally-templated output — the same costume on every source. Selection is source-driven.
+
+- **Navigation baseline — always present** (navigational, not decorative): evidence drawer /
+  explorer, focus mode, signal view, keyboard nav, progress indicator, and the theme / tier /
+  palette controls. These are the instrument, not the argument.
+- **Enactment components — selected per argument** from the Component Library, each justified by
+  the specific argument it enacts. **A component with no argument to enact is not built.** Parallax,
+  3D tilt, per-section ASCII motifs, fidelity mockups, funnels, quadrants, timelines, flow-canvases —
+  all become *available*, none *required*. A restrained, mostly-static artifact for a text-only
+  conceptual argument is a **pass, not a failure**. Two unlike sources must produce visibly different
+  component sets. (See the Component Library's selection logic; the per-KL ASCII motif below is
+  explicitly **optional**, chosen only when ASCII enacts that branch's argument.)
+
+The list below is the **menu**, not a checklist. Build the baseline; select the rest by fit.
+
+**Hero components** (the pyramid case — adapt the opening to the derived structure):
 1. `SCQA-ARC` — four-block narrative structure. S+C in setup register. Q in tension register
    (visually distinct: border-left, different weight, or isolated column). A (GT) as pull quote.
 2. `GT-PULLQUOTE` — oversized gradient text, typewriter assembly on load. This is the first
@@ -838,8 +1144,10 @@ NAVIGATION
   [PALETTE-PICKER] ◉ — swatch button right of tier selector; opens palette popover
 ```
 
-Confirm wireframe maps to pyramid exactly. Each KL = one section. No section without a KL.
-No KL without a section.
+Confirm the wireframe maps to the **derived structure** exactly. In multi-page mode (default), each
+top-level element = **one page** (`<section data-page>`); no page without a top-level element, no
+top-level element without a page (grouped clusters are one page with in-page disclosure). In
+single-scroll mode, each top-level element = one section. (Pyramid case: each KL = one page/section.)
 
 **doc mode wireframe** (when Mode = doc):
 ```
@@ -883,7 +1191,16 @@ Print: `@media print { .slide { page-break-after: always; aspect-ratio: unset; }
 
 ---
 
-### Swiss Editorial Design Standard (mandatory)
+### Editorial Design Standard — register variant selectable, craft bar non-negotiable (Part F2)
+
+The **register is selectable** (Swiss editorial cold, warm editorial, archival, print, phosphor —
+tied to palette); the **editorial craft bar is binding regardless of palette**. What follows is the
+default *Swiss* register in full; the same bar — visible structure, type carrying the argument,
+felt grid, generous whitespace, restrained ornament, strong weight contrast — is executed at the
+same level in every other register. **The rounded-card / soft-shadow SaaS-dashboard aesthetic is a
+failure mode**, not a register: uniform 600-weight card titles, soft radii everywhere, box-in-box,
+and a rainbow of tag colors all fail the bar. Elegance is mandatory; the register that carries it is
+a choice.
 
 Every illuminate artifact is built to the Swiss International Typographic Style — the design
 tradition of Müller-Brockmann and Helmut Schmid. Structure is visible. Type carries the
@@ -1049,9 +1366,9 @@ class on completion. Ultra-light at large size carries the editorial tension —
 stays calm; the *type*, not motion, does the work.
 
 ```
-[ILLUMINATE:GATE] Phase 5 PASS | Wireframe confirmed | KLs: <N> | Components: 14
-                                | Editorial: Swiss grid · Helvetica Neue + Futura · editorial red
-                                | Theme: dark+light | Tiers: simple/editorial/rich declared
+[ILLUMINATE:GATE] Phase 5 PASS | Wireframe confirmed | branches: <N> | Components: <selected set>
+                                | Format: <multi-page/single-scroll> · pages: <N> | Editorial-bar: PASS
+                                | Register: <swiss/warm/archival/…> | Theme: dark+light | Tiers: simple/editorial/rich declared
 ```
 
 ---
@@ -1079,11 +1396,44 @@ Every component obeys **four laws**:
    simple = static and fully legible. Use the existing `isRich()` / `isEditorialUp()` helpers.
 4. **Evidence-governed** — an ILLUSTRATE surface (see the contract). Concrete content traces to
    S-NNN or is visibly generic; the component wears its ILLUSTRATION tag or its citation chips.
+5. **Developed, not flat (Part G2)** — a component representing a concept that has internal structure
+   **nests** that structure (a cohort → its messaging + journey variation + sizing; an asset → its
+   variant set + the render logic; a subsystem → its mechanisms), within the ≤2-tap limit. A flat
+   one-liner for a structured concept is a failure. Progressive disclosure here *develops* (reveals
+   more depth); it does not merely hide.
 
 ### Family A — Fidelity Mockups (make the abstract concrete)
 
 Self-contained replicas of the actual artifact, inside recognizable chrome. Evidence class:
 ILLUSTRATE (all). Content bounded by the signal block; carries the ILLUSTRATION tag.
+
+**F3a — the primary artifact gets the fullest mockup.** When the source has a single most-important
+concrete artifact — the destination screen, the hero email, the key UI, "the one thing every message
+points to" — it must be rendered as the **highest-fidelity mockup, never relegated to a prose
+callout**. Generalize: the most load-bearing artifact earns the most convincing fidelity component.
+Demoting the key surface to a paragraph is a Phase 7 failure.
+
+**F3c / G4 — chrome matched to the medium, consistent, and never overflowing.** Fidelity mockups
+wear convincing chrome drawn in CSS/SVG within the no-image law — but the chrome must **match the
+artifact's actual medium**, not a stamped-on generic window bar:
+
+| Medium | Correct chrome | Never |
+|---|---|---|
+| Push / SMS / any in-app screen | **phone frame** — bezel + status bar; lock-screen (push) or messages (SMS) or app-screen context | a browser URL bar; a generic 3-dot window bar |
+| Email | **email-client frame** — from-address + timestamp + subject/preheader | a phone bezel; a window bar |
+| Web page / landing page / CloudPage | **browser frame** — address bar + tab | a phone bezel |
+| Code / query / config | **editor/terminal frame** — traffic-lights + filename + line numbers | a phone bezel |
+
+The generic three-dot "traffic-light window" bar is **not** universal chrome — stamping it identically
+on push, SMS, card, and email is the observed failure. A browser URL bar on an *in-app* screen is
+wrong. Pick per medium; keep it consistent across the artifact.
+
+**Overflow-robustness (G4).** Raw `%%tokens%%` are longer than the real values a layout is sized for,
+so a glance grid or tile built for `£142.80` **clips or spills** when it holds `£%%PotBalance%%`. A
+value must never clip. Enforce: `min-width:0` on flex/grid children, allow wrap, cap with ellipsis
+where a single line is required — **or** use *sample-value mode*: show a visibly-illustrative sample
+with the field noted (`£142.80` · `%%PotBalance%%`) so the layout is sized to realistic content while
+the token stays legible. Verify in render (G5), never from source.
 
 | Component | Enacts | Notes |
 |---|---|---|
@@ -1134,8 +1484,10 @@ ILLUSTRATE (all). Content bounded by the signal block; carries the ILLUSTRATION 
   letter-spacing:.1em; text-transform:uppercase; color: var(--amber);
   background: var(--amber-dim); padding:2px 7px; border-radius:4px; }
 /* rich: subtle tilt on hover — depth, not decoration */
-[data-tier="rich"] .mock { transition: transform var(--dur) var(--ease); transform-style:preserve-3d; }
-[data-tier="rich"] .mock:hover { transform: perspective(1200px) rotateX(2deg) rotateY(-2deg); }
+/* rich: a subtle device LIFT on hover — depth via elevation, not a 3D rotate (A1 reconciled to
+   the editorial bar; no 3D card physics). */
+[data-tier="rich"] .mock { transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+[data-tier="rich"] .mock:hover { transform: translateY(-3px); box-shadow: var(--sh-2); }
 ```
 
 **Reference — PHONE-PUSH + SMS-THREAD (one phone frame):**
@@ -1187,7 +1539,7 @@ S-NNN. Edges are SVG paths between node anchors.
 
 | Component | Enacts |
 |---|---|
-| `FLOW-CANVAS` | a journey / pipeline as nodes + directed edges (e.g. SFMC Journey Builder) |
+| `FLOW-CANVAS` | a journey / pipeline as nodes + directed edges (e.g. SFMC Journey Builder) — **renders actual branches when the process branches** |
 | `SWIMLANE` | a process split across actors/systems (rows = lanes, left→right = time) |
 | `SEQUENCE` | ordered message-passing between participants (vertical lifelines) |
 | `STATE-MACHINE` | states + labelled transitions (lifecycle / status models) |
@@ -1207,9 +1559,18 @@ S-NNN. Edges are SVG paths between node anchors.
   <span class="mock-tag">ILLUSTRATION</span>
 </figure>
 ```
+**F3b — a branching process must render as branching, not a linear track with decorative diamond
+markers.** When the process branches (entry → holdout split → cohort splits → decision splits →
+multiple exits), the diagram shows the branches *diverging and re-converging* — not one straight
+reference track with a `.flow-dec` glyph standing in for structure that isn't drawn. If space forces
+showing only one reference track in detail, the **branching must still be visible**: branch points
+visibly fork, or an overview renders all tracks and where they converge. A branching journey drawn
+as a single line is a Phase 7 failure.
+
 Nodes are absolutely-positioned (or CSS-grid placed) `.flow-node` boxes: `border:1px solid var(--rule-hi)`,
 `background: var(--paper-1)`, `font-family: var(--ft)` label. Edges: one `<path>` per connection,
-`stroke: var(--rule-hi)`, arrowhead marker in `var(--ink-3)`.
+`stroke: var(--rule-hi)`, arrowhead marker in `var(--ink-3)`. Decision nodes have **two or more
+outgoing edges to distinct downstream nodes** (the fork is real geometry, not a glyph).
 - **rich:** on IntersectionObserver enter, each edge `stroke-dashoffset` animates full→0 (draws
   itself); hovering a node brightens its outgoing edges to `var(--cli)` and highlights the KL card
   citing that step.
@@ -1349,9 +1710,11 @@ contents / positions trace to S-NNN.
 
 ## Phase 6 — Frontend Engineering
 
-Build the Phase 5 wireframe as a single self-contained HTML file, executing every technique
-below at the highest standard. This is not a checklist to satisfy minimally — it is the
-standard to exceed. Each technique serves the argument structure. Decoration is not the goal.
+Build the Phase 5 wireframe as a **single self-contained HTML file, internally multi-page by
+default** (Part F — one hash-routed `<section data-page>` in view at a time; single-scroll only when
+`[ILLUMINATE:FORMAT]` says so), executing every technique below at the highest standard. This is not
+a checklist to satisfy minimally — it is the standard to exceed. Each technique serves the argument
+structure. Decoration is not the goal.
 
 **Stance: polished editorial restraint.** Use whatever JS or CSS makes the argument more
 legible — shadcn/ui components, Tailwind for layout, D3/Observable Plot for real data viz.
@@ -1371,10 +1734,11 @@ interactive: real tabs, real accordions, hover-preview evidence, a diagram↔cod
 boxes fail the brief. Build for exploration.
 
 **Hard constraint:** the default output is a **portable single file** (email-able, offline,
-opens forever). The artifact CSP and offline use both forbid external CDNs — so **do not load
-React/Radix from esm.sh or any importmap.** Instead rebuild the shadcn/ui component *vocabulary*
+opens forever) — **internally multi-page, not single-scroll** (Part F). *Single file* is the law;
+*single page* never was. The artifact CSP and offline use both forbid external CDNs — so **do not
+load React/Radix from esm.sh or any importmap.** Instead rebuild the shadcn/ui component *vocabulary*
 self-contained in vanilla HTML/CSS/JS: the same anatomy, tokens, radii, and behavior, no runtime
-dependency. (Only when the target is explicitly a React/claude.ai artifact — not the default —
+dependency. The client-side router, evidence drawer, and controls are all inline vanilla too. (Only when the target is explicitly a React/claude.ai artifact — not the default —
 use literal `shadcn/ui` + Tailwind + Framer Motion instead. Ask before choosing that lane; it
 is not emailable as a file.)
 
@@ -1411,10 +1775,14 @@ muddy, and dated.
   shaped eyebrow badges (not bare all-caps mono), generous section whitespace, spring easing
   (`cubic-bezier(.32,.72,0,1)`), scroll fade-up reveals. Mono is for code and data only, never body.
 
-### Code Snippets (mandatory where the source is technical)
+### Code Snippets (mandatory where the source is technical — Part G3)
 
-If the source describes mechanisms in code terms (functions, classes, config, protocols),
-render at least one **faithful code snippet** per relevant KL — this is the facet technical
+If the source contains or implies technical artifacts — code, functions, classes, **SQL queries,
+AMPscript/personalization, data-extension or table schemas, suppression/eligibility logic,
+journey/pipeline config, API payloads, formulas** — render them as `CODE-CONFIG` components on the
+relevant pages. This is not optional flavor: a technical source rendered as prose paraphrase with its
+code omitted has **under-developed** (G3), and code directly develops the technical pages (G1).
+Render at least one **faithful code/config artifact** per relevant concept — the facet technical
 clients open first. Requirements:
 - shadcn code-block shell: language label + copy button, `--ground-1` surface, mono, `overflow-x:auto`.
 - **Restrained highlighting on-palette:** keywords in the single accent, strings in one muted
@@ -2009,7 +2377,8 @@ function setTier(t) {
 
 | Feature | simple | editorial | rich |
 |---|---|---|---|
-| Parallax | ✗ | ✗ | opt-in, 2–3 layers |
+| Page transitions (multi-page) | instant swap | fade | View Transitions (behind `@supports`) → fade |
+| Parallax (single-scroll only) | ✗ | ✗ | subtle opt-in, never a headline |
 | ASCII animation | instant | 2× speed | full speed + hover nodes |
 | GT reveal | fade-in | typewriter | typewriter |
 | Accordion open | instant | height transition | scan-line + nested |
@@ -2020,7 +2389,7 @@ function setTier(t) {
 | Signal view `s` | ✓ | ✓ | ✓ |
 | Related highlights | ✓ | ✓ | ✓ |
 | Progress arc | ✓ | ✓ | ✓ |
-| Component — fidelity mockups | static frame; pins → footnotes | static frame + pins + drawer | + hover tilt, push slide-in, pulsing pins |
+| Component — fidelity mockups | static frame; pins → footnotes | static frame + pins + drawer | + hover lift, push slide-in, pulsing pins |
 | Component — process & flow | static nodes + edges | static edges + hover highlight | self-drawing edges + hover-propagated highlight |
 | Component — metrics & funnels | final values, static bars | CSS bar/gauge transitions | JS animated fill + count-up |
 | Component — decision & compare | static positions/cells | hover states | dot-settle / cell-reveal animation |
@@ -2206,11 +2575,11 @@ function initSectionReveals() {
           setTimeout(function() { buildArt(vb.el, vb.art, { cd: 8, ld: 20 }); }, delay);
         });
         if (isRich()) {
-          document.querySelectorAll('.card', sec.innerEl).forEach(function(c, i) {
+          sec.innerEl.querySelectorAll('.card').forEach(function(c, i) {
             setTimeout(function() { c.classList.add('entry-done'); }, i * 100 + 400);
           });
         } else {
-          document.querySelectorAll('.card', sec.innerEl).forEach(function(c) {
+          sec.innerEl.querySelectorAll('.card').forEach(function(c) {
             c.classList.add('entry-done');
           });
         }
@@ -2292,10 +2661,10 @@ Cards are not simple height-toggle accordions. Each has:
    across the card top over 250ms. On complete: body height animates open.
 2. **Nested sub-sections** — cards can contain further collapsible blocks (2-level depth max).
    Level 2 uses a simpler `▸/▾ toggle` with a 120ms height transition.
-4. **Evidence tags** — `S-NNN` traces render as clickable chips. On click: a slide-in panel
+3. **Evidence tags** — `S-NNN` traces render as clickable chips. On click: a slide-in panel
    from the right shows the full signal block entry for that S-NNN (stored in a `DATA` object
    in the `<script>` block).
-5. **State persistence** — `localStorage` stores which cards are open by section and S-NNN.
+4. **State persistence** — `localStorage` stores which cards are open by section and S-NNN.
 
 ```javascript
 // Evidence drawer
@@ -2408,17 +2777,27 @@ without interaction. Cards are for the evidence behind the visualization.
 
 ### Navigation and Reading Experience
 
-**Sticky nav:** 48px height, `backdrop-filter: blur(20px) saturate(180%)`, scroll-spy via
-IntersectionObserver. Active section: color + background shift. Horizontal scroll on
-overflow (mobile), no visible scrollbar.
+**Sticky nav — router in multi-page mode, scroll-spy in single-scroll.** In the default
+**multi-page** model (Part F) the sticky nav is the **page index / router**: each entry routes to a
+`<section data-page>` via its hash (`#/cohorts`), the active page is highlighted, and it does NOT
+scroll-spy (there is one page in view at a time). Only in the reserved **single-scroll** exception is
+it the IntersectionObserver scroll-spy described here. Either way: 48px height,
+`backdrop-filter: blur(20px) saturate(180%)`, active entry color + background shift, horizontal
+scroll on overflow (mobile), no visible scrollbar.
+
+**Client-side router (multi-page mode):** exactly one `<section data-page>` visible at a time;
+hashchange drives which; deep-link/reload restores the exact page; page-to-page uses the View
+Transitions API behind `@supports (view-transition-name)`, degrading to an opacity fade, disabled
+under `prefers-reduced-motion`. The evidence drawer, signal view, focus mode, theme/tier/palette
+controls are **global and persist across page navigation**.
 
 **Progress arc:** right-fixed, `position: fixed; right: 1rem; top: 50%; transform: translateY(-50%)`.
 Vertical track (2px wide, `--border` color) with a 8px dot that moves to reflect current
 section (based on active-section index, not raw scroll %). Section labels on hover.
 
 **Keyboard navigation:**
-- `j` / `↓` — next section
-- `k` / `↑` — previous section
+- `j` / `↓` — next **page** (multi-page) / next section (single-scroll)
+- `k` / `↑` — previous **page** (multi-page) / previous section (single-scroll)
 - `f` — focus mode toggle
 - `s` — signal-view toggle
 - `/` — jump to search (if signal-view active, filter cards by S-NNN)
@@ -2431,23 +2810,31 @@ section (based on active-section index, not raw scroll %). Section labels on hov
 
 ### Content Fidelity Requirement (before declaring Phase 6 done)
 
-Every sentence in the HTML traces to the pyramid, which traces to the signal block.
-The HTML renders the pyramid — it does not expand or improve it.
-Any sentence not in the pyramid: remove it or add it to the pyramid with an S-NNN trace first.
+Every sentence in the HTML traces to the derived structure, which traces to the signal block.
+The HTML renders the derived structure — it does not expand or improve it (but must fully elaborate it).
+Any sentence not in the structure: remove it or add it to the structure with an S-NNN trace first.
 
 Write the file:
 ```javascript
-// The complete output is ONE .html file
-// open it:
-// open <filename>.html
+// The complete output is ONE self-contained .html file — internally multi-page (hash-routed),
+// not one long scroll. Open it: open <filename>.html  (test #/<page> deep-links + reload)
 ```
 
 Operator confirms the file works live in a browser. Not self-certified.
 
+**Render-truth gate (Part G5) — before Phase 6 can pass.** Do NOT self-certify from source. Render
+**every page** (headless screenshot or operator) and inspect the pixels. The overflow, the empty
+diagram band, the incoherent chrome, the title-over-whitespace page are invisible in source and
+obvious on render — scoring the source instead of the pixels is the exact mistake that ships them.
+Per page, confirm: no overflow/clipping · no empty or half-filled diagram · not a thin
+title+whitespace page · chrome coherent per medium · no console errors. Any failure re-enters the
+correction register. This is a hard, mechanical, per-page gate — the "operator confirms in browser"
+rule made explicit and non-skippable.
+
 ```
-[ILLUMINATE:GATE] Phase 6 PASS (operator-confirmed) | File: <filename>.html | Size: <KB>
-Palette: <name> | Theme: dark+light verified | Tiers: simple/editorial/rich verified
-Techniques: parallax / ascii-interactive / accordion / evidence-drawer
+[ILLUMINATE:GATE] Phase 6 PASS (operator-confirmed, render-checked) | File: <filename>.html | Size: <KB>
+Format: <multi-page/single-scroll> · pages: <N> · deep-links verified | Palette: <name> | Theme: dark+light verified | Tiers: simple/editorial/rich verified
+Techniques: router + view-transitions / ascii-interactive / accordion / evidence-drawer
 Dynamic blocks: focus-mode / signal-view / confidence-meter / related-highlights
 ```
 
@@ -2459,11 +2846,40 @@ Dynamic blocks: focus-mode / signal-view / confidence-meter / related-highlights
 Read `/tmp/illuminate-anchor.md` (line 1 = anchored GT). Compare verbatim to the pull quote in the HTML.
 Paraphrase drift = failure. Fix before proceeding.
 
-**21-item checklist (run in rich+dark by default; then spot-check tiers, light mode, and palette):**
+**Verify checklist (run in rich+dark by default; then spot-check tiers, light mode, and palette).**
+Grouped by concern — structural fit (E), format & editorial (F), content, theme, palette, tiers,
+interactivity, accessibility:
+
+*Structural fit (E)*
+- [ ] **The macro-structure was derived, not imposed** (Phase 2.0): the shape fits the source's epistemic kind — a controversy is a debate-map, a multi-causal phenomenon a causal web, a process a timeline, a single thesis a pyramid. A pyramid on a non-single-thesis source is a fail.
+- [ ] **Top-level arity matches the source**, not defaulted to 3–4; where the honest branch count is high it is grouped/progressively disclosed, never deleted (E1 arity rule).
+- [ ] **The swap test:** could this macro-structure AND component set be lifted onto an *unrelated* source unchanged? If yes, the output is templated — re-derive the structure and re-select components. The skeleton must be legible as a consequence of THIS source's shape and awkward on any other.
+- [ ] **Components are selected, not mandated** (E2): the component set is visibly a consequence of this source; a source with no artifacts/metrics/process yields a restrained set (that is a pass). Two unlike sources would produce two different kinds of document.
+
+*Format & editorial (F)*
+- [ ] **Format matches the source** (F1): a complex multi-concept source renders **multi-page** (one hash-routed view at a time, view-transitioned, each concept developed on its own page, page count = derived arity); single-scroll only for a genuinely linear single argument. The choice is stated in `[ILLUMINATE:FORMAT]`. Still **one offline file, zero external requests; every page deep-linkable and reload-safe**.
+- [ ] **No parallax** in either format model. Persistent global chrome (nav/router, evidence drawer, controls) survives page navigation.
+- [ ] **Editorial elegance, not a SaaS dashboard** (F2): reads as a composed editorial deliverable — strong type hierarchy (ultralight display vs bold labels), generous whitespace, a felt grid, restrained ornament (tight radii, subtle/flat shadows). *Ask: does this read as a considered editorial deliverable, or a generic rounded-card tech-doc? If the latter, re-compose.*
+- [ ] **The single most important artifact is a mockup, not prose** (F3a); **branching processes render as branching** with real forks + convergence, not a linear list (F3b); **mockups wear convincing CSS-drawn chrome** — bezel / from-line / browser bar (F3c).
+
+*Depth & render-truth (G) — verified in PIXELS, not source*
+- [ ] **No page is "title + one component + whitespace"** (G1): each concept page develops the concept — parts, variants, mechanisms, edge cases, technical artifacts, evidence — not merely names it. An elegant headline floating over white space is a fail, not a pass.
+- [ ] **Structured concepts render nested, developed detail** (G2), not flat one-liners; disclosure develops depth rather than only hiding it.
+- [ ] **Technical artifacts render as code/config** (G3): AMPscript, SQL, schemas, suppression logic, journey/pipeline config present or implied in the source appear as `CODE-CONFIG` components, not prose paraphrase or omission.
+- [ ] **Mockup chrome matches the medium and is consistent** (G4): phone frame for push/SMS/in-app, email frame for email, browser frame for pages, editor frame for code — never a generic window bar, never browser chrome on an in-app screen.
+- [ ] **RENDER GATE (G5) — the hard per-page backstop.** Each page is actually rendered (headless or operator) and screenshotted, and checked in pixels: **no overflow/clipping** (tokens included), **no empty or half-filled diagrams** (an SVG band with no nodes is a fail), **no title-over-whitespace pages**, **chrome coherent per medium**, **no console errors**. A page fails on ANY of these. Source review does not substitute — the overflow, the empty band, the wrong chrome are invisible in source and obvious on render. This is the mechanical form of "operator confirms in browser," now a per-page gate.
+
+*Art direction — at-par (H) — finish & behavior, in pixels*
+- [ ] **`[ILLUMINATE:ARTDIR]` committed and honoured** (H1): a **designed** palette (never the banned beige+terracotta+pastel default), a **self-hosted real typeface** (not `system-ui`), tight radii, one confident accent, one restrained shadow ramp.
+- [ ] **No named cheap tell survives render** (H2): no muddy earth-tone-on-cream, no pastel flowchart fills, no auto-flowchart nodes, no box-in-box, no timid accent, **no two-tone accent-word headline**. Diagrams read as editorial infographics.
+- [ ] **Mockups read as renders, not colored wireframes** (H3): drawn status glyphs (not the literal "9:41…62%" string), device shadow, real header proportion, system-like face.
+- [ ] **Designed publication, not template** (H5a): judged against H1–H3 — if it reads as a generic tech-doc, re-compose.
+- [ ] **Every interactive control provably performs its effect** (H4/H5b): export, drawers, theme, router each **exercised in render**; no success message fires without the effect; the export button really exports (new-tab-to-save in a sandbox) or is not shown.
+- [ ] **No clipped/ellipsised value in any mockup** (H5c): the G4 sample-value rule is enforced in pixels, not assumed from source.
 
 *Content and hierarchy*
-- [ ] GT immediately legible on load, above fold, without interaction
-- [ ] S, C, Q, A all visible in hero without scrolling or expanding
+- [ ] Governing object (GT / question / phenomenon) immediately legible on load, above fold, without interaction
+- [ ] The opening enacts the *chosen* structure's governing object (SCQA is the pyramid case only)
 - [ ] **Two-disclosure-levels invariant:** no evidence reachable in more than 2 taps from the GT (NN/g — 3 degrades usability). INSIGHT entries are never behind a closed accordion.
 - [ ] Each section's supporting prose is *full* (drilled, not compressed): ledes are real paragraphs, not label fragments
 - [ ] **No load-bearing nuance from the signal block was dropped to fit the pyramid.** A knowledgeable reader finds the full reasoning present in the disclosure layers; a complex source reads as complex, not as a skeleton (D2)
@@ -2490,16 +2906,16 @@ Paraphrase drift = failure. Fix before proceeding.
 - [ ] **rich**: editorial + opt-in parallax (2–3 layers); scan-line accordion; evidence drawer
 
 *Interactivity*
-- [ ] Parallax layers move at different speeds on scroll (rich tier)
-- [ ] Evidence drawer opens on S-NNN click, shows correct entry (editorial+)
-- [ ] Focus mode `f` and signal view `s` toggles work on all tiers
+- [ ] Multi-page: hash routing works, one page in view at a time, deep-link + reload restores the exact page; page-to-page transition runs (View Transitions where supported, fade otherwise)
+- [ ] Evidence drawer opens on S-NNN click, shows correct entry, and persists across page navigation
+- [ ] Focus mode `f` and signal view `s` toggles work on all tiers; `j`/`k` move between pages
 
 *Accessibility and hygiene*
 - [ ] `prefers-reduced-motion`: all animations disabled, layout unchanged, content identical
 - [ ] No console errors on any tier or theme combination
 - [ ] Self-contained: no external requests beyond declared CDN libraries
 
-**[ILLUMINATE:IMPECCABLE-CHECK]** (run alongside 21-item checklist):
+**[ILLUMINATE:IMPECCABLE-CHECK]** (run alongside the verify checklist):
 
 *Typography:*
 - [ ] Body text ≤72ch (doc: 72ch strict; web/deck: 65–72ch)
@@ -2575,15 +2991,20 @@ Stage I    Phase 0  config+audit     PASS  palette: <name> | tier: <e/r/s> | mod
                                            source: <type>, density: <H/M/L>
            Phase 1  signal-extract   PASS  <N> entries, <N> insights, refs: <N>
            Phase 1b faithful-source  PASS  <N> contested, <N> refuted, <N> hedged
-Stage II   Phase 2  concept-map      PASS  hubs: <N>, issue-tree: <N> sub-Qs
-           Phase 3  pyramid          PASS  GT confirmed, KL: <N>, MECE: <type>
+Stage II   Phase 2.0 structure        PASS  shape: <type> | arity: <N> | hybrid: <…>
+           Phase 2  concept-map      PASS  hubs: <N>, issue-tree: <N> sub-Qs
+           Phase 3  structure        PASS  governing object confirmed, branches: <N>, fit-test: pass
            Phase 4  audit            PASS  10/10 · 3-skeptic: all resolved
-Stage III  Phase 5  architecture     PASS  wireframe: <N> sections, 14 components
+Stage II   Phase 2.0 format           PASS  model: <multi-page/single-scroll> · pages: <N=arity>
+Stage III  Phase 5  architecture     PASS  wireframe: <N> pages, components: <selected set>, editorial-bar: pass
            Phase 6  engineering      PASS  operator-confirmed, <KB> [corrections: <N>]
-                                           palette: <name> | theme: dark+light
+                                           format: <multi-page/single-scroll> · deep-links verified
+                                           palette: <name> | register: <…> | theme: dark+light
                                            tiers: simple/editorial/rich
                                            Components: <families used — mockup/flow/metric/decision>
-           Phase 7  verify           PASS  GT drift: none · 21/21 · impeccable: PASS
+           Phase 7  verify           PASS  GT drift: none · checklist: all · impeccable: PASS
+                                           render-truth: <N>/<N> pages checked in pixels — no overflow/empty-diagram/whitespace/console-error
+                                           format: <multi-page/single-scroll> · pages: <N>
 ──────────────────────────────────────────────────────────────────────
 Output: <filename>.html (<KB>)
 Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate-anchor.md
@@ -2593,13 +3014,19 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 
 ## Output Contract
 
-1. **Tier-scaled dynamism** — `rich` is fully alive; `editorial` is readable and interactive;
+1. **Single file, internally multi-page by default (F1)** — one self-contained offline file, no
+   external requests; hash-routed, one `<section data-page>` in view at a time, page count = derived
+   arity, every page deep-linkable and reload-safe. Single-scroll is the reserved exception for a
+   genuinely linear argument, declared in `[ILLUMINATE:FORMAT]`. No parallax in either model.
+2. **Tier-scaled dynamism** — `rich` is fully alive; `editorial` is readable and interactive;
    `simple` is clean, content-first. No tier produces a broken or unstyled page.
-2. **Libraries freely** — any JS/CSS library that enhances the experience; CDN or build step both fine
-3. **Swiss editorial design** — Helvetica Neue 300 (GT/hero) + Futura 700 (section titles/labels) +
-   monospace (evidence/ASCII). 12-column CSS grid with visible column overlay. Editorial red accent,
-   `--cli` token for evidence only (deep green in light mode). Ghost section numbers in Futura at ~20vw.
-   Custom cursor with `mix-blend-mode:difference` (rich tier). Progress stripe anchored to nav bottom.
+3. **Editorial elegance, register selectable (F2)** — executed at a fixed high editorial bar
+   regardless of palette: strong type hierarchy (ultralight display vs bold labels), generous
+   whitespace, a felt column grid, restrained ornament (tight radii, subtle/flat shadows), semantic
+   restrained color. The default Swiss editorial vocabulary — Helvetica Neue 300 + Futura 700 +
+   monospace evidence, editorial red accent, ghost numerals — is one register; warm/archival/print/
+   phosphor are others. **The rounded-card SaaS-dashboard look is a failure mode.** Any JS/CSS
+   library that enhances legibility is fine; the offline default stays self-contained vanilla.
 4. **Named palette** — operator chooses from 6 curated palettes in Phase 0. Default is `illuminate`
    (Swiss editorial cold). Others: `claude` (terracotta), `greenhouse` (eucalyptus), `typeset`
    (printer's ink), `signal` (phosphor), `archive` (parchment). Each has dark+light variants; all
@@ -2610,18 +3037,38 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
 6. **Render tier selector** — `s·e·r` buttons in nav. Defaults to `editorial`. Persists in localStorage.
    CSS guards + JS helpers ensure every feature degrades cleanly at lower tiers.
 7. **3-level hierarchy** — GT → KLs → supporting detail, all navigable
-8. **Parallax hero** — 3 layers (rich) / 2 layers (editorial) / none (simple)
+8. **Page navigation** — router + page index (multi-page): View Transitions behind `@supports`
+   degrading to fade, `prefers-reduced-motion` disables; global evidence drawer + controls persist
+   across pages. No parallax (single-scroll may carry a subtle depth touch, never a headline).
 9. **Interactive ASCII** — full animation + hover nodes (rich) / 2× speed animation (editorial) / instant (simple)
 10. **Accordion** — scan-line open + nested components (rich) / height transition (editorial) / instant (simple)
 11. **Dynamic contextual blocks** — focus mode, signal view, confidence meter, related highlights
     (active on all tiers — navigation features, not decoration)
-12. **Pyramid-faithful** — site structure mirrors the SCQA pyramid exactly, no expansion
+12. **Structure-faithful** — site structure mirrors the derived macro-structure exactly (SCQA pyramid only when that is the chosen shape), no expansion; the shape is legible as a consequence of the source (swap test). **The page set = the derived top-level structure** — one page per top-level element (F1).
 13. **Accessible** — semantic HTML, keyboard navigable (j/k/f/s/Esc), reduced-motion respected
 14. **Source-faithful** — every claim traces to signal block; every INSIGHT appears
 15. **Component library** — where the KL argument is best enacted by an artifact (fidelity mockup),
     a process (flow/sequence/timeline), a magnitude (funnel/KPI/gauge), or a choice
     (quadrant/matrix), a self-contained, tokened, tier-degradable component fills the INLINE-VISUAL
     slot, governed by the ILLUSTRATE discipline. Mockup/metric content is bounded by the signal block.
+    **Component fidelity (F3):** the single most load-bearing artifact renders as the fullest mockup
+    (not prose); branching processes render as real branches with convergence (not a linear track);
+    mockups wear convincing CSS-drawn chrome (bezel / from-line / browser bar), all image-free.
+16. **Developed, not skeletonized (Part G)** — each concept/page is developed (parts, variants,
+    mechanisms, edge cases) via nesting, never "title + one component + whitespace"; technical
+    artifacts (AMPscript, SQL, schemas, config) render as `CODE-CONFIG`, not prose or omission;
+    mockup chrome matches the medium and never overflows; and **every page passes a render-truth
+    check — verified in pixels (no overflow, no empty diagrams, no whitespace pages, no console
+    errors), not from source (G5).**
+17. **At-par art direction (Part H)** — build to an explicit `[ILLUMINATE:ARTDIR]` contract: a
+    **designed** high-contrast palette (never the banned beige+terracotta+pastel default), a
+    **self-hosted real typeface** (never `system-ui`), monochrome headlines (never two-tone
+    accent-word titles), tight radii, one confident accent, one restrained shadow ramp, diagrams
+    composed as editorial infographics (never pastel auto-flowchart), and mockups that **read as
+    renders** (drawn status glyphs, device shadow). **No interaction theater** — every control
+    performs its real effect in the target or is not offered; a success message fires only on the
+    proven event (export confirms only when the tab/download actually happened). Verified by
+    **rendering and exercising** each page (H5), not from source.
 
 ---
 
@@ -2644,7 +3091,7 @@ Quality is identical. Only tooling differs.
 **`/illuminate` is haunted by the model that runs it.**
 
 Every enforcement mechanism — the 3-angle scan, the MECE tests, the 3-skeptic procedure,
-the 12-item verify checklist — is executed by the same model it is designed to constrain.
+the Phase 7 verify checklist — is executed by the same model it is designed to constrain.
 The model grades its own signal block. The model passes its own gates. The lock is made
 of the same material it holds.
 
@@ -2686,12 +3133,12 @@ Design for containment, not exorcism. Signal, do not certify.
 
 **Output quality**
 13. Never label the frameworks in the UI. Sections state arguments, not framework labels.
-14. Never produce a flat undifferentiated page. The output is a nested, navigable editorial site.
-15. Visual hierarchy enacts the pyramid: GT most prominent, KLs equal peers, detail is depth.
-16. Interactive ASCII, evidence drawer, progressive disclosure, focus mode: mandatory. Parallax:
-    opt-in via the rich tier only. 3D physics and scramble reveals: not used (editorial restraint).
+14. The output is a **navigable multi-page document/app** (Part F) — a single self-contained file, internally multi-page by default (one hash-routed view at a time, page count = derived arity), never one long compressed scroll. Single-scroll is the reserved exception for a genuinely linear single argument, declared in `[ILLUMINATE:FORMAT]`. **Parallax is removed as a goal** — it survives, if at all, only as a subtle single-scroll touch, never a headline. "Not flat" ≠ "always maximal": the structure and its dynamism are consequences of the source, not a fixed costume (see the swap test).
+15. Visual hierarchy enacts the **derived structure**: the governing object most prominent, top-level branches as peers, detail is depth. (Pyramid case: GT most prominent, KLs equal peers.)
+16. **Navigation baseline is always present** (evidence drawer/explorer, focus mode, signal view, keyboard nav, progress indicator, theme/tier/palette controls). **Enactment components are selected per argument**, never mandated — a component with no argument to enact is not built. Parallax is opt-in (rich tier); 3D physics and scramble reveals are not used. A restrained artifact for a source with no artifacts/metrics/process is a pass.
 17. Never self-certify Phase 6. Operator confirms in browser. Failures re-enter Phase 6 via the correction register — same 3-attempt, escalate-on-exhaust pattern as Phases 1–4.
-18. The HTML renders the pyramid — it does not expand the argument (no new claims). But it MUST fully elaborate the existing content: the reasoning and caveats behind each KL live in the disclosure layers. Rendering is not condensing; dropping a load-bearing nuance to fit the pyramid is a fidelity violation.
+18. The HTML renders the **derived structure** — it does not expand the argument (no new claims). But it MUST fully elaborate the existing content: the reasoning and caveats behind each branch live in the disclosure layers. Rendering is not condensing; dropping a load-bearing nuance to fit the structure is a fidelity violation.
+18b. **Editorial elegance is mandatory; the register is selectable (Part F2).** Execute at a high editorial bar independent of palette: strong type hierarchy (ultralight display vs bold labels, not uniform 600-weight card titles), generous whitespace, a felt column grid, restrained ornament (tight radii, subtle/flat shadows, minimal box-in-box), sophisticated semantic color (not a rainbow of tags). **The rounded-card / soft-shadow SaaS-dashboard aesthetic is a named failure mode.** Register may vary (Swiss, warm, archival, print, phosphor); craft may not.
 
 **Technical constraints**
 19. Component vocabulary is shadcn/ui (Radix + Tailwind patterns). Any JS/CSS library is allowed when it serves legibility — D3/Observable Plot for real data viz, Tailwind for layout. CDN and build steps (Vite, esbuild) both fine. Not for decoration: an effect that doesn't aid understanding doesn't ship.
@@ -2702,3 +3149,16 @@ Design for containment, not exorcism. Signal, do not certify.
 22. Every component is an ILLUSTRATE surface. Concrete content traces to an S-NNN or renders as visibly-generic placeholder. A fabricated number, quote, or result inside a component is the gravest evidence violation — the most believable one.
 23. Every component is self-contained (no external images), palette-tokened (`var(--…)` only), and tier-degradable (rich/balanced/simple) with content identical across tiers.
 24. Annotation pins are `data-cite` triggers into the existing evidence drawer. A pin without a resolving S-NNN is a build error.
+25. **Component fidelity (Part F3).** The single most load-bearing artifact is rendered as the highest-fidelity mockup, never a prose callout (F3a). A branching process renders as **actual branches** with real forks and convergence, not a linear track with decorative diamond glyphs (F3b). Mockups wear convincing CSS-drawn chrome — phone bezel + status area, from-address + timestamp, browser bar, traffic-lights + filename — not spare gradient panels (F3c). All still image-free and self-contained.
+
+**Depth — develop, don't skeletonize (Part G)**
+26. **Develop, don't skeletonize (G1).** Each top-level concept/page is *developed* — its parts, variants, mechanisms, edge cases, technical artifacts, and evidence are present and elaborated. The named failure mode is **"title + one component + whitespace."** A page is earned by developed content, not by being a container; a composed editorial page is full. Preservation (D2) ≠ development (G1) — the skill must *generate* depth, not merely avoid dropping it. A concept with no internal structure to develop is not a top-level page — fold it in (E1 arity/grouping).
+27. **Depth is built by nesting (G2).** A concept with internal structure renders nested, developed detail (cohort → messaging + journey variation + sizing; asset → variant set + render logic; subsystem → mechanisms), within the ≤2-tap limit. Progressive disclosure *develops* (reveals more depth); it does not merely hide. A flat one-liner for a structured concept is a failure.
+28. **Render the code (G3).** Technical artifacts the source contains or implies — AMPscript/personalization, SQL segmentation/dormancy queries, data-extension/table schemas, suppression/eligibility logic, journey/pipeline config, API payloads — render as `CODE-CONFIG` components on the relevant pages. A technical source rendered as prose paraphrase with its code omitted has under-developed.
+29. **Mockup rigor (G4).** Device chrome matches the medium (phone frame for push/SMS/in-app; email-client frame for email; browser frame for pages; editor frame for code) and is consistent across the artifact — never a generic window bar, never browser chrome on an in-app screen. No mockup clips or overflows: use `min-width:0`/wrap/ellipsis or sample-value mode (`£142.80` · `%%PotBalance%%`). Verified in render (G5), not source.
+
+**Art direction — at-par, not just correct (Part H)**
+30. **Design the palette, don't default (H1).** Commit an explicit `[ILLUMINATE:ARTDIR]` contract before build. The warm-beige + terracotta + pastel-accent default is **banned**; require high figure/ground contrast (near-black ink on paper-white, or a deliberate deep-ink canvas) and one confident accent. Self-host a real display+text typeface as an inlined woff2 data-URI — **`system-ui` is a named failure**. Tight radii (0–10px editorial), one modular scale, one restrained shadow ramp.
+31. **No named cheap tells (H2).** Each hard-fails the render gate: muddy earth-tone-on-cream palette; pastel flowchart node fills; auto-flowchart aesthetic (rounded-rect + 1px + elbow + centered label); box-in-box; system-default typeface; timid accent; flat grey-fill fake shadows; **two-tone accent-word headlines** (titles are single-ink; emphasis by weight/size, never hue). Diagrams are composed editorial infographics, not default-flowchart-tool output.
+32. **Mockups read as renders (H3).** Real device shadow + correct bezel radius; **drawn** status-bar glyphs (SVG signal/wifi/battery, never the literal "9:41 … 62%" string in body type); real header proportion. A grey box with a colored header is a fail.
+33. **No interaction theater (H4).** A control performs its real effect in the target or is not offered; a success message fires only when the effect provably occurred. Export uses a path that works in the sandbox (new-tab-to-save) and confirms only on the real event — never an unconditional "Downloaded". If no path works, don't render the button. Verified by clicking it in render (H5).

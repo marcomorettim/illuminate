@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Reactivation Machine · Rill "Second Wind" — developed</title>
+<script>(function(){var s=localStorage.getItem('sw-theme');var sys=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',s||sys);})();</script>
+<style>
+:root{
+  --bg:#f3f0e9;--bg-2:#eae5da;--surface:#fbf9f3;--surface-2:#f4f1e8;
+  --ink:#1c1710;--ink-2:#59503f;--ink-3:#928776;
+  --line:rgba(28,23,16,.10);--line-2:rgba(28,23,16,.20);
+  --accent:#a6501c;--accent-2:#7f3c10;--good:#3c6f48;--warn:#8a3c1a;
+  --seg:#5a6a4a;--flow:#3d666e;--chan:#48568a;--guard:#8a5310;--measure:#6f4780;
+  --sans:-apple-system,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono",monospace;
+  --spring:cubic-bezier(.22,.72,.24,1);--ease:cubic-bezier(.4,0,.2,1);
+  --r:7px;--r-lg:10px;--col:74ch;
+  --sh-1:0 1px 0 var(--line);
+  --sh-2:0 1px 2px rgba(50,35,15,.06),0 8px 24px -16px rgba(50,35,15,.22);
+}
+:root[data-theme="dark"]{
+  --bg:#14100a;--bg-2:#1b160e;--surface:#1a150d;--surface-2:#211a11;
+  --ink:#f2ece0;--ink-2:#b3a892;--ink-3:#7d7160;
+  --line:rgba(255,247,233,.10);--line-2:rgba(255,247,233,.20);
+  --accent:#d98a48;--accent-2:#e7a869;--good:#78b487;--warn:#d5895c;
+  --seg:#8fa074;--flow:#7cadb7;--chan:#8f9cd4;--guard:#cf9850;--measure:#bc90c8;
+  --sh-1:0 1px 0 var(--line);
+  --sh-2:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17.5px;line-height:1.62;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;transition:background .5s var(--spring),color .5s var(--spring)}
+.mono{font-family:var(--mono)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+[data-page]:focus{outline:none}
+[data-page]{display:none;view-transition-name:page}
+[data-page].live{display:block}
+@supports not (view-transition-name: page){[data-page].live{animation:pg .3s var(--ease) both}@keyframes pg{from{opacity:0;transform:translateY(8px)}}}
+@media(prefers-reduced-motion:reduce){[data-page].live{animation:none}}
+::view-transition-old(page),::view-transition-new(page){animation-duration:.32s}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(24px,6vw,72px)}
+
+/* nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:60;background:color-mix(in oklab,var(--bg) 86%,transparent);backdrop-filter:saturate(150%) blur(16px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:12px clamp(20px,4vw,40px)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:.9rem;white-space:nowrap;letter-spacing:-.02em}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.nav-links{display:flex;gap:0;margin-left:6px;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{font-size:.82rem;color:var(--ink-3);text-decoration:none;padding:6px 11px;border-radius:6px;white-space:nowrap;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a[aria-current="page"]{color:var(--accent);font-weight:560}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px}
+.ibtn{width:34px;height:34px;border-radius:6px;background:none;border:1px solid var(--line);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;transition:color .2s,border-color .2s}
+.ibtn:hover{color:var(--ink);border-color:var(--line-2)}.ibtn svg{width:16px;height:16px}
+.cta{display:flex;align-items:center;gap:7px;background:var(--ink);color:var(--bg);border:0;border-radius:6px;padding:8px 14px;font:550 .8rem var(--sans);cursor:pointer;white-space:nowrap}
+@media(max-width:1120px){.nav-links{max-width:44vw}}
+@media(max-width:680px){.nav-links{display:none}}
+
+/* page cover */
+.page{padding:clamp(96px,12vw,128px) 0 clamp(60px,8vw,96px)}
+.cover{display:flex;align-items:baseline;gap:14px;margin-bottom:10px}
+.cover .idx{font-family:var(--mono);font-size:.78rem;color:var(--accent);letter-spacing:.04em}
+.cover .of{font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px}
+h1.title{font-size:clamp(2.2rem,5vw,3.7rem);font-weight:300;letter-spacing:-.035em;line-height:1.04;margin:0 0 22px;max-width:17ch;text-wrap:balance}
+h1.title b{font-weight:600}.h1 .k,h1.title .k{color:var(--accent);font-weight:400}
+.lead{font-size:1.14rem;line-height:1.56;color:var(--ink-2);max-width:66ch;text-wrap:pretty}
+.lead b{color:var(--ink);font-weight:560}
+.rule-hi{height:2px;background:var(--ink);width:48px;margin:26px 0 30px}
+.hero-claim{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:300;letter-spacing:-.04em;line-height:1.02;margin:0 0 26px;max-width:15ch;text-wrap:balance}
+.hero-claim .k{color:var(--accent)}
+
+/* stat row */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:40px 0 0;border-top:1px solid var(--line)}
+@media(max-width:720px){.stat-row{grid-template-columns:1fr}}
+.stat{padding:22px 24px 22px 0;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+@media(max-width:720px){.stat{border-right:0;border-bottom:1px solid var(--line);padding-right:0}}
+.stat .n{font-size:2.1rem;font-weight:300;letter-spacing:-.03em;line-height:1}.stat .n b{font-weight:600}
+.stat .l{font-size:.82rem;color:var(--ink-2);margin-top:9px;line-height:1.4;max-width:34ch}
+.flag{display:inline-block;font-family:var(--mono);font-size:.64rem;color:var(--guard);border:1px solid var(--line);border-radius:4px;padding:1px 6px;margin-top:9px}
+
+/* blocks */
+.block{margin-top:48px}
+.block h3{font-size:1.05rem;font-weight:600;letter-spacing:-.015em;margin:0 0 6px;display:flex;align-items:center;gap:10px}
+.block h3 .sq{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.block .sub{color:var(--ink-2);font-size:.98rem;margin:0 0 20px;max-width:70ch;text-wrap:pretty}
+.block .sub b{color:var(--ink);font-weight:560}
+.two{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:start}
+@media(max-width:860px){.two{grid-template-columns:1fr}}
+.prose p{color:var(--ink-2);font-size:.98rem;margin:0 0 14px;text-wrap:pretty}.prose p b{color:var(--ink);font-weight:560}
+
+/* architecture */
+.arch{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);padding:clamp(12px,2vw,22px)}
+#arch{width:100%;height:auto;display:block}
+#arch text{font-family:var(--sans);fill:var(--ink);pointer-events:none}
+#arch .edge{fill:none;stroke:var(--line-2);stroke-width:1.5;marker-end:url(#ah)}
+#arch .lab{font-size:12.5px;font-weight:600}#arch .sub{font-size:10px;fill:var(--ink-3);font-family:var(--mono)}
+#arch.dim .box:not(.on){opacity:.32;transition:opacity .25s}
+#arch .band{fill:none;stroke:var(--guard);stroke-width:1;stroke-dasharray:4 4}
+#arch .band-l{font-family:var(--mono);font-size:9.5px;fill:var(--guard);letter-spacing:.05em;text-transform:uppercase}
+.arch-box{cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;font-size:.78rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}.legend i{width:10px;height:10px;border-radius:2px}
+
+/* code (CODE-CONFIG · G3) */
+.code{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--surface);position:relative}
+.code-bar{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.code-bar .tl{display:flex;gap:5px}.code-bar .tl i{width:9px;height:9px;border-radius:50%;background:var(--ink-3);opacity:.35}
+.code-bar .fn{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin-left:4px}
+.code-bar .lang{margin-left:auto;font-family:var(--mono);font-size:.64rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.code pre{margin:0;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:.79rem;line-height:1.62;color:var(--ink-2);tab-size:2}
+.code .k{color:var(--accent);font-weight:600}.code .s{color:var(--good)}.code .c{color:var(--ink-3);font-style:italic}.code .f{color:var(--measure)}.code .n{color:var(--chan)}
+.code-note{padding:8px 18px;border-top:1px solid var(--line);font-size:.7rem;color:var(--ink-3);font-family:var(--mono);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.code-note .il{color:var(--guard)}
+
+/* cohort matrix + nesting (G2) */
+.matrix{width:100%;border-collapse:collapse;font-size:.92rem;margin-bottom:6px}
+.matrix th{text-align:left;font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:500;padding:0 14px 12px 0;border-bottom:1px solid var(--line-2)}
+.matrix td{padding:14px 14px 14px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.co-name{font-weight:600;display:flex;align-items:baseline;gap:9px}.co-name .num{font-family:var(--mono);font-size:.76rem;color:var(--accent)}
+.co-size{font-family:var(--mono);font-size:.84rem;color:var(--ink-2)}
+.yn{font-size:.8rem;font-weight:560}.yn.y{color:var(--good)}.yn.n{color:var(--ink-3)}
+.co-acc{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.co-acc details{background:var(--surface)}
+.co-acc summary{list-style:none;cursor:pointer;padding:16px 20px;display:flex;align-items:center;gap:12px;font-weight:560}
+.co-acc summary::-webkit-details-marker{display:none}
+.co-acc summary .tag{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+.co-acc summary .sz{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin-left:auto}
+.co-acc summary .cv{color:var(--ink-3);transition:transform .3s var(--spring);margin-left:6px}
+.co-acc details[open] summary .cv{transform:rotate(90deg)}
+.co-body{padding:2px 20px 20px 41px;display:grid;gap:16px}
+.co-facet{border-left:1px solid var(--line);padding-left:16px}
+.co-facet .fl{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);margin-bottom:5px}
+.co-facet p{margin:0;font-size:.9rem;color:var(--ink-2);text-wrap:pretty}.co-facet p b{color:var(--ink);font-weight:560}
+.co-track{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.rungpill{font-family:var(--mono);font-size:.68rem;padding:3px 9px;border-radius:5px;border:1px solid var(--line);color:var(--ink-2)}
+.rungpill.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.rungpill.off{opacity:.5;text-decoration:line-through}
+
+/* ladder */
+.ladder{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.rung{display:grid;grid-template-columns:80px 1fr;background:var(--surface);padding:20px 22px}
+.rung .rn{font-family:var(--mono);font-size:.78rem;color:var(--accent)}.rung .rn b{display:block;font-size:1.5rem;font-weight:300;color:var(--ink);margin-bottom:2px;font-family:var(--sans)}
+.rung h4{margin:0 0 6px;font-size:1.05rem;font-weight:600;letter-spacing:-.015em}
+.rung p{margin:0 0 10px;color:var(--ink-2);font-size:.95rem;max-width:62ch;text-wrap:pretty}
+.rung.last{background:linear-gradient(180deg,color-mix(in oklab,var(--guard) 8%,var(--surface)),var(--surface))}
+.byco{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px}
+@media(max-width:640px){.byco{grid-template-columns:1fr}}
+.byco div{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;font-size:.84rem}
+.byco .c{font-family:var(--mono);font-size:.64rem;color:var(--seg);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:3px}
+
+/* journey */
+.jflow{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);padding:clamp(14px,2vw,24px)}
+#jsvg{width:100%;height:auto;display:block}
+#jsvg text{font-family:var(--sans);fill:var(--ink)}#jsvg .n{font-size:11.5px;font-weight:600}#jsvg .s{font-size:9.5px;fill:var(--ink-3);font-family:var(--mono)}
+#jsvg .e{fill:none;stroke:var(--line-2);stroke-width:1.5;marker-end:url(#jah)}
+#jsvg .e.hold{stroke:var(--measure);stroke-dasharray:4 3}#jsvg .e.branch{stroke:var(--guard)}
+.steps{display:grid;gap:10px;position:relative;padding-left:22px;margin-top:18px}
+.steps::before{content:"";position:absolute;left:6px;top:10px;bottom:40px;width:1.5px;background:var(--line-2)}
+.step{position:relative;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:13px 16px}
+.step::before{content:"";position:absolute;left:-21px;top:17px;width:11px;height:11px;border-radius:50%;background:var(--surface);border:1.5px solid var(--flow)}
+.step .d{font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:600}
+.step h5{margin:2px 0 4px;font-size:1rem;font-weight:600}.step p{margin:0;font-size:.88rem;color:var(--ink-2)}
+.step .w{margin:2px 0 10px 3px;font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
+.fork{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fork .step::before{border-color:var(--guard);border-radius:2px;transform:rotate(45deg)}
+@media(max-width:640px){.fork{grid-template-columns:1fr}}
+.exits{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+@media(max-width:640px){.exits{grid-template-columns:1fr}}
+.exit{border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;background:var(--surface-2)}
+.exit.win .tg{color:var(--good)}.exit.mid .tg{color:var(--guard)}.exit.hard .tg{color:var(--ink-3)}
+.exit .tg{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.exit h6{margin:5px 0 3px;font-size:.94rem;font-weight:600}.exit p{margin:0;font-size:.84rem;color:var(--ink-2)}
+
+/* DEVICE frames (G4) */
+.stage{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;display:flex;justify-content:center}
+.device{width:250px;border:11px solid #14110b;border-radius:38px;background:linear-gradient(180deg,#2a2418,#1a160e);overflow:hidden;box-shadow:var(--sh-2);position:relative}
+:root[data-theme="light"] .device{border-color:#26201a}
+.dev-status{display:flex;justify-content:space-between;align-items:center;padding:9px 20px 4px;font-family:var(--mono);font-size:.58rem;color:#cabfa6}
+.dev-status b{font-weight:600}
+.lock{padding:14px 12px 22px;text-align:center;color:#efe7d4}
+.lock .t{font-size:3rem;font-weight:200;letter-spacing:-.02em;line-height:1}
+.lock .dt{font-size:.72rem;opacity:.7;margin:2px 0 20px}
+.push{background:rgba(250,247,240,.14);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:11px 13px;text-align:left}
+.push .app{font-family:var(--mono);font-size:.58rem;color:#e8dcc4;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:6px}
+.push .app i{width:13px;height:13px;border-radius:4px;background:var(--accent)}
+.push .t{font-size:.86rem;font-weight:600;margin-top:6px;color:#fdf8ee;line-height:1.3}
+.push .b{font-size:.78rem;color:#e0d6c2;margin-top:3px;line-height:1.4}
+.msgs{background:#efe7d4;min-height:230px;padding:0}
+.msg-hd{background:#e4dbc6;padding:9px;text-align:center;font-size:.74rem;font-weight:600;color:#3a3018;border-bottom:1px solid rgba(0,0,0,.06)}
+.msg-hd small{display:block;font-weight:400;font-size:.62rem;opacity:.6}
+.bubble{margin:12px 12px;background:#fff;border-radius:16px 16px 16px 4px;padding:10px 13px;font-size:.82rem;color:#2a2416;max-width:82%;box-shadow:0 1px 2px rgba(0,0,0,.08);line-height:1.45}
+.bubble .tm{display:block;font-family:var(--mono);font-size:.58rem;color:#9a8f78;margin-top:5px}
+.appscreen{background:#efe7d4;min-height:230px}
+.app-hd{background:var(--accent);color:#fff;padding:11px 14px;font-weight:600;font-size:.86rem;display:flex;align-items:center;gap:8px}
+.app-hd .dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.9}
+.app-card{margin:14px 12px;background:#fff;border-radius:12px;padding:15px;color:#2a2416}
+.app-card .eb{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--seg)}
+.app-card h5{margin:5px 0 3px;font-size:1.1rem;font-weight:600}
+.app-card p{margin:0 0 12px;font-size:.82rem;color:#5c5340}
+.app-card .b1{display:block;text-align:center;background:var(--accent);color:#fff;border-radius:9px;padding:9px;font-size:.82rem;font-weight:600;text-decoration:none}
+.app-card .b2{display:block;text-align:center;color:#7a6f58;padding:8px;font-size:.78rem}
+.dl{font-family:var(--mono);font-size:.62rem;color:#b9ad93;margin-top:8px;word-break:break-all}
+.pin{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);font-family:var(--mono);font-size:.64rem;font-weight:600;cursor:pointer;vertical-align:middle;margin-left:5px;background:var(--surface)}
+.pin:hover{background:var(--accent);color:#fff}
+.mtag{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;color:var(--guard);border:1px solid var(--line);border-radius:4px;padding:2px 7px}
+
+/* email frame (G4) */
+.email{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--surface);box-shadow:var(--sh-2)}
+.email-top{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.68rem;color:var(--ink-3)}
+.email-top .env{width:14px;height:11px;border:1.4px solid var(--ink-3);border-radius:2px;position:relative}.email-top .env::after{content:"";position:absolute;inset:0;border-top:6px solid transparent;border-left:7px solid var(--ink-3);border-right:7px solid var(--ink-3);opacity:.5;clip-path:polygon(0 0,50% 55%,100% 0)}
+.email-hd{padding:15px 18px;border-bottom:1px solid var(--line)}
+.email-subj{font-size:1.02rem;font-weight:600;letter-spacing:-.01em}
+.email-meta{display:flex;align-items:center;gap:10px;margin-top:8px}
+.email-av{width:34px;height:34px;border-radius:50%;background:color-mix(in oklab,var(--accent) 16%,var(--surface));color:var(--accent);font-weight:700;display:grid;place-items:center;font-size:.86rem;flex-shrink:0}
+.email-from{font-size:.82rem;color:var(--ink)}.email-from span{color:var(--ink-3)}
+.email-time{margin-left:auto;font-family:var(--mono);font-size:.68rem;color:var(--ink-3)}
+.email-pre{font-size:.8rem;color:var(--ink-3);margin-top:8px}
+.email-body{padding:18px;font-size:.9rem;line-height:1.55;color:var(--ink-2)}
+.email-body .b1{display:inline-block;background:var(--accent);color:#fff;border-radius:8px;padding:9px 16px;font-size:.84rem;font-weight:600;text-decoration:none;margin-top:12px}
+
+/* reactivation screen — fullest, app chrome, sample-value glance (F3a + G4) */
+.rescreen{border:11px solid #14110b;border-radius:34px;overflow:hidden;box-shadow:var(--sh-2);max-width:340px;margin:0 auto;background:#efe7d4}
+:root[data-theme="light"] .rescreen{border-color:#26201a}
+.rs-status{display:flex;justify-content:space-between;padding:9px 20px 5px;font-family:var(--mono);font-size:.58rem;color:#3a3018;background:#efe7d4}
+.rs-appbar{background:var(--accent);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:8px;font-weight:600}
+.rs-appbar .dot{width:8px;height:8px;border-radius:50%;background:#fff}
+.rs-body{padding:20px 18px 24px;background:#efe7d4;color:#2a2416}
+.rs-body .eb{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.07em;color:var(--accent)}
+.rs-body h4{font-size:1.35rem;font-weight:500;letter-spacing:-.02em;margin:7px 0 18px;color:#241d10}
+.glance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid rgba(0,0,0,.1);border-bottom:1px solid rgba(0,0,0,.1);margin-bottom:18px}
+.glance div{min-width:0;padding:14px 10px 14px 0;border-right:1px solid rgba(0,0,0,.08)}.glance div:last-child{border-right:0}
+.glance .gn{font-size:1.15rem;font-weight:600;letter-spacing:-.02em;line-height:1;color:#241d10;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.glance .gf{font-family:var(--mono);font-size:.56rem;color:var(--measure);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.glance .gl{font-size:.66rem;color:#6a5f48;margin-top:5px}
+.rs-primary{display:block;background:var(--accent);color:#fff;text-align:center;border-radius:10px;padding:13px;font-size:.92rem;font-weight:600;text-decoration:none}
+.rs-sec{display:flex;gap:16px;justify-content:center;margin-top:12px;font-size:.78rem;color:#6a5f48;flex-wrap:wrap}
+.rs-reass{margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,0,0,.1);font-size:.82rem;color:#5c5340;font-style:italic;text-align:center;text-wrap:pretty}
+
+/* schema table */
+.schema{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.8rem}
+.schema th{text-align:left;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:500;padding:0 12px 10px 0;border-bottom:1px solid var(--line-2)}
+.schema td{padding:9px 12px 9px 0;border-bottom:1px solid var(--line);color:var(--ink-2)}
+.schema td:first-child{color:var(--accent);font-weight:600}.schema td .t{color:var(--chan)}
+
+/* funnel */
+.funnel{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.fn{display:grid;grid-template-columns:150px 1fr 60px;align-items:center;gap:16px;background:var(--surface);padding:14px 18px}
+.fn-l{font-size:.88rem;font-weight:560}.fn-l small{display:block;font-weight:400;color:var(--ink-3);font-size:.74rem}
+.fn-tr{height:26px;background:var(--bg-2);border-radius:4px;overflow:hidden}
+.fn-b{height:100%;width:var(--w);background:var(--measure);transform:scaleX(0);transform-origin:left;transition:transform .9s var(--spring)}
+.fn.go .fn-b{transform:scaleX(1)}.fn:last-child .fn-b{background:var(--good)}
+.fn-v{font-family:var(--mono);font-size:.9rem;font-weight:600;text-align:right}
+@media(max-width:600px){.fn{grid-template-columns:1fr auto}.fn-tr{grid-column:1/-1;order:3}}
+
+/* panels */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+@media(max-width:820px){.cols{grid-template-columns:1fr}}
+.pan{padding:24px;background:var(--surface)}.pan+.pan{border-left:1px solid var(--line)}
+@media(max-width:820px){.pan+.pan{border-left:0;border-top:1px solid var(--line)}}
+.pan h4{margin:0 0 12px;font-size:1rem;font-weight:600;display:flex;align-items:center;gap:9px}.pan h4 .sq{width:9px;height:9px;border-radius:2px}
+.pan p{margin:0 0 12px;color:var(--ink-2);font-size:.93rem;text-wrap:pretty}.pan p b{color:var(--ink);font-weight:560}
+.pan ul{margin:0;padding:0;list-style:none}.pan li{padding:10px 0;font-size:.9rem;color:var(--ink-2);border-top:1px solid var(--line)}
+.pan li:first-child{border-top:0}.pan li b{color:var(--ink);font-weight:560}
+.gmet{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.gmet div{background:var(--surface);padding:13px 15px}.gmet .cap{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3)}
+.gmet .val{font-size:1.3rem;font-weight:300;color:var(--warn);margin-top:5px}.gmet .br{font-size:.7rem;color:var(--ink-3);margin-top:3px}
+.tl{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+@media(max-width:900px){.tl{grid-template-columns:repeat(2,1fr)}}
+.tl div{background:var(--surface);padding:16px 16px 20px}.tl .wk{font-family:var(--mono);font-size:.7rem;color:var(--accent);font-weight:600}
+.tl h5{margin:7px 0 5px;font-size:.92rem;font-weight:600}.tl p{margin:0;font-size:.8rem;color:var(--ink-3);line-height:1.4}
+.tl div:nth-child(4){background:color-mix(in oklab,var(--good) 7%,var(--surface))}
+
+/* open questions + ledger */
+.oq{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.oq details{background:var(--surface)}
+.oq summary{list-style:none;cursor:pointer;padding:18px 22px;font-weight:560;font-size:1.02rem;display:flex;align-items:center;gap:14px}
+.oq summary::-webkit-details-marker{display:none}
+.oq summary .q{font-family:var(--mono);color:var(--measure);font-size:.78rem;flex-shrink:0}
+.oq summary .cv{margin-left:auto;color:var(--ink-3);transition:transform .3s var(--spring)}
+.oq details[open] summary .cv{transform:rotate(90deg)}
+.oq .bd{padding:0 22px 20px 58px;color:var(--ink-2);font-size:.92rem;max-width:74ch;text-wrap:pretty}
+.ledger{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+@media(max-width:700px){.ledger{grid-template-columns:repeat(2,1fr)}}
+.led{background:var(--surface);padding:22px}.led .n{font-size:2.2rem;font-weight:300;letter-spacing:-.02em;line-height:1}.led .l{font-size:.82rem;color:var(--ink);margin-top:9px}.led .s{font-size:.74rem;color:var(--ink-3);margin-top:3px}
+.exp{margin-top:26px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);padding:22px}
+.filt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.filt button{font-family:var(--mono);font-size:.72rem;color:var(--ink-2);background:none;border:1px solid var(--line);border-radius:5px;padding:5px 11px;cursor:pointer}.filt button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.exp-list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;max-height:440px;overflow-y:auto}
+.row{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:12px 14px;background:var(--surface);font-size:.88rem;cursor:pointer}.row:hover{background:var(--surface-2)}
+.row .sid{font-family:var(--mono);font-size:.74rem;color:var(--accent);font-weight:600}.row .st{color:var(--ink-2)}.row .sg{font-family:var(--mono);font-size:.6rem;color:var(--ink-3);border:1px solid var(--line);border-radius:4px;padding:1px 6px;white-space:nowrap;height:fit-content}
+
+.cite{display:inline-flex;align-items:center;font-family:var(--mono);font-size:.66rem;color:var(--accent);border:1px solid var(--line);border-radius:4px;padding:0 5px;cursor:pointer;vertical-align:baseline;background:none}
+.cite:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pager{display:flex;justify-content:space-between;gap:14px;margin-top:56px;padding-top:26px;border-top:1px solid var(--line)}
+.pager a{text-decoration:none;color:var(--ink-2);font-size:.9rem;display:flex;flex-direction:column;gap:3px;max-width:46%}.pager a:hover{color:var(--ink)}
+.pager .lb{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}
+.pager a.next{text-align:right;margin-left:auto}.pager .nm{font-weight:560}
+
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,92vw);background:var(--surface);border-left:1px solid var(--line);box-shadow:-20px 0 50px -20px rgba(0,0,0,.35);transform:translateX(100%);transition:transform .4s var(--spring);z-index:120;display:flex;flex-direction:column}
+.drawer.open{transform:none}
+.dh{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line)}.dh h4{margin:0;font-size:1rem}.dh .x{cursor:pointer;color:var(--ink-3);background:none;border:0;font-size:1.3rem}
+.db{padding:20px 22px;overflow-y:auto}.db .sid{font-family:var(--mono);font-size:.78rem;color:var(--accent);font-weight:600}.db .stag{font-family:var(--mono);font-size:.64rem;color:var(--ink-3);border:1px solid var(--line);border-radius:4px;padding:1px 7px;margin-left:8px}.db .stext{margin-top:12px;font-size:.96rem;line-height:1.55}
+.scrim{position:fixed;inset:0;background:rgba(20,14,8,.38);opacity:0;pointer-events:none;transition:opacity .4s;z-index:110}.scrim.open{opacity:1;pointer-events:auto}
+.hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);font-size:.76rem;font-family:var(--mono);padding:7px 14px;border-radius:6px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:90}.hint.show{opacity:.95}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <div class="brand"><span class="dot"></span>Second Wind</div>
+  <div class="nav-links" id="navlinks">
+    <a href="#/machine">Machine</a><a href="#/cohorts">Cohorts</a><a href="#/ladder">Ladder</a><a href="#/journey">Journey</a><a href="#/creative">Creative</a><a href="#/measure">Measurement</a><a href="#/guardrails">Guardrails</a><a href="#/questions">Open questions</a>
+  </div>
+  <div class="nav-r">
+    <button class="ibtn" id="theme" title="Theme" aria-label="Toggle theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg></button>
+    <button class="ibtn" id="dl" title="Download this page" aria-label="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></button>
+    <button class="cta" id="ev">Evidence</button>
+  </div>
+</div></nav>
+
+<main>
+<!-- MACHINE -->
+<section data-page="machine" class="page"><div class="wrap">
+  <div class="eyebrow">Rill · Second Wind · dormant-user reactivation</div>
+  <h1 class="hero-claim">The campaign has to <span class="k">earn the re-open</span>, not demand it.</h1>
+  <p class="lead">Around <b>1.4M</b> Rill users have quietly gone dormant — no app opens, auto-save paused, the round-up habit lapsed. Rill's value compounds silently in the background, so a dormant user never feels a sharp moment of churn: <b>there is no cancellation event to react to, only a slow fade.</b> This brief is not an argument about whether to win them back. It is the machine that does it.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="n">1.4M</div><div class="l">dormant users — 30+ days no open, auto-save off or no transfer in 45+ days <button class="cite" data-cite="S-03">S-03</button></div></div>
+    <div class="stat"><div class="n">8%<b style="font-size:1rem;color:var(--ink-3);font-weight:400"> vs 3%</b></div><div class="l">target reactivation vs holdout — <b style="color:var(--good)">+5pp</b> incremental ≈ 63k savers <button class="cite" data-cite="S-10">S-10</button></div></div>
+    <div class="stat"><div class="n">~3%</div><div class="l">business-as-usual monthly reactivation to beat <span class="flag">assumption · not measured</span> <button class="cite" data-cite="S-07">S-07</button></div></div>
+  </div>
+  <div class="block">
+    <div class="two">
+      <div>
+        <h3><span class="sq" style="background:var(--accent)"></span>The reactivation machine</h3>
+        <p class="sub">Dormant users are scored into cohorts nightly, split off a 10% holdout, routed to a cohort track, escalated up a four-rung ladder across channels, and either reactivate — at which point <b>every pending send is cancelled</b> — or fall through to an evergreen Winback. Hover a stage; each is its own page.</p>
+        <div class="arch">
+          <svg id="arch" viewBox="0 0 980 300" role="img" aria-label="Architecture of the Second Wind journey">
+            <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-3)"/></marker></defs>
+            <rect class="band" x="12" y="120" width="956" height="120" rx="10"></rect>
+            <text class="band-l" x="24" y="138">Guardrails · frequency caps · consent · compliance — enclose every stage</text>
+            <path class="edge" d="M150,66 L196,66"/><path class="edge" d="M320,66 L366,66"/><path class="edge" d="M490,66 L560,66"/><path class="edge" d="M690,66 L746,66"/>
+            <path class="edge" d="M625,92 L625,120"/><path class="edge" d="M818,92 L818,120"/><path class="edge" d="M625,210 L625,238"/><path class="edge" d="M690,295 L746,295"/>
+            <g class="box arch-box" data-nav="cohorts"><rect x="20" y="40" width="130" height="52" rx="6" fill="var(--bg-2)" stroke="var(--line-2)"/><text class="lab" x="85" y="63" text-anchor="middle">1.4M dormant</text><text class="sub" x="85" y="79" text-anchor="middle">the asset</text></g>
+            <g class="box arch-box" data-nav="cohorts"><rect x="196" y="36" width="124" height="60" rx="6" fill="color-mix(in oklab,var(--seg) 14%,var(--surface))" stroke="var(--seg)"/><text class="lab" x="258" y="60" text-anchor="middle">Nightly scorer</text><text class="sub" x="258" y="76" text-anchor="middle">→ 4 cohorts</text></g>
+            <g class="box arch-box" data-nav="journey"><rect x="366" y="32" width="124" height="68" rx="6" fill="color-mix(in oklab,var(--flow) 14%,var(--surface))" stroke="var(--flow)"/><text class="lab" x="428" y="60" text-anchor="middle">4-rung journey</text><text class="sub" x="428" y="76" text-anchor="middle">ladder + splits</text></g>
+            <g class="box arch-box" data-nav="measure"><rect x="560" y="36" width="130" height="60" rx="6" fill="color-mix(in oklab,var(--measure) 14%,var(--surface))" stroke="var(--measure)"/><text class="lab" x="625" y="60" text-anchor="middle">10% holdout</text><text class="sub" x="625" y="76" text-anchor="middle">measures lift</text></g>
+            <g class="box arch-box" data-nav="creative"><rect x="746" y="36" width="130" height="60" rx="6" fill="color-mix(in oklab,var(--chan) 14%,var(--surface))" stroke="var(--chan)"/><text class="lab" x="811" y="60" text-anchor="middle">Push › SMS › Email</text><text class="sub" x="811" y="76" text-anchor="middle">+ in-app</text></g>
+            <g class="box arch-box" data-nav="creative"><rect x="560" y="238" width="130" height="52" rx="6" fill="var(--surface-2)" stroke="var(--line-2)"/><text class="lab" x="625" y="261" text-anchor="middle">Reactivation</text><text class="sub" x="625" y="277" text-anchor="middle">screen</text></g>
+            <g class="box arch-box" data-nav="measure"><rect x="746" y="238" width="130" height="52" rx="6" fill="color-mix(in oklab,var(--good) 12%,var(--surface))" stroke="var(--good)"/><text class="lab" x="811" y="261" text-anchor="middle">Reactivated</text><text class="sub" x="811" y="277" text-anchor="middle">or → Winback</text></g>
+          </svg>
+          <div class="legend"><span><i style="background:var(--seg)"></i>Segmentation</span><span><i style="background:var(--flow)"></i>Journey</span><span><i style="background:var(--measure)"></i>Measurement</span><span><i style="background:var(--chan)"></i>Channels</span><span><i style="background:var(--good)"></i>Success</span></div>
+        </div>
+      </div>
+      <div class="prose">
+        <h3><span class="sq" style="background:var(--accent)"></span>Why it is delicate</h3>
+        <p>Reactivation is <b>materially cheaper than paid acquisition</b> of an equivalent active user, and reactivated savers resume depositing, growing assets under management. <button class="cite" data-cite="S-05">S-05</button></p>
+        <p>But the same silence that makes dormancy easy to ignore makes reactivation delicate. These are people who granted an app permission and, often, a phone number and a bank connection. <b>Over-messaging them, or messaging a generic "we miss you," is the fastest way to convert a dormant-but-retained user into an opt-out or an uninstall.</b> <button class="cite" data-cite="S-06">S-06</button></p>
+        <p>So the dormant base is treated as a <b>fragile asset</b>: the campaign may spend a small, measured amount of its goodwill to reactivate, and the guardrails cap the spend. The one rule that governs the whole machine —</p>
+        <p style="color:var(--ink);font-size:1.08rem"><span style="font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--good);display:block;margin-bottom:6px">The one rule</span><b>The moment a reactivation fires, all pending sends are cancelled and the user exits to Success.</b> No "come back" message after they have already come back. <button class="cite" data-cite="S-31">S-31</button></p>
+      </div>
+    </div>
+  </div>
+  <nav class="pager"><span></span><a class="next" href="#/cohorts"><span class="lb">Next · subsystem 1</span><span class="nm">Segmentation — the four cohorts →</span></a></nav>
+</div></section>
+
+<!-- COHORTS (nested G2 + SQL G3) -->
+<section data-page="cohorts" class="page"><div class="wrap">
+  <div class="cover"><span class="idx mono">Subsystem 1</span><span class="of mono">of 7</span></div>
+  <h1 class="title">The dormant base is not one audience. <b>It is four.</b></h1>
+  <div class="rule-hi"></div>
+  <p class="lead">Every dormant user lands in exactly one of four mutually-exclusive cohorts, scored nightly and re-checked at every step against the live data extension. <b>Each cohort stopped for a different reason, so each needs a different reason to come back</b> — and a different answer to the incentive question. Open a cohort to see its messaging track, journey variation, and sizing. <button class="cite" data-cite="S-04">S-04</button> <button class="cite" data-cite="S-17">S-17</button></p>
+
+  <div class="block">
+    <h3><span class="sq" style="background:var(--seg)"></span>The four cohorts, developed</h3>
+    <div class="co-acc">
+      <details open>
+        <summary><span class="tag" style="background:var(--seg)"></span><span class="num mono" style="color:var(--accent)">C1</span> Never-Funded<span class="sz">~380k</span><span class="cv">›</span></summary>
+        <div class="co-body">
+          <div class="co-facet"><div class="fl">Why they stopped</div><p>Completed onboarding and linked a card but <b>never saved a penny</b> — round-ups never switched on, no deposit. The barrier is the first save, not a lost habit; they have no pot to point back to. <button class="cite" data-cite="S-13">S-13</button></p></div>
+          <div class="co-facet"><div class="fl">Messaging angle</div><p><b>Activation, effortlessness:</b> "your first round-up is one tap away." Reconnect uses the near-miss ("Your round-ups are ready to start"), not a balance they don't have.</p></div>
+          <div class="co-facet"><div class="fl">Journey variation</div><p>Runs the full ladder including the incentive — a first-save nudge converts well here.<div class="co-track"><span class="rungpill on">1 Reconnect</span><span class="rungpill on">2 Remind</span><span class="rungpill on">3 Reduce</span><span class="rungpill on">4 £5 incentive</span></div></p></div>
+          <div class="co-facet"><div class="fl">Sizing &amp; eligibility</div><p>~380k · <b>incentive-eligible</b> · standard cadence.</p></div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="tag" style="background:var(--flow)"></span><span class="num mono" style="color:var(--accent)">C2</span> Funded-Then-Lapsed<span class="sz">~520k</span><span class="cv">›</span></summary>
+        <div class="co-body">
+          <div class="co-facet"><div class="fl">Why they stopped</div><p>Saved actively at some point, then auto-save was paused or stopped and activity died. <b>The richest cohort</b> — a real pot balance, a real history, and often a stated goal. <button class="cite" data-cite="S-14">S-14</button></p></div>
+          <div class="co-facet"><div class="fl">Messaging angle</div><p><b>Continuity:</b> "pick up where you left off," show the balance and goal progress. Reconnect leads with the real number — "You've saved £142 without noticing."</p></div>
+          <div class="co-facet"><div class="fl">Journey variation</div><p>Full ladder; incentive on the later step, behind the A/B test.<div class="co-track"><span class="rungpill on">1 Reconnect</span><span class="rungpill on">2 Remind</span><span class="rungpill on">3 Reduce</span><span class="rungpill on">4 £5 incentive</span></div></p></div>
+          <div class="co-facet"><div class="fl">Sizing &amp; eligibility</div><p>~520k · <b>incentive-eligible (late)</b> · standard cadence.</p></div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="tag" style="background:var(--chan)"></span><span class="num mono" style="color:var(--accent)">C3</span> Round-Up-Only-Drifted<span class="sz">~300k</span><span class="cv">›</span></summary>
+        <div class="co-body">
+          <div class="co-facet"><div class="fl">Why they stopped</div><p>Only ever used passive round-ups (never a recurring transfer), now turned off or declined after a card change. <b>They liked invisible</b> — they never wanted to think about it. <button class="cite" data-cite="S-15">S-15</button></p></div>
+          <div class="co-facet"><div class="fl">Messaging angle</div><p><b>Zero-effort resumption:</b> "one tap and it's back to running itself." The app should feel like it is offering to do the work for them, not asking them to do work.</p></div>
+          <div class="co-facet"><div class="fl">Journey variation</div><p>No incentive rung — the value prop is effortlessness, not cash. A single softer value touch replaces Day-10.<div class="co-track"><span class="rungpill on">1 Reconnect</span><span class="rungpill on">2 Remind</span><span class="rungpill on">3 Reduce</span><span class="rungpill off">4 incentive</span></div></p></div>
+          <div class="co-facet"><div class="fl">Sizing &amp; eligibility</div><p>~300k · <b>not incentive-eligible</b> in v1 · standard cadence.</p></div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="tag" style="background:var(--guard)"></span><span class="num mono" style="color:var(--accent)">C4</span> Withdrew-Partial<span class="sz">~200k</span><span class="cv">›</span></summary>
+        <div class="co-body">
+          <div class="co-facet"><div class="fl">Why they stopped</div><p>Took money out at some point but still hold a balance and/or a live card link. <b>Withdrawal is a trust signal, not always a rejection</b> — life happened. <button class="cite" data-cite="S-16">S-16</button></p></div>
+          <div class="co-facet"><div class="fl">Messaging angle</div><p><b>No pressure, re-earn the relationship,</b> offer a goal reset. This cohort should never feel chased.</p></div>
+          <div class="co-facet"><div class="fl">Journey variation</div><p>Softer cadence (frequency cap 3, not 4), no incentive — paying people who just withdrew invites gaming. Never sees rung 4.<div class="co-track"><span class="rungpill on">1 Reconnect</span><span class="rungpill on">2 Remind</span><span class="rungpill on">3 Reduce</span><span class="rungpill off">4 incentive</span></div></p></div>
+          <div class="co-facet"><div class="fl">Sizing &amp; eligibility</div><p>~200k · <b>not incentive-eligible</b> (by design) · softer cadence, fewer touches, longer waits.</p></div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="sq" style="background:var(--seg)"></span>Nightly scoring — the code that assigns a cohort</h3>
+    <p class="sub">A nightly warehouse job recomputes each user's dormancy state and cohort from app-open recency, transfer recency, auto-save status, balance, and withdrawal history — then writes it to the <span class="mono" style="font-size:.88rem">SecondWind_Audience</span> data extension keyed on Subscriber ID. Cohorts are mutually exclusive by the priority order below. <button class="cite" data-cite="S-17">S-17</button> <button class="cite" data-cite="S-19">S-19</button></p>
+    <div class="code">
+      <div class="code-bar"><span class="tl"><i></i><i></i><i></i></span><span class="fn">dormancy_cohort.sql</span><span class="lang">SQL · nightly</span></div>
+<pre><span class="c">-- Dormant = no app open 30d+ AND (auto-save off OR no transfer 45d+),</span>
+<span class="c">-- excluding closed / opted-out. Cohort assigned by priority (first match wins).</span>
+<span class="k">WITH</span> dormant <span class="k">AS</span> (
+  <span class="k">SELECT</span> subscriber_id, pot_balance, roundup_total, autosave_status,
+         last_open_days, last_transfer_days, ever_funded, withdrew_flag
+  <span class="k">FROM</span> user_daily_snapshot
+  <span class="k">WHERE</span> last_open_days <span class="n">&gt;= 30</span>
+    <span class="k">AND</span> (autosave_status = <span class="s">'off'</span> <span class="k">OR</span> last_transfer_days <span class="n">&gt;= 45</span>)
+    <span class="k">AND</span> account_status <span class="k">NOT IN</span> (<span class="s">'closed'</span>, <span class="s">'withdrawn_full'</span>)
+    <span class="k">AND</span> messaging_opt_out = <span class="k">FALSE</span> )
+<span class="k">SELECT</span> subscriber_id,
+  <span class="k">CASE</span>
+    <span class="k">WHEN</span> ever_funded = <span class="k">FALSE</span>              <span class="k">THEN</span> <span class="s">'C1_NeverFunded'</span>
+    <span class="k">WHEN</span> withdrew_flag = <span class="k">TRUE</span>              <span class="k">THEN</span> <span class="s">'C4_WithdrewPartial'</span>
+    <span class="k">WHEN</span> roundup_total <span class="n">&gt; 0</span> <span class="k">AND</span> pot_balance <span class="n">&gt; 0</span> <span class="k">THEN</span> <span class="s">'C2_FundedLapsed'</span>
+    <span class="k">ELSE</span>                                  <span class="s">'C3_RoundUpDrifted'</span>
+  <span class="k">END</span> <span class="k">AS</span> cohort
+<span class="k">FROM</span> dormant;</pre>
+      <div class="code-note"><span class="il">ILLUSTRATION · faithful depiction of the described scoring logic, not verbatim repo code</span><span>traces: S-03 · S-13–16 · S-17</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="sq" style="background:var(--warn)"></span>Global exclusions — never enter the journey</h3>
+    <p class="sub">Checked at entry and re-checked at every step. <button class="cite" data-cite="S-19">S-19</button></p>
+    <div class="cols"><div class="pan"><ul>
+      <li>Opted-out of the relevant channel</li>
+      <li>Account closed or flagged</li>
+      <li>In a fraud / AML review</li>
+    </ul></div><div class="pan"><ul>
+      <li>Served a Second Wind message in the last 21 days</li>
+      <li>Support ticket open with negative sentiment</li>
+      <li>Under-18 or unverified KYC</li>
+    </ul></div></div>
+  </div>
+  <nav class="pager"><a href="#/machine"><span class="lb">← Back</span><span class="nm">The machine</span></a><a class="next" href="#/ladder"><span class="lb">Next · subsystem 2</span><span class="nm">The messaging ladder →</span></a></nav>
+</div></section>
+
+<!-- LADDER (per-cohort copy nesting G2) -->
+<section data-page="ladder" class="page"><div class="wrap">
+  <div class="cover"><span class="idx mono">Subsystem 2</span><span class="of mono">of 7</span></div>
+  <h1 class="title">Escalate only as far as <b>each user needs.</b></h1>
+  <div class="rule-hi"></div>
+  <p class="lead">One four-rung spine for everyone; <b>the words change by cohort</b>. Most reactivations should happen on the lower rungs — the incentive is the last resort, not the opener. Each rung below shows how it varies by cohort. <button class="cite" data-cite="S-20">S-20</button> <button class="cite" data-cite="S-24">S-24</button></p>
+  <div class="block">
+    <div class="ladder">
+      <div class="rung"><div class="rn"><b>1</b>Day 0</div><div><h4>Reconnect — show them the pot</h4><p>The first touch is a mirror, not a pitch: here is the value that accrued while you were away. Concreteness beats sentiment — a number they recognise outperforms "we miss you." <button class="cite" data-cite="S-21">S-21</button></p><div class="byco"><div><span class="c">Funded (C2)</span>"You've saved £142 without noticing."</div><div><span class="c">Never-Funded (C1)</span>"Your round-ups are ready to start."</div></div></div></div>
+      <div class="rung"><div class="rn"><b>2</b>Day 3</div><div><h4>Remind the value — why it was good</h4><p>If Reconnect doesn't land, restate the mechanism and the benefit in one line: effortless saving, the nearest-pound round-up, progress toward a goal. <button class="cite" data-cite="S-20">S-20</button></p><div class="byco"><div><span class="c">All cohorts</span>"Small change, real progress — effortless saving, back on in one tap."</div><div><span class="c">C3 drifted</span>Leans on "it runs itself" — zero-effort framing.</div></div></div></div>
+      <div class="rung"><div class="rn"><b>3</b>Day 7</div><div><h4>Reduce the friction — make restarting trivial</h4><p>Assume the barrier is <b>effort, not desire</b>. Every message deep-links to the exact action — resume auto-save, re-enable round-ups — not a generic home screen. One tap, pre-authenticated. <button class="cite" data-cite="S-22">S-22</button></p><div class="byco"><div><span class="c">C2 → resume</span>rill://autosave/resume</div><div><span class="c">C1/C3 → enable</span>rill://roundups/enable</div></div></div></div>
+      <div class="rung last"><div class="rn"><b>4</b>Day 10</div><div><h4>Incentivize — only if eligible, only late</h4><p>For Cohorts 1 &amp; 2 only, a small capped £5 pot top-up — behind an <b>A/B test against a value-only message</b>, so we can prove whether the cash adds incremental reactivations or just subsidises people who'd have returned anyway. <button class="cite" data-cite="S-23">S-23</button></p><div class="byco"><div><span class="c">C1 &amp; C2</span>"A £5 head start, on us."</div><div><span class="c">C3 &amp; C4</span>Skip entirely → softer value touch or exit.</div></div></div></div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/cohorts"><span class="lb">← Back</span><span class="nm">Cohorts</span></a><a class="next" href="#/journey"><span class="lb">Next · subsystem 3</span><span class="nm">The journey →</span></a></nav>
+</div></section>
+
+<!-- JOURNEY (branching + code G3) -->
+<section data-page="journey" class="page"><div class="wrap">
+  <div class="cover"><span class="idx mono">Subsystem 3</span><span class="of mono">of 7</span></div>
+  <h1 class="title">One journey. <b>It branches</b> before it sends.</h1>
+  <div class="rule-hi"></div>
+  <p class="lead">A trigger-based journey with a holdout split, a cohort split, an incentive A/B fork, and three exits. The overview shows the branching; the Funded-Then-Lapsed reference track shows one path in detail; the orchestration below is the config that governs every step. <button class="cite" data-cite="S-25">S-25</button> <button class="cite" data-cite="S-27">S-27</button></p>
+  <div class="block">
+    <h3><span class="sq" style="background:var(--flow)"></span>Branch structure — entry to exits</h3>
+    <p class="sub">The forks are real geometry: entry splits off the 10% control, the remaining 90% splits into four cohort tracks, and every track converges on the same three exits.</p>
+    <div class="jflow">
+      <svg id="jsvg" viewBox="0 0 960 300" role="img" aria-label="Branching structure of the journey">
+        <defs><marker id="jah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-3)"/></marker></defs>
+        <g class="box"><rect x="20" y="128" width="120" height="46" fill="var(--surface-2)" stroke="var(--line-2)"/><text class="n" x="80" y="147" text-anchor="middle">Entry</text><text class="s" x="80" y="162" text-anchor="middle">nightly trigger</text></g>
+        <path class="e hold" d="M140,140 C175,140 175,66 210,66"/><path class="e" d="M140,162 C175,162 175,151 210,151"/>
+        <g class="box"><rect x="210" y="46" width="150" height="42" fill="color-mix(in oklab,var(--measure) 12%,var(--surface))" stroke="var(--measure)"/><text class="n" x="285" y="64" text-anchor="middle">10% Control</text><text class="s" x="285" y="79" text-anchor="middle">sends nothing → exit 30d</text></g>
+        <g class="box"><rect x="210" y="130" width="150" height="42" fill="color-mix(in oklab,var(--flow) 12%,var(--surface))" stroke="var(--flow)"/><text class="n" x="285" y="148" text-anchor="middle">90% → Cohort split</text><text class="s" x="285" y="163" text-anchor="middle">route to 1 of 4</text></g>
+        <path class="e branch" d="M360,145 C395,145 395,60 430,60"/><path class="e branch" d="M360,150 C395,150 395,110 430,110"/><path class="e branch" d="M360,155 C395,155 395,160 430,160"/><path class="e branch" d="M360,160 C395,160 395,210 430,210"/>
+        <g class="box"><rect x="430" y="42" width="164" height="36" fill="var(--surface-2)" stroke="var(--line)"/><text class="n" x="512" y="65" text-anchor="middle">Never-Funded</text></g>
+        <g class="box"><rect x="430" y="92" width="164" height="36" fill="color-mix(in oklab,var(--accent) 12%,var(--surface))" stroke="var(--accent)"/><text class="n" x="512" y="115" text-anchor="middle">Funded-Lapsed ✳</text></g>
+        <g class="box"><rect x="430" y="142" width="164" height="36" fill="var(--surface-2)" stroke="var(--line)"/><text class="n" x="512" y="165" text-anchor="middle">Round-Up-Drifted</text></g>
+        <g class="box"><rect x="430" y="192" width="164" height="36" fill="var(--surface-2)" stroke="var(--line)"/><text class="n" x="512" y="215" text-anchor="middle">Withdrew-Partial</text></g>
+        <path class="e" d="M594,60 C640,60 640,120 686,120"/><path class="e" d="M594,110 C660,110 660,130 686,135"/><path class="e" d="M594,160 C660,160 660,150 686,150"/><path class="e" d="M594,210 C640,210 640,165 686,165"/>
+        <g class="box"><rect x="686" y="60" width="150" height="36" fill="color-mix(in oklab,var(--good) 12%,var(--surface))" stroke="var(--good)"/><text class="n" x="761" y="83" text-anchor="middle">Success exit</text></g>
+        <g class="box"><rect x="686" y="122" width="150" height="36" fill="color-mix(in oklab,var(--guard) 12%,var(--surface))" stroke="var(--guard)"/><text class="n" x="761" y="145" text-anchor="middle">Winback loop</text></g>
+        <g class="box"><rect x="686" y="184" width="150" height="36" fill="var(--surface-2)" stroke="var(--line)"/><text class="n" x="761" y="207" text-anchor="middle">Hard exit</text></g>
+      </svg>
+      <div class="legend"><span><i style="background:var(--measure)"></i>Holdout</span><span><i style="background:var(--flow)"></i>Cohort routing</span><span><i style="background:var(--guard)"></i>Branch / decision</span><span><i style="background:var(--good)"></i>Exit</span></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3><span class="sq" style="background:var(--accent)"></span>Reference track — Funded-Then-Lapsed</h3>
+    <p class="sub">One path in detail. Every wait re-checks eligibility; the Day-10 step forks into the incentive A/B; the Day-15 evaluation forks into three exits. <button class="cite" data-cite="S-28">S-28</button></p>
+    <div class="steps">
+      <div class="step"><div class="d">Day 0 · Reconnect</div><h5>Channel decision</h5><p>Push P1 if permitted, else SMS S1, else Email E1. In-app Card A is always queued for the next open. <button class="cite" data-cite="S-29">S-29</button></p></div>
+      <div class="w">wait 3 days · re-check eligibility →</div>
+      <div class="step"><div class="d">Day 3 · Remind</div><h5>P2, or suppress + in-app</h5><p>No app open since entry → Push P2 (fallback SMS/Email). Opened but not reactivated → suppress the outbound, rely on Card B.</p></div>
+      <div class="w">wait 4 days →</div>
+      <div class="step"><div class="d">Day 7 · Reduce friction</div><h5>Deep-link to resume</h5><p>Push P3 links straight to the reactivation screen. Frequency-cap check applies.</p></div>
+      <div class="w">wait 3 days → Day 10 · incentive A/B fork →</div>
+      <div class="fork"><div class="step"><div class="d">Arm A</div><h5>Push P4 — incentive</h5><p>£5 pot top-up for restarting a recurring save. <button class="cite" data-cite="S-23">S-23</button></p></div><div class="step"><div class="d">Arm B</div><h5>P2-restated — value-only</h5><p>The control message. Both read against the shared holdout.</p></div></div>
+      <div class="w">wait 5 days → Day 15 · exit evaluation forks →</div>
+    </div>
+    <div class="exits"><div class="exit win"><div class="tg">reactivated</div><h6>Success exit</h6><p>Enrolls into the "new active saver" nurture.</p></div><div class="exit mid"><div class="tg">no action</div><h6>Winback loop</h6><p>Low-frequency, max one touch / 30 days.</p></div><div class="exit hard"><div class="tg">opted out / closed</div><h6>Hard exit</h6><p>Removed from the journey immediately.</p></div></div>
+  </div>
+  <div class="block">
+    <h3><span class="sq" style="background:var(--good)"></span>Suppression on success — the highest-risk logic</h3>
+    <p class="sub">The single most important rule, and the highest-risk bug at soft launch: the moment a reactivation event fires, all pending sends are cancelled and the user exits to Success. Messaging someone the day after they came back is the classic failure. <button class="cite" data-cite="S-31">S-31</button> <button class="cite" data-cite="S-51">S-51</button></p>
+    <div class="code">
+      <div class="code-bar"><span class="tl"><i></i><i></i><i></i></span><span class="fn">suppression_on_success.js</span><span class="lang">Journey · entry-event</span></div>
+<pre><span class="c">// Fires on any reactivation signal. Re-checked at every wait step too,</span>
+<span class="c">// so stale segmentation can never message someone who already came back.</span>
+<span class="k">on</span>(<span class="s">'reactivation_event'</span>, <span class="k">async</span> (user) =&gt; {
+  <span class="k">const</span> reactivated =
+       user.autosave_status === <span class="s">'on'</span>
+    || user.has_recurring_transfer
+    || user.qualifying_deposit_in_window;
+
+  <span class="k">if</span> (reactivated) {
+    <span class="k">await</span> journey.cancelPendingSends(user.subscriber_id);  <span class="c">// kill queued P2/P3/P4</span>
+    <span class="k">await</span> journey.exit(user, <span class="s">'SUCCESS'</span>);              <span class="c">// no "come back" after they came back</span>
+    <span class="k">await</span> nurture.enroll(user, <span class="s">'new_active_saver'</span>);
+  }
+});</pre>
+      <div class="code-note"><span class="il">ILLUSTRATION · depicts the described suppression logic</span><span>traces: S-31 · S-51 · S-08</span></div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="cols">
+      <div class="pan"><h4><span class="sq" style="background:var(--flow)"></span>Orchestration — every step</h4><ul>
+        <li><b>Channel priority</b> Push › SMS › Email, gated by permission; in-app additive. <button class="cite" data-cite="S-29">S-29</button></li>
+        <li><b>Frequency cap</b> 1 / 48h, max 4 across the journey (Cohort 4: 3). <button class="cite" data-cite="S-30">S-30</button></li>
+        <li><b>Quiet hours</b> no push/SMS 21:00–08:00 local; queued to next window. <button class="cite" data-cite="S-30">S-30</button></li>
+        <li><b>Global governance</b> a security/servicing message from another journey is prioritised; Second Wind defers. <button class="cite" data-cite="S-32">S-32</button></li>
+      </ul></div>
+      <div class="pan"><h4><span class="sq" style="background:var(--measure)"></span>Entry throttle</h4><p>A nightly Automation writes newly-dormant users into the entry data extension. Entry is throttled so <b>no user enters within 21 days of a prior Second Wind exit</b> — the re-entry lock that protects the asset. <button class="cite" data-cite="S-26">S-26</button></p><p style="margin:0">Immediately on entry: the deterministic 10% holdout split, then the cohort decision split into one of four tracks.</p></div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/ladder"><span class="lb">← Back</span><span class="nm">The ladder</span></a><a class="next" href="#/creative"><span class="lb">Next · subsystem 4</span><span class="nm">The creative →</span></a></nav>
+</div></section>
+
+<!-- CREATIVE (device chrome G4 + AMPscript G3 + DE schema) -->
+<section data-page="creative" class="page"><div class="wrap">
+  <div class="cover"><span class="idx mono">Subsystem 4</span><span class="of mono">of 7</span></div>
+  <h1 class="title">What actually <b>lands on the phone.</b></h1>
+  <div class="rule-hi"></div>
+  <p class="lead">The ladder rendered as real assets in their real device chrome, personalized via <span class="mono" style="font-size:.9rem">%%Field%%</span> tokens resolved at send time — <b>every value resolves from the record or falls back to a safe default; no value is invented at render.</b> Faithful depictions of the brief's copy, not live sends. <button class="cite" data-cite="S-33">S-33</button> <button class="cite" data-cite="S-40">S-40</button></p>
+
+  <div class="block">
+    <h3><span class="sq" style="background:var(--accent)"></span>The destination — the reactivation screen</h3>
+    <p class="sub"><b>The one thing every message points to.</b> Not a generic home screen — a purpose-built "here's where you stood, here's the one thing to do" in-app surface. The most load-bearing artifact in the campaign, so it gets the fullest fidelity. Values shown in sample-value mode so the layout is sized to real content while the token stays legible. <button class="cite" data-cite="S-38">S-38</button></p>
+    <div class="rescreen">
+      <div class="rs-status"><span>9:41</span><span>▮▮▮ ◗</span></div>
+      <div class="rs-appbar"><span class="dot"></span>Rill</div>
+      <div class="rs-body">
+        <div class="eb">Welcome back</div>
+        <h4>Here's where you stood. <button class="pin" data-cite="S-38">1</button></h4>
+        <div class="glance">
+          <div><div class="gn">£142.80</div><div class="gf">%%PotBalance%%</div><div class="gl">Pot balance</div></div>
+          <div><div class="gn">£38.40</div><div class="gf">%%RoundUpTotal%%</div><div class="gl">Round-ups saved</div></div>
+          <div><div class="gn">64%</div><div class="gf">%%GoalProgressPct%%</div><div class="gl">Holiday fund</div></div>
+        </div>
+        <a class="rs-primary" href="#/creative" onclick="return false">Resume auto-save — one tap</a>
+        <div class="rs-sec"><span>Adjust your goal</span><span>Change round-up settings</span></div>
+        <div class="rs-reass">"Your money stayed exactly where you left it. Nothing changed while you were away."</div>
+      </div>
+    </div>
+    <div style="text-align:center"><span class="mtag">Illustration · in-app screen · sample values</span></div>
+  </div>
+
+  <div class="block">
+    <h3><span class="sq" style="background:var(--ink-3)"></span>The ladder's assets — each in its own device</h3>
+    <p class="sub">Push and SMS on a lock-screen / messages phone frame; the in-app card on an app screen; email in an email-client frame. Tap a pin for the source copy.</p>
+    <div class="two">
+      <div class="stage"><figure class="device">
+        <div class="dev-status"><b>9:41</b><span>▮▮▮ ◗ 82%</span></div>
+        <div class="lock"><div class="t">9:41</div><div class="dt">Tuesday 15 July</div>
+          <div class="push"><div class="app"><i></i>RILL · now</div><div class="t">You've saved £%%RoundUpTotal%% without noticing <button class="pin" data-cite="S-34">2</button></div><div class="b">Your round-ups added up while you were away. Pick up where you left off — about 30 seconds.</div><div class="dl">rill://home?src=secondwind_p1</div></div>
+        </div>
+      </figure><div style="text-align:center"><span class="mtag">Push P1 · lock screen</span></div></div>
+      <div class="stage"><figure class="device">
+        <div class="dev-status"><b>9:41</b><span>▮▮▮ ◗ 82%</span></div>
+        <div class="msgs"><div class="msg-hd">Rill<small>Text message · SMS</small></div>
+          <div class="bubble">Rill: You've saved £%%RoundUpTotal%% in round-ups. Restart auto-save in the app: rill.app/r/%%ShortToken%% — Reply STOP to opt out. <button class="pin" data-cite="S-35">3</button><span class="tm">now</span></div>
+        </div>
+      </figure><div style="text-align:center"><span class="mtag">SMS S1 · fallback</span></div></div>
+    </div>
+    <div class="two" style="margin-top:20px">
+      <div class="stage"><figure class="device">
+        <div class="dev-status"><b>9:41</b><span>▮▮▮ ◗ 82%</span></div>
+        <div class="appscreen"><div class="app-hd"><span class="dot"></span>Rill</div>
+          <div class="app-card"><div class="eb">Welcome back</div><h5>Your pot: £%%PotBalance%% <button class="pin" data-cite="S-36">4</button></h5><p>Your round-ups have been waiting, %%FirstName%%. Ready to pick the habit back up?</p><a class="b1" href="#/creative" onclick="return false">Resume auto-save →</a><span class="b2">See your activity →</span></div>
+        </div>
+      </figure><div style="text-align:center"><span class="mtag">In-app Card A · app screen</span></div></div>
+      <div>
+        <div class="email">
+          <div class="email-top"><span class="env"></span> Inbox · Rill</div>
+          <div class="email-hd"><div class="email-subj">Your Rill pot is still growing, %%FirstName%% <button class="pin" data-cite="S-37">5</button></div>
+            <div class="email-meta"><div class="email-av">R</div><div class="email-from">Rill <span>&lt;hello@rill.app&gt;</span></div><div class="email-time">09:41</div></div>
+            <div class="email-pre">Pick your saving habit back up where you left off.</div>
+          </div>
+          <div class="email-body">Hi %%FirstName%%, while you've been away your round-ups have quietly added up to <b>£%%RoundUpTotal%%</b>. Restarting takes one tap — resume auto-save and Rill goes back to rounding every purchase to the nearest pound, toward %%GoalName%%.<br><a class="b1" href="#/creative" onclick="return false">Resume saving →</a></div>
+        </div>
+        <div style="text-align:center"><span class="mtag">Email E1 · client frame</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3><span class="sq" style="background:var(--measure)"></span>Personalization &amp; fallback — the render logic</h3>
+    <p class="sub">Cohort drives which variant is selected; every token has a safe default so no message renders a blank or a broken sentence. A message that would render "You've saved £ without noticing" <b>must never send</b> — the send is held and the copy variant switched. <button class="cite" data-cite="S-40">S-40</button></p>
+    <div class="two">
+      <div class="code">
+        <div class="code-bar"><span class="tl"><i></i><i></i><i></i></span><span class="fn">p1_reconnect.amp</span><span class="lang">AMPscript</span></div>
+<pre><span class="k">SET</span> <span class="f">@roundup</span> = <span class="n">AttributeValue</span>(<span class="s">"RoundUpTotal"</span>)
+<span class="k">SET</span> <span class="f">@name</span>    = <span class="n">AttributeValue</span>(<span class="s">"FirstName"</span>)
+<span class="c">/* Zero / null pot → switch to the Never-Funded variant, never send an empty £ */</span>
+<span class="k">IF</span> <span class="k">EMPTY</span>(<span class="f">@roundup</span>) <span class="k">OR</span> <span class="f">@roundup</span> == <span class="s">"0"</span> <span class="k">THEN</span>
+  <span class="k">SET</span> <span class="f">@title</span> = <span class="n">Concat</span>(<span class="s">"Your first round-up is ready, "</span>, <span class="k">IIF</span>(<span class="k">EMPTY</span>(<span class="f">@name</span>),<span class="s">"there"</span>,<span class="f">@name</span>), <span class="s">"."</span>)
+<span class="k">ELSE</span>
+  <span class="k">SET</span> <span class="f">@title</span> = <span class="n">Concat</span>(<span class="s">"You've saved £"</span>, <span class="f">@roundup</span>, <span class="s">" without noticing."</span>)
+<span class="k">ENDIF</span></pre>
+        <div class="code-note"><span class="il">ILLUSTRATION · depicts the fallback discipline</span><span>S-33 · S-40</span></div>
+      </div>
+      <div>
+        <h4 style="font-size:.95rem;font-weight:600;margin:0 0 10px">Data extension · <span class="mono">SecondWind_Audience</span></h4>
+        <p style="font-size:.86rem;color:var(--ink-2);margin:0 0 12px">Keyed on SubscriberID, refreshed nightly, carries the fields every asset depends on. <button class="cite" data-cite="S-39">S-39</button></p>
+        <div class="code" style="background:var(--surface)">
+          <div class="code-bar"><span class="fn">schema</span><span class="lang">Data Extension</span></div>
+          <div style="padding:14px 18px"><table class="schema"><thead><tr><th>Field</th><th>Type</th><th>Role</th></tr></thead><tbody>
+            <tr><td>SubscriberID</td><td><span class="t">key</span></td><td>primary key</td></tr>
+            <tr><td>Cohort</td><td><span class="t">text</span></td><td>C1–C4 · drives variant</td></tr>
+            <tr><td>PotBalance</td><td><span class="t">decimal</span></td><td>%%PotBalance%%</td></tr>
+            <tr><td>RoundUpTotal</td><td><span class="t">decimal</span></td><td>%%RoundUpTotal%%</td></tr>
+            <tr><td>GoalName / Pct</td><td><span class="t">text/int</span></td><td>Card B gate</td></tr>
+            <tr><td>IncentiveEligible</td><td><span class="t">bool</span></td><td>gates Day-10</td></tr>
+            <tr><td>Push / SMS / Email</td><td><span class="t">bool</span></td><td>channel gate</td></tr>
+          </tbody></table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/journey"><span class="lb">← Back</span><span class="nm">The journey</span></a><a class="next" href="#/measure"><span class="lb">Next · subsystem 5</span><span class="nm">Measurement →</span></a></nav>
+</div></section>
+
+<!-- MEASUREMENT (funnel + code) -->
+<section data-page="measure" class="page"><div class="wrap">
+  <div class="cover"><span class="idx mono">Subsystem 5</span><span class="of mono">of 7</span></div>
+  <h1 class="title">A six-stage funnel, read <b>against a holdout.</b></h1>
+  <div class="rule-hi"></div>
+  <p class="lead">Every entrant is tracked down one funnel, per cohort and per channel. <b>Success is the last stage, not the first: a re-open that doesn't restart saving is a vanity metric.</b> The bars are blended planning targets; cohorts differ sharply. <button class="cite" data-cite="S-41">S-41</button> <button class="cite" data-cite="S-08">S-08</button></p>
+  <div class="block">
+    <div class="funnel" id="funnel">
+      <div class="fn" style="--w:100%"><div class="fn-l">Targeted<small>entered, excl. holdout</small></div><div class="fn-tr"><div class="fn-b"></div></div><div class="fn-v">100%</div></div>
+      <div class="fn" style="--w:82%"><div class="fn-l">Deliverable<small>reachable on ≥1 channel</small></div><div class="fn-tr"><div class="fn-b"></div></div><div class="fn-v">82%</div></div>
+      <div class="fn" style="--w:78%"><div class="fn-l">Reached<small>a message delivered</small></div><div class="fn-tr"><div class="fn-b"></div></div><div class="fn-v">78%</div></div>
+      <div class="fn" style="--w:22%"><div class="fn-l">Engaged<small>tapped / clicked / in-app</small></div><div class="fn-tr"><div class="fn-b"></div></div><div class="fn-v">22%</div></div>
+      <div class="fn" style="--w:14%"><div class="fn-l">Returned<small>opened the app</small></div><div class="fn-tr"><div class="fn-b"></div></div><div class="fn-v">14%</div></div>
+      <div class="fn" style="--w:8%"><div class="fn-l">Reactivated<small>resumed saving in 30d</small></div><div class="fn-tr"><div class="fn-b"></div></div><div class="fn-v">8%</div></div>
+    </div>
+    <p style="text-align:right;margin:8px 0 0;font-size:.8rem;color:var(--ink-3)"><button class="cite" data-cite="S-42">S-42 · planning targets</button></p>
+  </div>
+  <div class="block">
+    <h3><span class="sq" style="background:var(--measure)"></span>Incrementality — the reported number</h3>
+    <p class="sub">The 10% control receives nothing; reported lift is targeted-reactivation minus holdout-reactivation. Gross reactivation flatters the campaign by counting organic returns that would have happened anyway. <button class="cite" data-cite="S-43">S-43</button></p>
+    <div class="code">
+      <div class="code-bar"><span class="tl"><i></i><i></i><i></i></span><span class="fn">incremental_reactivation.sql</span><span class="lang">SQL · read</span></div>
+<pre><span class="c">-- Headline = incremental, not gross. Reactivated within 30d of journey entry.</span>
+<span class="k">SELECT</span> cohort,
+  <span class="n">AVG</span>(<span class="k">CASE WHEN</span> arm = <span class="s">'targeted'</span> <span class="k">AND</span> reactivated_30d <span class="k">THEN</span> <span class="n">1.0 ELSE 0</span> <span class="k">END</span>) <span class="k">AS</span> tgt_rate,
+  <span class="n">AVG</span>(<span class="k">CASE WHEN</span> arm = <span class="s">'holdout'</span>  <span class="k">AND</span> reactivated_30d <span class="k">THEN</span> <span class="n">1.0 ELSE 0</span> <span class="k">END</span>) <span class="k">AS</span> hold_rate,
+  <span class="n">AVG</span>(<span class="k">CASE WHEN</span> arm = <span class="s">'targeted'</span> <span class="k">AND</span> reactivated_30d <span class="k">THEN</span> <span class="n">1.0 ELSE 0</span> <span class="k">END</span>)
+  - <span class="n">AVG</span>(<span class="k">CASE WHEN</span> arm = <span class="s">'holdout'</span> <span class="k">AND</span> reactivated_30d <span class="k">THEN</span> <span class="n">1.0 ELSE 0</span> <span class="k">END</span>) <span class="k">AS</span> incremental_pp
+<span class="k">FROM</span> second_wind_results
+<span class="k">GROUP BY</span> cohort;</pre>
+      <div class="code-note"><span class="il">ILLUSTRATION · depicts the incrementality read</span><span>S-09 · S-43 · S-10</span></div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="cols">
+      <div class="pan"><h4><span class="sq" style="background:var(--measure)"></span>Retention read 30 / 60 / 90</h4><p>Beyond the 30-day reactivation, track the reactivated users' active-rate to distinguish a durable reactivation from a one-tap blip. <b>A cohort that reactivates at 10% but re-lapses to 3% active by day 60 is worse than one that reactivates at 7% and holds 6%.</b> Target ≥55% still-active at 60 days. <button class="cite" data-cite="S-45">S-45</button> <button class="cite" data-cite="S-11">S-11</button></p></div>
+      <div class="pan"><h4><span class="sq" style="background:var(--accent)"></span>Experiment matrix (v1)</h4><ul>
+        <li><b>Test A — incentive vs value-only</b> (Day-10, Cohorts 1&2): net of the holdout. <i>Kill it if it only subsidises would-have-returned users.</i> <button class="cite" data-cite="S-44">S-44</button></li>
+        <li><b>Test B — reach</b>: push-only vs push+SMS. Does the SMS fallback lift Reached→Reactivated enough to justify cost + opt-out risk? <button class="cite" data-cite="S-44">S-44</button></li>
+        <li>Both read against the shared holdout, pre-registered stopping rules, MDE agreed with Data.</li>
+      </ul></div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/creative"><span class="lb">← Back</span><span class="nm">The creative</span></a><a class="next" href="#/guardrails"><span class="lb">Next · subsystem 6</span><span class="nm">Guardrails →</span></a></nav>
+</div></section>
+
+<!-- GUARDRAILS -->
+<section data-page="guardrails" class="page"><div class="wrap">
+  <div class="cover"><span class="idx mono">Subsystem 6·7</span><span class="of mono">of 7</span></div>
+  <h1 class="title">The caps matter <b>as much as the target.</b></h1>
+  <div class="rule-hi"></div>
+  <p class="lead">The dormant base is an asset; the campaign may spend a small, measured amount of its goodwill — the guardrails cap the spend. <b>A win on the primary KPI does not count if any guardrail breaches</b>, and a breaching arm pauses automatically. <button class="cite" data-cite="S-12">S-12</button> <button class="cite" data-cite="S-46">S-46</button></p>
+  <div class="block">
+    <div class="cols">
+      <div class="pan"><h4><span class="sq" style="background:var(--warn)"></span>Guardrail metrics — a breach voids the win</h4>
+        <div class="gmet">
+          <div><div class="cap">SMS opt-out / send</div><div class="val">&lt; 0.8%</div><div class="br">arm auto-pauses</div></div>
+          <div><div class="cap">Push disable</div><div class="val">&lt; 2.0%</div><div class="br">hard suppression</div></div>
+          <div><div class="cap">Email unsubscribe</div><div class="val">&lt; 0.5%</div><div class="br">honoured instantly</div></div>
+          <div><div class="cap">Spam complaints</div><div class="val">&lt; 0.08%</div><div class="br">deliverability risk</div></div>
+        </div>
+        <p style="margin:0;font-size:.86rem">App uninstall among messaged users must not be statistically above the holdout. <button class="cite" data-cite="S-12">S-12</button></p>
+      </div>
+      <div class="pan"><h4><span class="sq" style="background:var(--guard)"></span>The compliance box — tighter than retail</h4><ul>
+        <li><b>Reach is the binding constraint, not creative:</b> push ~45% of the base, SMS ~30% consented, email the rest — raising cost and opt-out exposure. <button class="cite" data-cite="S-47">S-47</button></li>
+        <li><b>Consent is a hard gate:</b> reactivating a lapsed user is not a lawful basis to message a number that never consented. <button class="cite" data-cite="S-46">S-46</button></li>
+        <li><b>Financial-promotion rules:</b> fair, clear, not misleading; no guaranteed returns; capital-at-risk where micro-invest is referenced. <button class="cite" data-cite="S-46">S-46</button></li>
+        <li><b>The risk is asymmetric:</b> a lost opt-out is harder to win back than a missed reactivation — so restraint is the default. <button class="cite" data-cite="S-48">S-48</button></li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3><span class="sq" style="background:var(--accent)"></span>Delivery — 6-week stand-up (subsystem 7)</h3>
+    <p class="sub">Six weeks to stand it up, then evergreen. The highest-risk bug — suppression-on-success — is confirmed at soft launch. <button class="cite" data-cite="S-49">S-49</button></p>
+    <div class="tl">
+      <div><div class="wk">Week 1</div><h5>Data &amp; segments</h5><p>Dormancy score, nightly cohort job, validate sizes &amp; exclusions.</p></div>
+      <div><div class="wk">Week 2</div><h5>Journey &amp; creative</h5><p>Build the flow, sends, in-app cards, reactivation screen, deep links.</p></div>
+      <div><div class="wk">Week 3</div><h5>QA &amp; sign-off</h5><p>Seed QA, token edge cases, deliverability warm-up, Legal sign-off.</p></div>
+      <div><div class="wk">Week 4</div><h5>Soft launch</h5><p>10% + holdout; monitor guardrails; confirm suppression-on-success.</p></div>
+      <div><div class="wk">Week 5</div><h5>Read &amp; ramp</h5><p>Funnel read by cohort/channel; Test A/B signals; ramp.</p></div>
+      <div><div class="wk">Week 6</div><h5>Full run</h5><p>Full-base; first retention checkpoint; hand to evergreen Winback.</p></div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/measure"><span class="lb">← Back</span><span class="nm">Measurement</span></a><a class="next" href="#/questions"><span class="lb">Next</span><span class="nm">Open questions →</span></a></nav>
+</div></section>
+
+<!-- QUESTIONS + PROVENANCE -->
+<section data-page="questions" class="page"><div class="wrap">
+  <div class="cover"><span class="idx mono">Held open</span></div>
+  <h1 class="title">What the brief <b>deliberately leaves unresolved.</b></h1>
+  <div class="rule-hi"></div>
+  <p class="lead">Four questions the brief names as open — carried honestly rather than answered prematurely. <button class="cite" data-cite="S-50">S-50</button></p>
+  <div class="block">
+    <div class="oq">
+      <details><summary><span class="q">Q1</span>Should Withdrew-Partial receive any reactivation messaging in v1?<span class="cv">›</span></summary><div class="bd">Or should Cohort 4 be held for a dedicated trust-rebuilding track later? The brief leans toward a softer cadence and no incentive, but whether to message them at all is unsettled.</div></details>
+      <details><summary><span class="q">Q2</span>Is a £5 boost the right incentive magnitude?<span class="cv">›</span></summary><div class="bd">Or does a match-style mechanic — "we'll match your first restart save up to £X" — reactivate more durably? Test A reads incrementality, but the mechanic itself is open.</div></details>
+      <details><summary><span class="q">Q3</span>What is the right handoff to evergreen Winback?<span class="cv">›</span></summary><div class="bd">One touch a month, or quarterly — before a dormant user should simply be left alone? The 30-day journey ends; the long tail's cadence is undecided.</div></details>
+      <details><summary><span class="q">Q4</span>Do involuntary lapses need their own register?<span class="cv">›</span></summary><div class="bd">Should users whose dormancy coincides with a failed payment (an involuntary lapse) get a different creative register from those who chose to pause? The brief flags the distinction but doesn't yet split on it.</div></details>
+    </div>
+  </div>
+  <div class="block">
+    <h3><span class="sq" style="background:var(--accent)"></span>Provenance — what this artifact verified</h3>
+    <p class="sub">The brief states its figures are fictional. Nothing here was fetched — nothing passed the necessity gate. The one empirical-looking claim (~3% baseline) is self-declared an assumption, so it is flagged, never upgraded.</p>
+    <div class="ledger">
+      <div class="led"><div class="n">51</div><div class="l">signals extracted</div><div class="s">27 source · 12 insight · 1 gap</div></div>
+      <div class="led"><div class="n">0</div><div class="l">external fetches</div><div class="s">none passed the necessity gate</div></div>
+      <div class="led"><div class="n">1</div><div class="l">flagged, not fetched</div><div class="s">S-07 · "assumption"</div></div>
+      <div class="led"><div class="n">8</div><div class="l">pages, all developed</div><div class="s">code · nesting · device chrome</div></div>
+    </div>
+    <div class="exp">
+      <div class="filt" id="filt"><button data-f="all" class="on">All 51</button><button data-f="INSIGHT">Insight</button><button data-f="PRINCIPLE">Principle</button><button data-f="METRIC">Metric</button><button data-f="SOURCE">Source</button><button data-f="GAP">Gap</button></div>
+      <div class="exp-list" id="explist"></div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/guardrails"><span class="lb">← Back</span><span class="nm">Guardrails</span></a><a class="next" href="#/machine"><span class="lb">Return</span><span class="nm">The machine →</span></a></nav>
+</div></section>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"><div class="dh"><h4>Signal</h4><button class="x" id="dclose" aria-label="Close">×</button></div><div class="db"><div class="sid" id="dsid"></div><span class="stag" id="dtag"></span><div class="stext" id="dtext"></div></div></aside>
+<div class="hint" id="hint"></div>
+
+<script>
+var SIG={
+"S-03":["METRIC","~1.4M users meet the working definition of dormant: no app open in 30+ days and either auto-save off or no transfer in 45+ days, excluding closed accounts and opt-outs."],
+"S-04":["PRINCIPLE","The dormant cohort is not monolithic — different kinds of user, each of whom stopped for a different reason and needs a different reason to come back."],
+"S-05":["SOURCE","Reactivation is materially cheaper than paid acquisition of an equivalent active user; reactivated savers resume depositing and grow AUM."],
+"S-06":["INSIGHT","Over-messaging, or a generic 'we miss you,' is the fastest way to convert a dormant-but-retained user into an opt-out or an uninstall. The campaign must earn the re-open."],
+"S-07":["METRIC · assumption","Internal working benchmark (assumption, not measured): comparable round-up apps see BAU monthly reactivation ~3%. A planning assumption, not a validated external figure."],
+"S-08":["INSIGHT","The primary success event is 'return to active saving,' not merely returning to the app. A re-open that doesn't restart saving is a vanity metric."],
+"S-10":["METRIC","Target 8% reactivation of targeted users vs ~3% in the holdout → ~+5pp incremental, ≈ 63,000 incremental reactivated savers over the first full run."],
+"S-11":["METRIC","Secondary KPIs: app-open reactivation target 14%; incremental deposits reported; retention ≥55% still-active at 60 days."],
+"S-12":["METRIC","Guardrails: SMS opt-out <0.8%/send; push disable <2.0%; email unsub <0.5%; spam <0.08%; uninstall not above holdout. A win does not count if any guardrail breaches."],
+"S-13":["SOURCE","Cohort 1 — Never-Funded (~380k): linked a card but never saved. Barrier is the first save; activation angle; incentive-eligible."],
+"S-14":["SOURCE","Cohort 2 — Funded-Then-Lapsed (~520k): saved then paused. The richest cohort — real pot, history, often a stated goal. Continuity angle; incentive-eligible late."],
+"S-15":["SOURCE","Cohort 3 — Round-Up-Only-Drifted (~300k): only ever used passive round-ups. They liked invisible. Zero-effort resumption; NOT incentive-eligible in v1."],
+"S-16":["SOURCE","Cohort 4 — Withdrew-Partial (~200k): took money out but left the door open. Withdrawal is a trust signal. No pressure, goal reset; NOT incentive-eligible; softer cadence."],
+"S-17":["PRINCIPLE","Cohorts are mutually exclusive by priority, scored nightly; every journey step re-checks eligibility against the live data extension rather than trusting entry-time state."],
+"S-19":["SOURCE","Global exclusions: opted-out; account closed/flagged; fraud/AML review; messaged in the last 21 days; open support ticket with negative sentiment; under-18 or unverified KYC."],
+"S-20":["PRINCIPLE","The creative strategy is a four-rung ladder — Reconnect, Remind value, Reduce friction, Incentivize — escalating only as far as each user needs. The incentive is the last resort."],
+"S-21":["INSIGHT","Reconnect is a mirror, not a pitch: show the value that accrued ('You've saved £142 without noticing'). Concreteness beats sentiment."],
+"S-22":["PRINCIPLE","Reduce-friction assumes the barrier is effort, not desire: every message deep-links to the exact action, one tap, pre-authenticated where possible."],
+"S-23":["SOURCE","Incentive: a small capped £5 pot top-up for restarting a recurring save, Day-10, Cohorts 1 & 2 only, behind an A/B test against value-only to prove incrementality."],
+"S-24":["PRINCIPLE","The ladder is the same spine for everyone; the words change by cohort. Cohort 4 never sees rung 4; Cohort 3 should feel the app is offering to do the work for them."],
+"S-25":["SOURCE","Second Wind is a single Journey Builder journey with a trigger-based entry and cohort-driven decision splits."],
+"S-26":["SOURCE","Entry is throttled so no user enters within 21 days of a prior Second Wind exit."],
+"S-27":["SOURCE","Holdout split: a deterministic 10% routed to a Control path that sends nothing and exits after 30 days. The other 90% proceed."],
+"S-28":["SOURCE","Reference track (Funded-Then-Lapsed): Day0 Reconnect (Push>SMS>Email + Card A) → w3 re-check → Day3 Remind → w4 → Day7 Reduce friction → w3 → Day10 Incentive A/B → w5 → Day15 exit eval → Success/Winback/hard exit."],
+"S-29":["PRINCIPLE","Channel priority: Push > SMS > Email, gated by permission/consent; in-app cards are additive and permission-free."],
+"S-30":["SOURCE","Frequency cap: max 1 outbound per 48 hours and max 4 across the journey (Cohort 4 capped at 3). Quiet hours 21:00–08:00 local; sends queue to the next window."],
+"S-31":["INSIGHT","Suppression on success: the moment a reactivation event fires, all pending sends are cancelled and the user exits to Success — no 'come back' after they've come back."],
+"S-32":["SOURCE","Global frequency governance: a security or servicing message from another journey is prioritized; Second Wind's cadence is deferred."],
+"S-33":["PRINCIPLE","Copy is personalized via %%Field%% tokens resolved at send; every value resolves from the record or falls back to a safe default — no value invented at render. Deep links use rill:// with an https fallback."],
+"S-34":["SOURCE","Push P1: Title 'You've saved £%%RoundUpTotal%% without noticing.' Body 'Your round-ups added up while you were away. Pick up where you left off — about 30 seconds.' rill://home?src=secondwind_p1."],
+"S-35":["SOURCE","SMS S1 (fallback): 'Rill: You've saved £%%RoundUpTotal%% in round-ups. Restart auto-save: rill.app/r/%%ShortToken%% — Reply STOP to opt out.' Consented numbers only; sender 'Rill'; never in quiet hours."],
+"S-36":["SOURCE","In-app Card A: Eyebrow 'Welcome back'; Headline 'Your pot: £%%PotBalance%%'; Body 'Your round-ups have been waiting, %%FirstName%%. Ready to pick the habit back up?'; CTAs Resume auto-save / See your activity."],
+"S-37":["SOURCE","Email E1: Subject 'Your Rill pot is still growing, %%FirstName%%'; Preheader 'Pick your saving habit back up where you left off'; body restates the round-up mechanism toward %%GoalName%%; CTA Resume saving."],
+"S-38":["INSIGHT","The reactivation screen is a purpose-built 'here's where you stood, here's the one thing to do' surface, closing with 'Your money stayed exactly where you left it. Nothing changed while you were away.'"],
+"S-39":["SOURCE","DE SecondWind_Audience (keyed on SubscriberID), refreshed nightly, carries FirstName, Cohort, PotBalance, RoundUpTotal, GoalName, GoalProgressPct, AutoSaveStatus, IncentiveEligible, PushPermission, SMSConsent, EmailConsent, ShortToken, LocalTimezone."],
+"S-40":["PRINCIPLE","Fallback discipline: every token has a safe default; a message that would render 'You've saved £ without noticing' must never send — the send is held and the copy variant switched."],
+"S-41":["PRINCIPLE","Every entrant is tracked down a six-stage funnel, per cohort and per channel: Targeted → Deliverable → Reached → Engaged → Returned → Reactivated."],
+"S-42":["METRIC","Planning targets (first full run, blended): Deliverable 82% · Reached 78% · Engaged 22% · Returned 14% · Reactivated 8%. Cohorts differ sharply."],
+"S-43":["PRINCIPLE","Incrementality via holdout: reported lift = targeted-reactivation minus holdout-reactivation. Gross reactivation flatters by counting organic returns."],
+"S-44":["SOURCE","Test A — incentive vs value-only (Day-10, Cohorts 1&2): incremental net of holdout? Kill if it merely subsidizes would-have-returned. Test B — reach: push-only vs push+SMS. Both vs the shared holdout, pre-registered stopping rules, agreed MDE."],
+"S-45":["INSIGHT","Track reactivated users at 30/60/90 days. A cohort reactivating at 10% but re-lapsing to 3% by day 60 is worse than one reactivating at 7% and holding 6%."],
+"S-46":["SOURCE","Fintech reactivation lives in a tighter box: push on live permission (disable = hard suppression); SMS on explicit logged consent; financial-promotion rules; incentive terms; auto-pause on breach; lawful basis + preference center."],
+"S-47":["INSIGHT · METRIC","Reach is the binding constraint, not creative: push covers ~45% of the base, SMS ~30% consented, email the rest — raising cost and opt-out exposure."],
+"S-48":["INSIGHT","Over-messaging churn is asymmetric: a lost opt-out is harder to win back than a missed reactivation — so restraint is the default."],
+"S-49":["SOURCE","6-week stand-up: W1 data & segments; W2 journey & creative; W3 QA & sign-off; W4 soft launch (10% + holdout); W5 read & ramp; W6 full run + retention checkpoint → evergreen Winback."],
+"S-50":["GAP","Open questions: Should Withdrew-Partial be messaged at all in v1? Is £5 the right magnitude or is a match mechanic more durable? What is the right Winback handoff cadence? Do involuntary lapses need a separate register?"],
+"S-51":["INSIGHT","The highest-risk bug at soft launch is suppression-on-success failing — messaging people after they have already reactivated."]
+};
+var pages=[].slice.call(document.querySelectorAll('[data-page]'));
+var links=[].slice.call(document.querySelectorAll('#navlinks a'));
+function pageId(){return (location.hash.replace(/^#\//,''))||pages[0].dataset.page;}
+function show(id){
+  var target=document.querySelector('[data-page="'+id+'"]')||pages[0];
+  var swap=function(){
+    pages.forEach(function(p){p.classList.toggle('live',p===target);});
+    links.forEach(function(a){a.setAttribute('aria-current',a.hash==='#/'+id?'page':'false');});
+    var fn=document.getElementById('funnel');if(fn&&target.contains(fn)){setTimeout(function(){target.querySelectorAll('.fn').forEach(function(f){f.classList.add('go');});},60);}
+    window.scrollTo(0,0);try{target.focus({preventScroll:true});}catch(e){}
+  };
+  if(document.startViewTransition&&!matchMedia('(prefers-reduced-motion:reduce)').matches)document.startViewTransition(swap);else swap();
+}
+function route(){show(pageId());}
+addEventListener('hashchange',route);route();
+document.querySelectorAll('.arch-box').forEach(function(b){b.addEventListener('click',function(){location.hash='#/'+b.dataset.nav;});
+  b.addEventListener('mouseenter',function(){document.getElementById('arch').classList.add('dim');b.classList.add('on');});
+  b.addEventListener('mouseleave',function(){document.getElementById('arch').classList.remove('dim');b.classList.remove('on');});});
+var drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim');
+function openSig(id){var s=SIG[id];if(!s)return;document.getElementById('dsid').textContent=id;document.getElementById('dtag').textContent=s[0];document.getElementById('dtext').textContent=s[1];drawer.classList.add('open');scrim.classList.add('open');drawer.setAttribute('aria-hidden','false');}
+function closeSig(){drawer.classList.remove('open');scrim.classList.remove('open');drawer.setAttribute('aria-hidden','true');}
+document.addEventListener('click',function(e){var c=e.target.closest('.cite,.pin');if(c&&c.dataset.cite){e.preventDefault();openSig(c.dataset.cite);}});
+document.getElementById('dclose').onclick=closeSig;scrim.onclick=closeSig;
+document.getElementById('ev').onclick=function(){location.hash='#/questions';};
+document.getElementById('theme').onclick=function(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('sw-theme',n);};
+document.getElementById('dl').onclick=function(){
+  // H4 honest export: confirm only on the proven event; never flash "Downloaded" unconditionally.
+  var doc='<!doctype html>\n<html lang="en">\n'+document.documentElement.innerHTML+'\n</html>';
+  if(window.self!==window.top){
+    var w=null;try{w=window.open('','_blank');}catch(e){}
+    if(w){w.document.open();w.document.write(doc);w.document.close();flash('Opened in a new tab — press ⌘/Ctrl-S to save');}
+    else{flash('This embedded view blocks saving — open the file directly');}
+    return;
+  }
+  var blob=new Blob([doc],{type:'text/html'});var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='rill-second-wind.html';a.style.display='none';
+  document.body.appendChild(a);a.click();flash('Downloaded · rill-second-wind.html');
+  setTimeout(function(){a.remove();URL.revokeObjectURL(url);},2000);
+};
+var list=document.getElementById('explist');
+function rows(f){list.innerHTML='';Object.keys(SIG).forEach(function(id){var s=SIG[id];if(f!=='all'&&s[0].indexOf(f)<0)return;var d=document.createElement('div');d.className='row';d.innerHTML='<span class="sid">'+id+'</span><span class="st">'+s[1].replace(/</g,'&lt;')+'</span><span class="sg">'+s[0].split(' ')[0]+'</span>';d.onclick=function(){openSig(id);};list.appendChild(d);});}
+rows('all');
+document.getElementById('filt').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;[].forEach.call(this.children,function(x){x.classList.remove('on');});b.classList.add('on');rows(b.dataset.f);});
+var hint=document.getElementById('hint'),ht;
+function flash(t){hint.textContent=t;hint.classList.add('show');clearTimeout(ht);ht=setTimeout(function(){hint.classList.remove('show');},1400);}
+addEventListener('keydown',function(e){if(/input|textarea/i.test(e.target.tagName))return;var k=e.key.toLowerCase();
+  var cur=pages.findIndex(function(p){return p.classList.contains('live');});
+  if(k==='j'||e.key==='ArrowDown'){if(cur<pages.length-1)location.hash='#/'+pages[cur+1].dataset.page;}
+  else if(k==='k'||e.key==='ArrowUp'){if(cur>0)location.hash='#/'+pages[cur-1].dataset.page;}
+  else if(k==='escape'){closeSig();}
+});
+</script>
+</body>
+</html>

@@ -1,11 +1,11 @@
 {
   "name": "illuminate",
   "version": "1.0.0",
-  "description": "Dense source in. Self-contained interactive HTML out. Three-stage arc: salience-gated signal extraction (per-source thesis test; noise cut before the pyramid, not disclosed lazily), Barbara Minto Pyramid construction with MECE adversarial audit, and a polished editorial HTML artifact (shadcn/ui + Swiss typography) with evidence drawer and interactive ASCII. Editorial restraint; parallax opt-in.",
+  "description": "Dense source in. Self-contained interactive HTML out — a single offline file, internally MULTI-PAGE by default (hash-routed, one view at a time, page set = the derived structure). Form follows source: the macro-structure is derived from the source's epistemic shape (pyramid / debate-map / causal-web / timeline / tree / architecture / matrix), not imposed. Three-stage arc: salience-gated signal extraction, structure selection + adversarial audit, and a composed editorial artifact built to an explicit [ILLUMINATE:ARTDIR] art-direction contract (designed palette not a default, self-hosted typeface not system-ui, tight radii, one accent; named cheap tells hard-fail the render gate), with a global evidence drawer, argument-selected components, developed nested pages, rendered code/config, and high-fidelity CSS-drawn mockups that read as renders. Symmetric fidelity (no fabrication, no reductive compression); verification earned not manufactured; no interaction theater; no parallax; render-truth verified in pixels.",
   "author": "marcomorettim",
   "trigger": "/illuminate",
   "category": "research",
-  "tags": ["research", "visualization", "minto-pyramid", "analysis", "html-artifact", "evidence-discipline"],
+  "tags": ["research", "visualization", "minto-pyramid", "analysis", "html-artifact", "evidence-discipline", "component-library", "form-follows-source", "multi-page", "art-direction", "render-truth"],
   "min_claude_code_version": "1.0.0",
   "license": "MIT",
   "homepage": "https://github.com/marcomorettim/illuminate",
@@ -28,8 +28,8 @@
   ],
   "capabilities": {
     "stage_1": "Multi-source ingestion, 6-tag signal stratification (SOURCE/INSIGHT/METRIC/PRINCIPLE/SYNTHESIS/GAP), 3-angle extraction, per-source salience gate (KEEP/CONTEXT/CUT against the source thesis; mandatory cut-list), provenance audit",
-    "stage_2": "Hub detection, MECE issue tree, Barbara Minto Pyramid, 3-skeptic adversarial audit",
-    "stage_3": "Portable self-contained editorial HTML (shadcn/ui vocabulary — Tabs, Accordion, Tooltip, Badge, filterable evidence Sheet), Swiss typography, per-KL diagram↔code toggle with syntax-highlighted mechanism snippets, interactive ASCII/SVG illustrations, Web Animations motion, keyboard navigation; parallax opt-in via rich tier"
+    "stage_2": "Structure Selection (shape catalog: pyramid / debate-map / causal-web / timeline / tree / architecture / matrix — derived from the source's epistemic shape, arity matches the source), hub detection, issue tree, the derived structure built to spec, generalized 3-skeptic audit on the structure's joints",
+    "stage_3": "Single self-contained file, internally MULTI-PAGE by default (Part F): hash-routed one-view-at-a-time app, page set = derived arity, View Transitions behind @supports, deep-linkable pages, global persistent evidence drawer + controls; single-scroll is the reserved exception for a genuinely linear argument (declared in [ILLUMINATE:FORMAT]); no parallax. Editorial craft bar binding regardless of palette (rounded-card SaaS-dashboard look is a failure mode). DEVELOP-DON'T-SKELETONIZE (Part G): each concept page is developed (parts/variants/mechanisms/edge-cases) via nesting, never 'title + one component + whitespace'; technical artifacts (AMPscript, SQL, schemas, config) render as CODE-CONFIG, not prose; mockups use medium-correct consistent chrome and never overflow; a hard per-page RENDER-TRUTH gate verifies pixels (no overflow/empty-diagram/whitespace-page/console-error), not source. Components SELECTED per argument — the single most load-bearing artifact renders as the fullest fidelity mockup, branching processes render as real branches. ART DIRECTION (Part H): explicit [ILLUMINATE:ARTDIR] contract before build — designed high-contrast palette (banned: beige+terracotta+pastel default), self-hosted real typeface (banned: system-ui), monochrome headlines (banned: two-tone accent-word titles), tight radii, one accent, composed editorial infographics (banned: pastel auto-flowchart), mockups that read as renders with drawn status glyphs; no interaction theater (a control performs its effect or is not offered — export confirms only on the real event); render-truth extends to finish + behavior, verified in pixels. shadcn/ui vocabulary, filterable evidence explorer, annotation pins, light/dark, 6 palettes, JSON-LD"
   },
   "evidence_contract": {
     "ASSERT": "only claims that trace to a specific S-NNN signal block entry",

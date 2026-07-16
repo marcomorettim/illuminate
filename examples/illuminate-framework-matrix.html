@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read With Caveats · The Framework Matrix, Illuminated</title>
+<style>
+:root{
+  --bg:#f6f4ef; --bg-2:#efece5; --surface:#ffffff; --surface-2:#fbfaf6;
+  --ink:#211d18; --ink-2:#5c564c; --ink-3:#948c7e;
+  --line:rgba(33,29,24,.08); --line-2:rgba(33,29,24,.14);
+  --accent:#c07d16; --accent-2:#9a6210; --accent-soft:rgba(192,125,22,.10);
+  --warn:#a8560f; --warn-soft:rgba(168,86,15,.12); --sage:#5f7f68; --sage-soft:rgba(95,127,104,.12);
+  --sans:-apple-system,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono",monospace;
+  --spring:cubic-bezier(.22,.72,.24,1); --r:16px; --r-lg:24px; --r-xl:30px;
+  --sh-1:0 1px 2px rgba(60,48,30,.05),0 4px 10px -4px rgba(60,48,30,.06);
+  --sh-2:0 2px 4px rgba(60,48,30,.05),0 22px 44px -22px rgba(60,48,30,.16);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#14120f; --bg-2:#1c1915; --surface:#1e1b16; --surface-2:#24201a;
+  --ink:#f3efe7; --ink-2:#b7ada0; --ink-3:#847c70;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --accent:#e0a84a; --accent-2:#f0c076; --accent-soft:rgba(224,168,74,.14);
+  --warn:#e6944a; --warn-soft:rgba(230,148,74,.14); --sage:#8fa085; --sage-soft:rgba(143,160,133,.14);
+  --sh-1:0 1px 2px rgba(0,0,0,.3),0 4px 10px -4px rgba(0,0,0,.4);
+  --sh-2:0 2px 4px rgba(0,0,0,.3),0 22px 44px -22px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{--bg:#14120f;--bg-2:#1c1915;--surface:#1e1b16;--surface-2:#24201a;--ink:#f3efe7;--ink-2:#b7ada0;--ink-3:#847c70;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);--accent:#e0a84a;--accent-2:#f0c076;--accent-soft:rgba(224,168,74,.14);--warn:#e6944a;--warn-soft:rgba(230,148,74,.14);--sage:#8fa085;--sage-soft:rgba(143,160,133,.14);--sh-1:0 1px 2px rgba(0,0,0,.3),0 4px 10px -4px rgba(0,0,0,.4);--sh-2:0 2px 4px rgba(0,0,0,.3),0 22px 44px -22px rgba(0,0,0,.5);}
+:root[data-theme="light"]{--bg:#f6f4ef;--bg-2:#efece5;--surface:#ffffff;--surface-2:#fbfaf6;--ink:#211d18;--ink-2:#5c564c;--ink-3:#948c7e;--line:rgba(33,29,24,.08);--line-2:rgba(33,29,24,.14);--accent:#c07d16;--accent-2:#9a6210;--accent-soft:rgba(192,125,22,.10);--warn:#a8560f;--warn-soft:rgba(168,86,15,.12);--sage:#5f7f68;--sage-soft:rgba(95,127,104,.12);--sh-1:0 1px 2px rgba(60,48,30,.05),0 4px 10px -4px rgba(60,48,30,.06);--sh-2:0 2px 4px rgba(60,48,30,.05),0 22px 44px -22px rgba(60,48,30,.16);}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@supports (interpolate-size: allow-keywords){:root{interpolate-size:allow-keywords}
+  .card::details-content{height:0;overflow:hidden;content-visibility:hidden;transition:height .4s var(--spring),content-visibility .4s allow-discrete}
+  .card[open]::details-content{height:auto;content-visibility:visible}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.62;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;transition:background .5s var(--spring),color .5s var(--spring)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(50% 38% at 88% -4%,var(--accent-soft),transparent 60%),radial-gradient(44% 34% at 2% 20%,var(--sage-soft),transparent 60%)}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(24px,5vw,60px)}
+.mono{font-family:var(--mono)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:5px}
+
+.nav{position:fixed;top:20px;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none;padding:0 16px}
+.nav-pill{pointer-events:auto;display:flex;align-items:center;gap:16px;background:color-mix(in oklab,var(--surface) 78%,transparent);backdrop-filter:saturate(160%) blur(18px);border:1px solid var(--line);border-radius:999px;padding:8px 8px 8px 20px;box-shadow:var(--sh-1)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:600;font-size:.9rem;white-space:nowrap}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{font-size:.84rem;color:var(--ink-3);text-decoration:none;padding:8px 12px;border-radius:999px;transition:.3s var(--spring);white-space:nowrap}
+.nav-links a:hover{color:var(--ink)}.nav-links a.active{color:var(--ink);background:var(--bg-2)}
+.theme-btn{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;transition:transform .3s var(--spring),color .3s;box-shadow:var(--sh-1)}
+.theme-btn:hover{color:var(--ink);transform:translateY(-1px)}.theme-btn svg{width:17px;height:17px}
+.nav-cta{display:flex;align-items:center;gap:9px;background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:9px 9px 9px 16px;font:550 .82rem var(--sans);cursor:pointer;transition:transform .3s var(--spring);white-space:nowrap}
+.nav-cta:hover{transform:translateY(-1px)}.nav-cta .ic{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:.78rem}
+@media(max-width:920px){.nav-links{display:none}}
+
+.hero{padding:clamp(140px,18vw,196px) 0 clamp(36px,5vw,60px)}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 16px 7px 13px;font-size:.82rem;color:var(--ink-2);margin-bottom:30px;box-shadow:var(--sh-1)}
+.eyebrow .d{width:6px;height:6px;border-radius:50%;background:var(--accent)}.eyebrow b{color:var(--accent-2);font-weight:600}
+.lead{font-size:1.26rem;line-height:1.5;color:var(--ink-2);max-width:62ch;margin:0 0 20px;text-wrap:pretty}.lead b{color:var(--ink);font-weight:560}
+.q{font-size:1.4rem;line-height:1.4;color:var(--ink);max-width:50ch;margin:0 0 36px;font-weight:450}.q .hl{color:var(--accent-2);font-weight:600}
+.gt{font-weight:400;font-size:clamp(2.4rem,5.4vw,4.4rem);line-height:1.05;letter-spacing:-.032em;margin:0;max-width:22ch;text-wrap:balance}.gt .k{color:var(--accent)}
+.gt-sub{margin:30px 0 0;font-size:1.16rem;line-height:1.55;color:var(--ink-2);max-width:58ch;text-wrap:pretty}.gt-sub b{color:var(--ink);font-weight:560}
+
+/* D1 verification ledger */
+.ledger{margin:clamp(40px,6vw,64px) 0 0;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--sh-1);overflow:hidden}
+.ledger-hd{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line);font:600 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.ledger-hd .d{width:7px;height:7px;border-radius:50%;background:var(--sage)}
+.ledger-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+@media(max-width:720px){.ledger-grid{grid-template-columns:repeat(2,1fr)}}
+.lg-cell{background:var(--surface);padding:18px 20px}
+.lg-val{font:300 1.9rem var(--sans);letter-spacing:-.02em;color:var(--ink)}
+.lg-val.zero{color:var(--sage)}
+.lg-lab{font-size:.78rem;color:var(--ink-3);margin-top:3px}
+.ledger-note{padding:14px 20px;border-top:1px solid var(--line);font-size:.92rem;color:var(--ink-2);line-height:1.55;text-wrap:pretty}
+.ledger-note b{color:var(--ink);font-weight:560}
+
+.section{padding:clamp(72px,9vw,128px) 0}.section+.section{border-top:1px solid var(--line)}
+.sec-grid{display:grid;grid-template-columns:1fr;gap:clamp(30px,4vw,52px)}
+@media(min-width:960px){.sec-grid{grid-template-columns:1fr 1fr;align-items:start}}
+.tag{display:inline-flex;align-items:center;gap:9px;background:var(--accent-soft);color:var(--accent-2);border-radius:999px;padding:6px 15px 6px 11px;font-size:.82rem;font-weight:600;margin-bottom:20px}
+.tag .n{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:.72rem}
+.sec-title{font-weight:440;font-size:clamp(1.7rem,3.3vw,2.4rem);line-height:1.13;letter-spacing:-.024em;margin:0 0 20px;max-width:22ch;text-wrap:balance}.sec-title b{font-weight:600;color:var(--accent-2)}
+.lede{color:var(--ink-2);font-size:1.12rem;line-height:1.64;max-width:56ch;margin:0 0 16px;text-wrap:pretty}.lede b{color:var(--ink);font-weight:560}
+.aside{position:sticky;top:96px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.chip{font:550 .72rem var(--mono);color:var(--accent-2);background:var(--accent-soft);border:0;border-radius:999px;padding:5px 11px;cursor:pointer;transition:.25s var(--spring)}
+.chip:hover{background:var(--accent);color:#fff;transform:translateY(-1px)}
+.chip.warn{color:var(--warn);background:var(--warn-soft)}
+
+/* accordion, the depth layer (D2) */
+.disc{display:flex;flex-direction:column;gap:11px;margin-top:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-1);transition:box-shadow .35s var(--spring),transform .35s var(--spring)}
+.card:hover{box-shadow:var(--sh-2);transform:translateY(-1px)}
+.card summary{list-style:none;cursor:pointer;padding:18px 20px;display:flex;align-items:center;gap:13px;font-size:1.02rem;font-weight:550;color:var(--ink)}
+.card summary::-webkit-details-marker{display:none}
+.card .sev{font:600 .58rem var(--mono);letter-spacing:.06em;text-transform:uppercase;border-radius:5px;padding:2px 7px;flex:0 0 auto}
+.card .sev.high{color:#fff;background:var(--warn)}.card .sev.med{color:var(--warn);background:var(--warn-soft)}.card .sev.low{color:var(--ink-3);background:var(--bg-2)}
+.card .plus{margin-left:auto;width:26px;height:26px;flex:0 0 auto;border-radius:50%;background:var(--bg-2);display:grid;place-items:center;position:relative;transition:background .3s var(--spring)}
+.card[open] .plus{background:var(--accent-soft)}
+.card .plus::before,.card .plus::after{content:"";position:absolute;background:var(--ink-3);transition:transform .35s var(--spring),opacity .3s,background .3s}
+.card .plus::before{width:10px;height:1.6px}.card .plus::after{width:1.6px;height:10px}
+.card[open] .plus::after{transform:rotate(90deg);opacity:0}.card[open] .plus::before{background:var(--accent-2)}
+.card .body{padding:0 20px 20px;color:var(--ink-2);font-size:1rem;line-height:1.62;max-width:62ch;text-wrap:pretty}
+.card .body p{margin:.1em 0 .7em}.card .body code{font-family:var(--mono);font-size:.85em;background:var(--bg-2);color:var(--accent-2);padding:1px 5px;border-radius:5px}
+.card .body em{color:var(--ink);font-style:normal;font-weight:560}
+
+/* compare-matrix (Family D) */
+.mx-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-1);background:var(--surface)}
+table.mx{width:100%;border-collapse:separate;border-spacing:0;font-size:.82rem;min-width:520px}
+.mx th,.mx td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line)}
+.mx thead th{background:var(--surface-2);font:600 .62rem var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);position:sticky;top:0}
+.mx tbody th{font-weight:600;color:var(--ink);position:sticky;left:0;background:var(--surface);white-space:nowrap}
+.mx td{color:var(--ink-2)}.mx tr:last-child td,.mx tr:last-child th{border-bottom:0}
+.mx tbody tr:hover td,.mx tbody tr:hover th{background:var(--surface-2)}
+.v{font:600 .66rem var(--mono);border-radius:5px;padding:2px 6px}
+.v.ok{color:var(--sage);background:var(--sage-soft)}.v.warn{color:var(--warn);background:var(--warn-soft)}.v.bad{color:#fff;background:var(--warn)}
+.aside-note{font-size:.9rem;color:var(--ink-3);margin:14px 2px 0;line-height:1.5;text-wrap:pretty}
+
+/* evidence sheet + tooltip */
+.scrim{position:fixed;inset:0;background:rgba(33,25,15,.34);backdrop-filter:blur(3px);z-index:70;opacity:0;pointer-events:none;transition:opacity .4s var(--spring)}.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;top:0;right:0;height:100%;width:min(560px,94vw);z-index:80;background:var(--bg);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .5s var(--spring);display:flex;flex-direction:column;box-shadow:var(--sh-2)}.sheet.on{transform:none}
+.sheet-head{padding:22px 24px 14px;border-bottom:1px solid var(--line)}
+.sheet-title{display:flex;align-items:center;gap:12px}.sheet-title h3{margin:0;font-size:1.02rem;font-weight:600}.sheet-title .count{font:.72rem var(--mono);color:var(--accent-2)}
+.sheet-close{margin-left:auto;width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;box-shadow:var(--sh-1)}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.filt{font:500 .66rem var(--mono);color:var(--ink-3);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 11px;cursor:pointer;transition:.25s var(--spring)}
+.filt:hover{color:var(--ink)}.filt.on{color:#fff;background:var(--accent);border-color:var(--accent)}
+.sheet-list{overflow-y:auto;padding:8px 0;flex:1}
+.ev{padding:15px 24px;border-bottom:1px solid var(--line)}.ev.hide{display:none}.ev.flash{background:var(--accent-soft)}
+.ev-top{display:flex;align-items:center;gap:9px;margin-bottom:6px;flex-wrap:wrap}.ev-id{font:700 .76rem var(--mono);color:var(--accent-2)}
+.ev-tag{font:600 .58rem var(--mono);letter-spacing:.04em;color:var(--ink-3);border:1px solid var(--line-2);border-radius:999px;padding:2px 8px;text-transform:uppercase}
+.ev-tag.warn{color:var(--warn);border-color:var(--warn)}
+.ev-claim{font-size:.94rem;color:var(--ink-2);line-height:1.5}
+.tip{position:fixed;z-index:95;max-width:320px;background:var(--surface);border:1px solid var(--line-2);border-radius:12px;padding:11px 14px;font-size:.86rem;line-height:1.46;color:var(--ink-2);box-shadow:var(--sh-2);opacity:0;transform:translateY(6px);transition:.22s var(--spring);pointer-events:none}.tip.on{opacity:1;transform:none}
+.tip .tid{font:700 .66rem var(--mono);color:var(--accent-2);display:block;margin-bottom:4px}
+
+footer{padding:56px 0 88px;color:var(--ink-3);font-size:.9rem;line-height:1.6;border-top:1px solid var(--line)}footer b{color:var(--ink-2)}
+.rv{opacity:0;transform:translateY(22px);filter:blur(4px);transition:opacity .8s var(--spring),transform .8s var(--spring),filter .8s var(--spring)}.rv.in{opacity:1;transform:none;filter:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;filter:none}}
+</style>
+</head>
+<body>
+<div class="nav"><div class="nav-pill">
+  <span class="brand"><span class="dot"></span>Illuminate</span>
+  <div class="nav-links" id="nav-links">
+    <a href="#top" class="active">Overview</a><a href="#s1">Bias</a><a href="#s2">OSS vs managed</a><a href="#s3">Soft axes</a><a href="#s4">Snapshot</a><a href="#s5">Not comparable</a>
+  </div>
+  <button class="theme-btn" id="theme" aria-label="Toggle theme"></button>
+  <button class="nav-cta" id="ev-open">Evidence <span class="ic">→</span></button>
+</div></div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow"><span class="d"></span>A study of a <b>9×9 framework matrix</b> · read with its skeptic panel</span>
+    <p class="lead">Nine agent runtimes, scored across nine axes, then handed to three independent reviewers who raised <b>37 challenges</b>. Their consensus is not "the matrix is wrong" but something subtler and more useful: it is moderately reliable, and it <b>leans in one direction</b> you must correct for.</p>
+    <p class="q">So how far can you trust a comparison matrix that its own reviewers only half-trust?</p>
+    <h1 class="gt">A usable comparison, <span class="k">not a citation-grade one</span> — and the bias runs one way.</h1>
+    <p class="gt-sub">Trust the license and orchestration columns. Independently re-verify multi-tenancy, security, durability, and maturity, because the matrix systematically overstates maturity and blurs <b>open-source into managed</b> capabilities.</p>
+
+    <div class="ledger rv">
+      <div class="ledger-hd"><span class="d"></span>Verification ledger · how this study treated the source's citations</div>
+      <div class="ledger-grid">
+        <div class="lg-cell"><div class="lg-val">16</div><div class="lg-lab">signals represented</div></div>
+        <div class="lg-cell"><div class="lg-val zero">0</div><div class="lg-lab">web fetches performed</div></div>
+        <div class="lg-cell"><div class="lg-val">6</div><div class="lg-lab">flagged contested</div></div>
+        <div class="lg-cell"><div class="lg-val zero">0</div><div class="lg-lab">necessity-gate passes</div></div>
+      </div>
+      <p class="ledger-note"><b>Verification is earned by the claim, not owed to the source.</b> This document is already self-verified: the panel chased every citation (GitHub issues, vendor docs, VentureBeat) and recorded its findings. Re-fetching them would be verification-theater. So each claim is represented and traced to the panel; version-fragile ones are flagged <span class="chip warn" style="padding:2px 8px">CONTESTED</span> and left as-is. Nothing was chased to look rigorous.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- KL1 -->
+  <section class="section" id="s1">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">1</span> The bias</span>
+        <h2 class="sec-title">The unreliability is <b>directional, not random</b>.</h2>
+        <p class="lede">Random error would average out; a reader could trust the matrix on balance. This bias does not average out. The panel found the matrix errs the <em>same way</em> across cells, so a careful reader can correct for it rather than distrust everything.</p>
+        <p class="lede">Reviewer 1 named the four mechanisms precisely. Each is a way of making a framework look more finished, more isolated, or more durable than it is.</p>
+        <div class="chips"><button class="chip" data-ev="S-02">S-02</button><button class="chip" data-ev="S-04">S-04</button></div>
+      </div>
+      <div class="aside rv">
+        <div class="disc">
+          <details class="card" open><summary>It understates obsolescence<span class="plus"></span></summary>
+            <div class="body"><p>AutoGen is described as "mature but maintenance mode." That soft-pedals the reality: it is community-managed, bug-and-security-only, <em>no new features</em>, and Microsoft has been reported as "retiring" it. Its successor, the Microsoft Agent Framework, has GA'd. By the June 2026 evaluation date this is close to disqualifying, yet the cell reads as neutral.</p>
+              <div class="chips"><button class="chip" data-ev="S-07">S-07</button></div></div></details>
+          <details class="card"><summary>It conflates cloud with self-host<span class="plus"></span></summary>
+            <div class="body"><p>On multi-tenancy and security, hosted or commercial capabilities are presented as if they were properties of the open-source artifact. Letta self-host has <em>no</em> per-tenant isolation (one shared password = full server access); LangGraph and the Claude SDK OSS layers give only logical or per-process separation, with real tenancy gated behind commercial planes. This is the recurring error, examined in the next section.</p>
+              <div class="chips"><button class="chip" data-ev="S-08">S-08</button><button class="chip" data-ev="S-06">S-06</button></div></div></details>
+          <details class="card"><summary>It lags fast-moving SDKs<span class="plus"></span></summary>
+            <div class="body"><p>The OpenAI Agents SDK "single run" descriptor is stale, native subagents and sandboxes shipped around April 2026. And LangGraph's 1.0 GA (Oct 22 2025, stable APIs, ~90M monthly downloads) is omitted while peers' milestones are noted. On a fast-moving field, silence about a milestone is itself a distortion.</p>
+              <div class="chips"><button class="chip" data-ev="S-12">S-12</button><button class="chip" data-ev="S-13">S-13</button></div></div></details>
+          <details class="card"><summary>It is generous on durability<span class="plus"></span></summary>
+            <div class="body"><p>For checkpoint-based frameworks the matrix reads more resilient than the code is. CrewAI's <code>@persist</code> checkpoints Flow state at method boundaries only and requires the developer to detect failure and manually trigger recovery, there is no automatic crash recovery. "Limited built-in crash durability" undersells that gap.</p>
+              <div class="chips"><button class="chip" data-ev="S-16">S-16</button></div></div></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KL2 -->
+  <section class="section" id="s2">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">2</span> The pattern</span>
+        <h2 class="sec-title">The recurring error is <b>open-source read as managed</b>.</h2>
+        <p class="lede">One mistake shows up again and again across different rows: a capability that only exists in a vendor's <em>cloud</em> or <em>commercial control plane</em> is written into the cell as though the self-hostable library provided it. The reviewers ask for one consistent distinction the matrix never makes: <b>app-implemented scoping vs enforced isolation</b>, and <b>OSS library vs commercial plane</b>.</p>
+        <p class="lede">Four cells carry it. One is an outright factual error. Severities are the reviewers'.</p>
+        <div class="chips"><button class="chip" data-ev="S-08">S-08</button><button class="chip" data-ev="S-15">S-15</button></div>
+      </div>
+      <div class="aside rv">
+        <div class="disc">
+          <details class="card" open><summary><span class="sev high">high</span>Letta multi-tenancy<span class="plus"></span></summary>
+            <div class="body"><p>The matrix credits the self-hosted server with "cloud multi-tenant" isolation. Verified against Letta's own docs and GitHub: the OSS server is <em>single-tenant</em>, protected by one shared <code>LETTA_SERVER_PASSWORD</code> bearer token, no per-user or per-tenant key, no namespace isolation. Native multi-tenancy is an <em>open feature request</em> (issue #2887). It exists only in the hosted Letta Cloud product, not the self-hostable artifact the rest of the row describes. Two of three reviewers rated this HIGH.</p>
+              <div class="chips"><button class="chip warn" data-ev="S-06">S-06</button></div></div></details>
+          <details class="card"><summary><span class="sev high">high</span>Claude SDK license, a factual error<span class="plus"></span></summary>
+            <div class="body"><p>The cell says "Anthropic Commercial ToS (not OSS)." That is wrong for the SDK code: the <code>claude-agent-sdk-python</code> repo carries an MIT license. Only <em>usage</em> is governed by Commercial ToS, because it calls paid Anthropic model APIs. The matrix conflates code license with service terms and produces an outright incorrect "not OSS" label. (Represented here as an intra-source contradiction, the matrix and Reviewer 3 disagree, not resolved by us re-checking GitHub; the reviewer already did.)</p>
+              <div class="chips"><button class="chip warn" data-ev="S-05">S-05</button></div></div></details>
+          <details class="card"><summary><span class="sev low">low</span>LangGraph tenancy<span class="plus"></span></summary>
+            <div class="body"><p>"Tenant isolation only in LangGraph Platform" is directionally right but overstates the OSS side as a tenancy story. In the OSS library, <code>thread_id</code>/namespace are application-level scoping conventions over a <em>shared</em> checkpointer and Store, not an enforced isolation boundary. Two tenants are isolated only if the app author partitions namespaces and DB access correctly; there is no built-in authz. The cell should read "app-implemented scoping, no enforced isolation."</p>
+              <div class="chips"><button class="chip" data-ev="S-15">S-15</button></div></div></details>
+          <details class="card"><summary><span class="sev med">med</span>OpenAI SDK durability &amp; sandbox<span class="plus"></span></summary>
+            <div class="body"><p>"No built-in crash-replay" is correct, but "Sessions persist history; sandbox state" reads as operational durability the SDK does not provide, production crash recovery requires the external (now-GA) Temporal integration, not the SDK itself. Separately, the "sandbox persistent filesystem" is the very new April-2026 SandboxAgent feature, partly platform-bound; listing it flatly overstates its maturity for a production selection.</p>
+              <div class="chips"><button class="chip" data-ev="S-11">S-11</button></div></div></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KL3 -->
+  <section class="section" id="s3">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">3</span> The soft axes</span>
+        <h2 class="sec-title">Four columns are the ones to <b>re-verify before you rely on them</b>.</h2>
+        <p class="lede">The panel's single most actionable output is a list: multi-tenancy, security, durability, and maturity are where the errors concentrate. The license and orchestration columns held up under spot-checks; these four did not. Treat every cell in them as a lead to confirm, not a fact to cite.</p>
+        <p class="lede">The matrix below shows all nine runtimes against those four axes, with the panel's verdict encoded per cell. Green held up; amber needs a footnote; solid needs a rewrite. Hover a signal chip to read the exact finding.</p>
+        <div class="chips"><button class="chip" data-ev="S-03">S-03</button><button class="chip" data-ev="S-14">S-14</button></div>
+      </div>
+      <div class="aside rv">
+        <div class="mx-wrap"><table class="mx">
+          <thead><tr><th>Runtime</th><th>Tenancy</th><th>Security</th><th>Durability</th><th>Maturity</th></tr></thead>
+          <tbody>
+            <tr><th>LangGraph</th><td><span class="v warn">scoping</span></td><td><span class="v ok">app</span></td><td><span class="v ok">strong</span></td><td><span class="v warn">1.0 omitted</span></td></tr>
+            <tr><th>OpenAI SDK</th><td><span class="v warn">per-session</span></td><td><span class="v warn">2026-new</span></td><td><span class="v bad">not native</span></td><td><span class="v ok">GA</span></td></tr>
+            <tr><th>AutoGen</th><td><span class="v warn">none</span></td><td><span class="v ok">docker</span></td><td><span class="v warn">save/load</span></td><td><span class="v bad">legacy</span></td></tr>
+            <tr><th>CrewAI</th><td><span class="v warn">AMP only</span></td><td><span class="v ok">guardrails</span></td><td><span class="v warn">no auto-recover</span></td><td><span class="v ok">1.0 GA</span></td></tr>
+            <tr><th>Claude SDK</th><td><span class="v warn">per-process</span></td><td><span class="v ok">permissions</span></td><td><span class="v warn">hosted only</span></td><td><span class="v ok">prod tooling</span></td></tr>
+            <tr><th>LlamaIndex</th><td><span class="v warn">none</span></td><td><span class="v warn">app-managed</span></td><td><span class="v ok">checkpoints</span></td><td><span class="v ok">1.0 GA</span></td></tr>
+            <tr><th>Letta</th><td><span class="v bad">single-tenant</span></td><td><span class="v warn">opt-in auth</span></td><td><span class="v ok">Postgres</span></td><td><span class="v ok">growing</span></td></tr>
+            <tr><th>Temporal</th><td><span class="v ok">namespaces</span></td><td><span class="v ok">mTLS</span></td><td><span class="v ok">best-in-class</span></td><td><span class="v warn">AI-newer</span></td></tr>
+            <tr><th>DSPy</th><td><span class="v ok">n/a</span></td><td><span class="v ok">n/a</span></td><td><span class="v warn">not a runtime</span></td><td><span class="v ok">mature</span></td></tr>
+          </tbody>
+        </table></div>
+        <p class="aside-note">Cell verdicts are the panel's, traced to the signal block; nothing was re-verified against the live web. <button class="chip" data-ev="S-03" style="padding:2px 8px">S-03</button></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KL4 -->
+  <section class="section" id="s4">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">4</span> The snapshot</span>
+        <h2 class="sec-title">It is a <b>fast-drifting 2026 photograph</b>, and undated.</h2>
+        <p class="lede">Reviewer 2 called version-fragility the matrix's main weakness. It captures a Q1–Q2 2026 moment where several headline capabilities are brand-new or in preview, and the panel is explicit that these <em>will drift quickly</em>. An undated matrix invites a reader to treat a preview feature as a stable property.</p>
+        <p class="lede">This is exactly the class of claim the study flags rather than chases: the fragility is stated by the source, so it is carried forward as a caveat, not re-checked.</p>
+        <div class="chips"><button class="chip warn" data-ev="S-09">S-09</button></div>
+      </div>
+      <div class="aside rv">
+        <div class="disc">
+          <details class="card" open><summary>The capabilities already drifting<span class="plus"></span></summary>
+            <div class="body"><p>The panel names them: OpenAI Sandbox Agents (April 2026, partly hosted), Claude Managed Agents (public beta), Microsoft Agent Framework reaching GA, DSPy GEPA. Each is new or preview. The Managed Agents cell is asked to answer multi-tenancy, durability, <em>and</em> security simultaneously, overstating parity with GA infrastructure like Temporal namespaces.</p>
+              <div class="chips"><button class="chip warn" data-ev="S-09">S-09</button></div></div></details>
+          <details class="card"><summary>The one that already flipped<span class="plus"></span></summary>
+            <div class="body"><p>The OpenAI SDK durability story is the clearest drift: the matrix's "no built-in crash-replay" was written before the official OpenAI × Temporal integration moved from public preview (Sept 2025) to GA. The capability didn't just get a footnote, it changed status between snapshot and reading. The fix is procedural: date every maturity cell, beta-flag every preview capability, and never treat preview as GA.</p>
+              <div class="chips"><button class="chip warn" data-ev="S-11">S-11</button></div></div></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KL5 -->
+  <section class="section" id="s5">
+    <div class="wrap sec-grid">
+      <div class="rv">
+        <span class="tag"><span class="n">5</span> Not comparable</span>
+        <h2 class="sec-title">Two of the nine <b>don't belong on the same axes</b>.</h2>
+        <p class="lede">The most structural caveat isn't about a wrong cell; it's about the frame. Two entries are honestly annotated in the matrix but should not be scored beside the agent frameworks without weighting, because they answer a different question.</p>
+        <p class="lede">Keeping them in the table is fine; ranking them against the others is a category error the reader has to hold in mind.</p>
+        <div class="chips"><button class="chip" data-ev="S-10">S-10</button></div>
+      </div>
+      <div class="aside rv">
+        <div class="disc">
+          <details class="card" open><summary>DSPy is not a runtime<span class="plus"></span></summary>
+            <div class="body"><p>DSPy is an optimizer and programming model: composable Modules and Signatures, optimizer-compiled. Its "state" is compiled prompts and weights (save/load JSON); it has no agent-memory primitive, no sandbox, no durable runtime. Scoring it on durability or multi-tenancy compares a compiler to an operating system.</p>
+              <div class="chips"><button class="chip" data-ev="S-10">S-10</button></div></div></details>
+          <details class="card"><summary>Temporal is a substrate, not an agent<span class="plus"></span></summary>
+            <div class="body"><p>Temporal is an orchestration substrate with no agent primitives, "agent = your code." Its durability is genuinely best-in-class, but the matrix presents it as nearly free, glossing the real constraint: workflow code must be deterministic, so every nondeterministic LLM/tool call must be pushed into Activities, atop a heavy infra/ops burden (a Cassandra/Postgres/MySQL cluster). Best-in-class durability, but not the LLM-native ease the cell implies.</p>
+              <div class="chips"><button class="chip" data-ev="S-10">S-10</button></div></div></details>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <p><b>Illuminate.</b> Source: <span class="mono">docs/research/framework-comparison-matrix.md</span>, a 9×9 matrix plus a 3-reviewer, 37-challenge skeptic panel. A complex, comparative source: the five Key Lines are the spine; the full per-cell corrections, severities, and OSS-vs-managed distinctions live in the disclosure layers, not compressed to headlines. Every claim traces to the signal block; the panel's own citations are recorded, never re-fetched. Open the evidence explorer to inspect the block.</p>
+</div></footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" aria-hidden="true">
+  <div class="sheet-head"><div class="sheet-title"><h3>The signal block</h3><span class="count" id="sheet-count">16 kept · 0 fetched</span><button class="sheet-close" id="sheet-close" aria-label="Close">✕</button></div>
+    <div class="filters" id="filters"></div></div>
+  <div class="sheet-list" id="sheet-list"></div>
+</aside>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+(function(){const r=document.documentElement,b=document.getElementById('theme');
+  const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/></svg>';
+  const MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>';
+  const cur=()=>r.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  function set(t){r.dataset.theme=t;b.innerHTML=t==='dark'?SUN:MOON;try{localStorage.setItem('il-fm-theme',t)}catch(e){}}
+  let s=null;try{s=localStorage.getItem('il-fm-theme')}catch(e){}set(s||cur());
+  b.onclick=()=>set(cur()==='dark'?'light':'dark');})();
+
+const SIGNALS=[
+ ["S-01","The matrix normalizes 9 agent runtimes across 9 axes; cells 'grounded in primary docs' but to be read with the skeptic-panel caveats.","source"],
+ ["S-02","Skeptic panel: 3 reviewers, 37 challenges. Consensus: moderately reliable, with a consistent directional bias an evaluator must correct for.","source"],
+ ["S-03","The 4 least-reliable axes are Multi-tenancy, Security, Durability, Maturity — re-verify against current primary docs before relying on them.","source"],
+ ["S-04","The bias is directional and systematic: (1) understates obsolescence, (2) conflates cloud vs self-host, (3) lags fast-moving SDKs, (4) generous on durability.","synthesis"],
+ ["S-05","Claude Agent SDK license: matrix says 'not OSS'; reviewer flags a HARD ERROR — the SDK code is MIT on GitHub; only usage is Commercial ToS.","source·contested"],
+ ["S-06","Letta self-host multi-tenancy: matrix says 'cloud multi-tenant'; it is single-shared-password, single-tenant. Native multi-tenancy is open issue #2887; only Letta Cloud has it.","source·contested"],
+ ["S-07","AutoGen maturity: 'maintenance mode' soft-pedals — community-managed, bug/security only, successor MAF GA'd; effectively legacy / EOL-track, near-disqualifying.","source"],
+ ["S-08","Recurring error pattern: OSS-vs-managed conflation — app-level scoping / hosted-only features described as enforced framework primitives.","principle"],
+ ["S-09","Version-fragility is the matrix's main weakness: a Q1–Q2 2026 snapshot where several capabilities are new/preview and 'will drift quickly'; must be dated and beta-flagged.","insight·contested"],
+ ["S-10","Comparability hazard: DSPy is an optimizer/programming model (not a runtime); Temporal is an orchestration substrate with no agent primitives.","source"],
+ ["S-11","OpenAI SDK durability: 'no built-in crash-replay' correct, but framing overstates native durability; production durability needs the external (now-GA) Temporal integration.","source·contested"],
+ ["S-12","OpenAI SDK 'single run' orchestration is outdated — native subagents + sandboxes shipped ~April 2026.","source·contested"],
+ ["S-13","LangGraph maturity understated by omission — 1.0 GA Oct 22 2025 (stable APIs, ~90M monthly downloads, enterprise deployments) matters more than star count.","source"],
+ ["S-14","Verified TRUE (not contested): Temporal MIT server license; CrewAI standalone/no-LangChain in 1.0; LangGraph ~34k stars + Klarna/Replit/Elastic; AutoGen maintenance-mode + MAF successor.","source"],
+ ["S-15","Reviewers ask the matrix to distinguish 'app-implemented scoping' from 'enforced isolation', and 'OSS library' from 'commercial control plane'.","principle"],
+ ["S-16","CrewAI durability: @persist checkpoints Flow state at method boundaries only, requires manual failure detection — not automatic crash recovery.","source"],
+];
+const SIGMAP=Object.fromEntries(SIGNALS.map(s=>[s[0],s]));
+const list=document.getElementById('sheet-list');
+list.innerHTML=SIGNALS.map(([id,claim,tag])=>{const warn=/contested/.test(tag)?' warn':'';
+  return `<div class="ev" id="ev-${id}" data-tag="${tag.split('·')[0]}"><div class="ev-top"><span class="ev-id">${id}</span><span class="ev-tag${warn}">${tag}</span></div><div class="ev-claim">${claim}</div></div>`;}).join('');
+const TAGS=[...new Set(SIGNALS.map(s=>s[1]&&s[2].split('·')[0]))];
+const tagset=[...new Set(SIGNALS.map(s=>s[2].split('·')[0]))];
+const filters=document.getElementById('filters');
+filters.innerHTML=`<button class="filt on" data-t="all">All · 16</button>`+tagset.map(t=>`<button class="filt" data-t="${t}">${t} · ${SIGNALS.filter(s=>s[2].split('·')[0]===t).length}</button>`).join('')+`<button class="filt" data-t="__c">contested · ${SIGNALS.filter(s=>/contested/.test(s[2])).length}</button>`;
+filters.onclick=e=>{const b=e.target.closest('.filt');if(!b)return;filters.querySelectorAll('.filt').forEach(f=>f.classList.toggle('on',f===b));
+  document.querySelectorAll('.ev').forEach(ev=>{const s=SIGMAP[ev.id.slice(3)];let show=true;
+    if(b.dataset.t==='__c')show=/contested/.test(s[2]);else if(b.dataset.t!=='all')show=ev.dataset.tag===b.dataset.t;ev.classList.toggle('hide',!show);});};
+const scrim=document.getElementById('scrim'),sheet=document.getElementById('sheet');
+function openSheet(id){sheet.classList.add('on');scrim.classList.add('on');sheet.setAttribute('aria-hidden','false');
+  if(id){const el=document.getElementById('ev-'+id);if(el){el.classList.remove('hide');el.scrollIntoView({block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1500);}}}
+function closeSheet(){sheet.classList.remove('on');scrim.classList.remove('on');sheet.setAttribute('aria-hidden','true');}
+document.getElementById('ev-open').onclick=()=>openSheet();
+document.getElementById('sheet-close').onclick=closeSheet;scrim.onclick=closeSheet;
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();});
+const tip=document.getElementById('tip');let tHide;
+function showTip(el){const s=SIGMAP[el.dataset.ev];if(!s)return;clearTimeout(tHide);tip.innerHTML=`<span class="tid">${el.dataset.ev} · ${s[2]}</span>${s[1]}`;
+  const r=el.getBoundingClientRect();tip.style.left=Math.min(Math.max(8,r.left),innerWidth-330)+'px';tip.style.top=(r.bottom+9)+'px';tip.classList.add('on');}
+function hideTip(){tHide=setTimeout(()=>tip.classList.remove('on'),80);}
+document.querySelectorAll('.chip[data-ev]').forEach(c=>{c.onclick=()=>openSheet(c.dataset.ev);c.addEventListener('mouseenter',()=>showTip(c));c.addEventListener('mouseleave',hideTip);c.addEventListener('focus',()=>showTip(c));c.addEventListener('blur',hideTip);});
+function ensure(){const vh=innerHeight||800;document.querySelectorAll('.rv:not(.in)').forEach(el=>{if(el.getBoundingClientRect().top<vh*.92)el.classList.add('in');});}
+document.querySelectorAll('.rv').forEach(el=>{const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.12});o.observe(el);});
+addEventListener('scroll',ensure,{passive:true});addEventListener('load',ensure);ensure();
+const links=[...document.querySelectorAll('#nav-links a')];
+const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}),{rootMargin:'-45% 0 -50% 0'});
+document.querySelectorAll('section.section,#top').forEach(s=>spy.observe(s));
+</script>
+</body>
+</html>
