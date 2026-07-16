@@ -39,16 +39,28 @@
   │                           │                                       │
   │                           ▼                                       │
   │                                                                   │
-  │  single .html — polished editorial · shadcn/ui vocabulary         │
-  │               · big type · real elevation + depth · one accent    │
-  │               · typewriter GT · purposeful motion · no 3D/scramble│
-  │               · argument-enacting components · evidence explorer  │
-  │               · light/dark toggle · focus · signal · keyboard nav │
-  │               · confidence meters · JSON-LD (agent-readable)      │
+  │  ONE self-contained .html — internally MULTI-PAGE by default      │
+  │    · form follows source — structure DERIVED, not a pyramid       │
+  │      template (debate-map / causal-web / timeline / tree /        │
+  │      architecture / matrix / pyramid)                             │
+  │    · hash-routed, one developed view at a time, deep-linkable     │
+  │    · at-par art direction — neutral `swiss` default, self-hosted  │
+  │      grotesque, one accent, ink-on-paper diagrams                 │
+  │    · argument-selected components + purposeful motion             │
+  │    · rendered code · high-fidelity mockups · evidence explorer    │
+  │    · light/dark · focus · signal · keyboard · JSON-LD (agents)    │
   │                                                                   │
-  │  opens in any browser · works offline · no server needed          │
+  │  opens in any browser · works offline · no server · no network    │
   └───────────────────────────────────────────────────────────────────┘
 ```
+
+> **Form follows source.** illuminate is a *method that derives structure from content*, not a
+> template that ingests it. A controversy becomes a debate-map, a multi-causal phenomenon a causal
+> web, a process a timeline, a system an architecture — the Minto pyramid is the **default for
+> single-thesis sources only**. The derived top-level structure becomes the **page set** of an
+> internally multi-page, self-contained file. Every page is *developed* (nested depth, rendered
+> code, high-fidelity mockups), built to an explicit art-direction contract, and verified in
+> **pixels** by a build-blocking render gate — not self-certified from source.
 
 ---
 
@@ -73,27 +85,32 @@ The stages are not phases to rush through — they are the method.
   ╠══════════════════════════════════════════════════════════════════╣
   ║  STAGE II · PROCESS                                              ║
   ║                                                                  ║
-  ║   signal block ──▶ hub detection  (rank nodes by degree)         ║
-  ║               ──▶ issue tree      "Why is [GT] true?"            ║
-  ║               ──▶ MECE type       process / structure / sit.     ║
-  ║               ──▶ Minto Pyramid   SCQA + Key Lines               ║
-  ║               ──▶ 3-skeptic audit                                ║
-  ║                   A: logical · B: evidential · C: completeness   ║
+  ║   Phase 2.0 · STRUCTURE SELECTION  ── derive, don't impose       ║
+  ║     diagnose the source's epistemic shape →                      ║
+  ║     pyramid · debate-map · causal-web · timeline · tree ·        ║
+  ║     architecture · matrix    (arity = source's real branching)   ║
+  ║   FORMAT SELECTION  ── multi-page (default) | single-scroll      ║
+  ║   DEPTH PASS  ── parts · variants · mechanisms · code (develop)  ║
   ║                                                                  ║
-  ║   output: pyramid anchor  →  disk before gate passes             ║
+  ║   signal block ──▶ hub detection ──▶ the DERIVED structure       ║
+  ║               ──▶ generalized 3-skeptic audit on its joints      ║
+  ║                                                                  ║
+  ║   output: structure + format + depth anchors → disk             ║
   ╠══════════════════════════════════════════════════════════════════╣
   ║  STAGE III · OUTPUT                                              ║
   ║                                                                  ║
-  ║   pyramid anchor ──▶ editorial restraint ──▶ HTML build          ║
+  ║   ARTDIR contract ──▶ one self-contained file, MULTI-PAGE        ║
   ║                                                                  ║
-  ║   SCQA hero  ·  typewriter GT  ·  big type  ·  real elevation    ║
-  ║   shadcn/ui vocabulary  ·  one accent  ·  purposeful motion      ║
-  ║   argument-enacting components  ·  interactive ASCII/SVG         ║
-  ║   evidence explorer  ·  annotation pins  ·  confidence meters    ║
-  ║   light/dark toggle  ·  focus mode  ·  signal view  ·  keyboard  ║
-  ║   JSON-LD (agent-readable)  ·  parallax opt-in (rich tier)       ║
+  ║   hash-routed pages (one per top-level element) · deep-linkable  ║
+  ║   neutral `swiss` default · self-hosted grotesque · one accent   ║
+  ║   developed pages · nested depth · rendered CODE-CONFIG          ║
+  ║   high-fidelity mockups (medium-correct chrome, read as renders) ║
+  ║   argument-selected components + purposeful motion (I)           ║
+  ║   evidence explorer · annotation pins · light/dark · keyboard    ║
+  ║   JSON-LD (agents) · honest export · NO parallax                 ║
   ║                                                                  ║
-  ║   output: single .html  ·  zero deps  ·  permanently legible     ║
+  ║   RENDER GATE (blocking) ── verify PIXELS, not source            ║
+  ║   output: single .html · zero deps · permanently legible         ║
   ╚══════════════════════════════════════════════════════════════════╝
 ```
 
@@ -124,11 +141,19 @@ The stages are not phases to rush through — they are the method.
 
 ## Design System
 
-The design language is **polished editorial restraint** with a **shadcn/ui component
-vocabulary**. Structure is visible, type carries the argument, and every effect earns its
-place by aiding understanding. Colors are palette-tokened — six palettes, dark + light — so
-no component hard-codes a hex, and contrast holds in both themes. (Swiss editorial is one of
-the palettes; it is no longer the only lane.)
+The design language is **at-par editorial**, executed to an explicit `[ILLUMINATE:ARTDIR]`
+contract the model commits to before build — because a prose target ("be tasteful") loses to a
+hard-coded default. The **register is selectable; the craft bar is fixed**. Enforced, not
+suggested (Part H6):
+
+- **Neutral `swiss` palette is the default** (near-white / near-black, one red) — warm-cream +
+  terracotta + pastel is a **banned default** and a render-gate fail. Seven palettes, dark + light,
+  all palette-tokened (`var(--…)` only, WCAG-AA in both themes).
+- **A real self-hosted grotesque, never `system-ui`.** `system-ui` / `-apple-system` / `SF Pro` are
+  forbidden tokens (the single largest "looks like a template" tell); the family is embedded as woff2.
+- **Monochrome headlines** — no accent-colored word in a title; emphasis is weight, not hue.
+- **Ink-on-paper diagrams** — no pastel auto-flowchart node fills.
+- A **build-blocking render gate** fails the build on any of the above, plus clips and console errors.
 
 ```
   TYPOGRAPHY
@@ -171,8 +196,8 @@ the palettes; it is no longer the only lane.)
   --accent  (one, used sparingly)       the single brand color
   semantic tints (good/warn/data)       desaturated · never the accent
 
-  six palettes × dark + light · WCAG-AA holds in both (OKLCH-derivable)
-  one strong color per semantic role  ·  never decorative
+  seven palettes × dark + light · neutral `swiss` is the DEFAULT
+  WCAG-AA holds in both (OKLCH-derivable) · one color per role, never decorative
 
 
   GHOST SECTION NUMBERS
@@ -198,9 +223,9 @@ the palettes; it is no longer the only lane.)
   MODERN CHROME
   ──────────────────────────────────────────────────────────────────
 
-  ·  floating glass pill nav — detached, not edge-to-edge sticky
-  ·  pill eyebrow badges  ·  spring easing  ·  scroll fade-up reveals
-  ·  parallax opt-in (rich tier) · no 3D physics · no scramble/glitch
+  ·  router / page-index nav — persists across pages (multi-page mode)
+  ·  pill eyebrow badges  ·  spring easing  ·  View Transitions
+  ·  NO parallax (removed as a goal) · no 3D physics · no scramble/glitch
 ```
 
 ---
@@ -261,7 +286,36 @@ Governs the entire arc. Not a phase — the law.
 
 ---
 
-## The Pyramid
+## Form Follows Source
+
+Stage II opens by diagnosing **what kind of thing the source is** and deriving the macro-structure
+that fits. The pyramid is one shape — the default for single-thesis sources, not the universal output.
+
+```
+  SOURCE SHAPE                    →  DERIVED STRUCTURE        OPENING
+  ──────────────────────────────    ──────────────────────   ─────────────────
+  single-thesis / recommendation  →  Minto pyramid (default)  GT + SCQA
+  controversy / competing frames  →  debate-map               the question + stakes
+  multi-causal phenomenon         →  causal web               the multiplicity claim
+  process / evolution / narrative →  timeline (branching)     before → after
+  taxonomy / decomposition        →  tree / hierarchy         whole + division
+  system / mechanism              →  architecture / flow      the behavior it produces
+  comparison / options            →  matrix / scorecard       decision + criteria
+
+  ARITY = the source's real branching factor — never defaulted to 3–4.
+          A high honest count is GROUPED / progressively disclosed, never deleted.
+
+  THE SWAP TEST (Phase 7): could this structure + component set be lifted onto an
+  unrelated source unchanged? If yes → templated → re-derive. Two unlike sources
+  must read as two different kinds of document.
+```
+
+Below is the **single-thesis default case** — the Minto pyramid. Every other shape substitutes its
+own governing object, opening, and quality test (a debate-map's located contention, a causal web's
+non-independent factors, a timeline's pivots…), and the 3-skeptic audit attacks *that* structure's
+joints.
+
+## The Pyramid *(the single-thesis default shape)*
 
 ```
                           ▲
@@ -311,7 +365,7 @@ The output *renders* the pyramid — it does not illustrate it.
 
   evidence has depth          ·  real elevation: surface + shadow + hairline
                               ·  ground → surface → raised, three steps
-                              ·  parallax opt-in (rich); depth from light, not a grid
+                              ·  depth from light, not a grid; no parallax
 
   signal is traceable         ·  S-NNN chips (accent) → evidence explorer
                               ·  signal-view (s): strips prose, shows traces
@@ -396,6 +450,31 @@ families, each doing something prose and ASCII can't:
                    content traces to S-NNN, or is visibly generic.
 ```
 
+These four families are the *authoritative spec*; they fold into a **wide superset catalog + a
+Phase-1 detection map** (Part I) so the component matches the source's **medium**, never defaulting
+to a phone:
+
+```
+  the drawable universe (image-free: CSS / inline-SVG / <canvas> / small-JS)
+  ──────────────────────────────────────────────────────────────────────────
+  device mockups   phone · watch · browser · terminal · code-editor · email ·
+                   chat · spreadsheet · slide · POS · trading-terminal · badge …
+  data / evidence  line · bar · stacked · funnel · cohort · heatmap · treemap ·
+                   SANKEY · chord · radar · scatter · candlestick · gauge · matrix
+  diagrams         flow · pipeline · state-machine · swimlane · network-graph ·
+                   org-chart · architecture · sequence · ER · venn · 2×2 · cycle
+  technical (G3)   CODE-CONFIG · SQL · formula · pseudocode · API/DATA schema · diff
+  editorial        pull-quote · callout · footnote · glossary · annotation-pin
+
+  MOTION is a first-class, purposeful layer — draw-in · count-up · live-tick ·
+  step-through · view-transition — every animation ships a reduced-motion STATIC
+  fallback; scroll-driven behind @supports. Never decorative, <300ms, no autoplay.
+
+  detection: markets → ticker/candlestick · data → Sankey/treemap/cohort ·
+  engineering → terminal/diff/API-console · document → letter/spreadsheet · …
+  Select the FEW that fit — never build-all.
+```
+
 **Annotation pins** turn any component into a navigational surface: numbered hotspots that are
 `data-cite` triggers into the same evidence drawer as the `S-NNN` chips. A pin whose citation
 does not resolve is a build error — pins are the tightest binding between illustration and evidence.
@@ -458,7 +537,7 @@ Section reveal sequence — enacts pyramid descent in DOM order:
 ```
   every enforcement mechanism —
   the 3-angle scan, the MECE tests, the 3-skeptic procedure,
-  the 12-item verify checklist —
+  the Phase 7 verify checklist, the blocking render gate —
 
   is executed by the same model it is designed to constrain.
 
@@ -501,19 +580,21 @@ Section reveal sequence — enacts pyramid descent in DOM order:
 
 ## Examples
 
-Live artifacts produced by `/illuminate`:
+Live artifacts produced by `/illuminate`, spanning the derived shapes:
 
-| Source | Artifact | What it illuminates |
-|--------|----------|---------------------|
-| `SKILL.md` (self) | [illuminate-self-arc.html](examples/illuminate-self-arc.html) | Self-arc paradox — the skill as its own source |
-| Agentic OS whitepaper | [illuminate-agentic-os-whitepaper.html](examples/illuminate-agentic-os-whitepaper.html) | 9 design pillars of an agentic OS |
-| Agentic OS evolution | [illuminate-agentic-os-evolution.html](examples/illuminate-agentic-os-evolution.html) | Runtime evolution + framework comparison |
-| Greenhouse failure modes | [illuminate-failure-modes.html](examples/illuminate-failure-modes.html) | Enforcement ladder — warm editorial system, diagram↔code, evidence explorer |
-| Email sequence templates | [illuminate-email-sequences.html](examples/illuminate-email-sequences.html) | **Component-library run** — fidelity mockups, timeline, compare-matrix, placeholder metrics |
+| Source | Derived shape | Artifact | What it demonstrates |
+|--------|---------------|----------|----------------------|
+| SFMC reactivation brief | system / architecture | [illuminate-rill-developed.html](examples/illuminate-rill-developed.html) | **Flagship** — multi-page, nested cohorts, rendered SQL + AMPscript, per-medium device chrome, honest export |
+| SFMC reactivation brief | system / architecture | [illuminate-rill-multipage.html](examples/illuminate-rill-multipage.html) | The multi-page format — hash-routed pages, branching journey, full-fidelity mockups |
+| SFMC reactivation brief | system / architecture | [illuminate-rill-secondwind.html](examples/illuminate-rill-secondwind.html) | Single-scroll variant — cohort matrix, journey flow, incrementality funnel |
+| Late Bronze Age collapse | causal web | [illuminate-bronze-age-web.html](examples/illuminate-bronze-age-web.html) | Form-follows-source proof — an 8-factor causal network + embedded debate-map, **not** a pyramid |
+| Framework comparison | compare-matrix | [illuminate-framework-matrix.html](examples/illuminate-framework-matrix.html) | Verification ledger + compare-matrix (D1/D2) |
+| Email sequence templates | pyramid + components | [illuminate-email-sequences.html](examples/illuminate-email-sequences.html) | Component-library run — all four families, placeholder metrics |
 
-The failure-modes and email-sequences artifacts are the current reference builds: the warm
-editorial system, the Component Library, and the evidence-governed ILLUSTRATE surfaces. The
-earlier agentic-OS and self-arc artifacts predate that redesign and show the original Swiss look.
+> The three Rill artifacts are the **same source** rendered three ways — single-scroll → multi-page →
+> *developed* — a controlled demonstration of Parts F and G. The bronze-age-web artifact is the
+> decisive **swap-test** proof: a controversy-shaped source that derives a causal web, un-liftable
+> onto any single-thesis pyramid.
 
 ---
 
