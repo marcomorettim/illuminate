@@ -1114,6 +1114,22 @@ Author the artifact as **React + TypeScript + Tailwind + shadcn/ui**, bundled to
 offline HTML** (all JS/CSS/fonts inlined, zero external requests) via **`vite build` +
 `vite-plugin-singlefile`** — which keeps the single-file/offline law intact (Rule 19 already permits a
 build step). Own-the-code components, themed to Beitar:
+
+**Targeting a claude.ai Artifact (verified, hard-won).** The default Vite output — a full
+`<!doctype><html><head>…</head><body>` document with a `<script type="module" crossorigin>` bundle —
+**renders blank** as an Artifact: the Artifact CSP blocks inline **module** scripts, and the tool
+wraps *body-content only*. Four steps make it publishable, all proven on the Kepler build:
+(1) build a **classic IIFE bundle**, not ESM — `rollupOptions.output.format:'iife'` +
+`inlineDynamicImports:true`, `modulePreload:false`; (2) **mount on `DOMContentLoaded`** (a classic
+inline script runs synchronously mid-parse, so `createRoot(#root)` fails with React #299 unless
+deferred); (3) **strip the outer skeleton** (`<!doctype>`, `<html>`, `<head>`, the two `<meta>`,
+`</head>`, `<body>`, `</body>`, `</html>`) so only body content remains; (4) **declassify** the bundle
+tag (`type="module" crossorigin` → plain `<script>`). Verify by loading the *live* artifact in an
+authenticated browser (the in-app browser isn't signed in to claude.ai) — a local wrapped test passes
+the gate but cannot reproduce the real CSP. The offline single-file (the full document, opened
+directly) needs none of this and remains the primary deliverable.
+
+Own-the-code components, themed to Beitar:
 - **shadcn/ui (Radix + Tailwind):** Accordion, Collapsible, Tabs, Hover Card, Tooltip, Sheet/Dialog
   (drawers), **Command (⌘K)**, Resizable panels, Scroll Area, Popover, Toggle/Segmented groups.
 - **TanStack Table (+ Virtual):** faceted filter / sort / group, column pinning, **expandable rows**,
