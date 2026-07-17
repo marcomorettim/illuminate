@@ -29,6 +29,8 @@ the page set from `[data-page]` (hash-routed multi-page) or treats the file as a
 | 2 | banned warm-cream `--paper` + warm (hue 15–45) `--red` palette | H6.1 |
 | 3 | a forbidden system-font token (`-apple-system`/`system-ui`/`SF Pro`/`Segoe UI`/**`Futura`**) | H6.2 / C |
 | 3b | **Beitar (`#FFCC00`) used as text or as a wash behind text** — the accent is a mark only | Part K·G |
+| 3c | **near-white text on a solid Beitar fill** — the dark-mode finding-mark bug (foreground must be fixed `#141210`) | Part K·§3.1a |
+| 3d | **dead lateral margins** — content using < ~62% of a wide (1512px) canvas | Part K·§4 |
 | 4 | no embedded `@font-face`, or one that doesn't lead `--hn` | H6.2 |
 | 5 | an accent-colored heading descendant | H6.3 |
 | 6 | an empty / half-filled diagram (SVG surface with no drawn children) | G5 |

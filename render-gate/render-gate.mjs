@@ -56,6 +56,15 @@ async function probePage(page) {
         const box = el.getBoundingClientRect();
         if ((el.innerText||'').trim().length >= 12 && box.width*box.height > 9000 && same(getComputedStyle(el).backgroundColor))
           V.push(`beitar-wash-behind-text: <${el.tagName.toLowerCase()}> ${Math.round(box.width)}x${Math.round(box.height)}`);
+        // §3.1a — text/glyph ON a solid Beitar fill must be FIXED dark ink, never near-white (the dark-mode bug).
+        // Only a near-opaque fill counts (a faint alpha tint with ink text stays legible).
+        const bgc = getComputedStyle(el).backgroundColor; const bgn = (bgc.match(/[\d.]+/g)||[]).map(Number);
+        const bgOpaque = bgn.length < 4 || bgn[3] >= 0.6;
+        if (bgOpaque && same(bgc) && (el.innerText||'').trim().length >= 1) {
+          const fg = (getComputedStyle(el).color.match(/\d+/g)||[]).slice(0,3).map(Number);
+          if (fg.length === 3) { const lum = 0.2126*fg[0] + 0.7152*fg[1] + 0.0722*fg[2];
+            if (lum > 120) V.push(`beitar-foreground: near-white text (lum ${Math.round(lum)}) on a Beitar fill <${el.tagName.toLowerCase()}.${(el.className||'').split(' ')[0]}> — use fixed #141210`); }
+        }
       });
     })();
 
@@ -156,7 +165,7 @@ async function run() {
   const browser = await chromium.launch();
   const reasons = [];
   const consoleErrors = [];
-  const page = await browser.newPage();
+  const page = await browser.newPage({ viewport: { width: 1512, height: 982 } }); // §4: wide, so dead margins show
   page.on('console', m => { if (m.type() === 'error') consoleErrors.push(m.text().slice(0, 120)); });
   page.on('pageerror', e => consoleErrors.push('pageerror: ' + String(e).slice(0, 120)));
 
@@ -175,6 +184,23 @@ async function run() {
     for (const id of views) {
       if (id !== '__single__') { await page.evaluate(i => { location.hash = '#/' + i; }, id); await page.waitForTimeout(90); }
       (await probePage(page)).forEach(r => reasons.push(`[${theme}/${id}] ${r}`));
+      // §4 · FILL THE CANVAS — on a wide viewport the content must use the width, not float in one
+      // narrow centred column. Fires only on the egregious case (content < 62% of the viewport).
+      if (theme === 'light') {
+        const dm = await page.evaluate(() => {
+          const vw = window.innerWidth;
+          const els = [...document.querySelectorAll('main *, [data-page] *')].filter(e => {
+            const s = getComputedStyle(e); if (s.display === 'none' || s.visibility === 'hidden') return false;
+            return (e.innerText || '').trim().length > 0 || /TABLE|SVG|FIGURE/.test(e.tagName);
+          });
+          if (!els.length) return null;
+          let L = Infinity, R = -Infinity;
+          els.forEach(e => { const b = e.getBoundingClientRect(); if (b.width < 4) return; L = Math.min(L, b.left); R = Math.max(R, b.right); });
+          const used = (R - L) / vw;
+          return used < 0.62 ? { used: Math.round(used * 100), vw } : null;
+        });
+        if (dm) reasons.push(`[layout/${id}] dead-lateral-margins: content uses only ${dm.used}% of a ${dm.vw}px canvas (§4 — fill the canvas)`);
+      }
     }
   }
   (await probeControls(page)).forEach(r => reasons.push(`[ctrl] ${r}`));

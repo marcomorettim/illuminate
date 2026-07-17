@@ -137,6 +137,16 @@ artifact has failed its only purpose — however elegant it looks. This is the s
 "develop, don't skeletonize") polices in the output, named here as law so it binds every phase, not
 just the build.
 
+**Every sibling developed — no head/tail compression (the precisely-located failure).** The most
+common breach is subtle: a section develops its *first* child in full (a full table, the worked
+calculation, the scenario tree) and compresses the *remaining siblings* into summary cards or a
+clause — an engine whose Driver 1 gets a full table while Drivers 2–4 become three one-paragraph
+cards; a driver whose first mechanism is developed and the rest named. **This is the compression, and
+it is banned.** Every sibling at a level — every driver, every mechanism, every branch — is developed
+to the **same depth as the first**. A section whose head is rich and tail is thin is a Completeness
+failure however elegant, and the render gate flags a sibling markedly thinner than its head. (The
+drill-down interaction of Part K·§6 exists precisely to make every sibling first-class and reachable.)
+
 **Completeness is measured by coverage of the source, never by reduction.** The question at every
 phase is "is all the load-bearing material present, developed, and ordered for guided descent?" —
 never "how much can this be cut to." Crispness is a property of the *governing object* alone (one clear
@@ -1080,6 +1090,62 @@ escape hatch for genuinely financial charts — "negative/loss" may use a single
 (never a matching positive green; positive stays ink); **no single finding → no Beitar** — a pure
 reference chart of equal series is greys only. A chart earns its yellow only when it has a point.
 
+**§3.1a · Beitar marks get a FIXED dark foreground — never `var(--ink)`.** Any text or glyph sitting
+*on* a Beitar fill uses a **fixed Inchiostro `#141210` in both light and dark modes** — never
+`var(--ink)`, which flips to near-white `#EFEADF` in dark and renders illegible white-on-yellow.
+Beitar never inverts. The render gate hard-fails any near-white foreground (luminance > 120) on a
+near-opaque Beitar fill.
+
+---
+
+### Part K (cont.) · Layout, the modern component stack, drill-down, motion (Master handoff §4–§7)
+
+**§4 · FILL THE CANVAS (a named layout rule).** A single narrow centred measure (~64ch) floating in a
+wide viewport with ~40% dead lateral white is a **hard render-gate failure** — "Swiss grid" does not
+mean "one column." Enforce a real editorial grid that *uses the width*: a wider primary measure;
+**multi-column where content allows**; **marginalia — S-NNN traces, definitions, secondary notes — in
+a side/margin column**, not stacked under the body; and **tables, charts, diagrams, mockups go
+full-bleed / span wide**, never confined to the text column. Whitespace is *composed*, not the
+by-product of an unused half-canvas. The gate renders at a wide viewport (1512px) and fails a page
+whose content uses < ~62% of it.
+
+**§5 · The modern component stack (retire hand-rolled vanilla; this is the delivery pipeline).**
+Author the artifact as **React + TypeScript + Tailwind + shadcn/ui**, bundled to **one self-contained
+offline HTML** (all JS/CSS/fonts inlined, zero external requests) via **`vite build` +
+`vite-plugin-singlefile`** — which keeps the single-file/offline law intact (Rule 19 already permits a
+build step). Own-the-code components, themed to Beitar:
+- **shadcn/ui (Radix + Tailwind):** Accordion, Collapsible, Tabs, Hover Card, Tooltip, Sheet/Dialog
+  (drawers), **Command (⌘K)**, Resizable panels, Scroll Area, Popover, Toggle/Segmented groups.
+- **TanStack Table (+ Virtual):** faceted filter / sort / group, column pinning, **expandable rows**,
+  virtualization — the multi-listing that conveys multidimensionality.
+- **Tree view** (react-arborist / nested Radix): real multi-level nested drill-down.
+- **Charts — retire hand-rolled SVG bars:** **Tremor** (KPI/dashboard) + **visx** (bespoke bridges,
+  sankey, roll-rate curves), themed to §3.4 (monochrome + one Beitar finding).
+- **Framer Motion (`motion/react`):** layout / shared-layout transitions, `AnimatePresence` for
+  expand/collapse, scroll-linked reveals — reduced-motion aware.
+- **Layout:** Tailwind **bento grids + Resizable panels + multi-column** to deliver §4.
+Retire the ASCII / `SECTION-MOTIF` / SVG-bar specs **as the default** (keep ASCII only where it
+genuinely serves the narration). **Out of scope:** GraphQL / web3 / any backend data layer — a static
+self-contained document has no backend; adopt the *component + web-engineering* practices, not the
+data layer. Update Rule 19 to mandate this pipeline.
+
+**§6 · Drill-down is a real multi-level interaction, not a longer scroll.** Descent from the answer to
+the mechanism-level reasoning and back is delivered by **expandable rows, tree descent, master-detail
+Sheets, nested accordions** — not one long static scroll and not one level deep. All depth is present
+(Completeness Law) *and* reachable by that interaction; the compressed tail (§1.1a) is exactly what the
+tree / faceted grid / master-detail exist to make first-class. Specific components: a **faceted data
+grid** (filter/sort/group by dimension, expandable rows); **master–detail** (row/node → a Sheet with
+the full developed detail); a **segmented multi-view over one dataset** (same data by dimension A/B/C);
+a **tree explorer** (GT → sections → drivers → mechanisms, every sibling reachable); small-multiples,
+compare-select, and a `cmdk` palette for dense documents.
+
+**§7 · Motion — earned, not absent.** Parsimony means *earned*, never *zero*. Where motion serves the
+argument it **must be present** — a nested drill-down document is precisely where **draw-in, count-up,
+step-through, and expand/collapse transitions earn their place**, and their *absence* is itself a
+failure the gate flags (zero motion where the content invites it). Every animated element ships a
+**reduced-motion static** fallback; scroll-driven / cross-document transitions behind `@supports`. No
+reflexive parallax hero, no decoration.
+
 ---
 
 ### Art Direction — from correct to at-par (Part H)
@@ -1237,7 +1303,8 @@ gate**, not guidance:
   (e) an accent-colored heading descendant (H6.3); (f) an empty/half-filled diagram; (g) a
   title-over-whitespace page (Completeness Law / G1); (h) a dead/lying control — it clicks the theme
   toggle and evidence trigger and confirms each acts (H4); (i) any console error or unhandled
-  pageerror. It emits and gates on:
+  pageerror; (j) **near-white text on a solid Beitar fill** — the dark-mode finding-mark bug (§3.1a);
+  (k) **dead lateral margins** — content using < ~62% of a wide (1512px) canvas (§4). It emits and gates on:
   ```
   [ILLUMINATE:RENDERGATE] pages:<n> PASS | FAIL <reasons>
   ```
@@ -3533,7 +3600,7 @@ Design for containment, not exorcism. Signal, do not certify.
 18b. **Editorial elegance is mandatory; the register is selectable (Part F2).** Execute at a high editorial bar independent of palette: strong type hierarchy (ultralight display vs bold labels, not uniform 600-weight card titles), generous whitespace, a felt column grid, restrained ornament (tight radii, subtle/flat shadows, minimal box-in-box), sophisticated semantic color (not a rainbow of tags). **The rounded-card / soft-shadow SaaS-dashboard aesthetic is a named failure mode.** Register may vary (Swiss, warm, archival, print, phosphor); craft may not.
 
 **Technical constraints**
-19. Component vocabulary is shadcn/ui (Radix + Tailwind patterns). Any JS/CSS library is allowed when it serves legibility — D3/Observable Plot for real data viz, Tailwind for layout. CDN and build steps (Vite, esbuild) both fine. Not for decoration: an effect that doesn't aid understanding doesn't ship.
+19. **Author on the modern component stack (Part K·§5), bundled to one offline file.** React + TypeScript + Tailwind + **shadcn/ui** (Radix), **TanStack Table** (faceted, expandable rows) for multi-listings, a **tree view** for nested drill-down, **Tremor + visx** for charts (retiring hand-rolled SVG bars), **Framer Motion** for transitions — `vite build` + **`vite-plugin-singlefile`** inlines everything (JS/CSS/fonts) into one self-contained offline HTML with zero external requests. The ASCII / `SECTION-MOTIF` / SVG-bar specs are retired **as the default** (ASCII only where it genuinely serves the narration). Out of scope: GraphQL / web3 / any backend data layer (a static document has no backend). Not for decoration: an effect that doesn't aid understanding doesn't ship.
 20. Prefer vanilla only when it is faster to write and equally expressive. Never avoid a library out of principle — avoid it only when it adds complexity without payoff.
 
 **Component library**
@@ -3554,7 +3621,7 @@ Design for containment, not exorcism. Signal, do not certify.
 31. **No named cheap tells (H2).** Each hard-fails the render gate: muddy earth-tone-on-cream palette; pastel flowchart node fills; auto-flowchart aesthetic (rounded-rect + 1px + elbow + centered label); box-in-box; system-default typeface; timid accent; flat grey-fill fake shadows; **two-tone accent-word headlines** (titles are single-ink; emphasis by weight/size, never hue). Diagrams are composed editorial infographics, not default-flowchart-tool output.
 32. **Mockups read as renders (H3).** Real device shadow + correct bezel radius; **drawn** status-bar glyphs (SVG signal/wifi/battery, never the literal "9:41 … 62%" string in body type); real header proportion. A grey box with a colored header is a fail.
 33. **No interaction theater (H4).** A control performs its real effect in the target or is not offered; a success message fires only when the effect provably occurred. Export uses a path that works in the sandbox (new-tab-to-save) and confirms only on the real event — never an unconditional "Downloaded". If no path works, don't render the button. Verified by clicking it in render (H5).
-34. **Enforcement over guidance (H6) — art direction is baked into defaults, not left to interpretation.** The neutral **`swiss`** palette is the default (warm-cream `#f*f*e*` + warm-`--red` is a banned default and a render-gate fail); text/display tokens contain **no** `-apple-system`/`system-ui`/`SF Pro`/`Segoe UI` and self-host a real grotesque (`'Archivo'`, embedded via `assets/embedded-font.css`); no `h1/h2/h3` descendant carries the accent color (weight-only emphasis); diagram nodes use the neutral paper ramp (no pastel fills). The **`[ILLUMINATE:RENDERGATE]`** step is a **required, build-blocking** render check — it FAILs (not shippable) on any clip, banned-palette signature, forbidden font token, colored heading, pastel node, console error, or unprovable control. This is the only form of H that survives the model's baked-in defaults.
+34. **Enforcement over guidance (H6) — art direction is baked into defaults, not left to interpretation.** The curated warm **`beitar`** palette is the default (an *undesigned* warm-cream `#f*f*e*` + warm-`--red` fallback is still a banned default and a render-gate fail); text/display tokens contain **no** `-apple-system`/`system-ui`/`SF Pro`/`Segoe UI`/`Futura` and self-host real embedded families (`'HN'`=Nimbus, `'Jost'`, `'JetBrains Mono'` via `assets/embedded-font.css`); no `h1/h2/h3` descendant carries the accent color (weight-only emphasis); **Beitar is a mark only, with a fixed dark `#141210` foreground that never inverts (§3.1a)**; diagram nodes use the neutral paper ramp (no pastel fills); the layout **fills the canvas** (no dead lateral margins, §4). The **`[ILLUMINATE:RENDERGATE]`** step is a **required, build-blocking** render check — it FAILs (not shippable) on any clip, banned-palette signature, forbidden font token, colored heading, pastel node, Beitar-as-text or near-white-on-Beitar, dead-margin layout, console error, or unprovable control. This is the only form of H that survives the model's baked-in defaults.
 
 **Component & motion menu (Part I)**
 35. **The component is chosen to match the source's medium/data-shape, never defaulting to a phone (Part I).** Select from the wide image-free catalog (device mockups · data viz — Sankey/treemap/cohort/candlestick/ticker/… · diagrams · technical artifacts · editorial) by the Phase-1 detection map; a markets source yields a ticker/candlestick, a data source a Sankey/treemap, an engineering source a terminal/diff, a document source a letter/spreadsheet. It is a **menu, not build-all** (E2) — pick the few that fit. **Motion is a first-class, purposeful, selectable layer** (draw-in, count-up, live-tick, step-through) — never decorative, `<300ms`, no reading-competing autoplay, and **every animated element ships a `prefers-reduced-motion` static equivalent**; scroll-driven/cross-document transitions are `@supports`-gated with a fallback.
