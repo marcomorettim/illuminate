@@ -44,8 +44,8 @@
   │      template (debate-map / causal-web / timeline / tree /        │
   │      architecture / matrix / pyramid)                             │
   │    · hash-routed, one developed view at a time, deep-linkable     │
-  │    · at-par art direction — neutral `swiss` default, self-hosted  │
-  │      grotesque, one accent, ink-on-paper diagrams                 │
+  │    · at-par art direction — warm `beitar` default, embedded       │
+  │      Nimbus/Jost/JetBrains, one #FFCC00 finding mark              │
   │    · argument-selected components + purposeful motion             │
   │    · rendered code · high-fidelity mockups · evidence explorer    │
   │    · light/dark · focus · signal · keyboard · JSON-LD (agents)    │
@@ -102,7 +102,7 @@ The stages are not phases to rush through — they are the method.
   ║   ARTDIR contract ──▶ one self-contained file, MULTI-PAGE        ║
   ║                                                                  ║
   ║   hash-routed pages (one per top-level element) · deep-linkable  ║
-  ║   neutral `swiss` default · self-hosted grotesque · one accent   ║
+  ║   warm `beitar` default · embedded Nimbus/Jost/JetBrains         ║
   ║   developed pages · nested depth · rendered CODE-CONFIG          ║
   ║   high-fidelity mockups (medium-correct chrome, read as renders) ║
   ║   argument-selected components + purposeful motion (I)           ║
@@ -144,16 +144,32 @@ The stages are not phases to rush through — they are the method.
 The design language is **at-par editorial**, executed to an explicit `[ILLUMINATE:ARTDIR]`
 contract the model commits to before build — because a prose target ("be tasteful") loses to a
 hard-coded default. The **register is selectable; the craft bar is fixed**. Enforced, not
-suggested (Part H6):
+suggested (Part H6 + the **Beitar** design system, Part K):
 
-- **Neutral `swiss` palette is the default** (near-white / near-black, one red) — warm-cream +
-  terracotta + pastel is a **banned default** and a render-gate fail. Seven palettes, dark + light,
-  all palette-tokened (`var(--…)` only, WCAG-AA in both themes).
-- **A real self-hosted grotesque, never `system-ui`.** `system-ui` / `-apple-system` / `SF Pro` are
-  forbidden tokens (the single largest "looks like a template" tell); the family is embedded as woff2.
-- **Monochrome headlines** — no accent-colored word in a title; emphasis is weight, not hue.
-- **Ink-on-paper diagrams** — no pastel auto-flowchart node fills.
-- A **build-blocking render gate** fails the build on any of the above, plus clips and console errors.
+- **`beitar` is the default palette** — a curated warm system: **Inchiostro** near-black ink on
+  warm **Carta** paper, **Cenere** warm-grey secondary, and one held-constant **`#FFCC00`** accent.
+  The old ban is on an *undesigned* muddy warm-cream + terracotta fallback — not a designed warm
+  system like this. Eight palettes (beitar + swiss + six), each dark **and** light, all
+  palette-tokened (`var(--…)` only, WCAG-AA in both themes). Default open mode is **light**.
+- **Beitar is only ever a mark — and it marks *the finding*.** Exactly one `#FFCC00` mark per page:
+  that section's one "what counts" takeaway. Never body text, never a wash behind text (yellow fails
+  as both). Everything readable is Inchiostro on Carta.
+- **Three self-hosted families, no `system-ui`, no Futura.** `system-ui`/`-apple-system`/`SF Pro`/
+  `Futura` are forbidden tokens; embedded as base64 woff2: **Nimbus Sans** (`HN`, Helvetica clone —
+  body/display), **Jost** (geometric — labels & section numerals), **JetBrains Mono** (code).
+- **Monochrome headlines** (emphasis is weight, not hue) · **ink-on-paper diagrams** (no pastel
+  auto-flowchart fills) · **monochrome charts** where Beitar marks the one finding (differentiation
+  by lightness → fill-style+label → small-multiples → a flagged derived set — hue is last resort).
+- **Code is its own animal** — an always-dark Inchiostro panel in both themes with a recognized
+  warm-tuned **One Dark** syntax scheme (code legibility relies on trained-in token roles).
+- A **build-blocking render gate** (`render-gate/render-gate.mjs`, Playwright — a real script, not a
+  description) renders every page in light **and** dark and fails on any of the above, plus value
+  clips, empty diagrams, thin pages, dead controls, and console errors.
+
+Governing all of it, co-equal with the evidence contract: **the Completeness Law** — illuminate
+*preserves and develops* the source's full load-bearing material, organized for guided descent; it
+never compresses to a skeleton. A page is *developed* (parts, mechanisms, edge cases, rendered code),
+never "a title over one panel."
 
 ```
   TYPOGRAPHY
@@ -191,13 +207,13 @@ suggested (Part H6):
   COLOR — palette-tokened (var(--…) only, never a hardcoded hex)
   ──────────────────────────────────────────────────────────────────
 
-  ground  ──▶  surface  ──▶  raised     three visible elevation steps
-  --ink / --ink-2 / --ink-3             text at descending emphasis
-  --accent  (one, used sparingly)       the single brand color
-  semantic tints (good/warn/data)       desaturated · never the accent
+  Carta ──▶ surface ──▶ raised          three visible warm-neutral steps
+  Inchiostro / Cenere / Cenere-lo       ink at descending emphasis
+  Beitar #FFCC00  (the finding mark)    ONE mark per page · never text, never a wash
+  semantic tints (good/warn/data)       desaturated warm · never the accent
 
-  seven palettes × dark + light · neutral `swiss` is the DEFAULT
-  WCAG-AA holds in both (OKLCH-derivable) · one color per role, never decorative
+  eight palettes × dark + light · warm `beitar` is the DEFAULT (light open mode)
+  WCAG-AA holds in both · one color per role, never decorative
 
 
   GHOST SECTION NUMBERS
@@ -205,7 +221,7 @@ suggested (Part H6):
 
   01                            barely visible at rest (.022 opacity)
                                 intensify on section hover (.04 opacity)
-  02                            Futura 700  ·  clamp(7rem, 20vw, 16rem)
+  02                            Jost 700  ·  clamp(7rem, 20vw, 16rem)
                                 structure made legible without stating it
   03
 
@@ -392,7 +408,7 @@ The output *renders* the pyramid — it does not illustrate it.
   │    THEME-TOGGLE ── light/dark · persists · system default      │
   │                                                                │
   │  SECTIONS  (one per KL · identical anatomy — MECE enacted)     │
-  │    GHOST-NUM ── Futura 700 · 20vw · barely visible             │
+  │    GHOST-NUM ── Jost 700 · 20vw · barely visible             │
   │    SECTION-MOTIF ── ASCII/SVG motif · draws on scroll-in       │
   │    SECTION-HEADER ── KL tag (accent) · title · rule            │
   │    SECTION-LEDE ── standalone paragraph (reads cold)           │
@@ -590,11 +606,18 @@ Live artifacts produced by `/illuminate`, spanning the derived shapes:
 | Late Bronze Age collapse | causal web | [illuminate-bronze-age-web.html](examples/illuminate-bronze-age-web.html) | Form-follows-source proof — an 8-factor causal network + embedded debate-map, **not** a pyramid |
 | Framework comparison | compare-matrix | [illuminate-framework-matrix.html](examples/illuminate-framework-matrix.html) | Verification ledger + compare-matrix (D1/D2) |
 | Email sequence templates | pyramid + components | [illuminate-email-sequences.html](examples/illuminate-email-sequences.html) | Component-library run — all four families, placeholder metrics |
+| **4 docs, one campaign** | pyramid (multi-source) | [illuminate-northwind-winback.html](examples/illuminate-northwind-winback.html) | **Part J** — a related bundle synthesized into *one* artifact; the three-vs-two-cohort conflict surfaced + reconciled; per-source `S-<doc>NN` provenance, drawer filters by document |
+| Four-day-week debate | debate-map | [illuminate-four-day-week.html](examples/illuminate-four-day-week.html) | Controversy → steel-manned positions + cruxes, not a pyramid |
+| "The messy middle" essay | single-scroll | [illuminate-messy-middle.html](examples/illuminate-messy-middle.html) | Restraint is a *pass* — a linear essay stays single-scroll, no fabricated components |
+| Meridian outage review | system / timeline | [illuminate-meridian-outage.html](examples/illuminate-meridian-outage.html) | Code-heavy — verbatim log, SQL, config diff, `/health` JSON, state-machine SVG |
+| Beitar design system | — | [illuminate-beitar-smoketest.html](examples/illuminate-beitar-smoketest.html) | The **Beitar** system in pixels — Carta/Inchiostro/Cenere, embedded Nimbus/Jost/JetBrains, One-Dark code, monochrome chart, one `#FFCC00` finding mark; render-gate PASS |
 
 > The three Rill artifacts are the **same source** rendered three ways — single-scroll → multi-page →
 > *developed* — a controlled demonstration of Parts F and G. The bronze-age-web artifact is the
 > decisive **swap-test** proof: a controversy-shaped source that derives a causal web, un-liftable
-> onto any single-thesis pyramid.
+> onto any single-thesis pyramid. The Northwind bundle + the four-day-week / messy-middle / meridian
+> trio together exercise **Part J** (synthesize a related set vs. keep unrelated sources separate) and
+> **form-follows-source** (pyramid vs. debate-map vs. restrained essay vs. code-heavy system review).
 
 ---
 
