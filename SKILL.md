@@ -933,6 +933,48 @@ invisible skeleton. The experience is what the reader feels, not what they are t
 
 ---
 
+## Stage III runs the BUILD HARNESS — the artifact is never emitted from a single generation pass
+
+**The load-bearing law of this stage.** A hand-authored, single-pass artifact is a **process
+failure regardless of how good it looks** — "looks good" is exactly what an empty shell exploits.
+The artifact is only ever emitted as `build/dist/illuminate.html` by the build harness (`build/`,
+see `build/README.md`), and only when its `build/dist/gate-report.json` is **all-pass** (or carries
+an explicit, named residual-FAIL list). Two structural reasons, neither fixable by prompt wording:
+one budget across ~20k words makes a scaffold the cheapest way to *nominally* satisfy every rule;
+and a prose gate re-reads the generator's own source, so a 600-word shell reports itself complete.
+The harness fixes both: **every node gets its own generation step with its own budget**, and the
+gate is **an executed program that counts rendered pixels and DOM** outside any generator's context.
+
+**The nine stages** (Stage I feeds Stage 0; Stage II *is* Stages 1–2; Stage III executes 3–9):
+
+```
+ 0 INGEST      source(s) ─▶ source-model.json          preserve, DO NOT compress (ingest.py)
+ 1 DECOMPOSE   ─▶ argument tree (thesis→domain→driver→mechanism)      (manifest.py)
+ 2 MANIFEST    ─▶ build-manifest.json   THE CONTRACT: per-node word_floor + required_component
+ 3 DEVELOP ▶◀  one subagent per node ─▶ node-<id>.md ≥ its floor      (agents/develop-node.md)
+ 4 COMPONENTIZE code/table verbatim from source; bespoke data traced by the develop agents
+ 5 ASSEMBLE    nodes+components ─▶ React/shadcn single-file app (tree = manifest parent links)
+ 6 BUNDLE      vite + vite-plugin-singlefile ─▶ dist/illuminate.html   (IIFE + DOMContentLoaded)
+ 7 MASK-CHECK  cheap pre-flight: fonts embedded, no external refs, every component id present
+ 8 RENDER GATE headless Chromium, both themes ─▶ gate-report.json (words/node, components, …)
+ 9 REPAIR      route each FAIL to its owning node's agent, rebuild only that, re-gate — loop
+```
+
+`build-manifest.json` is the **single contract every later stage is measured against, written from
+the SOURCE before any prose exists.** `word_floor` (≈0.7 × a node's source words, never zero) makes
+the head/tail asymmetry an *arithmetic* violation on a named node id, not a hope. Invoke:
+`node build/scripts/pipeline.mjs prepare <source>` → dispatch one develop agent per driver →
+`node build/scripts/pipeline.mjs assemble`. On FAIL, `gate-report.failing_nodes` names the exact
+node ("`D3.d2.m1` rendered 90 words against a 336 floor"); re-dispatch only those, re-assemble.
+
+**Graceful degradation (no subagents or browser — plain chat).** The true pipeline cannot run.
+There the skill must still (a) build the manifest explicitly and inline, (b) develop node-by-node
+in sequence against the floors (**not** one gestalt pass), and (c) **state clearly that the executed
+gate did not run, so the output is unverified.** It must never pretend the gate passed. The pipeline
+is the standard; the degraded path is honest about being degraded.
+
+---
+
 ## Format & page model (Part F — read the `[ILLUMINATE:FORMAT]` decision first)
 
 **Single file ≠ single page.** The single-file law (portable, offline, zero external requests)
@@ -1327,6 +1369,15 @@ gate**, not guidance:
   A `FAIL` is **not shippable** — it re-enters the correction register. This is G5/H5 made mechanical
   and blocking, the only form that survives the model's defaults. (If Playwright is unavailable, the
   operator runs the same checks by hand in a browser — but the script is the default path.)
+
+  **When the build harness runs (Stage III), the canonical gate is [`build/gate/gate.mjs`](build/gate/gate.mjs)**
+  — the same checks, but **manifest-driven**: it reads `build-manifest.json` and additionally verifies,
+  per named node, (l) **rendered words ≥ the node's `word_floor`** and total ≥ 0.6× source words
+  (the every-sibling-developed / anti-compression law, §2.1a); (m) **component coverage** — every
+  `required_component` node renders a component element; (n) **drill-down depth ≥ 4 reached by
+  clicking**; and (o) **Beitar-as-wash** — a `.finding` mark over ~90 chars fails. Its `gate-report.json`
+  names the exact failing node ids, which Stage 9 routes back to their owning agents. The standalone
+  `render-gate/render-gate.mjs` remains for single-file artifacts built outside the harness.
 
 ---
 
