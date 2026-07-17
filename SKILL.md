@@ -113,7 +113,8 @@ Every gate emits a structured signal:
 
 ```
 [ILLUMINATE] Opening. Source: <type> | Context: <clean/warn/contaminated> | Stage: input
-[ILLUMINATE:SIGNAL] ... [/ILLUMINATE:SIGNAL]      ← Phase 1 anchor (written to disk)
+[ILLUMINATE:SOURCESET] inputs:<n> | clusters:<m> | synthesize/separate  ← Phase 0.0 (Part J; when >1 input)
+[ILLUMINATE:SIGNAL] ... [/ILLUMINATE:SIGNAL]      ← Phase 1 anchor (written to disk); S-<doc><n> traces in a cluster
 [ILLUMINATE:STRUCTURE] shape: <type> | arity: <N>  ← Phase 2.0 anchor (written to disk)
 [ILLUMINATE:FORMAT] model: multi-page|single-scroll | pages: <N>  ← Phase 2.0 (written to disk)
 [ILLUMINATE:DEPTH] per-concept parts/variants/mechanisms/code → developed  ← Phase 2.0 (Part G1)
@@ -140,10 +141,57 @@ passes. No phase opens without the prior phase's disk anchor present and readabl
 *Goal: a dense, stratified, fully-traced signal block that contains every load-bearing idea
 in the source, nothing fabricated, nothing missed.*
 
-The Input stage runs three sub-phases: environment and source audit (0), multi-angle signal
-extraction (1), and provenance verification (1b). When specific tools are available, they
-are named; when they are not, the internal fallback procedure applies. The quality of the
-Input stage determines the quality of everything downstream.
+The Input stage runs sub-phases: **source-set assessment (0.0)**, environment and source audit (0),
+multi-angle signal extraction (1), and provenance verification (1b). When specific tools are
+available, they are named; when they are not, the internal fallback procedure applies. The quality
+of the Input stage determines the quality of everything downstream.
+
+---
+
+## Phase 0.0 — Source-set assessment (Part J — the front door; runs first when there is >1 input)
+
+**Every part after this assumes one cluster → one artifact. This phase decides what a "cluster" is.**
+Real inputs rarely arrive one-at-a-time: a client engagement is 5–9 documents whose deliverable is
+*one* synthesized artifact, not nine — and, conversely, unrelated documents must **not** be
+force-merged into one incoherent site. So before any per-source work, **read the whole set and
+decide.** (Single input → skip to Phase 0.)
+
+**J1 · Relatedness detection & clustering.** For each pair/group, judge relatedness on shared
+**entities · subject · timeframe · purpose**, and the decisive test: *are they facets of one
+deliverable, or do they answer one question?* Cluster the set — a group of **≥2 related documents →
+one synthesized artifact**; a **singleton or unrelated document → its own artifact**. The default is
+**detect** (neither "always merge" nor "always one-per-file"); an explicit user instruction
+("merge these" / "keep separate") overrides. Emit before building, and write to
+`/tmp/illuminate-sourceset.md`:
+```
+[ILLUMINATE:SOURCESET] inputs:<n> | clusters:<m>
+  { C1:[docA,docB,docD] → synthesize "<deliverable>", C2:[docC] → separate }
+  rationale: <shared entities/subject/purpose that bind each cluster; why the singleton stands alone>
+```
+
+**J4 · The anti-merge guard.** A **forced merge of unrelated sources is a named failure mode**, exactly
+as much as failing to condense a related set. A fintech incident review + a labour-economics debate +
+a philosophy essay handed together yield **three** artifacts, not one Frankenstein. Both failures are
+policed: no missed merge, no forced merge.
+
+**Then run the rest of the pipeline once per cluster.** For each cluster, Phases 0→7 proceed with the
+cluster as the unit:
+- **J2 · Cross-document governing thought (extends E).** Structure Selection (Phase 2.0) operates on the
+  **union of the cluster's documents, not each file**: derive **one** governing object that spans the
+  set, and build the derived structure from the combined material. A strategy memo + an analytics
+  readout + a creative plan for one campaign resolve to **one** structure whose branches draw from all
+  three — never three stapled-together sections.
+- **J3 · Merge discipline — dedupe, reconcile, attribute (extends D2 across documents).** Synthesis is
+  not concatenation. **Deduplicate** overlapping claims (an audience defined in two docs appears once);
+  **reconcile conflicts** — when documents disagree (memo says "three cohorts", the data supports "two
+  viable"), the tension is surfaced and resolved or shown, **never silently dropped** to whichever was
+  read last; **preserve provenance** — every evidence trace carries its **source document**
+  (`S-B03` = document B, trace 3), and the evidence drawer groups/filters by source document. Nothing
+  load-bearing from any source is lost in the merge.
+
+```
+[ILLUMINATE:GATE] Phase 0.0 PASS | inputs: <n> | clusters: <m> | synthesize: <list> | separate: <list>
+```
 
 ---
 
@@ -297,6 +345,14 @@ Secondary flags (applied on top of primary tag):
 - `[ASSUMPTION:basis-unknown]` — treated as background truth, never defended
 - `[VAULT]` — retrieved from prior vault signal (if available)
 - `[GRAPH]` — structural relationship from graphify (if available)
+
+**Source-document provenance in a multi-document cluster (Part J3).** When the cluster has ≥2 documents,
+every entry's S-id carries its **source document**: `S-<doc><n>` (e.g. `S-B03` = document B, trace 3;
+`S-A01` = document A). A `[SYNTHESIS]` that combines documents cites both (`[SYNTHESIS: S-A04 + S-C02]`)
+— which is exactly how a cross-document insight is made visible. On merge: **deduplicate** an
+overlapping claim to one entry (record the other doc-ids it also appeared in); **reconcile** a conflict
+by tagging both `[CONTESTED:contradiction]` and surfacing it, never silently keeping the last-read.
+A single-document run uses plain `S-NNN`. The evidence drawer groups/filters by source document.
 
 **Three mandatory extraction angles — each a separate pass:**
 
@@ -455,6 +511,11 @@ Diagnose the source's epistemic shape and select the matching macro-structure. T
 everything downstream: the governing object, the hero/opening, the quality tests, and which components
 are even eligible. Sources may be **hybrids** — a primary structure with embedded secondary ones
 (e.g. a controversy whose positions each contain a causal web).
+
+**Unit = the cluster, not the file (Part J2).** When Phase 0.0 grouped ≥2 documents into a
+synthesize-cluster, diagnose the epistemic shape of the **union** and derive **one** governing object
+that spans the set; the branches draw from all the cluster's documents (traced by `S-<doc><n>`), never
+one section per file. A single input, or a `separate` singleton, is its own unit as usual.
 
 **Shape catalog** (the load-bearing design decision):
 
@@ -2989,6 +3050,10 @@ Paraphrase drift = failure. Fix before proceeding.
 Grouped by concern — structural fit (E), format & editorial (F), content, theme, palette, tiers,
 interactivity, accessibility:
 
+*Source set (J) — only when there was >1 input*
+- [ ] **The cluster decision is correct and auditable** (J1/J4): a related bundle became **one** synthesized artifact; an unrelated set became **separate** artifacts; a mixed set split correctly. The `[ILLUMINATE:SOURCESET]` rationale matches what was built. Neither failure mode: no forced merge of unrelated inputs, no pile of disconnected sites from a related set.
+- [ ] **The synthesis is a merge, not a concatenation** (J2/J3): one cross-document governing object (not one section per file); overlaps deduplicated; conflicts reconciled or surfaced (never silently dropped); **every synthesized claim traces to its source document** (`S-<doc><n>`), and the evidence drawer can group/filter by source. No load-bearing content from any source is lost.
+
 *Structural fit (E)*
 - [ ] **The macro-structure was derived, not imposed** (Phase 2.0): the shape fits the source's epistemic kind — a controversy is a debate-map, a multi-causal phenomenon a causal web, a process a timeline, a single thesis a pyramid. A pyramid on a non-single-thesis source is a fail.
 - [ ] **Top-level arity matches the source**, not defaulted to 3–4; where the honest branch count is high it is grouped/progressively disclosed, never deleted (E1 arity rule).
@@ -3209,6 +3274,12 @@ Anchors: /tmp/illuminate-signal.md · /tmp/illuminate-hubs.md · /tmp/illuminate
     performs its real effect in the target or is not offered; a success message fires only on the
     proven event (export confirms only when the tab/download actually happened). Verified by
     **rendering and exercising** each page (H5), not from source.
+18. **Read the set, then decide (Part J)** — with >1 input, Phase 0.0 clusters on shared
+    entities/subject/timeframe/purpose and emits `[ILLUMINATE:SOURCESET]`; a **related bundle
+    synthesizes into ONE artifact** (single cross-document governing thought, overlaps deduplicated,
+    conflicts reconciled or surfaced, every trace attributed to its source document `S-<doc><n>`),
+    while **unrelated inputs render as SEPARATE artifacts**. A mixed set splits correctly. Neither
+    forced-merge nor missed-merge; then the pipeline runs once per cluster.
 
 ---
 
@@ -3263,6 +3334,7 @@ Design for containment, not exorcism. Signal, do not certify.
 5. Run downstream completeness check in Phase 2 for every hub candidate.
 6. Never silently truncate a source. Declare what was excluded and why.
 7. INSIGHT entries must appear in the pyramid. They are the highest-value signal.
+7b. **Read the set before building (Part J).** With >1 input, run Phase 0.0 first: cluster on shared entities/subject/timeframe/purpose, emit `[ILLUMINATE:SOURCESET]`, then run the pipeline **once per cluster**. A related bundle (≥2 docs) → **one** synthesized artifact with a single cross-document governing object, overlaps deduplicated, conflicts reconciled or surfaced (never silently dropped), and every trace attributed to its source document (`S-<doc><n>`). Unrelated inputs → **separate** artifacts. Both are named failure modes: a **forced merge** of unrelated sources, and a **missed merge** that leaves a related set as a pile of disconnected sites. Default is detect; an explicit user instruction overrides.
 
 **Pyramid integrity**
 8. GT must directly resolve Q. Hedging is not a GT.
