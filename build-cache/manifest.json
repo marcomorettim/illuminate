@@ -1093,8 +1093,8 @@
       "source_words": 198,
       "word_floor": 139,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "two-sided-funnel",
+        "lib": "recharts"
       },
       "children": []
     },
@@ -2310,8 +2310,8 @@
       "source_words": 186,
       "word_floor": 130,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "waterfall",
+        "lib": "recharts"
       },
       "children": []
     },

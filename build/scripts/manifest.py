@@ -23,6 +23,10 @@ def kw(text, *words):
 
 def component_for(sec):
     """Only from the section's own evidence surface — no speculative components."""
+    blob = (sec['heading'] + ' ' + sec['text'][:300]).lower()
+    # strong specific signals win over the generic code/table default
+    if 'two-sided' in blob and 'funnel' in blob: return {'family': 'two-sided-funnel', 'lib': 'recharts'}
+    if 'waterfall' in blob or ('bridge' in blob and '→' in sec['text'][:400]): return {'family': 'waterfall', 'lib': 'recharts'}
     if sec['has_code']:  return {'family': 'code', 'lib': 'shiki'}
     if sec['has_table']: return {'family': 'faceted-grid', 'lib': 'tanstack'}
     if kw(sec['heading'] + ' ' + sec['text'][:300], 'time-series', 'timeline', 'curve', 'trajectory', 'load curve', 'retention', 'cohort'):

@@ -26,6 +26,10 @@ emit those. For a node whose `required_component.family` is one of the below, ex
 - `kpi-summary` → `{ tiles:[{k,v,p,cite}] }` (3–4 tiles; the target/finding tile last)
 - `time-series` → `{ unit, series:[{name,dash,pts:[[x,y]]}], mark:{name,x,y} }`
 - `scenario-tree` → `{ root, branches:[{label,prob,value,note}] }` (load-bearing branch first)
+- `two-sided-funnel` → `{ left:{name,rows:[[stage,pct,count]]}, right:{name,rows:[[stage,pct,count]]}, cliff_index }` (both sides, the drop-off row index = the cliff/finding)
+- `waterfall` → `{ unit, steps:[{label,value}] }` (value = the RUNNING TOTAL at each step, e.g. ASP→…→gross-margin; the last step is the terminus/finding)
+- `funnel` → `{ rows:[[stage,pct,count]] }`
+- `mockup` → `{ kind, title, lines:[…], meta }` (a depicted surface — email/push/app/card)
 
 ## Body format (constrained — the assembler converts it)
 Plain paragraphs separated by blank lines. `**bold**` for the load-bearing phrase. `- ` bullets

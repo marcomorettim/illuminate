@@ -11,15 +11,22 @@ export type TableT = {
 
 export type Code = { file: string; lines: string }; // lines = pre-highlighted One-Dark HTML
 
-// A node's rendered component: a family + its traced data. code/faceted-grid come verbatim
-// from the source span; the bespoke families carry data the develop agent extracted (traced).
-export type ComponentSpec =
+// A node's rendered component: a family + its traced data, plus the evidence discipline fields.
+// code/faceted-grid come verbatim from the source span; the bespoke families carry data the
+// develop agent extracted (traced). `evidence_class` governs the ILLUSTRATION tag vs citation chips.
+type ComponentBase = { finding?: string; evidence_class?: 'illustrate' | 'evidence' };
+export type ComponentSpec = ComponentBase & (
   | { family: 'code'; data: Code }
   | { family: 'faceted-grid'; data: TableT }
   | { family: 'network'; data: { hub: { label: string; sub: string }; spokes: { label: string; sub: string }[]; caption?: string } }
   | { family: 'kpi-summary'; data: { tiles: { k: string; v: string; p: string; cite?: string }[] } }
   | { family: 'time-series'; data: { unit?: string; mark?: { name: string; x: number; y: number }; series: { name: string; dash?: boolean; pts: [number, number][] }[] } }
-  | { family: 'scenario-tree'; data: { root: string; branches: { label: string; prob?: string; value?: string; note?: string }[] } };
+  | { family: 'scenario-tree'; data: { root: string; branches: { label: string; prob?: string; value?: string; note?: string }[] } }
+  | { family: 'waterfall'; data: { unit?: string; steps: { label: string; value: number }[] } }
+  | { family: 'two-sided-funnel'; data: { left: { name: string; rows: [string, number, string][] }; right: { name: string; rows: [string, number, string][] }; cliff_index?: number } }
+  | { family: 'funnel'; data: { rows: [string, number, string][] } }
+  | { family: 'mockup'; data: { kind: string; title: string; lines: string[]; meta?: string } }
+);
 
 // One node of the argument tree — the manifest record, now carrying its developed body.
 export type NodeContent = {

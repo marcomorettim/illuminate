@@ -10,7 +10,15 @@
     },
     {
       "id": "D5.d2.m2",
-      "body": "The margin waterfall from average selling price to gross margin (S-507), taken per KB-1 unit, lands at a 31% hardware gross margin [S-072]. Read on its own terms, that number is unremarkable for consumer electronics and would be a disappointment for any other Kepler domain — held against the standalone frame, Devices looks like the portfolio's laggard [S-072].\n\nBut **the waterfall is measuring the wrong thing** (S-508). The strategically correct denominator is not device profit; it is the fully-loaded cost of the proprietary data the device generates over its service life [S-072]. A KB-1 held in position for its ~30-month life emits on the order of tens of millions of sensor-seconds across five independent modalities [S-072]. Financing that acquisition through a standalone sensor-network build would sit at full expense on D6's cost line — which today runs at −$420m as a cost centre [S-072]. Instead, the hardware margin pre-pays it: the device sells at a positive gross margin, and the data arrives effectively free to D6 [S-072].\n\nThe correct read of the waterfall is therefore not \"31% margin\" but **a proprietary sensor network delivered at negative net acquisition cost** — the number the board should track, and the bridge into Driver 4 [S-072]."
+      "body": "The margin waterfall from average selling price to gross margin (S-507), taken per KB-1 unit, lands at a 31% hardware gross margin [S-072]. Read on its own terms, that number is unremarkable for consumer electronics and would be a disappointment for any other Kepler domain — held against the standalone frame, Devices looks like the portfolio's laggard [S-072].\n\nBut **the waterfall is measuring the wrong thing** (S-508). The strategically correct denominator is not device profit; it is the fully-loaded cost of the proprietary data the device generates over its service life [S-072]. A KB-1 held in position for its ~30-month life emits on the order of tens of millions of sensor-seconds across five independent modalities [S-072]. Financing that acquisition through a standalone sensor-network build would sit at full expense on D6's cost line — which today runs at −$420m as a cost centre [S-072]. Instead, the hardware margin pre-pays it: the device sells at a positive gross margin, and the data arrives effectively free to D6 [S-072].\n\nThe correct read of the waterfall is therefore not \"31% margin\" but **a proprietary sensor network delivered at negative net acquisition cost** — the number the board should track, and the bridge into Driver 4 [S-072].",
+      "component_data": {
+        "unit": "% of ASP",
+        "steps": [
+          { "label": "ASP (average selling price)", "value": 100 },
+          { "label": "Less landed cost of goods (BOM + assembly)", "value": 31 },
+          { "label": "Gross margin", "value": 31 }
+        ]
+      }
     }
   ]
 }

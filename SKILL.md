@@ -953,7 +953,8 @@ gate is **an executed program that counts rendered pixels and DOM** outside any 
  2 MANIFEST    ─▶ build-manifest.json   THE CONTRACT: per-node word_floor + required_component
  3 DEVELOP ▶◀  one subagent per node ─▶ node-<id>.md ≥ its floor      (agents/develop-node.md)
  4 COMPONENTIZE code/table verbatim from source; bespoke data traced by the develop agents
- 5 ASSEMBLE    nodes+components ─▶ React/shadcn single-file app (tree = manifest parent links)
+ — SERIALIZE   manifest + sources + node outputs ─▶ argument-model.json  (the II→III seam, doc §3)
+ 5 ASSEMBLE    Stage III renders ONLY from argument-model.json ─▶ React/shadcn single-file app
  6 BUNDLE      vite + vite-plugin-singlefile ─▶ dist/illuminate.html   (IIFE + DOMContentLoaded)
  7 MASK-CHECK  cheap pre-flight: fonts embedded, no external refs, every component id present
  8 RENDER GATE headless Chromium, both themes ─▶ gate-report.json (words/node, components, …)
@@ -962,7 +963,12 @@ gate is **an executed program that counts rendered pixels and DOM** outside any 
 
 `build-manifest.json` is the **single contract every later stage is measured against, written from
 the SOURCE before any prose exists.** `word_floor` (≈0.7 × a node's source words, never zero) makes
-the head/tail asymmetry an *arithmetic* violation on a named node id, not a hope. Invoke:
+the head/tail asymmetry an *arithmetic* violation on a named node id, not a hope. The develop agents'
+outputs are then serialized with the manifest + sources into **one `argument-model.json`** (node
+`developed_content` + `component{family,data,finding,evidence_class}` inline); **Stage III renders
+only from that model** — it never re-derives content, which is what removes the single-pass
+starvation. Charts are **Recharts** (line/waterfall/funnel/time-series), monochrome + one Beitar mark;
+ILLUSTRATE-class components wear an `ILLUSTRATION` tag, evidence-class ones carry citation chips. Invoke:
 `node build/scripts/pipeline.mjs prepare <source>` → dispatch one develop agent per driver →
 `node build/scripts/pipeline.mjs assemble`. On FAIL, `gate-report.failing_nodes` names the exact
 node ("`D3.d2.m1` rendered 90 words against a 336 floor"); re-dispatch only those, re-assemble.
@@ -1177,8 +1183,9 @@ Own-the-code components, themed to Beitar:
 - **TanStack Table (+ Virtual):** faceted filter / sort / group, column pinning, **expandable rows**,
   virtualization — the multi-listing that conveys multidimensionality.
 - **Tree view** (react-arborist / nested Radix): real multi-level nested drill-down.
-- **Charts — retire hand-rolled SVG bars:** **Tremor** (KPI/dashboard) + **visx** (bespoke bridges,
-  sankey, roll-rate curves), themed to §3.4 (monochrome + one Beitar finding).
+- **Charts — retire hand-rolled SVG bars:** **Recharts** (line/bar/waterfall/funnel/cohort — the
+  cartesian default) with visx reserved for genuinely bespoke marks (sankey, geo); network/scenario
+  stay hand-rolled SVG. Themed to §3.4 (monochrome + one Beitar finding).
 - **Framer Motion (`motion/react`):** layout / shared-layout transitions, `AnimatePresence` for
   expand/collapse, scroll-linked reveals — reduced-motion aware.
 - **Layout:** Tailwind **bento grids + Resizable panels + multi-column** to deliver §4.
@@ -3668,7 +3675,7 @@ Design for containment, not exorcism. Signal, do not certify.
 18b. **Editorial elegance is mandatory; the register is selectable (Part F2).** Execute at a high editorial bar independent of palette: strong type hierarchy (ultralight display vs bold labels, not uniform 600-weight card titles), generous whitespace, a felt column grid, restrained ornament (tight radii, subtle/flat shadows, minimal box-in-box), sophisticated semantic color (not a rainbow of tags). **The rounded-card / soft-shadow SaaS-dashboard aesthetic is a named failure mode.** Register may vary (Swiss, warm, archival, print, phosphor); craft may not.
 
 **Technical constraints**
-19. **Author on the modern component stack (Part K·§5), bundled to one offline file.** React + TypeScript + Tailwind + **shadcn/ui** (Radix), **TanStack Table** (faceted, expandable rows) for multi-listings, a **tree view** for nested drill-down, **Tremor + visx** for charts (retiring hand-rolled SVG bars), **Framer Motion** for transitions — `vite build` + **`vite-plugin-singlefile`** inlines everything (JS/CSS/fonts) into one self-contained offline HTML with zero external requests. The ASCII / `SECTION-MOTIF` / SVG-bar specs are retired **as the default** (ASCII only where it genuinely serves the narration). Out of scope: GraphQL / web3 / any backend data layer (a static document has no backend). Not for decoration: an effect that doesn't aid understanding doesn't ship.
+19. **Author on the modern component stack (Part K·§5), bundled to one offline file.** React + TypeScript + Tailwind + **shadcn/ui** (Radix), **TanStack Table** (faceted, expandable rows) for multi-listings, a **tree view** for nested drill-down, **Recharts** for charts (visx only for bespoke sankey/geo; retiring hand-rolled SVG bars), **Framer Motion** for transitions — `vite build` + **`vite-plugin-singlefile`** inlines everything (JS/CSS/fonts) into one self-contained offline HTML with zero external requests. The ASCII / `SECTION-MOTIF` / SVG-bar specs are retired **as the default** (ASCII only where it genuinely serves the narration). Out of scope: GraphQL / web3 / any backend data layer (a static document has no backend). Not for decoration: an effect that doesn't aid understanding doesn't ship.
 20. Prefer vanilla only when it is faster to write and equally expressive. Never avoid a library out of principle — avoid it only when it adds complexity without payoff.
 
 **Component library**

@@ -6,7 +6,26 @@
   "mechanisms": [
     {
       "id": "D3.d1.m1",
-      "body": "Liquidity is refused as a single \"orders\" number, because that number hides the two independent conversion pipelines feeding it — and a headline that averages two failing sides can look healthy while both legs rot [S-037]. Instead both sides are instrumented as a two-sided conversion funnel, and the shape of each side tells us precisely which piston is misfiring rather than merely that the engine is down [S-305].\n\nThe funnel makes the pathology legible. The courier side hemorrhages between \"first shift\" and \"4+ shifts\" — the exact moment a new courier learns whether the app can actually feed them enough well-paid jobs to bother staying. That **58%→39% cliff is a liquidity problem masquerading as a retention problem**: couriers churn not because onboarding is hard but because the market was thin the week they tried it [S-037]. The merchant side leaks worst from \"first order taken\" to \"10+ orders,\" and for the exactly symmetric reason — a restaurant that lists and then waits twenty minutes for a courier on its first lunch rush concludes we don't work, and never gives us a second service [S-037].\n\nBoth cliffs are the same cliff seen from two sides, which is the entire insight of two-sided liquidity: you cannot fix one funnel without the other, because each side's drop-off is the other side's thinness reflected back. That is why the composite is built as a product, not a sum: **L = fill-rate × match-quality × repeat-rate** is deliberately multiplicative so that improving one leg while starving another does not move it — the metric refuses to reward a lopsided fix [S-306]."
+      "body": "Liquidity is refused as a single \"orders\" number, because that number hides the two independent conversion pipelines feeding it — and a headline that averages two failing sides can look healthy while both legs rot [S-037]. Instead both sides are instrumented as a two-sided conversion funnel, and the shape of each side tells us precisely which piston is misfiring rather than merely that the engine is down [S-305].\n\nThe funnel makes the pathology legible. The courier side hemorrhages between \"first shift\" and \"4+ shifts\" — the exact moment a new courier learns whether the app can actually feed them enough well-paid jobs to bother staying. That **58%→39% cliff is a liquidity problem masquerading as a retention problem**: couriers churn not because onboarding is hard but because the market was thin the week they tried it [S-037]. The merchant side leaks worst from \"first order taken\" to \"10+ orders,\" and for the exactly symmetric reason — a restaurant that lists and then waits twenty minutes for a courier on its first lunch rush concludes we don't work, and never gives us a second service [S-037].\n\nBoth cliffs are the same cliff seen from two sides, which is the entire insight of two-sided liquidity: you cannot fix one funnel without the other, because each side's drop-off is the other side's thinness reflected back. That is why the composite is built as a product, not a sum: **L = fill-rate × match-quality × repeat-rate** is deliberately multiplicative so that improving one leg while starving another does not move it — the metric refuses to reward a lopsided fix [S-306].",
+      "component_data": {
+        "left": {
+          "name": "Courier funnel",
+          "rows": [
+            ["Onboarded", 100, 100],
+            ["First shift", 58, 58],
+            ["4+ shifts", 39, 39]
+          ]
+        },
+        "right": {
+          "name": "Merchant funnel",
+          "rows": [
+            ["Listed", 100, 100],
+            ["First order taken", 58, 58],
+            ["10+ orders", 39, 39]
+          ]
+        },
+        "cliff_index": 2
+      }
     },
     {
       "id": "D3.d1.m2",

@@ -28,9 +28,10 @@ if (cmd === 'prepare') {
 } else if (cmd === 'assemble') {
   const n = existsSync(resolve(W, 'nodes')) ? readdirSync(resolve(W, 'nodes')).filter((f) => f.endsWith('.json')).length : 0;
   if (!n) throw new Error('no node outputs in .work/nodes — dispatch the develop agents first');
-  run('node scripts/build.mjs .work/manifest.json .work/source-model.json .work/nodes app dist/illuminate.html'); // Stages 5-7
+  run('node scripts/serialize.mjs .work/manifest.json .work/source-model.json .work/nodes .work/argument-model.json'); // II→III seam
+  run('node scripts/build.mjs .work/argument-model.json app dist/illuminate.html');                                    // Stages 5-7
   try {
-    run('node gate/gate.mjs dist/illuminate.html .work/manifest.json gate/thresholds.json dist/gate-report.json'); // Stage 8
+    run('node gate/gate.mjs dist/illuminate.html .work/argument-model.json gate/thresholds.json dist/gate-report.json'); // Stage 8
     console.log('[pipeline] GATE PASS — dist/illuminate.html is shippable.');
   } catch {
     console.log('[pipeline] GATE FAIL — see dist/gate-report.json. Stage 9: re-dispatch the failing nodes\' agents, then re-run assemble.');
