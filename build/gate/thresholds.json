@@ -1,0 +1,10 @@
+{
+  "completeness_floor_ratio": 0.6,
+  "min_drill_depth": 4,
+  "dead_margin_max": 0.42,
+  "max_beitar_marks_per_view": 4,
+  "beitar_fg_luminance_max": 120,
+  "forbidden_fonts": ["system-ui", "-apple-system", "BlinkMacSystemFont", "SF Pro", "Segoe UI", "Futura"],
+  "max_chart_hues": 3,
+  "viewport": { "width": 1512, "height": 982 }
+}
