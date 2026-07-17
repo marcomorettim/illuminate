@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian Pay — Post-Incident Review · 9 July Settlement Outage</title>
+<script>(function(){var s=localStorage.getItem('il-theme');var sys=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',s||sys);})();</script>
+<style>
+/* ARTDIR — swiss neutral, authoritative (fintech/regulator) · multi-page · one red accent · code-heavy */
+:root{
+  --paper:#FAFAF8; --paper-1:#F1F1EE; --paper-2:#E7E7E3;
+  --ink:#17181C; --ink-2:#4A4C53; --ink-3:#8B8D94;
+  --rule:rgba(23,24,28,.12); --rule-hi:rgba(23,24,28,.26);
+  --red:#D22E1E;
+  --code-bg:#14151A; --code-ink:#D6D8DE; --code-dim:#7C808A; --code-str:#9FB8A6; --code-fn:#EDEEF2;
+  --hn:'HN','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:'Space Mono',ui-monospace,'SF Mono',monospace;
+  --ease:cubic-bezier(.4,0,.2,1); --spring:cubic-bezier(.22,.72,.24,1);
+}
+:root[data-theme="dark"]{
+  --paper:#131417; --paper-1:#1A1B1F; --paper-2:#232429;
+  --ink:#F0F0EC; --ink-2:#B0B2B8; --ink-3:#6E7076;
+  --rule:rgba(240,240,236,.14); --rule-hi:rgba(240,240,236,.28);
+  --red:#F0563E; --code-bg:#0D0E11;
+}
+*{box-sizing:border-box}html{scroll-behavior:auto}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--hn);font-size:17.5px;line-height:1.58;letter-spacing:-.008em;-webkit-font-smoothing:antialiased;transition:background .4s var(--ease),color .4s var(--ease)}
+.wrap{max-width:1140px;margin:0 auto;padding:0 clamp(22px,5vw,64px)}
+.mono{font-family:var(--mono)}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+[data-page]{display:none;view-transition-name:page}[data-page].live{display:block}
+@supports not (view-transition-name:page){[data-page].live{animation:pg .3s var(--ease) both}@keyframes pg{from{opacity:0;transform:translateY(8px)}}}
+@media(prefers-reduced-motion:reduce){[data-page].live{animation:none}}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;background:color-mix(in oklab,var(--paper) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+.nav-in{max-width:1260px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:11px clamp(20px,4vw,40px)}
+.brand{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}.brand b{color:var(--red);font-weight:400}
+.nl{display:flex;margin-left:6px;overflow-x:auto;scrollbar-width:none}.nl::-webkit-scrollbar{display:none}
+.nl a{font-size:.78rem;color:var(--ink-3);text-decoration:none;padding:6px 10px;white-space:nowrap;border-bottom:2px solid transparent}
+.nl a:hover{color:var(--ink)}.nl a[aria-current="page"]{color:var(--red);border-bottom-color:var(--red)}
+.nr{margin-left:auto;display:flex;gap:8px}
+.ibtn{width:32px;height:32px;border:1px solid var(--rule-hi);background:none;color:var(--ink-2);cursor:pointer;display:grid;place-items:center}.ibtn:hover{color:var(--ink)}.ibtn svg{width:15px;height:15px}
+@media(max-width:1000px){.nl{max-width:46vw}}@media(max-width:640px){.nl{display:none}}
+
+.page{padding:clamp(92px,12vw,120px) 0 clamp(56px,8vw,88px)}
+.cover{font-family:var(--mono);font-size:.72rem;color:var(--red);letter-spacing:.05em;margin-bottom:12px}.cover .of{color:var(--ink-3)}
+h1.title{font-size:clamp(1.9rem,4.4vw,3.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.03;margin:0 0 18px;max-width:22ch;text-wrap:balance}
+h1.title .lite{font-weight:300}
+.lead{font-size:1.1rem;line-height:1.55;color:var(--ink-2);max-width:66ch;font-weight:300}.lead b{color:var(--ink);font-weight:600}
+.rule2{height:2px;background:var(--ink);width:52px;margin:22px 0 28px}
+
+/* the-one-thing box */
+.takeaway{border:1px solid var(--rule-hi);border-left:2px solid var(--red);padding:clamp(20px,3vw,30px);margin-top:8px;background:var(--paper-1)}
+.takeaway .tl{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:12px}
+.takeaway .tq{font-size:clamp(1.15rem,2.3vw,1.55rem);font-weight:300;line-height:1.28;letter-spacing:-.015em;color:var(--ink);max-width:44ch}
+.takeaway .tq b{font-weight:700}
+.scqa{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:24px;border-top:1px solid var(--rule);padding-top:20px}
+@media(max-width:760px){.scqa{grid-template-columns:1fr 1fr}}@media(max-width:460px){.scqa{grid-template-columns:1fr}}
+.scqa div{padding:0 16px}.scqa div:first-child{padding-left:0}.scqa div+div{border-left:1px solid var(--rule)}
+.scqa .sl{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:6px}
+.scqa .a .sl{color:var(--red)}
+.scqa p{margin:0;font-size:.88rem;color:var(--ink-2)}.scqa p b{color:var(--ink);font-weight:600}
+
+.block{margin-top:42px}
+.block h3{font-size:1.05rem;font-weight:700;margin:0 0 8px;display:flex;align-items:center;gap:10px}.block h3::before{content:"";width:14px;height:2px;background:var(--red);flex-shrink:0}
+.block .sub{color:var(--ink-2);font-size:1rem;margin:0 0 20px;max-width:72ch}.block .sub b{color:var(--ink);font-weight:600}
+.prose p{color:var(--ink-2);font-size:1rem;line-height:1.6;margin:0 0 16px;max-width:72ch}.prose p b{color:var(--ink);font-weight:600}
+
+/* stat row */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:8px 0 0}
+@media(max-width:720px){.stat-row{grid-template-columns:1fr 1fr}}
+.stat{padding:16px 16px 16px 0;border-right:1px solid var(--rule)}.stat:last-child{border-right:0}
+@media(max-width:720px){.stat:nth-child(2){border-right:0}.stat{border-bottom:1px solid var(--rule)}}
+.stat .n{font-size:1.6rem;font-weight:300;letter-spacing:-.02em;line-height:1}.stat .n.red{color:var(--red)}
+.stat .l{font-size:.78rem;color:var(--ink-2);margin-top:7px;max-width:26ch}
+
+/* timeline */
+.tl{display:grid;gap:0;border-top:1px solid var(--rule-hi);margin-top:8px}
+.tev{display:grid;grid-template-columns:88px 1fr auto;gap:16px;padding:13px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+@media(max-width:600px){.tev{grid-template-columns:76px 1fr}.tev .src{grid-column:1/-1;padding-left:92px}}
+.tev .t{font-family:var(--mono);font-size:.82rem;color:var(--ink);font-weight:700}
+.tev .e{color:var(--ink-2);font-size:.94rem}.tev .e b{color:var(--ink);font-weight:600}
+.tev .src{font-family:var(--mono);font-size:.66rem;color:var(--ink-3)}
+.tev.crit{background:color-mix(in oklab,var(--red) 5%,var(--paper))}.tev.crit .t{color:var(--red)}
+.tev.res{background:color-mix(in oklab,var(--ink) 3%,var(--paper))}
+
+/* compounding failures */
+.compound{display:grid;gap:0;border-top:1px solid var(--rule-hi);margin-top:8px}
+.cf{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.cf .cfn{font-family:var(--mono);font-size:.8rem;color:var(--red);font-weight:700;padding-top:2px}
+.cf h5{margin:0 0 6px;font-size:1.04rem;font-weight:600}.cf p{margin:0;color:var(--ink-2);font-size:.95rem;max-width:68ch}.cf p b{color:var(--ink);font-weight:600}
+
+/* CODE-CONFIG / log / diff / json — the G3 showcase, deep neutral-ink panel both themes */
+.code{border:1px solid var(--rule-hi);overflow:hidden;margin-top:8px;background:var(--code-bg)}
+.code-bar{display:flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07)}
+.code-bar .tl{display:flex;gap:5px}.code-bar .tl i{width:9px;height:9px;border-radius:50%;background:var(--code-dim);opacity:.5}
+.code-bar .fn{font-family:var(--mono);font-size:.72rem;color:var(--code-dim);margin-left:4px}
+.code-bar .lang{margin-left:auto;font-family:var(--mono);font-size:.62rem;color:var(--code-dim);text-transform:uppercase;letter-spacing:.06em}
+.code pre{margin:0;padding:15px 18px;overflow-x:auto;font-family:var(--mono);font-size:.76rem;line-height:1.7;color:var(--code-ink)}
+.code .k{color:var(--red);font-weight:700}.code .s{color:var(--code-str)}.code .c{color:var(--code-dim);font-style:italic}.code .f{color:var(--code-fn);font-weight:700}
+.code .add{color:var(--code-str)}.code .del{color:var(--red)}
+.code .warn{color:#C9A24B}
+.code-note{padding:8px 18px;border-top:1px solid rgba(255,255,255,.07);font-family:var(--mono);font-size:.68rem;color:var(--code-dim);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+/* causal-web — the 5 missing controls */
+.web{display:grid;gap:0;border-top:1px solid var(--rule-hi);margin-top:8px}
+.node{display:grid;grid-template-columns:auto 1fr auto;gap:16px;padding:16px 0;border-bottom:1px solid var(--rule);align-items:start}
+@media(max-width:640px){.node{grid-template-columns:auto 1fr}.node .test{grid-column:1/-1;padding-left:38px}}
+.node .nn{font-family:var(--mono);font-size:.78rem;color:var(--red);font-weight:700}
+.node h5{margin:0 0 5px;font-size:1.02rem;font-weight:600}.node p{margin:0;color:var(--ink-2);font-size:.94rem;max-width:56ch}.node p b{color:var(--ink);font-weight:600}
+.node .test{font-family:var(--mono);font-size:.7rem;color:var(--ink-3);white-space:nowrap;text-align:right}.node .test b{color:var(--red)}
+
+/* remediation matrix */
+.mtx-scroll{overflow-x:auto;border:1px solid var(--rule-hi);margin-top:8px}
+.mtx{width:100%;border-collapse:collapse;font-size:.88rem;min-width:640px}
+.mtx th{text-align:left;font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);font-weight:500;padding:12px 14px;border-bottom:2px solid var(--rule-hi);background:var(--paper-1)}
+.mtx td{padding:13px 14px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2)}
+.mtx tr:last-child td{border-bottom:0}
+.mtx td.ctrl{color:var(--ink);font-weight:600}.mtx td.ctrl small{display:block;font-family:var(--mono);font-size:.66rem;color:var(--ink-3);font-weight:400;margin-top:2px}
+.mtx .money{font-family:var(--mono);color:var(--ink)}
+.mtx .live{color:var(--red);font-family:var(--mono);font-size:.8rem}
+
+/* controls cards (3 structural fixes) */
+.ctrls{display:grid;gap:14px;margin-top:8px}
+.ctrl-card{border:1px solid var(--rule-hi);padding:20px 22px}
+.ctrl-card .ch{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+.ctrl-card .ct{font-family:var(--mono);font-size:.72rem;color:var(--red);text-transform:uppercase;letter-spacing:.05em}
+.ctrl-card h4{margin:0;font-size:1.08rem;font-weight:700}
+.ctrl-card p{margin:0 0 12px;color:var(--ink-2);font-size:.96rem;max-width:70ch}.ctrl-card p b{color:var(--ink);font-weight:600}
+.ctrl-card .meta{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:.72rem;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:12px}
+.ctrl-card .meta b{color:var(--ink)}
+
+/* state machine */
+.sm{overflow-x:auto;border:1px solid var(--rule-hi);background:var(--paper-1);padding:22px;margin-top:8px}
+#smSvg{width:100%;min-width:640px;height:auto;display:block}
+#smSvg text{font-family:var(--mono);fill:var(--ink)}#smSvg .st{font-size:11px;font-weight:700}#smSvg .lb{font-size:9px;fill:var(--ink-3)}
+#smSvg rect{fill:var(--paper);stroke:var(--rule-hi);stroke-width:1.5}
+#smSvg rect.ok{stroke:var(--ink)}#smSvg rect.warn{stroke:var(--red)}
+#smSvg .e{fill:none;stroke:var(--ink-3);stroke-width:1.5;marker-end:url(#a)}
+#smSvg .e.bad{stroke:var(--red)}
+
+/* assurance signals */
+.sigs{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule-hi);margin-top:8px}
+@media(max-width:640px){.sigs{grid-template-columns:1fr}}
+.sg{padding:18px 20px;border-bottom:1px solid var(--rule)}
+.sg:nth-child(odd){border-right:1px solid var(--rule)}
+@media(max-width:640px){.sg:nth-child(odd){border-right:0}}
+.sg:nth-last-child(-n+2){border-bottom:0}@media(max-width:640px){.sg:nth-last-child(1){border-bottom:0}.sg:nth-last-child(2){border-bottom:1px solid var(--rule)}}
+.sg h5{margin:0 0 6px;font-size:.98rem;font-weight:600}
+.sg p{margin:0 0 10px;color:var(--ink-2);font-size:.9rem}
+.sg .tgt{display:flex;gap:16px;font-family:var(--mono);font-size:.72rem}
+.sg .tgt .was{color:var(--ink-3)}.sg .tgt .now{color:var(--red)}
+
+/* regulator summary */
+.reg{border:1px solid var(--rule-hi);padding:clamp(20px,3vw,30px);margin-top:8px;background:var(--paper-1)}
+.reg .rl{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:14px}
+.reg p{margin:0;font-size:1.02rem;line-height:1.6;color:var(--ink)}.reg p b{font-weight:700}
+.ev{margin-top:26px;font-family:var(--mono);font-size:.8rem;color:var(--ink-2)}
+.ev div{padding:8px 0;border-top:1px solid var(--rule)}.ev .k{color:var(--red)}
+
+.cite{display:inline-flex;font-family:var(--mono);font-size:.64rem;color:var(--red);border:1px solid var(--rule-hi);padding:0 4px;cursor:pointer;vertical-align:baseline;background:none}
+.cite:hover{background:var(--red);color:var(--paper);border-color:var(--red)}
+.pager{display:flex;justify-content:space-between;gap:14px;margin-top:50px;padding-top:24px;border-top:1px solid var(--rule)}
+.pager a{text-decoration:none;color:var(--ink-2);font-size:.9rem;display:flex;flex-direction:column;gap:3px;max-width:46%}.pager a:hover{color:var(--ink)}
+.pager .lb{font-family:var(--mono);font-size:.66rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}.pager a.next{text-align:right;margin-left:auto}.pager .nm{font-weight:600}
+
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,92vw);background:var(--paper);border-left:1px solid var(--rule-hi);box-shadow:-16px 0 40px -20px rgba(0,0,0,.3);transform:translateX(100%);transition:transform .38s var(--spring);z-index:120;display:flex;flex-direction:column}.drawer.open{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--rule)}.dh h4{margin:0;font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}.dh .x{background:none;border:0;font-size:1.3rem;color:var(--ink-3);cursor:pointer}
+.db{padding:20px 22px;overflow-y:auto}.db .sid{font-family:var(--mono);font-size:.76rem;color:var(--red)}.db .stag{font-family:var(--mono);font-size:.62rem;color:var(--ink-3);border:1px solid var(--rule-hi);padding:1px 6px;margin-left:8px}.db .stext{margin-top:12px;font-size:1rem;line-height:1.55;color:var(--ink)}
+.scrim{position:fixed;inset:0;background:rgba(15,12,8,.32);opacity:0;pointer-events:none;transition:opacity .38s;z-index:110}.scrim.open{opacity:1;pointer-events:auto}
+.hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:.72rem;padding:6px 13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:90}.hint.show{opacity:.95}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <div class="brand">/<b>illuminate</b> · post-incident review</div>
+  <div class="nl" id="navlinks">
+    <a href="#/overview">Overview</a><a href="#/happened">What happened</a><a href="#/cost">What it cost</a><a href="#/why">Why it happened</a><a href="#/change">What we change</a><a href="#/assurance">How we'll know</a><a href="#/regulator">Regulator pack</a>
+  </div>
+  <div class="nr">
+    <button class="ibtn" id="theme" title="Theme" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg></button>
+    <button class="ibtn" id="dl" title="Download" aria-label="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></button>
+  </div>
+</div></nav>
+
+<main>
+<!-- OVERVIEW -->
+<section data-page="overview" class="page"><div class="wrap">
+  <div class="cover mono">Meridian Pay · 9 July 2026 · Internal — Board / Risk / FCA <span class="of">· single source of record</span></div>
+  <h1 class="title">A settlement outage that was <span class="lite">a control failure,</span> not a technology one.</h1>
+  <div class="rule2"></div>
+  <p class="lead">A single expired certificate stopped settlement for <b>4 hours 11 minutes</b>. But the certificate expiring was a symptom. The real defect is that we had no control that would have caught it, and no path to settle while it was down. <b>The fix is not "renew certificates on time."</b> <button class="cite" data-cite="S-01">S-01</button></p>
+  <div class="takeaway">
+    <div class="tl">The one thing to take away</div>
+    <div class="tq">The fix is <b>three structural changes</b>: an independent settlement fallback, a control that fails the deploy rather than the customer, and a treasury-grade reconciliation that makes financial truth <b>independent of the payments system.</b> Everything below builds to those three. <button class="cite" data-cite="S-01">S-01</button></div>
+    <div class="scqa">
+      <div><div class="sl">Situation</div><p>Settlement and authorisation are <b>two different systems</b>. That distinction is the whole story. <button class="cite" data-cite="S-20">S-20</button></p></div>
+      <div><div class="sl">Complication</div><p>Settlement stopped; authorisation kept working, so <b>the incident was invisible on the screen everyone trusts</b>. <button class="cite" data-cite="S-21">S-21</button></p></div>
+      <div><div class="sl">Question</div><p>What control do we lack, such that one cert can stop settlement, blind treasury, and risk a mis-funded scheme call? <button class="cite" data-cite="S-22">S-22</button></p></div>
+      <div class="a"><div class="sl">Answer</div><p>Three structural controls — owned, dated, costed — that make settlement <b>survivable, safe, and independently true</b>. <button class="cite" data-cite="S-01">S-01</button></p></div>
+    </div>
+  </div>
+  <nav class="pager"><span></span><a class="next" href="#/happened"><span class="lb">Part 1</span><span class="nm">What happened, minute by minute →</span></a></nav>
+</div></section>
+
+<!-- HAPPENED -->
+<section data-page="happened" class="page"><div class="wrap">
+  <div class="cover mono">Part 1 <span class="of">· the mechanism</span></div>
+  <h1 class="title">The trigger was mundane. <span class="lite">The shape of the failure was not.</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">A TLS client certificate the settlement gateway used to authenticate to the scheme expired at 08:47:03. It had a 397-day life, was issued by an engineer who has since left, and predated the automated rotation. Nothing renewed it; nothing alerted on it. <b>What turned an expiry into a four-hour outage was three compounding failures.</b> <button class="cite" data-cite="S-23">S-23</button></p>
+  <div class="block">
+    <h3>Three things compounded</h3>
+    <div class="compound">
+      <div class="cf"><div class="cfn">a</div><div><h5>The failure was silent to the layer that mattered.</h5><p>The gateway logged TLS handshake failures, but the settlement service read a failed connection as <b>"scheme busy, retry later"</b> — the same code path as a transient blip. It queued and retried indefinitely without escalating. The queue grew at <b>~1,150 transactions/minute</b>; from most dashboards the system looked up. <button class="cite" data-cite="S-02">S-02</button></p></div></div>
+      <div class="cf"><div class="cfn">b</div><div><h5>Authorisation stayed green, which hid the bleed.</h5><p>Authorisation runs on a separate path that doesn't depend on the settlement cert, so the customer-facing "are we up?" status stayed green. The single most-watched number in the company — authorisation success rate — <b>never moved off 99.98%.</b> The incident was invisible on exactly the screen everyone trusts. <button class="cite" data-cite="S-03">S-03</button></p></div></div>
+      <div class="cf"><div class="cfn">c</div><div><h5>The queue was mistaken for money.</h5><p>The treasury dashboard computes balance partly from the settlement service's "in-flight" value. With settlement stalled, in-flight ballooned and the balance widget read it as headroom. At 10:52 a treasury officer opened a ticket asking whether to pre-fund a <b>€19m margin call that was not coming</b> — an artefact of the stall. This is the closest we came to a real loss of funds. <button class="cite" data-cite="S-04">S-04</button></p></div></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3>The timeline (all times BST, 9 July 2026)</h3>
+    <div class="tl">
+      <div class="tev crit"><span class="t">08:47:03</span><span class="e"><b>Settlement-gateway TLS cert expires</b>; outbound settlement connections begin failing</span><span class="src">gw logs · S-01</span></div>
+      <div class="tev"><span class="t">08:47–09:12</span><span class="e">Settlement service retries silently; queue grows ~1,150/min; <b>no alert fires</b></span><span class="src">svc logs · S-02</span></div>
+      <div class="tev"><span class="t">09:12</span><span class="e">First human signal: a scheme ops analyst emails asking why our settlement volume dropped to zero</span><span class="src">email · S-03</span></div>
+      <div class="tev"><span class="t">09:19</span><span class="e">On-call SRE acknowledges; assumes scheme-side (because our status is green)</span><span class="src">PagerDuty · S-04</span></div>
+      <div class="tev"><span class="t">09:41</span><span class="e">SRE finds TLS handshake errors in gw logs; <b>hypothesis shifts to our side</b></span><span class="src">Slack · S-05</span></div>
+      <div class="tev"><span class="t">10:03</span><span class="e">Root cause identified as expired cert; <b>no runbook exists</b> for manual rotation</span><span class="src">Slack · S-06</span></div>
+      <div class="tev crit"><span class="t">10:52</span><span class="e">Treasury raises the €19m pre-fund question off a dashboard artefact</span><span class="src">ticket · S-07</span></div>
+      <div class="tev"><span class="t">11:20</span><span class="e">Incident upgraded to SEV-1; treasury told to <b>freeze funding decisions</b></span><span class="src">PagerDuty · S-08</span></div>
+      <div class="tev"><span class="t">12:31</span><span class="e">New cert issued and deployed; settlement connections restored</span><span class="src">deploy log · S-09</span></div>
+      <div class="tev res"><span class="t">12:58</span><span class="e"><b>Queue fully drained; 387,400 customers' payments settled</b></span><span class="src">svc metrics · S-10</span></div>
+    </div>
+    <p class="prose" style="margin-top:18px">The raw signal a machine should have caught was visible from 08:47. It took a human at the counterparty <b>25 minutes</b> to notice, and our own people another <b>44 minutes</b> to look in the right place — because every internal screen said we were fine. <button class="cite" data-cite="S-24">S-24</button></p>
+  </div>
+  <div class="block">
+    <h3>What the logs actually showed</h3>
+    <p class="sub">The settlement gateway was screaming; nothing was listening for this particular scream.</p>
+    <div class="code">
+      <div class="code-bar"><span class="tl"><i></i><i></i><i></i></span><span class="fn">svc.settlement — retry loop</span><span class="lang">log · verbatim</span></div>
+<pre><span class="c">08:47:03  ERROR gw.settlement.tls  handshake_failed peer=scheme-settle-01</span>
+<span class="c">                                err=<span class="warn">"certificate has expired"</span> not_after=2026-07-09T07:47:00Z</span>
+08:47:03  <span class="warn">WARN</span>  svc.settlement  connection_failed retry_in=2s attempt=1  reason=<span class="s">"upstream unavailable"</span>
+08:47:05  <span class="warn">WARN</span>  svc.settlement  connection_failed retry_in=4s attempt=2  reason=<span class="s">"upstream unavailable"</span>
+08:47:09  <span class="warn">WARN</span>  svc.settlement  connection_failed retry_in=8s attempt=3  reason=<span class="s">"upstream unavailable"</span>
+          <span class="c">... (backoff caps at 30s; loop continues 4h with no escalation)</span>
+08:52:00  INFO  svc.settlement  queue_depth=5,740 in_flight_value_gbp=6,612,004  <span class="del">← read by treasury as "balance"</span>
+10:52:11  INFO  svc.settlement  queue_depth=181,220 in_flight_value_gbp=104,880,551
+12:58:44  INFO  svc.settlement  <span class="add">queue_drained depth=0 settled_batch=387,400 elapsed=4h11m</span></pre>
+      <div class="code-note"><span>verbatim — internal system of record</span><span>S-01 · S-02 · S-07 · S-10</span></div>
+    </div>
+    <p class="prose" style="margin-top:18px">The alerting rule that should have existed is one line. <b>It did not exist:</b></p>
+    <div class="code">
+      <div class="code-bar"><span class="tl"><i></i><i></i><i></i></span><span class="fn">the_alert_nobody_wrote.sql</span><span class="lang">SQL · missing control</span></div>
+<pre><span class="c">-- Settlement throughput should never be zero during trading hours.</span>
+<span class="k">SELECT</span> count(*) <span class="k">AS</span> settled_last_5min
+<span class="k">FROM</span> settlement_events
+<span class="k">WHERE</span> status = <span class="s">'settled'</span>
+  <span class="k">AND</span> ts &gt; now() - <span class="k">interval</span> <span class="s">'5 minutes'</span>;
+<span class="c">-- ALERT (page treasury + SRE) WHEN settled_last_5min = 0 AND is_trading_hours(now());</span></pre>
+      <div class="code-note"><span class="il" style="color:var(--red)">ILLUSTRATION · the control that was absent</span><span>S-02 · Control B</span></div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/overview"><span class="lb">← Back</span><span class="nm">Overview</span></a><a class="next" href="#/cost"><span class="lb">Part 2</span><span class="nm">What it cost →</span></a></nav>
+</div></section>
+
+<!-- COST -->
+<section data-page="cost" class="page"><div class="wrap">
+  <div class="cover mono">Part 2 <span class="of">· customers, money, market, trust</span></div>
+  <h1 class="title">"No funds lost" is not <span class="lite">"no cost."</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">No customer lost money and every authorised payment eventually settled — that is the true headline. But the board should see the full shape: <b>£2.31m measured</b>, unevenly distributed, with a new market taking it worst. <button class="cite" data-cite="S-05">S-05</button></p>
+  <div class="block">
+    <div class="stat-row">
+      <div class="stat"><div class="n red">£2.31m</div><div class="l">total measured cost — settled figures from finance, not estimates <button class="cite" data-cite="S-25">S-25</button></div></div>
+      <div class="stat"><div class="n">387,400</div><div class="l">customers with at least one stuck payment (0.7% blended) <button class="cite" data-cite="S-10">S-10</button></div></div>
+      <div class="stat"><div class="n">340</div><div class="l">SME accounts whose payroll or supplier runs failed and had to be re-attempted <button class="cite" data-cite="S-26">S-26</button></div></div>
+      <div class="stat"><div class="n">4h 11m</div><div class="l">disruption vs. our 2-hour stated tolerance — a reportable breach <button class="cite" data-cite="S-29">S-29</button></div></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3>The cost, decomposed</h3>
+    <div class="mtx-scroll"><table class="mtx">
+      <thead><tr><th>Component</th><th>£</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td class="ctrl">Scheme late-settlement penalties</td><td class="money">1,420,000</td><td>Scheme invoice, settled · S-11</td></tr>
+        <tr><td class="ctrl">SME goodwill credits<small>12,800 accounts</small></td><td class="money">460,000</td><td>Finance, issued · S-12</td></tr>
+        <tr><td class="ctrl">Emergency response &amp; reconciliation</td><td class="money">280,000</td><td>Time &amp; contractor · S-13</td></tr>
+        <tr><td class="ctrl">Idle funding-buffer interest</td><td class="money">90,000</td><td>Treasury · S-14</td></tr>
+        <tr><td class="ctrl">Customer-comms programme</td><td class="money">60,000</td><td>Marketing · S-15</td></tr>
+        <tr style="border-top:2px solid var(--rule-hi)"><td class="ctrl">Total measured</td><td class="money" style="color:var(--red)">2,310,000</td><td>—</td></tr>
+      </tbody>
+    </table></div>
+    <p class="prose" style="margin-top:18px">Two figures the board will ask for we <b>deliberately do not quantify</b>, because doing so would be false precision: the reputational cost (real, unmeasured) and any HLD share-price effect (unattributable). We name them; we do not put a number on them. <button class="cite" data-cite="S-27">S-27</button></p>
+  </div>
+  <div class="block">
+    <h3>Where the pain concentrated</h3>
+    <p class="sub">The Netherlands — live only since March, still building trust — took the outage worst relative to its size.</p>
+    <div class="mtx-scroll"><table class="mtx">
+      <thead><tr><th>Region</th><th>Affected customers</th><th>% of region's active base</th></tr></thead>
+      <tbody>
+        <tr><td class="ctrl">United Kingdom</td><td class="money">291,000</td><td>0.4%</td></tr>
+        <tr><td class="ctrl">Ireland</td><td class="money">44,600</td><td>0.6%</td></tr>
+        <tr><td class="ctrl" style="color:var(--red)">Netherlands</td><td class="money">51,800</td><td class="live">2.9% — 3× the relative hit</td></tr>
+        <tr style="border-top:2px solid var(--rule-hi)"><td class="ctrl">Total</td><td class="money">387,400</td><td>0.7% blended</td></tr>
+      </tbody>
+    </table></div>
+    <p class="prose" style="margin-top:18px">A new market, three times the relative hit, and the least trust to spend. The comms were also slow to start — nothing sent until 11:35, nearly three hours in, <b>because the status page was green and no one owned the "tell people" decision.</b> The lesson is the same everywhere in this document: the green status page was trusted over reality. <button class="cite" data-cite="S-28">S-28</button></p>
+  </div>
+  <nav class="pager"><a href="#/happened"><span class="lb">← Back</span><span class="nm">What happened</span></a><a class="next" href="#/why"><span class="lb">Part 3</span><span class="nm">Why it happened →</span></a></nav>
+</div></section>
+
+<!-- WHY -->
+<section data-page="why" class="page"><div class="wrap">
+  <div class="cover mono">Part 3 <span class="of">· the root cause is a missing control</span></div>
+  <h1 class="title">Not one expired cert — <span class="lite">five missing controls.</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">"A certificate expired" is the trigger, not the cause. We use a simple test: for each candidate cause, if it had been different, would the outage have been prevented or bounded? <b>Five pass that test</b> — and they are not five bugs, but five instances of one pattern. <button class="cite" data-cite="S-06">S-06</button></p>
+  <div class="block">
+    <h3>Five instances of one pattern</h3>
+    <div class="web">
+      <div class="node"><span class="nn">1</span><div><h5>No inventory of manual certificates.</h5><p>The expired cert was outside auto-rotation and nothing tracked its expiry.</p></div><span class="test">had it existed → <b>never starts</b></span></div>
+      <div class="node"><span class="nn">2</span><div><h5>No settlement-throughput alarm.</h5><p>Zero settlements during trading hours paged no one.</p></div><span class="test">had it existed → <b>detect in minutes</b></span></div>
+      <div class="node"><span class="nn">3</span><div><h5>Retry logic that hides failure.</h5><p>"Cert rejected" was treated identically to "network blip", so it retried silently forever.</p></div><span class="test">had it existed → <b>escalates at once</b></span></div>
+      <div class="node"><span class="nn">4</span><div><h5>No settlement fallback.</h5><p>Exactly one path to settle; when it is down, we are down.</p></div><span class="test">had it existed → <b>never queues</b></span></div>
+      <div class="node"><span class="nn">5</span><div><h5>Financial truth derived from the payments system.</h5><p>Treasury trusted the settlement service's in-flight number, so a stall looked like headroom.</p></div><span class="test">had it existed → <b>€19m artefact impossible</b></span></div>
+    </div>
+    <p class="prose" style="margin-top:20px"><b>We built for the happy path and trusted the systems that were themselves failing to tell us the truth.</b> The certificate is interchangeable — next time it is a DNS change, a scheme API bump, a bad deploy. The controls are what matter. <button class="cite" data-cite="S-07">S-07</button></p>
+  </div>
+  <div class="block">
+    <h3>The vulnerability, in one config commit</h3>
+    <p class="sub">Two latent defects on the same object, committed together a year before they fired. Neither was caught in review because neither did anything — until one expired.</p>
+    <div class="code">
+      <div class="code-bar"><span class="tl"><i></i><i></i><i></i></span><span class="fn">settlement_gateway.yaml</span><span class="lang">diff · last year</span></div>
+<pre>  settlement_gateway:
+    scheme_endpoint: <span class="s">"scheme-settle-01.scheme.net:8443"</span>
+<span class="del">-   tls_client_cert: ${ROTATION_SERVICE:settlement-gw}   # auto-rotated</span>
+<span class="add">+   tls_client_cert: "/etc/meridian/certs/settle-gw-2025.pem"   # pinned; expires 2026-07-09</span>
+    retry_backoff_ms: [2000, 4000, 8000, 16000, 30000]
+    retry_treat_all_errors_as: transient   <span class="del"># ← the second latent defect, same object</span></pre>
+      <div class="code-note"><span>verbatim config diff · system of record</span><span>S-06 · Controls A + B</span></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3>The risk we should have been carrying</h3>
+    <p class="sub">There is a standard way to have priced this, and we did not do it. Honestly parameterised <b>before</b> the event, the number justified building the fallback last year.</p>
+    <div class="code">
+      <div class="code-bar"><span class="tl"><i></i><i></i><i></i></span><span class="fn">operational_risk.calc</span><span class="lang">formula · estimate</span></div>
+<pre>Expected annual loss ≈ <span class="f">P(trigger fires)</span> × <span class="f">MTTR</span> × <span class="f">cost_rate</span>
+
+  <span class="f">P(some settlement-path fault / yr)</span>  ≈ 0.6   <span class="c"># many un-inventoried manual deps</span>
+  <span class="f">MTTR</span> (no alarm, no fallback)        ≈ 4 h   <span class="c"># as we now know</span>
+  <span class="f">cost_rate</span> of a settlement stall      ≈ £0.55m / h   <span class="c"># penalties + goodwill</span>
+
+  ⇒ not a rounding error. The three fixes buy this expected loss toward zero.</pre>
+      <div class="code-note"><span class="il" style="color:var(--red)">ESTIMATE · honestly labelled (S-19)</span><span>D1: named, not asserted as fact</span></div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/cost"><span class="lb">← Back</span><span class="nm">What it cost</span></a><a class="next" href="#/change"><span class="lb">Part 4</span><span class="nm">What we change →</span></a></nav>
+</div></section>
+
+<!-- CHANGE -->
+<section data-page="change" class="page"><div class="wrap">
+  <div class="cover mono">Part 4 <span class="of">· three structural controls — owned, dated, costed</span></div>
+  <h1 class="title">Monitoring is not the fix. <span class="lite">Structure is.</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">A faster alarm on the same fragile system just tells you sooner that you are down. The fix is to change the structure so the same class of fault <b>cannot stop settlement, cannot ship, and cannot blind treasury.</b> <button class="cite" data-cite="S-08">S-08</button></p>
+  <div class="block">
+    <div class="ctrls">
+      <div class="ctrl-card"><div class="ch"><span class="ct">Control A</span><h4>Independent settlement fallback</h4></div><p>A second, independently-credentialed path to the scheme's backup endpoint, on a separate certificate lifecycle, that the service fails over to <b>automatically when the primary refuses connections for &gt;60 seconds</b>. This turns "we are down" into "customers never notice." <button class="cite" data-cite="S-30">S-30</button></p><div class="meta"><span>Owner <b>D. Okafor</b></span><span>£780k + £120k/yr</span><span>Live <b>30 Sep 2026</b></span></div></div>
+      <div class="ctrl-card"><div class="ch"><span class="ct">Control B</span><h4>Deploys &amp; dependencies fail safe, not silent</h4></div><p>(i) A pre-deploy gate that <b>refuses to ship</b> any service whose external deps include a cert expiring within 45 days or a manually-pinned credential not in rotation; and (ii) retry logic that classifies an auth rejection as <b>permanent</b> and escalates within 60s instead of retrying as transient. <button class="cite" data-cite="S-31">S-31</button></p><div class="meta"><span>Owner <b>R. Silva</b></span><span>£240k</span><span>Live <b>22 Aug 2026</b></span></div></div>
+      <div class="ctrl-card"><div class="ch"><span class="ct">Control C</span><h4>Treasury-grade independent reconciliation</h4></div><p>A service that computes balance and in-flight value <b>from the scheme's confirmations and the ledger of record — never from the settlement service's own optimistic view</b>. A stall shows up as falling settled volume, not rising headroom; a funding decision can never be made off an artefact. <button class="cite" data-cite="S-32">S-32</button></p><div class="meta"><span>Owner <b>M. Haas</b></span><span>£520k + £90k/yr</span><span>Live <b>15 Oct 2026</b></span></div></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3>The remediation plan, at a glance</h3>
+    <p class="sub">B ships first (cheapest; stops the next silent failure shipping), A second (biggest customer-facing protection), C third (deepest; the one the regulator cares most about).</p>
+    <div class="mtx-scroll"><table class="mtx">
+      <thead><tr><th>Control</th><th>Owner</th><th>Build</th><th>Run/yr</th><th>Start</th><th>Live</th><th>Blocks</th></tr></thead>
+      <tbody>
+        <tr><td class="ctrl">B — Fail-safe deploys &amp; retries</td><td>R. Silva</td><td class="money">£240k</td><td>—</td><td>25 Jul</td><td class="live">22 Aug</td><td>—</td></tr>
+        <tr><td class="ctrl">A — Independent settlement fallback</td><td>D. Okafor</td><td class="money">£780k</td><td class="money">£120k</td><td>28 Jul</td><td class="live">30 Sep</td><td>—</td></tr>
+        <tr><td class="ctrl">C — Independent reconciliation</td><td>M. Haas</td><td class="money">£520k</td><td class="money">£90k</td><td>18 Aug</td><td class="live">15 Oct</td><td>needs B's dep-registry</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="block">
+    <h3>The new settlement flow — explicit states, an automatic path out</h3>
+    <p class="sub">Today settlement has two effective states: <b>settling</b> and <b>silently-retrying-forever</b>. The redesign has no state in which the system is down and no one is being paged.</p>
+    <div class="sm">
+      <svg id="smSvg" viewBox="0 0 900 210" role="img" aria-label="Redesigned settlement state machine">
+        <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-3)"/></marker><marker id="ab" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--red)"/></marker></defs>
+        <g><rect class="ok" x="20" y="40" width="150" height="46"/><text class="st" x="95" y="60" text-anchor="middle">SETTLING</text><text class="lb" x="95" y="75" text-anchor="middle">primary</text></g>
+        <path class="e" d="M170,63 L214,63"/><text class="lb" x="192" y="55" text-anchor="middle">refuses &gt;60s</text>
+        <g><rect x="214" y="40" width="150" height="46"/><text class="st" x="289" y="60" text-anchor="middle">FAILING-OVER</text><text class="lb" x="289" y="75" text-anchor="middle">switch path</text></g>
+        <path class="e" d="M364,63 L408,63"/>
+        <g><rect class="ok" x="408" y="40" width="170" height="46"/><text class="st" x="493" y="60" text-anchor="middle">SETTLING-ON-FALLBACK</text><text class="lb" x="493" y="75" text-anchor="middle">customers never notice</text></g>
+        <path class="e" d="M493,86 C493,120 300,120 200,120 L120,120 L120,90" fill="none"/><text class="lb" x="300" y="135" text-anchor="middle">primary healthy → back to SETTLING</text>
+        <path class="e bad" d="M289,86 L289,150" marker-end="url(#ab)"/><text class="lb" x="289" y="140" text-anchor="middle" fill="var(--red)">fallback also refuses</text>
+        <g><rect class="warn" x="200" y="152" width="190" height="46"/><text class="st" x="295" y="172" text-anchor="middle" fill="var(--red)">HALTED-AND-PAGING</text><text class="lb" x="295" y="187" text-anchor="middle">treasury frozen · incident auto-opened</text></g>
+      </svg>
+    </div>
+    <p class="prose" style="margin-top:14px">From <span class="mono" style="font-size:.86rem">FAILING-OVER</span>, if the fallback also refuses, the system goes to <b>HALTED-AND-PAGING</b> (treasury frozen, incident auto-opened) rather than the old silent retry. <b>There is no state in which the system is down and no one is being paged.</b> <button class="cite" data-cite="S-33">S-33</button></p>
+  </div>
+  <nav class="pager"><a href="#/why"><span class="lb">← Back</span><span class="nm">Why it happened</span></a><a class="next" href="#/assurance"><span class="lb">Part 5</span><span class="nm">How we'll know it worked →</span></a></nav>
+</div></section>
+
+<!-- ASSURANCE -->
+<section data-page="assurance" class="page"><div class="wrap">
+  <div class="cover mono">Part 5 <span class="of">· the controls that watch the controls</span></div>
+  <h1 class="title">A plan the board cannot verify is <span class="lite">a promise, not a control.</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">Each fix ships with an explicit, watchable signal, reported to the Risk Committee monthly <b>until each has survived a real trigger.</b> <button class="cite" data-cite="S-09">S-09</button></p>
+  <div class="block">
+    <div class="sigs">
+      <div class="sg"><h5>Time-to-detect a settlement stall</h5><p>Injected controlled fault in staging monthly; time the page.</p><div class="tgt"><span class="was">today: unbounded (4h11m)</span><span class="now">target: &lt;5 min</span></div></div>
+      <div class="sg"><h5>Failover success (Control A)</h5><p>Fallback must carry 100% of settlement within 90s of a primary failure in the monthly game-day.</p><div class="tgt"><span class="now">target: &lt;90s · 100% of volume</span></div></div>
+      <div class="sg"><h5>Deploys blocked by the gate (Control B)</h5><p>We expect it to block some deploys — that is it working. Report the count; confirm none false-blocked into an outage.</p><div class="tgt"><span class="now">target: ≥1 real expiring-cert deploy caught</span></div></div>
+      <div class="sg"><h5>Reconciliation independence (Control C)</h5><p>Funding decisions off the settlement service's own view must be zero; balance reconciles to scheme confirmations each 90s cycle.</p><div class="tgt"><span class="now">target: 0 dependent · &lt;£10k recon gap</span></div></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3>One endpoint the board and regulator can query on demand</h3>
+    <p class="sub">"Can Meridian settle right now, and by which path?" — answered honestly, and it pages before a customer or counterparty ever notices.</p>
+    <div class="code">
+      <div class="code-bar"><span class="tl"><i></i><i></i><i></i></span><span class="fn">GET /health/settlement</span><span class="lang">json · 200 OK</span></div>
+<pre>{
+  <span class="f">"can_settle"</span>: <span class="k">true</span>,
+  <span class="f">"active_path"</span>: <span class="s">"primary"</span>,
+  <span class="f">"primary"</span>:  { <span class="f">"healthy"</span>: <span class="k">true</span>, <span class="f">"cert_expires_in_days"</span>: 88  },
+  <span class="f">"fallback"</span>: { <span class="f">"healthy"</span>: <span class="k">true</span>, <span class="f">"cert_expires_in_days"</span>: 351, <span class="f">"last_drill"</span>: <span class="s">"2026-07-15"</span> },
+  <span class="f">"recon_gap_gbp"</span>: 3140,
+  <span class="f">"last_settled_ts"</span>: <span class="s">"2026-07-16T09:41:02Z"</span>
+}</pre>
+      <div class="code-note"><span class="il" style="color:var(--red)">ILLUSTRATION · target health contract</span><span>S-09 · the point of everything above</span></div>
+    </div>
+    <p class="prose" style="margin-top:18px">If any of <span class="mono" style="font-size:.86rem">can_settle</span>, the cert-expiry counters, or the recon gap goes the wrong way, <b>it pages before a customer or a counterparty ever notices</b> — which is the entire point. <button class="cite" data-cite="S-34">S-34</button></p>
+  </div>
+  <nav class="pager"><a href="#/change"><span class="lb">← Back</span><span class="nm">What we change</span></a><a class="next" href="#/regulator"><span class="lb">For the FCA</span><span class="nm">Regulator pack →</span></a></nav>
+</div></section>
+
+<!-- REGULATOR -->
+<section data-page="regulator" class="page"><div class="wrap">
+  <div class="cover mono">The regulator-facing summary <span class="of">· FCA operational-resilience file</span></div>
+  <h1 class="title">In the register <span class="lite">the regulator expects.</span></h1>
+  <div class="rule2"></div>
+  <div class="reg">
+    <div class="rl">For the operational-resilience file</div>
+    <p>Meridian Pay experienced a settlement disruption of <b>4 hours 11 minutes on 9 July 2026</b>, exceeding our stated impact tolerance of 2 hours for the settlement service. Root cause was an expired manually-managed TLS certificate, compounded by the absence of (i) settlement-throughput alerting, (ii) an independent settlement path, and (iii) reconciliation independent of the payments system. <b>No customer funds were lost; all authorised payments settled the same day; measured cost was £2.31m.</b> Three structural controls are owned, costed, and dated (live between 22 August and 15 October 2026), each with a defined, monthly-tested assurance signal. We assess residual risk as materially reduced on delivery of Control A, and as within tolerance on delivery of all three. <button class="cite" data-cite="S-35">S-35</button></p>
+  </div>
+  <div class="block">
+    <h3>Evidence register &amp; verification note</h3>
+    <p class="sub"><b>D1 in practice:</b> every figure in Parts 1–5 is an internal measured fact from a named system of record and does not require external corroboration. Zero fetches. The <b>only</b> genuinely contested claim is deliberately not asserted.</p>
+    <div class="ev">
+      <div><span class="k">S-01…S-10</span> — incident timeline: gateway logs, service metrics, PagerDuty, Slack #inc-settle, deploy logs. Internal, timestamped, authoritative.</div>
+      <div><span class="k">S-11…S-15</span> — cost components: scheme invoice, finance ledger, contractor invoices, treasury calc, marketing spend. Settled figures.</div>
+      <div><span class="k">S-16</span> — FCA operational-resilience impact-tolerance statement (our own 2025 filing). Authoritative.</div>
+      <div><span class="k">S-17</span> — HLD 9 July price move (−4.2%) + same-day sector downgrade. <b style="color:var(--red)">External; attribution to our incident is unestablished — treated as coincident, not causal.</b> <button class="cite" data-cite="S-27">S-27</button></div>
+      <div><span class="k">S-19</span> — pre-event operational-risk parameterisation (P × MTTR × cost-rate). Estimate, honestly labelled as such.</div>
+      <div style="border-bottom:1px solid var(--rule)">Note: nothing here should be "fact-checked" against the public web; the systems of record are internal.</div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/assurance"><span class="lb">← Back</span><span class="nm">How we'll know</span></a><a class="next" href="#/overview"><span class="lb">Return</span><span class="nm">Overview →</span></a></nav>
+</div></section>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"><div class="dh"><h4>Signal</h4><button class="x" id="dclose">×</button></div><div class="db"><div class="sid" id="dsid"></div><span class="stag" id="dtag"></span><div class="stext" id="dtext"></div></div></aside>
+<div class="hint" id="hint"></div>
+
+<script>
+var SIG={
+"S-01":["INSIGHT","The 9 July outage was not a technology failure but a control failure that surfaced as a technology fault. A single expired cert stopped settlement for 4h11m, but the cert was a symptom; the real defect is no control caught it and no path to settle while down. The fix is three structural changes, not 'renew certs on time'."],
+"S-02":["SOURCE","The gateway logged TLS handshake failures, but the settlement service interpreted a failed connection as 'scheme busy, retry later' — the same code path as a transient blip. It queued and retried indefinitely without escalating; the queue grew at ~1,150 transactions/minute."],
+"S-03":["INSIGHT","Authorisation runs on a separate path that doesn't depend on the settlement cert, so the customer-facing status stayed green the entire time. Authorisation success rate never moved off 99.98%. The incident was invisible on exactly the screen everyone trusts."],
+"S-04":["INSIGHT","The treasury dashboard computes balance partly from the settlement service's 'in-flight' value. With settlement stalled, in-flight ballooned and read as headroom. At 10:52 a treasury officer opened a ticket asking whether to pre-fund a €19m margin call that was not coming — an artefact of the stall. The closest we came to a real loss of funds."],
+"S-05":["SOURCE","No customer lost money and every authorised payment eventually settled. But 'no funds lost' is not 'no cost': measured cost was £2.31m, unevenly distributed, with the new Netherlands market taking it worst relative to size."],
+"S-06":["PRINCIPLE","Test for root cause: for each candidate, if it had been different, would the outage have been prevented or bounded? Five missing controls pass that test. They are not five bugs but five instances of one pattern: we built for the happy path and trusted systems that were failing to tell us the truth."],
+"S-07":["INSIGHT","The certificate is interchangeable — next time it is a DNS change, a scheme API version bump, a bad deploy. The controls are what matter, not the specific trigger."],
+"S-08":["PRINCIPLE","Monitoring is necessary but not the fix — a faster alarm on the same fragile system just tells you sooner that you are down. The fix is to change the structure so the same class of fault cannot stop settlement, cannot ship, and cannot blind treasury."],
+"S-09":["PRINCIPLE","A remediation plan the board cannot verify is a promise, not a control. Each fix ships with an explicit, watchable signal, reported to the Risk Committee monthly until each has survived a real trigger."],
+"S-10":["METRIC","At 12:58 the queue fully drained; 387,400 customers' payments settled (0.7% blended of the active base). All authorised payments settled the same day; no customer funds lost."],
+"S-20":["SOURCE","Meridian settles retail and SME payments across the UK, Ireland, and (since March) the Netherlands. On a normal weekday: £58.4m across 1.72m transactions, settled to the scheme every 90 seconds. Authorisation and settlement are two different systems — the whole story."],
+"S-21":["SOURCE","On 9 July between 08:47 and 12:58 settlement stopped while authorisation kept working. £141.2m of authorised payments queued unsettled; 387,400 customers had at least one payment stuck; for 4 hours the company's own books did not know how much money it had."],
+"S-22":["SOURCE","The board question is not 'why did the cert expire' (known). It is: what control do we not have, such that a single expiring certificate can stop settlement, blind treasury, and put us four hours from a mis-funded scheme call?"],
+"S-23":["SOURCE","A TLS client certificate the settlement gateway used to authenticate to the scheme expired at 08:47:03. 397-day life, issued by an engineer since departed, predated automated rotation. Nothing renewed it; nothing alerted on it."],
+"S-24":["INSIGHT","The raw signal a machine should have caught was visible from 08:47. It took a human at the counterparty 25 minutes to notice, and our own people another 44 minutes to look in the right place — because every internal screen said we were fine."],
+"S-25":["METRIC","Total measured cost £2.31m: scheme late-settlement penalties £1.42m, SME goodwill credits £0.46m (12,800 accounts), emergency response & reconciliation £0.28m, idle funding-buffer interest £0.09m, customer-comms £0.06m. Settled numbers from finance, not estimates."],
+"S-26":["METRIC","Pain concentrated in SME payouts: 12,800 businesses expecting money that morning got it in the afternoon; 340 had payroll or supplier runs that failed and had to be re-attempted. Retail customers barely felt it."],
+"S-27":["SOURCE","Two figures deliberately not quantified as costs (false precision): reputational cost (real, unmeasured) and any HLD share-price effect. HLD fell 4.2% on 9 July against a flat sector, but a same-day sector downgrade also occurred; attribution to our outage is plausible but unestablished — coincident, not asserted causal."],
+"S-28":["METRIC","Regional penetration of the 387,400 affected: UK 291,000 (0.4%), Ireland 44,600 (0.6%), Netherlands 51,800 (2.9%). The Netherlands — a new market since March — took 3× the relative hit with the least trust to spend. Comms were slow (nothing until 11:35) because the green status page was trusted over reality."],
+"S-29":["SOURCE","Under the FCA operational-resilience rules a payments firm must set an impact tolerance and stay within it. Our stated tolerance for settlement is 'no more than 2 hours in any rolling 12 months'; we used 4h11m in a single event. A breach of our own declared tolerance, and reportable."],
+"S-30":["SOURCE","Control A — Independent settlement fallback: a second, independently-credentialed path to the scheme's backup endpoint on a separate cert lifecycle, that the service fails over to automatically when the primary refuses connections for >60s. Owner D. Okafor; £780k + £120k/yr; live 30 Sep 2026."],
+"S-31":["SOURCE","Control B — Deploys & dependencies fail safe: (i) a pre-deploy gate refusing to ship any service whose deps include a cert expiring within 45 days or a manually-pinned credential not in rotation; (ii) retry logic classifying an auth rejection as permanent, escalating within 60s. Owner R. Silva; £240k; live 22 Aug 2026."],
+"S-32":["SOURCE","Control C — Treasury-grade independent reconciliation: computes balance and in-flight value from the scheme's confirmations and the ledger of record, never from the settlement service's own optimistic view, so a stall shows as falling settled volume not rising headroom. Owner M. Haas; £520k + £90k/yr; live 15 Oct 2026."],
+"S-33":["SOURCE","Redesigned flow: SETTLING → (primary refuses >60s) → FAILING-OVER → SETTLING-ON-FALLBACK → (primary healthy) → SETTLING; and from FAILING-OVER, if the fallback also refuses, → HALTED-AND-PAGING (treasury frozen, incident auto-opened) rather than silent retry. No state in which the system is down and no one is being paged."],
+"S-34":["SOURCE","A single /health/settlement endpoint answers 'can Meridian settle right now, and by which path' — can_settle, active path, primary/fallback cert-expiry counters, recon gap, last settled timestamp. If any goes the wrong way it pages before a customer or counterparty notices."],
+"S-35":["SOURCE","Regulator summary: 4h11m settlement disruption on 9 July 2026 exceeding the 2-hour tolerance; root cause an expired manually-managed TLS cert compounded by three missing controls; no funds lost; £2.31m measured cost; three structural controls owned/costed/dated (live 22 Aug–15 Oct 2026), each with a monthly-tested assurance signal. Residual risk materially reduced on Control A, within tolerance on all three."]
+};
+var pages=[].slice.call(document.querySelectorAll('[data-page]')),links=[].slice.call(document.querySelectorAll('#navlinks a'));
+function show(id){var t=document.querySelector('[data-page="'+id+'"]')||pages[0];var swap=function(){pages.forEach(function(p){p.classList.toggle('live',p===t);});links.forEach(function(a){a.setAttribute('aria-current',a.hash==='#/'+id?'page':'false');});window.scrollTo(0,0);try{t.focus({preventScroll:true});}catch(e){}};if(document.startViewTransition&&!matchMedia('(prefers-reduced-motion:reduce)').matches)document.startViewTransition(swap);else swap();}
+function route(){show((location.hash.replace(/^#\//,''))||pages[0].dataset.page);}
+addEventListener('hashchange',route);route();
+var drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim');
+function openSig(id){var s=SIG[id];if(!s)return;document.getElementById('dsid').textContent=id;document.getElementById('dtag').textContent=s[0];document.getElementById('dtext').textContent=s[1];drawer.classList.add('open');scrim.classList.add('open');drawer.setAttribute('aria-hidden','false');}
+function closeSig(){drawer.classList.remove('open');scrim.classList.remove('open');drawer.setAttribute('aria-hidden','true');}
+document.addEventListener('click',function(e){var c=e.target.closest('.cite');if(c&&c.dataset.cite){e.preventDefault();openSig(c.dataset.cite);}});
+document.getElementById('dclose').onclick=closeSig;scrim.onclick=closeSig;
+document.getElementById('theme').onclick=function(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('il-theme',n);};
+document.getElementById('dl').onclick=function(){var doc='<!doctype html>\n<html lang="en">\n'+document.documentElement.innerHTML+'\n</html>';if(window.self!==window.top){var w=null;try{w=window.open('','_blank');}catch(e){}if(w){w.document.open();w.document.write(doc);w.document.close();flash('Opened in a new tab — press ⌘/Ctrl-S to save');}else{flash('This embedded view blocks saving — open the file directly');}return;}var b=new Blob([doc],{type:'text/html'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='meridian-outage-review.html';a.style.display='none';document.body.appendChild(a);a.click();flash('Downloaded · meridian-outage-review.html');setTimeout(function(){a.remove();URL.revokeObjectURL(u);},2000);};
+var hint=document.getElementById('hint'),ht;function flash(t){hint.textContent=t;hint.classList.add('show');clearTimeout(ht);ht=setTimeout(function(){hint.classList.remove('show');},1300);}
+addEventListener('keydown',function(e){if(/input|textarea/i.test(e.target.tagName))return;var k=e.key.toLowerCase();var cur=pages.findIndex(function(p){return p.classList.contains('live');});
+ if(k==='j'||e.key==='ArrowDown'){if(cur<pages.length-1)location.hash='#/'+pages[cur+1].dataset.page;}
+ else if(k==='k'||e.key==='ArrowUp'){if(cur>0)location.hash='#/'+pages[cur-1].dataset.page;}
+ else if(k==='escape'){closeSig();}});
+</script>
+</body>
+</html>

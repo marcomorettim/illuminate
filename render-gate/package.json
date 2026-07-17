@@ -1,0 +1,10 @@
+{
+  "name": "illuminate-render-gate",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Blocking headless render gate for illuminate artifacts (Rule 15h / H6.5 / G5).",
+  "bin": { "illuminate-render-gate": "render-gate.mjs" },
+  "scripts": { "gate": "node render-gate.mjs" },
+  "dependencies": { "playwright": "^1.48.0" }
+}

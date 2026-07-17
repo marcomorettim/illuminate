@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Four-Day Week: Does It Actually Work? · illuminate</title>
+<script>(function(){var s=localStorage.getItem('il-theme');var sys=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',s||sys);})();</script>
+<style>
+/* ARTDIR — swiss neutral · debate-map · multi-page · one red accent (the contention), one blue for the FOR side vs ink for AGAINST is avoided → positions differ by LABEL+position not colour (H2) */
+:root{
+  --paper:#FAFAF8; --paper-1:#F1F1EE; --paper-2:#E7E7E3;
+  --ink:#17181C; --ink-2:#4A4C53; --ink-3:#8B8D94;
+  --rule:rgba(23,24,28,.12); --rule-hi:rgba(23,24,28,.26);
+  --red:#D22E1E;
+  --hn:'HN','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:'Space Mono',ui-monospace,'SF Mono',monospace;
+  --ease:cubic-bezier(.4,0,.2,1); --spring:cubic-bezier(.22,.72,.24,1);
+}
+:root[data-theme="dark"]{
+  --paper:#131417; --paper-1:#1A1B1F; --paper-2:#232429;
+  --ink:#F0F0EC; --ink-2:#B0B2B8; --ink-3:#6E7076;
+  --rule:rgba(240,240,236,.14); --rule-hi:rgba(240,240,236,.28);
+  --red:#F0563E;
+}
+*{box-sizing:border-box}html{scroll-behavior:auto}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--hn);font-size:18px;line-height:1.6;letter-spacing:-.008em;-webkit-font-smoothing:antialiased;transition:background .4s var(--ease),color .4s var(--ease)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 clamp(22px,5vw,64px)}
+.mono{font-family:var(--mono)}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+[data-page]{display:none;view-transition-name:page}[data-page].live{display:block}
+@supports not (view-transition-name:page){[data-page].live{animation:pg .3s var(--ease) both}@keyframes pg{from{opacity:0;transform:translateY(8px)}}}
+@media(prefers-reduced-motion:reduce){[data-page].live{animation:none}}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;background:color-mix(in oklab,var(--paper) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+.nav-in{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:11px clamp(20px,4vw,40px)}
+.brand{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}.brand b{color:var(--red);font-weight:400}
+.nl{display:flex;gap:0;margin-left:8px;overflow-x:auto;scrollbar-width:none}.nl::-webkit-scrollbar{display:none}
+.nl a{font-size:.8rem;color:var(--ink-3);text-decoration:none;padding:6px 11px;white-space:nowrap;border-bottom:2px solid transparent}
+.nl a:hover{color:var(--ink)}.nl a[aria-current="page"]{color:var(--red);border-bottom-color:var(--red)}
+.nr{margin-left:auto;display:flex;gap:8px}
+.ibtn{width:32px;height:32px;border:1px solid var(--rule-hi);background:none;color:var(--ink-2);cursor:pointer;display:grid;place-items:center}.ibtn:hover{color:var(--ink)}.ibtn svg{width:15px;height:15px}
+@media(max-width:900px){.nl{max-width:50vw}}@media(max-width:640px){.nl{display:none}}
+
+.page{padding:clamp(92px,12vw,124px) 0 clamp(56px,8vw,90px)}
+.cover{font-family:var(--mono);font-size:.74rem;color:var(--red);letter-spacing:.05em;margin-bottom:12px}
+.cover .of{color:var(--ink-3)}
+h1.title{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0 0 20px;max-width:20ch;text-wrap:balance}
+h1.title .lite{font-weight:300}
+.lead{font-size:1.12rem;line-height:1.56;color:var(--ink-2);max-width:64ch;font-weight:300}.lead b{color:var(--ink);font-weight:600}
+.rule2{height:2px;background:var(--ink);width:52px;margin:24px 0 30px}
+
+/* the question + contention — hero of a debate-map (question, not answer) */
+.qbox{border:1px solid var(--rule-hi);padding:clamp(20px,3vw,32px);margin-top:8px}
+.qbox .ql{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:12px}
+.qbox .q{font-size:clamp(1.3rem,2.6vw,1.9rem);font-weight:300;letter-spacing:-.02em;line-height:1.2;max-width:30ch}
+.qbox .q b{font-weight:700}
+.contention{margin-top:22px;padding-top:20px;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:640px){.contention{grid-template-columns:1fr}}
+.contention div{padding:0 20px}.contention div:first-child{border-right:1px solid var(--rule);padding-left:0}
+@media(max-width:640px){.contention div:first-child{border-right:0;border-bottom:1px solid var(--rule);padding-bottom:16px;margin-bottom:16px}}
+.contention .cl{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.contention .settled .cl{color:var(--ink-3)}.contention .live .cl{color:var(--red)}
+.contention p{margin:0;font-size:.96rem;color:var(--ink-2)}.contention p b{color:var(--ink);font-weight:600}
+
+.block{margin-top:44px}
+.block h3{font-size:1.05rem;font-weight:700;margin:0 0 8px;display:flex;align-items:center;gap:10px}
+.block h3::before{content:"";width:14px;height:2px;background:var(--red)}
+.block .sub{color:var(--ink-2);font-size:1rem;margin:0 0 22px;max-width:70ch}.block .sub b{color:var(--ink);font-weight:600}
+.prose p{color:var(--ink-2);font-size:1.02rem;line-height:1.62;margin:0 0 16px;max-width:70ch}.prose p b{color:var(--ink);font-weight:600}
+
+/* definitions — a small taxonomy */
+.defs{display:grid;gap:0;border-top:1px solid var(--rule-hi)}
+.def{display:grid;grid-template-columns:200px 1fr;gap:22px;padding:18px 0;border-bottom:1px solid var(--rule)}
+@media(max-width:620px){.def{grid-template-columns:1fr;gap:6px}}
+.def .dt{font-weight:700;font-size:1rem}.def .dt small{display:block;font-family:var(--mono);font-size:.7rem;color:var(--red);font-weight:400;margin-top:3px}
+.def .dd{color:var(--ink-2);font-size:.98rem;max-width:60ch}.def .dd b{color:var(--ink);font-weight:600}
+
+/* position page — steel-manned side */
+.stance{border:1px solid var(--rule-hi);padding:0;margin-top:8px}
+.stance-hd{padding:18px 22px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:12px}
+.stance-hd .tag{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--red)}
+.stance-hd h4{margin:0;font-size:1.15rem;font-weight:700}
+.stance-body{padding:22px}
+.stance-body p{color:var(--ink-2);font-size:1.02rem;line-height:1.62;margin:0 0 16px;max-width:68ch}.stance-body p b{color:var(--ink);font-weight:600}
+.claimbox{margin-top:8px;background:var(--paper-1);border:1px solid var(--rule);padding:16px 20px}
+.claimbox .cbl{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--red);margin-bottom:8px}
+.claimbox p{margin:0;color:var(--ink);font-size:1.04rem;font-weight:500;max-width:64ch}
+/* objections list */
+.obs{display:grid;gap:0;border-top:1px solid var(--rule);margin-top:8px}
+.ob{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.ob .on{font-family:var(--mono);font-size:.8rem;color:var(--red);font-weight:700;padding-top:2px}
+.ob h5{margin:0 0 6px;font-size:1.05rem;font-weight:600}.ob p{margin:0;color:var(--ink-2);font-size:.96rem;max-width:64ch}.ob p b{color:var(--ink);font-weight:600}
+
+/* metric chips inline */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:20px 0}
+@media(max-width:620px){.stat-row{grid-template-columns:1fr}}
+.stat{padding:16px 18px 16px 0;border-right:1px solid var(--rule)}.stat:last-child{border-right:0}
+@media(max-width:620px){.stat{border-right:0;border-bottom:1px solid var(--rule)}}
+.stat .n{font-size:1.6rem;font-weight:300;letter-spacing:-.02em;line-height:1}
+.stat .l{font-size:.8rem;color:var(--ink-2);margin-top:7px;max-width:30ch}
+
+/* cruxes */
+.cruxes{display:grid;gap:0;border-top:1px solid var(--rule-hi)}
+.crux{padding:20px 0;border-bottom:1px solid var(--rule)}
+.crux .ct{font-size:1.1rem;font-weight:700;margin:0 0 6px;display:flex;gap:10px;align-items:baseline}
+.crux .cn{font-family:var(--mono);font-size:.78rem;color:var(--red)}
+.crux p{margin:0;color:var(--ink-2);font-size:.98rem;max-width:70ch}.crux p b{color:var(--ink);font-weight:600}
+.crux .poles{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:12px;border:1px solid var(--rule)}
+@media(max-width:560px){.crux .poles{grid-template-columns:1fr}}
+.crux .poles div{padding:11px 14px;font-size:.9rem;color:var(--ink-2)}
+.crux .poles div:first-child{border-right:1px solid var(--rule)}
+@media(max-width:560px){.crux .poles div:first-child{border-right:0;border-bottom:1px solid var(--rule)}}
+.crux .poles b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;color:var(--ink-3)}
+
+/* compare-matrix — the trials table */
+.mtx-scroll{overflow-x:auto;border:1px solid var(--rule-hi)}
+.mtx{width:100%;border-collapse:collapse;font-size:.9rem;min-width:640px}
+.mtx th{text-align:left;font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);font-weight:500;padding:12px 14px;border-bottom:2px solid var(--rule-hi);background:var(--paper-1);vertical-align:bottom}
+.mtx td{padding:14px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink-2)}
+.mtx tr:last-child td{border-bottom:0}
+.mtx td.trial{color:var(--ink);font-weight:600}.mtx td.trial small{display:block;font-family:var(--mono);font-size:.68rem;color:var(--ink-3);font-weight:400;margin-top:2px}
+.mtx .contested{color:var(--red);font-family:var(--mono);font-size:.82rem}
+.mtx .good{color:var(--ink)}
+.flag{display:inline-block;font-family:var(--mono);font-size:.62rem;color:var(--red);border:1px solid var(--rule-hi);padding:1px 5px;margin-left:4px}
+
+/* fair reading — the conditional */
+.verdict{border:1px solid var(--rule-hi);padding:clamp(22px,3vw,34px);margin-top:8px;background:var(--paper-1)}
+.verdict .vl{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:14px}
+.verdict .vq{font-size:clamp(1.2rem,2.4vw,1.6rem);font-weight:300;line-height:1.32;letter-spacing:-.015em;color:var(--ink);max-width:40ch}
+.verdict .vq b{font-weight:600}
+.bothwrong{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:24px;border-top:1px solid var(--rule)}
+@media(max-width:600px){.bothwrong{grid-template-columns:1fr}}
+.bothwrong div{padding:16px 20px 0 0}.bothwrong div:first-child{border-right:1px solid var(--rule)}
+@media(max-width:600px){.bothwrong div:first-child{border-right:0;border-bottom:1px solid var(--rule);padding-bottom:16px}.bothwrong div:last-child{padding-top:16px}}
+.bothwrong .bl{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin-bottom:6px}
+.bothwrong p{margin:0;font-size:.95rem;color:var(--ink-2)}.bothwrong p b{color:var(--ink);font-weight:600}
+
+.cite{display:inline-flex;font-family:var(--mono);font-size:.64rem;color:var(--red);border:1px solid var(--rule-hi);padding:0 4px;cursor:pointer;vertical-align:baseline;background:none}
+.cite:hover{background:var(--red);color:var(--paper);border-color:var(--red)}
+.pager{display:flex;justify-content:space-between;gap:14px;margin-top:52px;padding-top:24px;border-top:1px solid var(--rule)}
+.pager a{text-decoration:none;color:var(--ink-2);font-size:.9rem;display:flex;flex-direction:column;gap:3px;max-width:46%}.pager a:hover{color:var(--ink)}
+.pager .lb{font-family:var(--mono);font-size:.66rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}.pager a.next{text-align:right;margin-left:auto}.pager .nm{font-weight:600}
+
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(430px,92vw);background:var(--paper);border-left:1px solid var(--rule-hi);box-shadow:-16px 0 40px -20px rgba(0,0,0,.3);transform:translateX(100%);transition:transform .38s var(--spring);z-index:120;display:flex;flex-direction:column}.drawer.open{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--rule)}.dh h4{margin:0;font-family:var(--mono);font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}.dh .x{background:none;border:0;font-size:1.3rem;color:var(--ink-3);cursor:pointer}
+.db{padding:20px 22px;overflow-y:auto}.db .sid{font-family:var(--mono);font-size:.76rem;color:var(--red)}.db .stag{font-family:var(--mono);font-size:.62rem;color:var(--ink-3);border:1px solid var(--rule-hi);padding:1px 6px;margin-left:8px}.db .stext{margin-top:12px;font-size:1rem;line-height:1.55;color:var(--ink)}
+.scrim{position:fixed;inset:0;background:rgba(15,12,8,.32);opacity:0;pointer-events:none;transition:opacity .38s;z-index:110}.scrim.open{opacity:1;pointer-events:auto}
+.hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:.72rem;padding:6px 13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:90}.hint.show{opacity:.95}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <div class="brand">/<b>illuminate</b> · debate-map</div>
+  <div class="nl" id="navlinks">
+    <a href="#/question">The question</a><a href="#/definitions">What it means</a><a href="#/for">The case for</a><a href="#/against">The case against</a><a href="#/cruxes">The cruxes</a><a href="#/trials">The trials</a><a href="#/reading">A fair reading</a>
+  </div>
+  <div class="nr">
+    <button class="ibtn" id="theme" title="Theme" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg></button>
+    <button class="ibtn" id="dl" title="Download" aria-label="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></button>
+  </div>
+</div></nav>
+
+<main>
+<!-- QUESTION -->
+<section data-page="question" class="page"><div class="wrap">
+  <div class="cover mono">A contested question · <span class="of">briefing, not a verdict</span></div>
+  <h1 class="title">The four-day week: <span class="lite">does it actually work?</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">In under a decade it moved from fringe proposal to boardroom agenda. Advocates say the results are in and they are good; skeptics say the trials are almost without exception built to succeed, and the honest answer is "we still don't really know." <b>Both are describing the same studies.</b> This document lays out the disagreement as fairly as each side would state it — and shows exactly where it turns. <button class="cite" data-cite="S-01">S-01</button></p>
+  <div class="qbox">
+    <div class="ql">The question actually in dispute</div>
+    <div class="q">Not whether people <b>prefer</b> a day off, and not whether <b>wellbeing</b> improves. The live question is <b>output</b>: does productivity hold when a fifth of the time is removed, and does that generalise beyond the firms studied?</div>
+    <div class="contention">
+      <div class="settled"><div class="cl">Broadly settled</div><p>People prefer more time off. Wellbeing improves — <b>even critics rarely dispute it</b>: less stress, better sleep, higher life satisfaction. <button class="cite" data-cite="S-14">S-14</button></p></div>
+      <div class="live"><div class="cl">The live contention</div><p>Whether <b>output-neutrality</b> — the surprising claim that makes it "free" — is established, or is an artefact of self-selected, attention-paced firms. <button class="cite" data-cite="S-15">S-15</button></p></div>
+    </div>
+  </div>
+  <nav class="pager"><span></span><a class="next" href="#/definitions"><span class="lb">Next</span><span class="nm">First, what "four-day week" even means →</span></a></nav>
+</div></section>
+
+<!-- DEFINITIONS -->
+<section data-page="definitions" class="page"><div class="wrap">
+  <div class="cover mono">Groundwork <span class="of">· 1 of 6</span></div>
+  <h1 class="title">Half the confusion is <span class="lite">definitional.</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">Three different things wear the same name, and evidence for one is routinely used to argue for another. <b>When you see a result quoted, the first question is always: which one did they test?</b> <button class="cite" data-cite="S-02">S-02</button></p>
+  <div class="block">
+    <div class="defs">
+      <div class="def"><div class="dt">100-80-100 <small>the pilots' version</small></div><div class="dd">100% of pay, <b>80% of the hours</b> (typically 32), for 100% of the output. This is the version the major pilots test and the version advocates mean.</div></div>
+      <div class="def"><div class="dt">Compressed hours <small>a different intervention</small></div><div class="dd">The same ~40 hours packed into four longer days. <b>No reduction in work</b>, just in commutes. Cheaper for employers — and a genuinely different thing.</div></div>
+      <div class="def"><div class="dt">9-day fortnight <small>partial / rotating</small></div><div class="dd">A fifth day flexible, or rotating reductions. Partial reductions that share the label.</div></div>
+    </div>
+    <p class="prose" style="margin-top:22px">Almost every heated argument about "the four-day week" is really two people defending or attacking <b>different items on this list.</b> <button class="cite" data-cite="S-16">S-16</button></p>
+  </div>
+  <nav class="pager"><a href="#/question"><span class="lb">← Back</span><span class="nm">The question</span></a><a class="next" href="#/for"><span class="lb">Next · the first position</span><span class="nm">The case for →</span></a></nav>
+</div></section>
+
+<!-- FOR -->
+<section data-page="for" class="page"><div class="wrap">
+  <div class="cover mono">Position A <span class="of">· steel-manned</span></div>
+  <h1 class="title">The case <span class="lite">for,</span> as its proponents make it.</h1>
+  <div class="rule2"></div>
+  <p class="lead">Proponents are not primarily arguing that people would enjoy a day off — that is not in dispute. They argue something stronger and more surprising. <button class="cite" data-cite="S-03">S-03</button></p>
+  <div class="stance">
+    <div class="stance-hd"><span class="tag">the mechanism</span><h4>The five-day week is an accident of history, not an optimum.</h4></div>
+    <div class="stance-body">
+      <p>Knowledge work contains a large amount of low-value activity — meetings that could be emails, presenteeism, attention-residue from interruption — that <b>expands to fill available time</b> (Parkinson's Law). Cut the container and the low-value activity is what gets squeezed first, because teams protect the work that matters. On this view a four-day week is <b>a forcing function for prioritisation</b> that a five-day week never imposes. <button class="cite" data-cite="S-17">S-17</button></p>
+      <div class="stat-row">
+        <div class="stat"><div class="n">56<span style="font-size:1rem;color:var(--ink-3)">/61</span></div><div class="l">UK 2022 orgs continued the four-day week after the trial; 18 made it permanent <button class="cite" data-cite="S-18">S-18</button></div></div>
+        <div class="stat"><div class="n">~2,900</div><div class="l">employees across 61 organisations, coordinated with Cambridge + Boston College <button class="cite" data-cite="S-18">S-18</button></div></div>
+        <div class="stat"><div class="n">~86%</div><div class="l">of Iceland's workforce later covered by agreements the public-sector trials informed <button class="cite" data-cite="S-19">S-19</button></div></div>
+      </div>
+      <p>Self-reported burnout fell; organisations reported revenue broadly flat to slightly up. The Icelandic trials (2,500+ workers) reported maintained or improved service delivery alongside sharply improved wellbeing. <button class="cite" data-cite="S-19">S-19</button></p>
+      <div class="claimbox"><div class="cbl">The honest strongest claim</div><p>In the settings tested, organisations <b>chose to keep it</b>, employees were unambiguously better off, and measured output did not fall. If output is unchanged and wellbeing is up, productivity-per-hour rose by definition — and the burden of proof shifts to those who would keep the fifth day. <button class="cite" data-cite="S-20">S-20</button></p></div>
+    </div>
+  </div>
+  <nav class="pager"><a href="#/definitions"><span class="lb">← Back</span><span class="nm">Definitions</span></a><a class="next" href="#/against"><span class="lb">Next · the opposing position</span><span class="nm">The case against →</span></a></nav>
+</div></section>
+
+<!-- AGAINST -->
+<section data-page="against" class="page"><div class="wrap">
+  <div class="cover mono">Position B <span class="of">· steel-manned</span></div>
+  <h1 class="title">The case <span class="lite">against,</span> as its skeptics make it.</h1>
+  <div class="rule2"></div>
+  <p class="lead">Skeptics rarely dispute the wellbeing findings. Their objection is <b>methodological, not ideological</b>: not "it doesn't work," but "these studies are not built to find out whether it works, and are quietly built to find that it does." <button class="cite" data-cite="S-04">S-04</button></p>
+  <div class="block">
+    <h3>Three problems, in order of severity</h3>
+    <div class="obs">
+      <div class="ob"><div class="on">01</div><div><h5>Selection, at two levels.</h5><p>The firms volunteered — disproportionately smaller, high-margin, knowledge-work firms with slack. Within them, trials are announced, prepared for, often preceded by a "reorganise your meetings" push. So the population is <b>self-selected for likely success</b>, and the intervention is bundled with a productivity drive that would raise output on a five-day week too. <button class="cite" data-cite="S-21">S-21</button></p></div></div>
+      <div class="ob"><div class="on">02</div><div><h5>The outcome measures are mostly self-reported, and the hard one is missing.</h5><p>Wellbeing and satisfaction — the strong findings — are self-reported by people who wanted the intervention to continue. <b>Rigorously measured output per unit labour is the one almost no trial reports cleanly</b>, because for most knowledge work it is genuinely hard to measure. "Revenue held" over six months in a self-selected sample is not "productivity was unchanged." <button class="cite" data-cite="S-22">S-22</button></p></div></div>
+      <div class="ob"><div class="on">03</div><div><h5>Almost no controls, and short horizons.</h5><p>Few trials run a matched five-day control; most compare a team to its own past. Six months captures the novelty and the house-cleaning, <b>but not whether the gains persist once the reorganised meetings quietly creep back</b> — the thing that, on the skeptics' own account, was doing much of the work. <button class="cite" data-cite="S-23">S-23</button></p></div></div>
+    </div>
+    <div class="claimbox" style="margin-top:22px"><div class="cbl">The honest strongest claim</div><p>The wellbeing case is real and probably sufficient on its own terms; <b>the productivity-neutrality case — the one that makes it "free" — is not established by trials designed this way</b>, and may not generalise past small knowledge-work firms to hospitals, call centres, retail, or manufacturing, where output is paced by demand, not by meeting hygiene. <button class="cite" data-cite="S-24">S-24</button></p></div>
+  </div>
+  <nav class="pager"><a href="#/for"><span class="lb">← Back</span><span class="nm">The case for</span></a><a class="next" href="#/cruxes"><span class="lb">Next · where it turns</span><span class="nm">The cruxes →</span></a></nav>
+</div></section>
+
+<!-- CRUXES -->
+<section data-page="cruxes" class="page"><div class="wrap">
+  <div class="cover mono">The contention, located <span class="of">· what would resolve it</span></div>
+  <h1 class="title">Four genuine cruxes — <span class="lite">where a view really hinges.</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">Once both cases are stated fairly, the argument narrows to a small number of points where a reasonable person's view hinges on an <b>unsettled empirical or definitional question</b>. Each is testable; most are mostly untested. <button class="cite" data-cite="S-05">S-05</button></p>
+  <div class="block">
+    <div class="cruxes">
+      <div class="crux"><div class="ct"><span class="cn">C1</span>Is output paced by attention or by demand?</div><p>The single biggest determinant — and the trials over-sample the attention-paced kind. <button class="cite" data-cite="S-25">S-25</button></p><div class="poles"><div><b>Attention-paced</b>design, code, analysis: removing low-value time plausibly leaves output intact.</div><div><b>Demand-paced</b>a ward, a till, a support queue, a line: a fifth less staffed-time is a fifth less throughput unless you hire — then it isn't free.</div></div></div>
+      <div class="crux"><div class="ct"><span class="cn">C2</span>Is the gain the four-day week, or the reorganisation that came with it?</div><p>If a five-day week with the same meeting-cull would have produced the same rise, <b>the causal ingredient is the cull</b> and the day off is a morale bonus, not a free lunch. No trial cleanly separates these. <button class="cite" data-cite="S-26">S-26</button></p></div>
+      <div class="crux"><div class="ct"><span class="cn">C3</span>Does it survive the novelty and the horizon?</div><p>The strongest skeptical case is not that the gains are fake but that they <b>decay</b> — the fifth day's low-value activity reconstitutes over eighteen months. Testable, mostly untested. <button class="cite" data-cite="S-27">S-27</button></p></div>
+      <div class="crux"><div class="ct"><span class="cn">C4</span>Whose four-day week?</div><p>100-80-100 and compressed-hours are different interventions with different evidence. <b>Treating a compressed-hours result as evidence for pay-preserving reduction is the most common error in the whole debate.</b> <button class="cite" data-cite="S-28">S-28</button></p></div>
+    </div>
+    <p class="prose" style="margin-top:22px"><b>Not a crux:</b> whether people prefer time off (settled), or whether wellbeing improves (largely settled). The live question is exclusively about output — and whether output-neutrality generalises beyond the self-selected, attention-paced firms studied. <button class="cite" data-cite="S-15">S-15</button></p>
+  </div>
+  <nav class="pager"><a href="#/against"><span class="lb">← Back</span><span class="nm">The case against</span></a><a class="next" href="#/trials"><span class="lb">Next · the evidence</span><span class="nm">The trials, side by side →</span></a></nav>
+</div></section>
+
+<!-- TRIALS (compare-matrix) -->
+<section data-page="trials" class="page"><div class="wrap">
+  <div class="cover mono">The evidence, kept honest <span class="of">· compare-matrix</span></div>
+  <h1 class="title">The trials, <span class="lite">side by side.</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">A fair comparison keeps the <b>design differences visible</b>, because the design is exactly what is contested. Figures are as reported by the organisers and their academic partners; the productivity column is deliberately hedged, because it is the disputed one. <button class="cite" data-cite="S-06">S-06</button></p>
+  <div class="block">
+    <div class="mtx-scroll"><table class="mtx">
+      <thead><tr><th>Trial</th><th>Scope</th><th>Model</th><th>Control?</th><th>Wellbeing</th><th>Output <span class="flag">contested</span></th><th>Continued?</th></tr></thead>
+      <tbody>
+        <tr><td class="trial">Iceland public sector<small>2015–19</small></td><td>2,500+ workers</td><td>reduced hours</td><td>no (pre/post)</td><td class="good">strongly improved</td><td class="contested">"services maintained" (self-assessed)</td><td>sector-wide agreements</td></tr>
+        <tr><td class="trial">UK 4DW pilot<small>2022</small></td><td>61 orgs · ~2,900</td><td>100-80-100</td><td>no</td><td class="good">burnout ↓, satisfaction ↑</td><td class="contested">"revenue flat/up" (self-rep, 6mo)</td><td>56/61 · 18 permanent</td></tr>
+        <tr><td class="trial">Spain gov-backed<small>2023–</small></td><td>subsidised SMEs</td><td>100-80-100</td><td>partial</td><td class="good">improving (interim)</td><td class="contested">not yet cleanly reported</td><td>ongoing</td></tr>
+        <tr><td class="trial">Japan (Microsoft)<small>2019</small></td><td>one office · 1 month</td><td>compressed/reduced</td><td>no</td><td class="good">positive</td><td class="contested">"+40%" (single site, 1mo)</td><td>not adopted as policy</td></tr>
+      </tbody>
+    </table></div>
+    <p class="prose" style="margin-top:20px">The Microsoft <b>"+40%"</b> is the most-quoted figure in the entire debate and the least generalisable: one office, one month, one company, no control. It is a good illustration of the whole problem — <b>a real result, endlessly repeated with the caveats stripped off.</b> <button class="cite" data-cite="S-29">S-29</button></p>
+  </div>
+  <nav class="pager"><a href="#/cruxes"><span class="lb">← Back</span><span class="nm">The cruxes</span></a><a class="next" href="#/reading"><span class="lb">Next · where it lands</span><span class="nm">A fair reading →</span></a></nav>
+</div></section>
+
+<!-- READING -->
+<section data-page="reading" class="page"><div class="wrap">
+  <div class="cover mono">Where a fair reading leaves it <span class="of">· a conditional, not a verdict</span></div>
+  <h1 class="title">It does not land on <span class="lite">"works"</span> or <span class="lite">"doesn't."</span></h1>
+  <div class="rule2"></div>
+  <p class="lead">A fair reading lands on a conditional — and its being unsatisfying is the point. <button class="cite" data-cite="S-07">S-07</button></p>
+  <div class="verdict">
+    <div class="vl">The honest sentence</div>
+    <div class="vq">"For firms like the ones studied, the evidence is genuinely encouraging; <b>whether that transfers to demand-paced work at scale, and whether it survives past the novelty, are open questions that current trials were not built to answer.</b>" <button class="cite" data-cite="S-30">S-30</button></div>
+    <div class="bothwrong">
+      <div><div class="bl">The advocates' weakness</div><p>They <b>generalise from a flattering sample</b> — self-selected, attention-paced firms that cleaned house first.</p></div>
+      <div><div class="bl">The skeptics' weakness</div><p>They <b>let perfect measurement be the enemy</b> of a real and repeated wellbeing gain.</p></div>
+    </div>
+    <p style="margin:22px 0 0;color:var(--ink-2);font-size:1rem;max-width:64ch">Both criticisms are correct. A reader who wants a verdict is asking the wrong question; <b style="color:var(--ink)">the useful output is knowing exactly which crux their own case turns on.</b> <button class="cite" data-cite="S-31">S-31</button></p>
+  </div>
+  <p class="prose" style="margin-top:26px;font-size:.92rem;color:var(--ink-3)">Provenance: sources are the trial organisers' own reports and their academic partners' write-ups; the productivity figures in particular are contested and presented as claimed, not as established. Nothing here is a settled empirical finding except the wellbeing results — the one area of broad agreement. <b style="color:var(--ink-2)">0 external fetches</b> — every figure is represented and flagged, none silently upgraded (D1).</p>
+  <nav class="pager"><a href="#/trials"><span class="lb">← Back</span><span class="nm">The trials</span></a><a class="next" href="#/question"><span class="lb">Return</span><span class="nm">The question →</span></a></nav>
+</div></section>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"><div class="dh"><h4>Signal</h4><button class="x" id="dclose">×</button></div><div class="db"><div class="sid" id="dsid"></div><span class="stag" id="dtag"></span><div class="stext" id="dtext"></div></div></aside>
+<div class="hint" id="hint"></div>
+
+<script>
+var SIG={
+"S-01":["SOURCE","The four-day week moved from fringe proposal to boardroom agenda in under a decade; advocates say results are good, skeptics say the trials are built to succeed. Both describe the same studies. This briefing lays out the disagreement, not a recommendation."],
+"S-02":["PRINCIPLE","Half the confusion is definitional: three different things wear the same name (100-80-100, compressed hours, 9-day fortnight), and evidence for one is used to argue for another. First question of any result: which one did they test?"],
+"S-03":["SOURCE","Proponents argue something stronger than 'people enjoy a day off': that output holds or rises when a fifth of the time is removed, because the removed time was mostly not productive to begin with."],
+"S-04":["INSIGHT","Skeptics rarely dispute the wellbeing findings; their objection is methodological, not ideological: 'these studies are not built to find out whether it works, and are quietly built to find that it does.'"],
+"S-05":["PRINCIPLE","Once both cases are stated fairly, the argument narrows to a small number of genuine cruxes — points where a reasonable person's view hinges on an unsettled empirical or definitional question."],
+"S-06":["PRINCIPLE","A fair comparison keeps the trials' design differences visible, because the design is exactly what is contested; the productivity column is deliberately hedged as the disputed one."],
+"S-07":["INSIGHT","A fair reading does not land on 'it works' or 'it doesn't' — it lands on a conditional, and its being unsatisfying is the point."],
+"S-14":["SOURCE","Across trials the wellbeing findings are consistent enough that even critics rarely dispute them: people are less stressed, sleep better, and report higher life satisfaction with a shorter week."],
+"S-15":["INSIGHT","The live question is exclusively about output — specifically whether output-neutrality generalises beyond the self-selected, attention-paced firms that have been studied. Whether people prefer time off, and whether wellbeing improves, are not cruxes."],
+"S-16":["SOURCE","Almost every heated argument about 'the four-day week' is really two people defending or attacking different items on the definitional list (100-80-100 vs compressed hours vs 9-day fortnight)."],
+"S-17":["PRINCIPLE","Proponents' mechanism: the five-day week is an accident of history, not an optimum. Low-value activity expands to fill available time (Parkinson's Law); cutting the container squeezes it out first because teams protect what matters. A four-day week is a forcing function for prioritisation."],
+"S-18":["METRIC","UK 2022 pilot: 61 organisations, ~2,900 employees, coordinated by 4 Day Week Global with Cambridge and Boston College researchers. 56 of 61 organisations continued the four-day week after the six-month trial; 18 made it permanent. Self-reported burnout fell; revenue broadly flat to slightly up. (Self-reported, 6 months.)"],
+"S-19":["METRIC","Icelandic public-sector trials (2,500+ workers), later cited as informing union agreements covering ~86% of Iceland's workforce, reported maintained or improved service delivery alongside sharply improved wellbeing. (Service delivery self-assessed.)"],
+"S-20":["SOURCE","Proponents' honest strongest claim: in the settings tested, organisations chose to keep it, employees were unambiguously better off, and measured output did not fall — so productivity-per-hour rose by definition, shifting the burden of proof to those keeping the fifth day."],
+"S-21":["INSIGHT","Selection at two levels: firms self-select (smaller, high-margin, knowledge-work with slack), and the trial is bundled with a 'reorganise your meetings' productivity drive that would raise output on a five-day week too. You cannot separate 'the four-day week worked' from 'firms that thought it would, and cleaned house first, kept it.'"],
+"S-22":["INSIGHT","The strong findings (wellbeing, burnout, satisfaction) are self-reported by people who wanted the intervention to continue. Rigorously measured output per unit labour — the measure skeptics want — is the one almost no trial reports cleanly, because for most knowledge work it is genuinely hard to measure."],
+"S-23":["SOURCE","Few trials run a matched five-day control group; most compare a team to its own past. Six months captures the novelty and initial house-cleaning but not whether gains persist once the reorganised meetings quietly creep back."],
+"S-24":["SOURCE","Skeptics' honest strongest claim: the wellbeing case is real and probably sufficient on its own terms; the productivity-neutrality case is not established by these designs and may not generalise past small knowledge-work firms to hospitals, call centres, retail, or manufacturing where output is paced by demand."],
+"S-25":["INSIGHT","Crux 1: in attention-gated work (design, code, analysis, writing) removing low-value time plausibly leaves output intact; in demand-paced work (ward, till, support queue, production line) a fifth less staffed-time is a fifth less throughput unless you hire. The trials over-sample the first kind."],
+"S-26":["INSIGHT","Crux 2: if a five-day week with the same meeting-cull would have produced the same output rise, the causal ingredient is the cull and the day off is a morale bonus, not a free lunch. No trial cleanly separates these."],
+"S-27":["INSIGHT","Crux 3: the strongest skeptical case is not that the gains are fake but that they decay — the fifth day's low-value activity reconstitutes over eighteen months. Testable and mostly untested."],
+"S-28":["PRINCIPLE","Crux 4: 100-80-100 and compressed-hours are different interventions with different evidence; treating a compressed-hours result as evidence for pay-preserving reduction (or vice versa) is the most common error in the whole debate."],
+"S-29":["METRIC · contested","Japan (Microsoft, 2019): the '+40% productivity' figure is one office, one month, a single company, no control — the most-quoted figure in the debate and the least generalisable. A real result endlessly repeated with the caveats stripped off."],
+"S-30":["SOURCE","The honest sentence: for firms like the ones studied the evidence is genuinely encouraging; whether that transfers to demand-paced work at scale, and whether it survives past the novelty, are open questions current trials were not built to answer."],
+"S-31":["INSIGHT","The strongest criticism of advocates is that they generalise from a flattering sample; the strongest criticism of skeptics is that they let perfect measurement be the enemy of a real, repeated wellbeing gain. Both are correct. The useful output is knowing which crux your own case turns on."]
+};
+var pages=[].slice.call(document.querySelectorAll('[data-page]')),links=[].slice.call(document.querySelectorAll('#navlinks a'));
+function show(id){var t=document.querySelector('[data-page="'+id+'"]')||pages[0];var swap=function(){pages.forEach(function(p){p.classList.toggle('live',p===t);});links.forEach(function(a){a.setAttribute('aria-current',a.hash==='#/'+id?'page':'false');});window.scrollTo(0,0);try{t.focus({preventScroll:true});}catch(e){}};if(document.startViewTransition&&!matchMedia('(prefers-reduced-motion:reduce)').matches)document.startViewTransition(swap);else swap();}
+function route(){show((location.hash.replace(/^#\//,''))||pages[0].dataset.page);}
+addEventListener('hashchange',route);route();
+var drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim');
+function openSig(id){var s=SIG[id];if(!s)return;document.getElementById('dsid').textContent=id;document.getElementById('dtag').textContent=s[0];document.getElementById('dtext').textContent=s[1];drawer.classList.add('open');scrim.classList.add('open');drawer.setAttribute('aria-hidden','false');}
+function closeSig(){drawer.classList.remove('open');scrim.classList.remove('open');drawer.setAttribute('aria-hidden','true');}
+document.addEventListener('click',function(e){var c=e.target.closest('.cite');if(c&&c.dataset.cite){e.preventDefault();openSig(c.dataset.cite);}});
+document.getElementById('dclose').onclick=closeSig;scrim.onclick=closeSig;
+document.getElementById('theme').onclick=function(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('il-theme',n);};
+document.getElementById('dl').onclick=function(){var doc='<!doctype html>\n<html lang="en">\n'+document.documentElement.innerHTML+'\n</html>';if(window.self!==window.top){var w=null;try{w=window.open('','_blank');}catch(e){}if(w){w.document.open();w.document.write(doc);w.document.close();flash('Opened in a new tab — press ⌘/Ctrl-S to save');}else{flash('This embedded view blocks saving — open the file directly');}return;}var b=new Blob([doc],{type:'text/html'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='four-day-week.html';a.style.display='none';document.body.appendChild(a);a.click();flash('Downloaded · four-day-week.html');setTimeout(function(){a.remove();URL.revokeObjectURL(u);},2000);};
+var hint=document.getElementById('hint'),ht;function flash(t){hint.textContent=t;hint.classList.add('show');clearTimeout(ht);ht=setTimeout(function(){hint.classList.remove('show');},1300);}
+addEventListener('keydown',function(e){if(/input|textarea/i.test(e.target.tagName))return;var k=e.key.toLowerCase();var cur=pages.findIndex(function(p){return p.classList.contains('live');});
+ if(k==='j'||e.key==='ArrowDown'){if(cur<pages.length-1)location.hash='#/'+pages[cur+1].dataset.page;}
+ else if(k==='k'||e.key==='ArrowUp'){if(cur>0)location.hash='#/'+pages[cur-1].dataset.page;}
+ else if(k==='escape'){closeSig();}});
+</script>
+</body>
+</html>

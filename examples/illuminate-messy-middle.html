@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Messy Middle · illuminate</title>
+<script>(function(){var s=localStorage.getItem('il-theme');var sys=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',s||sys);})();</script>
+<style>
+/* ARTDIR — register: swiss editorial · single-scroll essay · restrained (E2 pass) · one red accent */
+:root{
+  --paper:#FAFAF8; --paper-1:#F1F1EE; --paper-2:#E7E7E3;
+  --ink:#17181C; --ink-2:#4A4C53; --ink-3:#8B8D94;
+  --rule:rgba(23,24,28,.12); --rule-hi:rgba(23,24,28,.26);
+  --red:#D22E1E;
+  --hn:'HN','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --mono:'Space Mono',ui-monospace,'SF Mono',monospace;
+  --ease:cubic-bezier(.4,0,.2,1); --spring:cubic-bezier(.22,.72,.24,1);
+  --col:66ch;
+}
+:root[data-theme="dark"]{
+  --paper:#131417; --paper-1:#1A1B1F; --paper-2:#232429;
+  --ink:#F0F0EC; --ink-2:#B0B2B8; --ink-3:#6E7076;
+  --rule:rgba(240,240,236,.14); --rule-hi:rgba(240,240,236,.28);
+  --red:#F0563E;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--hn);font-size:19px;line-height:1.66;letter-spacing:-.006em;-webkit-font-smoothing:antialiased;transition:background .4s var(--ease),color .4s var(--ease)}
+.wrap{max-width:920px;margin:0 auto;padding:0 clamp(22px,6vw,64px)}
+.col{max-width:var(--col)}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.mono{font-family:var(--mono)}
+
+/* nav — minimal, single-scroll scroll-spy */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;background:color-mix(in oklab,var(--paper) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+.nav-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:11px clamp(20px,4vw,40px)}
+.brand{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.brand b{color:var(--red);font-weight:400}
+.nav-links{display:flex;gap:2px;margin-left:8px;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{font-size:.8rem;color:var(--ink-3);text-decoration:none;padding:5px 9px;white-space:nowrap;transition:color .2s;border-bottom:2px solid transparent}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.active{color:var(--red);border-bottom-color:var(--red)}
+.nav-r{margin-left:auto;display:flex;gap:8px}
+.ibtn{width:32px;height:32px;border:1px solid var(--rule-hi);background:none;color:var(--ink-2);cursor:pointer;display:grid;place-items:center;border-radius:0}
+.ibtn:hover{color:var(--ink);border-color:var(--ink-2)}.ibtn svg{width:15px;height:15px}
+@media(max-width:720px){.nav-links{display:none}}
+#prog{position:absolute;bottom:-1px;left:0;height:2px;background:var(--red);width:0}
+
+/* hero — GT pull-quote, answer-first */
+.hero{padding:clamp(120px,16vw,180px) 0 clamp(40px,7vw,80px)}
+.kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:10px;margin-bottom:30px}
+.kicker::before{content:"";width:24px;height:2px;background:var(--red)}
+.gt{font-size:clamp(2.1rem,5.4vw,4.1rem);font-weight:700;letter-spacing:-.035em;line-height:.98;margin:0;max-width:20ch;text-wrap:balance}
+.gt .lite{font-weight:300}
+.gt-sub{margin:30px 0 0;font-size:1.18rem;line-height:1.55;color:var(--ink-2);max-width:60ch;font-weight:300}
+.gt-sub b{color:var(--ink);font-weight:600}
+
+/* the shape diagram — the promised line vs the real shape */
+.shape{margin:44px 0 0;border-top:2px solid var(--ink);padding-top:26px}
+.shape .lab{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:16px}
+#shapeSvg{width:100%;height:auto;display:block}
+#shapeSvg text{font-family:var(--mono);font-size:11px;fill:var(--ink-3)}
+#shapeSvg .promised{fill:none;stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:4 4}
+#shapeSvg .real{fill:none;stroke:var(--red);stroke-width:2.5}
+#shapeSvg .zone{fill:var(--red);opacity:.05}
+#shapeSvg .mk{fill:var(--ink-2);font-weight:700}
+
+/* section */
+.sec{padding:clamp(48px,8vw,92px) 0;border-top:1px solid var(--rule)}
+.sec-grid{display:grid;grid-template-columns:88px 1fr;gap:clamp(16px,3vw,40px);align-items:start}
+@media(max-width:680px){.sec-grid{grid-template-columns:1fr}.sec-num{display:none}}
+.sec-num{font-family:var(--mono);font-size:.8rem;color:var(--red);font-weight:700;padding-top:6px;position:sticky;top:70px}
+.sec h2{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700;letter-spacing:-.025em;line-height:1.08;margin:0 0 22px;max-width:22ch;text-wrap:balance}
+.sec p{font-size:1.08rem;line-height:1.68;color:var(--ink-2);margin:0 0 20px;max-width:var(--col)}
+.sec p:last-child{margin-bottom:0}
+.sec p b{color:var(--ink);font-weight:600}
+.sec p .cite{margin-left:2px}
+
+/* pull-quote — the one editorial device, used sparingly */
+.pq{margin:34px 0;padding:0 0 0 22px;border-left:2px solid var(--red);font-size:1.4rem;line-height:1.34;font-weight:300;letter-spacing:-.02em;color:var(--ink);max-width:32ch}
+.pq b{font-weight:600}
+
+/* the three moves — a restrained numbered set, not cards */
+.moves{margin-top:12px;display:grid;gap:0;border-top:1px solid var(--rule)}
+.move{display:grid;grid-template-columns:auto 1fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--rule)}
+.move .mn{font-size:2rem;font-weight:300;color:var(--red);line-height:1;font-family:var(--hn)}
+.move h4{margin:0 0 7px;font-size:1.12rem;font-weight:600;letter-spacing:-.01em}
+.move p{margin:0;font-size:1rem;color:var(--ink-2);max-width:56ch}
+.move p b{color:var(--ink);font-weight:600}
+
+/* before/after reversal — the feeling vs the fact */
+.rev{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule-hi);margin-top:8px}
+@media(max-width:560px){.rev{grid-template-columns:1fr}}
+.rev div{padding:20px 22px}
+.rev div:first-child{border-right:1px solid var(--rule)}
+@media(max-width:560px){.rev div:first-child{border-right:0;border-bottom:1px solid var(--rule)}}
+.rev .rl{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:8px}
+.rev .feel .rv{color:var(--ink-2);font-size:1.02rem}
+.rev .fact .rv{color:var(--ink);font-size:1.02rem;font-weight:500}
+.rev .fact{background:color-mix(in oklab,var(--red) 5%,var(--paper))}
+
+.cite{display:inline-flex;font-family:var(--mono);font-size:.64rem;color:var(--red);border:1px solid var(--rule-hi);padding:0 4px;cursor:pointer;vertical-align:baseline;background:none}
+.cite:hover{background:var(--red);color:var(--paper);border-color:var(--red)}
+
+/* close */
+.close{padding:clamp(56px,9vw,110px) 0;border-top:2px solid var(--ink);text-align:left}
+.close .big{font-size:clamp(1.8rem,4vw,3rem);font-weight:300;letter-spacing:-.03em;line-height:1.12;max-width:24ch;margin:0}
+.close .big b{font-weight:700}
+.close .big .k{color:var(--red)}
+
+footer{padding:40px 0 70px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:.72rem;color:var(--ink-3);display:flex;gap:10px;flex-wrap:wrap}
+
+/* evidence drawer */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,92vw);background:var(--paper);border-left:1px solid var(--rule-hi);box-shadow:-16px 0 40px -20px rgba(0,0,0,.3);transform:translateX(100%);transition:transform .38s var(--spring);z-index:120;display:flex;flex-direction:column}
+.drawer.open{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--rule)}
+.dh h4{margin:0;font-size:.9rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.dh .x{background:none;border:0;font-size:1.3rem;color:var(--ink-3);cursor:pointer}
+.db{padding:20px 22px;overflow-y:auto}.db .sid{font-family:var(--mono);font-size:.76rem;color:var(--red)}.db .stag{font-family:var(--mono);font-size:.62rem;color:var(--ink-3);border:1px solid var(--rule-hi);padding:1px 6px;margin-left:8px}.db .stext{margin-top:12px;font-size:1rem;line-height:1.55;color:var(--ink)}
+.scrim{position:fixed;inset:0;background:rgba(15,12,8,.32);opacity:0;pointer-events:none;transition:opacity .38s;z-index:110}.scrim.open{opacity:1;pointer-events:auto}
+
+.js .rv-anim{opacity:0;transform:translateY(14px);transition:opacity .7s var(--spring),transform .7s var(--spring)}
+.js .rv-anim.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.js .rv-anim{opacity:1;transform:none}}
+body.signal .sec p,body.signal .gt-sub,body.signal .move p,body.signal .rev .rv{opacity:.28}
+.hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:.72rem;padding:6px 13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:90}.hint.show{opacity:.95}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <div class="brand">/<b>illuminate</b> · essay</div>
+  <div class="nav-links" id="navlinks">
+    <a href="#why">Why it kills</a><a href="#lie">The lie it tells</a><a href="#do">What to do</a><a href="#end">How it ends</a><a href="#tax">The tax on ambition</a>
+  </div>
+  <div class="nav-r">
+    <button class="ibtn" id="theme" title="Theme" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg></button>
+    <button class="ibtn" id="dl" title="Download" aria-label="Download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></button>
+  </div>
+  <div id="prog"></div>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="kicker">An essay · the part where the work actually happens</div>
+  <h1 class="gt">The middle <span class="lite">feels like failure</span> because it <span class="lite">is</span> the work.</h1>
+  <p class="gt-sub">Every project has the same shape, and it isn't the rising line you were promised. The despair of the middle is <b>a fixed cost of doing anything hard, not information about its quality</b> — and the people who finish are the ones who learn to feel it and decline to act on it. <button class="cite" data-cite="S-01">S-01</button></p>
+  <div class="shape rv-anim">
+    <div class="lab">The shape you were promised vs. the shape you get</div>
+    <svg id="shapeSvg" viewBox="0 0 900 220" role="img" aria-label="The promised rising line vs the real beginning-middle-end shape">
+      <path class="promised" d="M40,180 L860,40"/>
+      <text x="600" y="70">the promised rising line</text>
+      <rect class="zone" x="300" y="30" width="300" height="180"/>
+      <path class="real" d="M40,150 C120,60 200,55 300,60 C360,63 380,180 450,185 C520,190 540,120 620,95 C720,64 800,55 860,50"/>
+      <circle class="real" cx="40" cy="150" r="4" style="fill:var(--red)"/>
+      <circle class="real" cx="450" cy="185" r="5" style="fill:var(--red)"/>
+      <circle class="real" cx="860" cy="50" r="4" style="fill:var(--red)"/>
+      <text class="mk" x="30" y="205">BEGINNING</text><text x="30" y="140">flight</text>
+      <text class="mk" x="405" y="30">THE MIDDLE</text><text x="410" y="205">drowning</text>
+      <text class="mk" x="800" y="205">END</text><text x="770" y="40">quiet accrual</text>
+    </svg>
+  </div>
+</div></header>
+
+<main class="wrap">
+<!-- 1 -->
+<section class="sec" id="why"><div class="sec-grid">
+  <div class="sec-num">01</div>
+  <div>
+    <h2>Why the middle kills — competence arrives after the problems do.</h2>
+    <p>The beginning is easy to love because it costs nothing: a project is pure possibility, and possibility is weightless. Beginnings are seductive precisely because they are <b>uninformed</b> — you haven't yet met a single one of the problems that will define the work. This is why starting is a kind of drug. <button class="cite" data-cite="S-02">S-02</button></p>
+    <p>Then the middle arrives and the shimmer dies, for one specific reason: <b>you know enough to see all the ways the thing is going wrong, but not yet enough to fix them.</b> Competence arrives after the problems become visible, never before. So there is always a stretch where your taste has outrun your ability — you can see that what you've made is not yet good, and you cannot yet see how to make it good. <button class="cite" data-cite="S-03">S-03</button></p>
+    <div class="pq">It is not a sign that you are failing. It is <b>the sensation of learning in real time</b>, and it feels almost identical to failing — the cruel joke at the centre of all serious work.</div>
+    <p>This is why most abandoned projects die in the middle, and almost never because they were bad ideas. They are abandoned because <b>the middle feels like proof that they were bad ideas, when it is nothing of the kind.</b> The feeling is real; the conclusion is false — and the false conclusion is expensive, costing people the one or two things they might have made that would have mattered. <button class="cite" data-cite="S-04">S-04</button></p>
+  </div>
+</div></section>
+
+<!-- 2 -->
+<section class="sec" id="lie"><div class="sec-grid">
+  <div class="sec-num">02</div>
+  <div>
+    <h2>The particular lie: everyone else's version went smoothly.</h2>
+    <p>You compare your shapeless, embarrassing middle to other people's polished ends — because the end is all they ever showed you — and conclude that your struggle is unique and disqualifying. It is neither. <b>You are comparing your outtakes to their highlight reel</b>, your kitchen to their plated dish. <button class="cite" data-cite="S-05">S-05</button></p>
+    <p>The writer whose sentences you envy threw away mornings of worse ones. The company whose arc looks inevitable spent two years in a middle that felt, from the inside, exactly as hopeless as yours does now. <b>The smoothness is an artefact of the edit. Nobody publishes the middle.</b></p>
+  </div>
+</div></section>
+
+<!-- 3 -->
+<section class="sec" id="do"><div class="sec-grid">
+  <div class="sec-num">03</div>
+  <div>
+    <h2>What you actually do, standing in it — three moves.</h2>
+    <p>None of these is a mindset hack. They are the central disciplines of anyone who finishes things, and mostly what separates them from the more talented people who don't.</p>
+    <div class="moves">
+      <div class="move"><div class="mn">1</div><div><h4>Stop treating the feeling as information.</h4><p>The despair is not a signal about the quality of the work; it is <b>a fixed cost of the work</b>, as predictable as soreness after exercise and about as meaningful. You would not quit a marathon at mile sixteen because your legs hurt — the hurting is the marathon. <button class="cite" data-cite="S-06">S-06</button></p></div></div>
+      <div class="move"><div class="mn">2</div><div><h4>Shrink the unit of faith.</h4><p>In the middle the whole vision is exactly what you cannot bear to look at — too far, every part broken at once. So you stop looking at it and <b>put your faith in the next true thing</b>: the next paragraph, the next honest conversation, the next small piece you can make better today. The middle is unbearable in aggregate and completely survivable in fragments. <button class="cite" data-cite="S-07">S-07</button></p></div></div>
+      <div class="move"><div class="mn">3</div><div><h4>Know that the end does not announce itself.</h4><p>You keep waiting for a visible finish line to sprint toward. It rarely comes. Instead, <b>one day you notice that more of the thing is right than wrong, and you cannot say when that became true.</b> The middle doesn't end with a bang — it ends when the accumulation of small faith-in-the-next-thing days tips past some invisible line. <button class="cite" data-cite="S-08">S-08</button></p></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 4 -->
+<section class="sec" id="end"><div class="sec-grid">
+  <div class="sec-num">04</div>
+  <div>
+    <h2>You don't finish the middle. You survive it until it quietly becomes the end.</h2>
+    <p>There is a temptation to make the middle sound noble — to dress the drowning up as a heroic trial. That would be a worse lie, because it sets you up to expect a feeling of nobility that does not come. <b>The middle is not noble. It is mostly boring, occasionally frightening, and almost always lonely</b> — the part you cannot show anyone, because there is nothing to show yet, only a mess that means something to you and looks like nothing to everyone else. <button class="cite" data-cite="S-09">S-09</button></p>
+    <p>Its only dignity is retrospective. You will only ever love your middles afterward, from the safety of an end, when you can finally see that <b>the shapeless months were not the obstacle to the work but the work itself.</b></p>
+  </div>
+</div></section>
+
+<!-- 5 -->
+<section class="sec" id="tax"><div class="sec-grid">
+  <div class="sec-num">05</div>
+  <div>
+    <h2>The despair is the tax on ambition — and the feeling is not a reason to stop.</h2>
+    <p>If the middle is where every real thing is made, and it reliably feels like failure while you're in it, then the feeling of failure is not a reason to stop. It is, if anything, <b>weak evidence that you are doing something that matters</b> — because trivial things never produce it. You sail through them precisely because there is nothing at stake and nothing to learn. <button class="cite" data-cite="S-10">S-10</button></p>
+    <p>The reversal at the centre of the whole essay, stated as plainly as it can be:</p>
+    <div class="rev">
+      <div class="feel"><div class="rl">What it feels like</div><div class="rv">A unique, disqualifying failure — proof the idea was bad, a reason to abandon.</div></div>
+      <div class="fact"><div class="rl">What it actually is</div><div class="rv">The predictable, universal tax on anything hard enough to change you — the work itself.</div></div>
+    </div>
+    <p style="margin-top:24px">You can <b>lower</b> the tax by refusing to compound it with the false story that your middle is uniquely doomed, and by shrinking your faith to the next true thing. But you cannot <b>avoid</b> it — and you should be suspicious of any project that never charges it, because a project with no middle is usually one that was never hard enough to change you. <button class="cite" data-cite="S-11">S-11</button></p>
+  </div>
+</div></section>
+</main>
+
+<section class="close"><div class="wrap col">
+  <p class="big">Starting is not the commitment. The commitment is the willingness to <b>be in the middle, on the bad days</b>, doing the next small honest thing while the whole vision looks like a mistake — and to keep doing it <span class="k">until one ordinary afternoon you look up and find you are somehow, quietly, near the end.</span> <button class="cite" data-cite="S-12">S-12</button></p>
+</div></section>
+
+<footer><div class="wrap" style="display:flex;gap:10px;flex-wrap:wrap;padding:0">
+  <span>/illuminate</span><span>·</span><span>single-thesis pyramid → single-scroll</span><span>·</span><span>12 signals</span><span>·</span><span>0 fetches</span><span>·</span><span>keys: j/k · s · esc</span>
+</div></footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"><div class="dh"><h4>Signal</h4><button class="x" id="dclose">×</button></div><div class="db"><div class="sid" id="dsid"></div><span class="stag" id="dtag"></span><div class="stext" id="dtext"></div></div></aside>
+<div class="hint" id="hint"></div>
+
+<script>
+document.body.classList.add('js');
+var SIG={
+"S-01":["INSIGHT","The middle's despair is a fixed cost of doing anything difficult, not information about the quality of the work; learning to feel it and decline to act on it is the central discipline of anyone who finishes things."],
+"S-02":["SOURCE","The beginning costs nothing — a project is pure possibility, and possibility is weightless. Beginnings are seductive because they are uninformed; you have not yet met the problems that will define the work."],
+"S-03":["INSIGHT","In the middle you know enough to see all the ways the thing is going wrong, but not yet enough to fix them. Competence arrives after the problems become visible, never before — so your taste outruns your ability."],
+"S-04":["INSIGHT","Most abandoned projects die in the middle, and almost never because they were bad ideas — they are abandoned because the middle feels like proof they were bad ideas. The feeling is real; the conclusion is false."],
+"S-05":["INSIGHT","The lie the middle tells is that everyone else's version went smoothly. You compare your outtakes to their highlight reel; the smoothness is an artefact of the edit. Nobody publishes the middle."],
+"S-06":["PRINCIPLE","Move 1 — stop treating the feeling as information. The despair is a fixed cost of the work, as predictable as soreness after exercise. You would not quit a marathon at mile sixteen because your legs hurt."],
+"S-07":["PRINCIPLE","Move 2 — shrink the unit of faith. Put faith in the next true thing (the next paragraph, the next small piece you can make better today), not the whole vision. Unbearable in aggregate, survivable in fragments."],
+"S-08":["INSIGHT","Move 3 — the end does not announce itself. One day you notice more of the thing is right than wrong and cannot say when that became true. The middle ends when small faith-in-the-next-thing days tip past an invisible line."],
+"S-09":["SOURCE","The middle is not noble — it is mostly boring, occasionally frightening, and almost always lonely, because it is the part you cannot show anyone. Its only dignity is retrospective."],
+"S-10":["INSIGHT","The feeling of failure is weak evidence you are doing something that matters — trivial things never produce it. The despair is the tax on ambition."],
+"S-11":["PRINCIPLE","You can lower the tax (refuse the false story; shrink faith to the next true thing) but not avoid it. Be suspicious of any project that never charges it — it was probably never hard enough to change you."],
+"S-12":["PRINCIPLE","Starting is not the commitment; the commitment is the willingness to be in the middle on the bad days, doing the next small honest thing until one ordinary afternoon you find you are near the end."]
+};
+var drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim');
+function openSig(id){var s=SIG[id];if(!s)return;document.getElementById('dsid').textContent=id;document.getElementById('dtag').textContent=s[0];document.getElementById('dtext').textContent=s[1];drawer.classList.add('open');scrim.classList.add('open');drawer.setAttribute('aria-hidden','false');}
+function closeSig(){drawer.classList.remove('open');scrim.classList.remove('open');drawer.setAttribute('aria-hidden','true');}
+document.addEventListener('click',function(e){var c=e.target.closest('.cite');if(c&&c.dataset.cite){e.preventDefault();openSig(c.dataset.cite);}});
+document.getElementById('dclose').onclick=closeSig;scrim.onclick=closeSig;
+document.getElementById('theme').onclick=function(){var r=document.documentElement,n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);localStorage.setItem('il-theme',n);};
+// H4 honest export
+document.getElementById('dl').onclick=function(){
+  var doc='<!doctype html>\n<html lang="en">\n'+document.documentElement.innerHTML+'\n</html>';
+  if(window.self!==window.top){var w=null;try{w=window.open('','_blank');}catch(e){}
+    if(w){w.document.open();w.document.write(doc);w.document.close();flash('Opened in a new tab — press ⌘/Ctrl-S to save');}else{flash('This embedded view blocks saving — open the file directly');}return;}
+  var b=new Blob([doc],{type:'text/html'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='the-messy-middle.html';a.style.display='none';document.body.appendChild(a);a.click();flash('Downloaded · the-messy-middle.html');setTimeout(function(){a.remove();URL.revokeObjectURL(u);},2000);
+};
+// reveal + scroll-spy + progress
+var rvs=[].slice.call(document.querySelectorAll('.rv-anim'));
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.15});rvs.forEach(function(el){io.observe(el);});}
+else rvs.forEach(function(el){el.classList.add('in');});
+var secs=[].slice.call(document.querySelectorAll('section[id]')),links=[].slice.call(document.querySelectorAll('.nav-links a'));
+function onScroll(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;document.getElementById('prog').style.width=(h>0?y/h*100:0)+'%';var cur='';secs.forEach(function(s){if(s.offsetTop-90<=y)cur=s.id;});links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur);});}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+// keyboard
+var hint=document.getElementById('hint'),ht;function flash(t){hint.textContent=t;hint.classList.add('show');clearTimeout(ht);ht=setTimeout(function(){hint.classList.remove('show');},1300);}
+var order=['why','lie','do','end','tax'];
+addEventListener('keydown',function(e){if(/input|textarea/i.test(e.target.tagName))return;var k=e.key.toLowerCase();var y=scrollY+100,cur=0;order.forEach(function(id,i){var el=document.getElementById(id);if(el&&el.offsetTop<=y)cur=i;});
+ if(k==='j'||e.key==='ArrowDown'){if(cur<order.length-1)document.getElementById(order[cur+1]).scrollIntoView();}
+ else if(k==='k'||e.key==='ArrowUp'){if(cur>0)document.getElementById(order[cur-1]).scrollIntoView();else scrollTo({top:0});}
+ else if(k==='s'){document.body.classList.toggle('signal');flash(document.body.classList.contains('signal')?'signal view — prose dimmed':'signal off');}
+ else if(k==='escape'){closeSig();}
+});
+</script>
+</body>
+</html>

@@ -107,6 +107,50 @@ figures, illustrations that invent. It polices *subtraction and manufacture* equ
 
 ---
 
+## The Completeness Law
+
+The second law, co-equal with the Evidence-Discipline Contract. That contract governs *what may be
+said*; this governs *how much must be kept*. It overrides any instinct, anywhere in the arc, to
+shorten. (Parts D2, E1-arity, G1–G2, and J all serve it; this is their shared north star, stated once.)
+
+**illuminate rationalizes and preserves. It does not compress.** The job is to take a dense or
+multi-document source and make its *full* complexity navigable — lead the reader top-down to the
+answer, then let them descend into the complete reasoning. Not to summarize it. A consulting
+deliverable earns its fee by guiding a client *through* complexity so they see what is true and what
+counts — it never amputates the complexity to look clean.
+
+**The derived structure and MECE are completeness tools, not compression tools.**
+- The **governing object (GT / question / phenomenon) is the entrance to the material, not a
+  replacement for it.** It says where the reader is going; the full body must still be there to walk into.
+- **MECE's second half — *collectively exhaustive* — means COMPLETE.** Every load-bearing element of
+  the source appears in the artifact, under exactly one branch. Dropping load-bearing content to look
+  tidy is a MECE *failure*, not MECE.
+- **Depth is built by progressive disclosure that DEVELOPS.** Each drill-down reveals *more* complete
+  material — the full reasoning, the data, the edge cases, the technical artifact — never a shorter
+  restatement. Disclosure makes completeness navigable; it does not hide content to save space.
+
+**Named failure mode — hyper-compression.** A title over one panel per concept; a branch that *names*
+a claim instead of *developing* it; supporting detail rendered as a row of S-NNN chips instead of the
+argument itself; a synthesis of several documents that comes out *shorter* than any one of them. If a
+reader cannot begin at the answer and drill down into the *complete* substance of the source, the
+artifact has failed its only purpose — however elegant it looks. This is the same failure Part G (G1
+"develop, don't skeletonize") polices in the output, named here as law so it binds every phase, not
+just the build.
+
+**Completeness is measured by coverage of the source, never by reduction.** The question at every
+phase is "is all the load-bearing material present, developed, and ordered for guided descent?" —
+never "how much can this be cut to." Crispness is a property of the *governing object* alone (one clear
+sentence); it never licenses thinning the *body* beneath it. When any decision is ambiguous, resolve
+it toward completeness, not brevity.
+
+**Corollary — components carry real content (ties to G1/15b).** A component is a vessel for developed
+material. A flat, generic, or cheap-looking component is almost always the symptom of missing content
+beneath it, not a styling problem. Every component the artifact emits — not only the two or three most
+familiar ones — carries genuine substance at a uniform craft bar. Not enough material to fill a rich
+component is a completeness failure to fix upstream, never a licence to ship a dull box.
+
+---
+
 ## Governance Vocabulary
 
 Every gate emits a structured signal:
@@ -434,6 +478,13 @@ visible evidence that a judgment happened, not just a relabelling.)
 
 Salience is a per-source judgment, not a fixed heuristic — a metric that's decorative in one
 source is the load-bearing beam in another. The thesis is what makes the call local and honest.
+
+**The cut removes noise, never load-bearing content (Completeness Law).** `CUT` is restatement and
+generic-true filler only; every load-bearing idea is `KEEP` (or `CONTEXT`), retained and carried into
+the output's disclosure layers to be *developed* there. Extraction stratifies and orders; it never
+compresses. A signal block shorter than the source's load-bearing content is a Completeness failure at
+the very first phase, and everything downstream inherits it — a long or multi-document source yields a
+long signal block, and that is correct, not a problem to trim.
 
 Emit before proceeding:
 ```
@@ -909,8 +960,12 @@ function show(id){
       a.setAttribute('aria-current', a.hash === '#/'+id ? 'page' : 'false'); });
     target.focus({preventScroll:true}); window.scrollTo(0,0); };
   // View Transitions when supported + motion allowed; else instant swap (CSS handles the fade)
-  if (document.startViewTransition && !matchMedia('(prefers-reduced-motion:reduce)').matches)
-    document.startViewTransition(swap); else swap();
+  if (document.startViewTransition && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+    var vt = document.startViewTransition(swap);
+    // A superseded transition rejects .ready/.finished with AbortError — swallow it, or it
+    // surfaces as an unhandled pageerror and fails the render gate. (Caught by the gate itself.)
+    ['finished','ready','updateCallbackDone'].forEach(function(k){ if (vt && vt[k] && vt[k].catch) vt[k].catch(function(){}); });
+  } else swap();
 }
 function route(){ show((location.hash.replace(/^#\//,'')) || pages[0].dataset.page); }
 addEventListener('hashchange', route); route();               // deep-link + reload safe
@@ -981,9 +1036,9 @@ an explicit contract and execute against it. Emit and write to `/tmp/illuminate-
 
 **Reference contract — a proven at-par "Swiss International Typographic Style" register** (one strong
 example, not the only permitted one):
-- **Type — one grotesque; hierarchy by weight + size, not by family or color.** `'Helvetica Neue',
-  'Helvetica','Nimbus Sans',Arial,sans-serif` with an embedded subset **Nimbus Sans** (open Helvetica
-  clone, ~12 KB/weight woff2 via `fonttools`) as the offline fallback; code in **Space Mono**. **No
+- **Type — one grotesque; hierarchy by weight + size, not by family or color.** `'Archivo',
+  'Helvetica Neue',Helvetica,Arial,sans-serif` with the embedded **Archivo** (SIL OFL grotesque, from
+  `assets/embedded-font.css`) leading so it renders offline; code in **Space Mono**. **No
   `system-ui`; no serif display; no second text family.**
 - **Monochrome headlines — the two-tone accent-word title is a named tell and is banned.** Headlines
   are a single ink color, flush-left, ragged-right, tight tracking (`-0.03em`), tight leading (`~0.9`);
@@ -1055,18 +1110,26 @@ gate**, not guidance:
   (`#f*f*e*`/`#f*f*f0`) paired with a warm `--red` (hue ~15–45) is the H2 tell and **fails the render
   gate**. `claude`/`archive` stay selectable, never default.
 - **H6.2 · Type — forbid system fonts, self-host a grotesque.** No text/display token may contain
-  `-apple-system`, `system-ui`, `BlinkMacSystemFont`, `"SF Pro"*`, `"Segoe UI"`. Keep Helvetica but
-  self-host it so it never falls back to the OS: `--hn:'HN','Helvetica Neue',Helvetica,Arial,sans-serif`
-  with an embedded **Nimbus Sans** (open Helvetica-metric clone) as base64 woff2, Latin-subset
-  ~12 KB/weight (400+700) via `fonttools`; treat `--ft` the same (embed, or `--ft:var(--hn)` for a
-  pure-Swiss register). Pattern:
+  `-apple-system`, `system-ui`, `BlinkMacSystemFont`, `"SF Pro"*`, `"Segoe UI"`. The repo ships the
+  bytes: **inline [`assets/embedded-font.css`](assets/embedded-font.css) verbatim** into `<head>` —
+  it defines `@font-face` for **Archivo** 400/700 and **Space Mono** 400 (SIL OFL, libre, Latin subset
+  ~14 KB/weight, base64 `data:` URIs, no network). Then lead the tokens with those families:
+  `--hn:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif`, `--ft:var(--hn)`,
+  `--mono:'Space Mono',ui-monospace,'JetBrains Mono',monospace`. The `'Helvetica Neue'/Helvetica/Arial`
+  tail is a legal fallback (not a forbidden token) but the embedded Archivo wins, so type never falls to
+  the OS. The generated file stays one self-contained offline artifact. (If a different register needs a
+  different face, embed it the same way — base64 `@font-face`, never a system-font token.) The block:
   ```css
-  @font-face{font-family:'HN';font-weight:400;font-display:swap;
-    src:url('data:font/woff2;base64,<subset-woff2>') format('woff2');}
-  @font-face{font-family:'HN';font-weight:700;font-display:swap;
-    src:url('data:font/woff2;base64,<subset-woff2>') format('woff2');}
+  <!-- paste assets/embedded-font.css here, e.g.: -->
+  @font-face{font-family:'Archivo';font-weight:400;font-display:swap;
+    src:url('data:font/woff2;base64,<archivo-400-woff2>') format('woff2');}
+  @font-face{font-family:'Archivo';font-weight:700;font-display:swap;
+    src:url('data:font/woff2;base64,<archivo-700-woff2>') format('woff2');}
+  @font-face{font-family:'Space Mono';font-weight:400;font-display:swap;
+    src:url('data:font/woff2;base64,<space-mono-400-woff2>') format('woff2');}
   ```
-  Still one offline file. The render gate greps emitted CSS for the forbidden tokens and fails on a hit.
+  The render gate greps emitted CSS for the forbidden tokens AND asserts an embedded `@font-face`
+  whose family leads `--hn`; a system-font token or a missing `@font-face` fails the build.
 - **H6.3 · Headings — no colored words.** Inside `h1/h2/h3` the accent color is forbidden; the emphasis
   span may change **weight only** (`font-weight:700`, same `--ink`). No `color:var(--red)`/`var(--accent)`
   on any heading descendant. Gate: computed color of every heading descendant must equal the heading's
@@ -1075,16 +1138,27 @@ gate**, not guidance:
   hairline `--rule-hi` border + a typographic label; category is encoded by a mark/label/position,
   never a pale category fill (sage/mauve/peach). Gate: no diagram node `background` outside the neutral
   paper ramp.
-- **H6.5 · The render gate must run and BLOCK.** Headless-render every page and **fail the build** on:
-  (a) any mockup text node clipping (`scrollWidth > clientWidth`); (b) a banned-palette signature
-  (H6.1); (c) a forbidden font token (H6.2); (d) an accent-colored heading descendant (H6.3); (e) a
-  pastel diagram node (H6.4); (f) any console error; (g) an interactive control whose effect can't be
-  proven (H4). Emit and gate on:
+- **H6.5 · The render gate must run and BLOCK — it is a real script, not a description.** The repo
+  ships it: **[`render-gate/render-gate.mjs`](render-gate/render-gate.mjs)** (Playwright/Chromium).
+  Run it on the finished artifact — it is the mechanical form of the Phase-6 operator gate:
+  ```bash
+  cd render-gate && npm i && npx playwright install chromium   # one-time
+  node render-gate/render-gate.mjs <artifact>.html             # per build; exits non-zero on FAIL
+  ```
+  It headless-renders **every `[data-page]` view in light AND dark** and **fails the build** on:
+  (a) any value clipping (`scrollWidth > clientWidth`); (b) a banned warm-cream `--paper` + warm
+  `--red` palette signature (H6.1); (c) a forbidden font token `-apple-system`/`system-ui`/`SF Pro`/
+  `Segoe UI` (H6.2); (d) a missing embedded `@font-face` or one that doesn't lead `--hn` (H6.2);
+  (e) an accent-colored heading descendant (H6.3); (f) an empty/half-filled diagram; (g) a
+  title-over-whitespace page (Completeness Law / G1); (h) a dead/lying control — it clicks the theme
+  toggle and evidence trigger and confirms each acts (H4); (i) any console error or unhandled
+  pageerror. It emits and gates on:
   ```
   [ILLUMINATE:RENDERGATE] pages:<n> PASS | FAIL <reasons>
   ```
   A `FAIL` is **not shippable** — it re-enters the correction register. This is G5/H5 made mechanical
-  and blocking, the only form that survives the model's defaults.
+  and blocking, the only form that survives the model's defaults. (If Playwright is unavailable, the
+  operator runs the same checks by hand in a browser — but the script is the default path.)
 
 ---
 
@@ -2042,11 +2116,13 @@ token names in Phase 6 CSS — consistent naming makes the design system auditab
 ```css
 /* ── Typefaces ── */
 :root {
-  /* H6.2: lead with self-hosted 'HN' (embedded Nimbus Sans woff2) so type never falls to the OS.
-     Forbidden anywhere in a text/display token: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro", "Segoe UI". */
-  --hn:   'HN', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --ft:   var(--hn);   /* pure-Swiss register; embed a display face here only if the register needs one (never Futura→system) */
-  --mono: 'Space Mono', ui-monospace, 'SF Mono', 'JetBrains Mono', monospace;
+  /* H6.2: self-hosted grotesque so type never falls to the OS. Inline assets/embedded-font.css
+     (base64 Archivo 400/700 + Space Mono 400, SIL OFL) VERBATIM into <head> before this block —
+     that is what makes 'Archivo'/'Space Mono' resolve offline. Forbidden anywhere in a text/display
+     token: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro", "Segoe UI". */
+  --hn:   'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ft:   var(--hn);   /* pure-Swiss register; embed a display face here only if the register needs one */
+  --mono: 'Space Mono', ui-monospace, 'JetBrains Mono', monospace;
 
   /* ── Dark palette (default) ── */
   --paper:    #070708;  --paper-1:  #0f0f11;  --paper-2:  #171719;
@@ -3022,10 +3098,12 @@ Write the file:
 
 Operator confirms the file works live in a browser. Not self-certified.
 
-**Render-truth gate (Part G5) — before Phase 6 can pass.** Do NOT self-certify from source. Render
-**every page** (headless screenshot or operator) and inspect the pixels. The overflow, the empty
-diagram band, the incoherent chrome, the title-over-whitespace page are invisible in source and
-obvious on render — scoring the source instead of the pixels is the exact mistake that ships them.
+**Render-truth gate (Part G5) — before Phase 6 can pass.** Do NOT self-certify from source. **Run the
+shipped harness — `node render-gate/render-gate.mjs <artifact>.html`** (Playwright; see H6.5) — which
+renders **every page** in light and dark and inspects the pixels, or do the same by hand if Playwright
+is unavailable. The overflow, the empty diagram band, the incoherent chrome, the title-over-whitespace
+page are invisible in source and obvious on render — scoring the source instead of the pixels is the
+exact mistake that ships them.
 Per page, confirm: no overflow/clipping · no empty or half-filled diagram · not a thin
 title+whitespace page · chrome coherent per medium · no console errors. Any failure re-enters the
 correction register. This is a hard, mechanical, per-page gate — the "operator confirms in browser"
@@ -3374,7 +3452,7 @@ Design for containment, not exorcism. Signal, do not certify.
 31. **No named cheap tells (H2).** Each hard-fails the render gate: muddy earth-tone-on-cream palette; pastel flowchart node fills; auto-flowchart aesthetic (rounded-rect + 1px + elbow + centered label); box-in-box; system-default typeface; timid accent; flat grey-fill fake shadows; **two-tone accent-word headlines** (titles are single-ink; emphasis by weight/size, never hue). Diagrams are composed editorial infographics, not default-flowchart-tool output.
 32. **Mockups read as renders (H3).** Real device shadow + correct bezel radius; **drawn** status-bar glyphs (SVG signal/wifi/battery, never the literal "9:41 … 62%" string in body type); real header proportion. A grey box with a colored header is a fail.
 33. **No interaction theater (H4).** A control performs its real effect in the target or is not offered; a success message fires only when the effect provably occurred. Export uses a path that works in the sandbox (new-tab-to-save) and confirms only on the real event — never an unconditional "Downloaded". If no path works, don't render the button. Verified by clicking it in render (H5).
-34. **Enforcement over guidance (H6) — art direction is baked into defaults, not left to interpretation.** The neutral **`swiss`** palette is the default (warm-cream `#f*f*e*` + warm-`--red` is a banned default and a render-gate fail); text/display tokens contain **no** `-apple-system`/`system-ui`/`SF Pro`/`Segoe UI` and self-host a real grotesque (`'HN'` = embedded Nimbus Sans woff2); no `h1/h2/h3` descendant carries the accent color (weight-only emphasis); diagram nodes use the neutral paper ramp (no pastel fills). The **`[ILLUMINATE:RENDERGATE]`** step is a **required, build-blocking** render check — it FAILs (not shippable) on any clip, banned-palette signature, forbidden font token, colored heading, pastel node, console error, or unprovable control. This is the only form of H that survives the model's baked-in defaults.
+34. **Enforcement over guidance (H6) — art direction is baked into defaults, not left to interpretation.** The neutral **`swiss`** palette is the default (warm-cream `#f*f*e*` + warm-`--red` is a banned default and a render-gate fail); text/display tokens contain **no** `-apple-system`/`system-ui`/`SF Pro`/`Segoe UI` and self-host a real grotesque (`'Archivo'`, embedded via `assets/embedded-font.css`); no `h1/h2/h3` descendant carries the accent color (weight-only emphasis); diagram nodes use the neutral paper ramp (no pastel fills). The **`[ILLUMINATE:RENDERGATE]`** step is a **required, build-blocking** render check — it FAILs (not shippable) on any clip, banned-palette signature, forbidden font token, colored heading, pastel node, console error, or unprovable control. This is the only form of H that survives the model's baked-in defaults.
 
 **Component & motion menu (Part I)**
 35. **The component is chosen to match the source's medium/data-shape, never defaulting to a phone (Part I).** Select from the wide image-free catalog (device mockups · data viz — Sankey/treemap/cohort/candlestick/ticker/… · diagrams · technical artifacts · editorial) by the Phase-1 detection map; a markets source yields a ticker/candlestick, a data source a Sankey/treemap, an engineering source a terminal/diff, a document source a letter/spreadsheet. It is a **menu, not build-all** (E2) — pick the few that fit. **Motion is a first-class, purposeful, selectable layer** (draw-in, count-up, live-tick, step-through) — never decorative, `<300ms`, no reading-competing autoplay, and **every animated element ships a `prefers-reduced-motion` static equivalent**; scroll-driven/cross-document transitions are `@supports`-gated with a fallback.
