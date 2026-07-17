@@ -27,7 +27,8 @@ the page set from `[data-page]` (hash-routed multi-page) or treats the file as a
 |---|---|---|
 | 1 | a value clips (`scrollWidth > clientWidth`) in a mockup / tile / cell | G4 / H5c |
 | 2 | banned warm-cream `--paper` + warm (hue 15–45) `--red` palette | H6.1 |
-| 3 | a forbidden system-font token (`-apple-system`/`system-ui`/`SF Pro`/`Segoe UI`) | H6.2 |
+| 3 | a forbidden system-font token (`-apple-system`/`system-ui`/`SF Pro`/`Segoe UI`/**`Futura`**) | H6.2 / C |
+| 3b | **Beitar (`#FFCC00`) used as text or as a wash behind text** — the accent is a mark only | Part K·G |
 | 4 | no embedded `@font-face`, or one that doesn't lead `--hn` | H6.2 |
 | 5 | an accent-colored heading descendant | H6.3 |
 | 6 | an empty / half-filled diagram (SVG surface with no drawn children) | G5 |

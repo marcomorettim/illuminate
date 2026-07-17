@@ -16,7 +16,7 @@ const file = process.argv[2];
 if (!file || !existsSync(file)) { console.error('usage: node render-gate.mjs <artifact.html>'); process.exit(2); }
 const url = pathToFileURL(path.resolve(file)).href;
 
-const FORBIDDEN_FONTS = ['-apple-system', 'system-ui', 'BlinkMacSystemFont', 'SF Pro', 'Segoe UI'];
+const FORBIDDEN_FONTS = ['-apple-system', 'system-ui', 'BlinkMacSystemFont', 'SF Pro', 'Segoe UI', 'Futura'];
 
 // In-page probe. Runs once per theme; returns the list of violations for the CURRENTLY visible page.
 async function probePage(page) {
@@ -35,6 +35,29 @@ async function probePage(page) {
       const hc = getComputedStyle(h).color;
       h.querySelectorAll('*').forEach(d => { if (getComputedStyle(d).color !== hc) V.push(`colored-heading: "${h.textContent.trim().slice(0,20)}" -> <${d.tagName}>`); });
     });
+
+    // G · Beitar is a MARK, never text or a wash behind text. Yellow fails as text — so this fires
+    // only when the accent (--red) is bright yellow (the Beitar case); legible red/other accents pass.
+    (() => {
+      const acc = getComputedStyle(document.documentElement).getPropertyValue('--red').trim();
+      const m = document.createElement('span'); m.style.color = acc; document.body.appendChild(m);
+      const c = getComputedStyle(m).color; m.remove();
+      const n = (c.match(/\d+/g) || []).slice(0,3).map(Number); if (n.length < 3) return;
+      const [r,g,b] = n; const mx = Math.max(r,g,b), mn = Math.min(r,g,b), d = mx - mn;
+      let h = 0; if (d) { h = mx===r ? ((g-b)/d)%6 : mx===g ? (b-r)/d+2 : (r-g)/d+4; h*=60; if (h<0) h+=360; }
+      const isBeitarYellow = h >= 38 && h <= 62 && mx > 200 && b < 140; // bright warm yellow
+      if (!isBeitarYellow) return;
+      const same = (x) => { const q = (x.match(/\d+/g)||[]).slice(0,3).map(Number); return q.length===3 && Math.abs(q[0]-r)<10 && Math.abs(q[1]-g)<10 && Math.abs(q[2]-b)<10; };
+      document.querySelectorAll('body *').forEach(el => {
+        if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el.tagName === 'SVG' || !vis(el)) return;
+        // the element's OWN direct text (not descendants), so a yellow-coloured eyebrow div is caught
+        const own = Array.from(el.childNodes).filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim();
+        if (own.length >= 12 && same(getComputedStyle(el).color)) V.push(`beitar-as-text: <${el.tagName.toLowerCase()}.${(el.className||'').split(' ')[0]}> "${own.slice(0,24)}"`);
+        const box = el.getBoundingClientRect();
+        if ((el.innerText||'').trim().length >= 12 && box.width*box.height > 9000 && same(getComputedStyle(el).backgroundColor))
+          V.push(`beitar-wash-behind-text: <${el.tagName.toLowerCase()}> ${Math.round(box.width)}x${Math.round(box.height)}`);
+      });
+    })();
 
     // 5 · empty / half-filled diagram — an SVG/diagram surface with no drawn children.
     document.querySelectorAll('svg, .flow-inner, [data-diagram]').forEach(d => {

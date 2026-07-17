@@ -1007,6 +1007,81 @@ this bar demands. Do not begin the wireframe until the composition clears this b
 
 ---
 
+### Part K · The Beitar design system (governing addendum — overrides any conflict below)
+
+**This is the artifact's concrete design system. Where it conflicts with the Part-H reference contract
+or any earlier art-direction rule, Beitar wins and the earlier rule is read as updated to match.** The
+Part-H machinery (contract, banned tells, render gate) still governs *how* it is enforced; Beitar sets
+*what* the values are.
+
+**A · Palette — Beitar is the default (a curated warm system, not the banned mud).** Four roles:
+**Inchiostro** (warm near-black `#141210` light / warm off-white `#EFEADF` dark) — all text, marks,
+borders, structure. **Carta** (warm off-white `#F4F0E8` light / warm near-black `#17140F` dark) — the
+ground. **Beitar** (`#FFCC00`, held constant across modes) — the accent, used as **exactly one mark
+per page** (see F/G). **Cenere** (warm grey `#8C8680`/`#948E86`) — captions, dividers, axis labels,
+secondary. Mapped to tokens: `--paper`=Carta, `--ink`=Inchiostro, `--ink-2/-3`/`--rule`=Cenere ramp,
+`--red` (accent slot)=Beitar. The H6.1 ban is on an **undesigned muddy warm-cream + terracotta
+*fallback*** — not on this designed high-contrast warm system, which *is* the discipline H6 asks for.
+
+**B · Every palette ships light AND dark**, declined properly (accents recalibrated to the ground,
+elevation by lightness in dark — never a bare background swap). **Default open mode is light** (Carta
+is the hero); the theme toggle is available and the choice persists.
+
+**C · Type — three embedded families, no Futura, no serif** (Part C / H6.2). `--hn:'HN',…` = embedded
+**Nimbus Sans** (open Helvetica clone, body + display). `--ft:'Jost','HN',sans-serif` = embedded
+**Jost** (geometric, Futura-alike) for kickers, eyebrows, section numerals, mono-ish labels — the label
+layer reads as distinct from the Helvetica body. `--mono:'JetBrains Mono',…` = embedded **JetBrains
+Mono** for code. All base64 in `assets/embedded-font.css`; no `system-ui`/`-apple-system`/`SF Pro`/
+**Futura** token anywhere. Register = grotesque + geometric-accent + coding-mono, full stop.
+
+**D · Code is its own animal — recognized syntax on on-brand chrome** (supersedes the H-reference
+"near-monochrome, red keywords"). The code **surface is always dark** — an Inchiostro-dark panel
+(`~#141210`) in *both* document themes (a recognized convention; also keeps code from ever being a
+bright rectangle on warm Carta). Filename/tab/meta in **Cenere**; on-brand border; a **Beitar** mark on
+the block only if that snippet is the page's finding. The **syntax uses a real recognized scheme — a
+warm-tuned One Dark**, identical in both document themes (the panel never flips):
+`text #E6E1D6 · comment #7C7669 italic · keyword #C99BEC · string #98C379 · function #61AFEF ·
+number/constant #D19A66 · type/class #56B6C2 · punctuation/operator #ABB2BF`. Tokenise at build time via
+inline classes — no CDN, no runtime highlighter. (One-Dark colours are the single sanctioned exception
+to "one accent"; code legibility depends on trained-in token roles.)
+
+**E · 3D / motion / dynamic & nested components serve the narration — never decoration.** Parsimony is
+the default; spectacle is not a goal. They are *available* techniques applied only where they advance
+the argument, absent where they'd be ornament (this is already the on-disk stance — no reflexive
+parallax hero; evidence drawer + focus mode remain as *function*). Every motion still ships a
+reduced-motion static fallback; scroll-driven / 3D behind `@supports`.
+
+**F · Beitar marks *the finding* — a rule of argument, not styling.** The single yellow mark on a
+page/section is the payload of that section's **Key Line — the one "what counts" takeaway** (the
+resolved tension, the decisive number, the recommendation). The GT page may carry the single overall
+finding. One finding → one Beitar mark. This is the unambiguous target for the accent.
+
+**G · Beitar is only ever a mark.** Yellow on warm paper fails as text and as a field behind text.
+Beitar is **never body text and never a large wash behind text** — only a dot, a rule, an underline, a
+small fill, one highlighted data element, or a short tag. Everything readable is Inchiostro on Carta;
+Cenere carries the secondary layer. (This retargets every prior `--red`-as-text usage — section
+numerals, kickers, `.kl-tag`, active-nav labels — to **Inchiostro or Cenere**; the accent slot is a
+mark only. Enforced by the render gate: Beitar as `color:` on a text run, or as a large background
+behind text, fails the build.)
+
+**H · Data-visualisation — monochrome, Beitar marks the finding.** Data marks in **Inchiostro**;
+furniture (axes, gridlines, secondary series, labels) in **Cenere**; minimal gridlines, maximal
+data-ink. **Beitar marks the one element that is the finding** — one per chart, mirroring one per page
+(F). Differentiate by *value, fill-style, and labelling — hue is the last resort*. **Climb the
+differentiation ladder only as far as the chart forces:** (1) **lightness not hue** — a warm-grey ramp
+Inchiostro→Cenere for ordered/rankable categories (stacked bars, heatmaps, choropleths, ranked
+cohorts); (2) **fill-style + direct end-of-series labels** for two-way contrasts (actual vs target, us
+vs holdout, before vs after) — solid-vs-outline/hatched, no colour legend; (3) **small multiples** — N
+small monochrome charts each with its own Beitar highlight, not one rainbow chart (also serves
+completeness); (4) **derived desaturated set — flagged exception only** — warm-neutral tints + at most
+one cool counterpoint, never a saturated rainbow, logged in the render notes. Two operator rules:
+**semantic pos/neg** = direction + baseline in ink/grey by default (the net/finding = Beitar), with one
+escape hatch for genuinely financial charts — "negative/loss" may use a single muted brick **`#A6402E`**
+(never a matching positive green; positive stays ink); **no single finding → no Beitar** — a pure
+reference chart of equal series is greys only. A chart earns its yellow only when it has a point.
+
+---
+
 ### Art Direction — from correct to at-par (Part H)
 
 F2 names the target as *principles* ("restrained color", "felt grid"). Principles do not survive
@@ -1014,7 +1089,8 @@ contact with the model: told to be "sophisticated", it still ships the muddy ear
 default with pastel diagram fills — "cheap old website / student portfolio", the opposite of the
 intent. Part H converts F2's principles into a **locked contract + named anti-patterns that each
 hard-fail the render gate + a mockup fidelity standard** — elegance the model cannot default its way
-out of.
+out of. **(Read Part H through Part K above: Beitar sets the palette, type, code, and chart values;
+Part H is the enforcement machinery.)**
 
 **H1 · Art-direction contract — design the system, don't default into one.** Before build, commit to
 an explicit contract and execute against it. Emit and write to `/tmp/illuminate-artdir.md`:
@@ -1036,9 +1112,10 @@ an explicit contract and execute against it. Emit and write to `/tmp/illuminate-
 
 **Reference contract — a proven at-par "Swiss International Typographic Style" register** (one strong
 example, not the only permitted one):
-- **Type — one grotesque; hierarchy by weight + size, not by family or color.** `'Archivo',
-  'Helvetica Neue',Helvetica,Arial,sans-serif` with the embedded **Archivo** (SIL OFL grotesque, from
-  `assets/embedded-font.css`) leading so it renders offline; code in **Space Mono**. **No
+- **Type — grotesque body + geometric label layer (Part C); hierarchy by weight, size, and family
+  role.** `--hn:'HN',…` = embedded **Nimbus Sans** (Helvetica clone) for body + display;
+  `--ft:'Jost','HN',…` = embedded **Jost** for kickers/eyebrows/section numerals; code in **JetBrains
+  Mono** — all from `assets/embedded-font.css`, rendering offline. **No
   `system-ui`; no serif display; no second text family.**
 - **Monochrome headlines — the two-tone accent-word title is a named tell and is banned.** Headlines
   are a single ink color, flush-left, ragged-right, tight tracking (`-0.03em`), tight leading (`~0.9`);
@@ -1055,8 +1132,11 @@ example, not the only permitted one):
   `0.945 0.003 260`, red lifted; elevation by lightness. Two curated palettes, not a background swap.
 - **Device fidelity:** dark bezel + `inset` rim highlight + two-layer lift shadow; **drawn** status
   glyphs (signal/wifi/battery as inline SVG), never the literal "9:41 … 62%" string.
-- **Code surface:** deep neutral-ink panel in *both* themes, near-monochrome with red keywords
-  (comments muted, strings dimmed, functions bold-ink) — never pastel-filled.
+- **Code surface (superseded by Part K·D):** Inchiostro-dark panel in *both* document themes, chrome
+  in Cenere, on-brand border. Syntax uses a **warm-tuned One Dark** recognized scheme (not the brand's
+  one-accent) — text `#E6E1D6`, comment `#7C7669` italic, keyword `#C99BEC`, string `#98C379`, function
+  `#61AFEF`, number `#D19A66`, type `#56B6C2`, punctuation `#ABB2BF`. A Beitar mark on the block only if
+  the snippet is the page's finding.
 
 **H2 · Named cheap tells — banned anti-patterns (each hard-fails the Phase 7 render gate):**
 - **Muddy earth-tone-on-cream** default palette; **pastel node fills** in diagrams (pale
@@ -1110,26 +1190,31 @@ gate**, not guidance:
   (`#f*f*e*`/`#f*f*f0`) paired with a warm `--red` (hue ~15–45) is the H2 tell and **fails the render
   gate**. `claude`/`archive` stay selectable, never default.
 - **H6.2 · Type — forbid system fonts, self-host a grotesque.** No text/display token may contain
-  `-apple-system`, `system-ui`, `BlinkMacSystemFont`, `"SF Pro"*`, `"Segoe UI"`. The repo ships the
-  bytes: **inline [`assets/embedded-font.css`](assets/embedded-font.css) verbatim** into `<head>` —
-  it defines `@font-face` for **Archivo** 400/700 and **Space Mono** 400 (SIL OFL, libre, Latin subset
-  ~14 KB/weight, base64 `data:` URIs, no network). Then lead the tokens with those families:
-  `--hn:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif`, `--ft:var(--hn)`,
-  `--mono:'Space Mono',ui-monospace,'JetBrains Mono',monospace`. The `'Helvetica Neue'/Helvetica/Arial`
-  tail is a legal fallback (not a forbidden token) but the embedded Archivo wins, so type never falls to
-  the OS. The generated file stays one self-contained offline artifact. (If a different register needs a
-  different face, embed it the same way — base64 `@font-face`, never a system-font token.) The block:
+  `-apple-system`, `system-ui`, `BlinkMacSystemFont`, `"SF Pro"*`, `"Segoe UI"`, **`Futura`** (Part C).
+  The repo ships the bytes: **inline [`assets/embedded-font.css`](assets/embedded-font.css) verbatim**
+  into `<head>` — it defines `@font-face` for **Nimbus Sans as `'HN'`** 400/700 (open Helvetica clone,
+  AGPL+font-exception), **Jost** 400/700 (SIL OFL, geometric), and **JetBrains Mono** 400 (SIL OFL) —
+  libre, Latin subset, base64 `data:` URIs, no network. Then lead the tokens (Part C):
+  `--hn:'HN','Helvetica Neue',Helvetica,Arial,sans-serif`, `--ft:'Jost','HN',sans-serif`,
+  `--mono:'JetBrains Mono',ui-monospace,Menlo,monospace`. The `'Helvetica Neue'/Helvetica/Arial` tail is
+  a legal fallback (not a forbidden token) but the embedded Nimbus wins, so type never falls to the OS.
+  One self-contained offline artifact. (A different register embeds its own face the same way — base64
+  `@font-face`, never a system-font token, never Futura.) The block:
   ```css
   <!-- paste assets/embedded-font.css here, e.g.: -->
-  @font-face{font-family:'Archivo';font-weight:400;font-display:swap;
-    src:url('data:font/woff2;base64,<archivo-400-woff2>') format('woff2');}
-  @font-face{font-family:'Archivo';font-weight:700;font-display:swap;
-    src:url('data:font/woff2;base64,<archivo-700-woff2>') format('woff2');}
-  @font-face{font-family:'Space Mono';font-weight:400;font-display:swap;
-    src:url('data:font/woff2;base64,<space-mono-400-woff2>') format('woff2');}
+  @font-face{font-family:'HN';font-weight:400;font-display:swap;
+    src:url('data:font/woff2;base64,<nimbus-400-woff2>') format('woff2');}
+  @font-face{font-family:'HN';font-weight:700;font-display:swap;
+    src:url('data:font/woff2;base64,<nimbus-700-woff2>') format('woff2');}
+  @font-face{font-family:'Jost';font-weight:400;font-display:swap;
+    src:url('data:font/woff2;base64,<jost-400-woff2>') format('woff2');}
+  @font-face{font-family:'Jost';font-weight:700;font-display:swap;
+    src:url('data:font/woff2;base64,<jost-700-woff2>') format('woff2');}
+  @font-face{font-family:'JetBrains Mono';font-weight:400;font-display:swap;
+    src:url('data:font/woff2;base64,<jetbrains-400-woff2>') format('woff2');}
   ```
-  The render gate greps emitted CSS for the forbidden tokens AND asserts an embedded `@font-face`
-  whose family leads `--hn`; a system-font token or a missing `@font-face` fails the build.
+  The render gate greps emitted CSS for the forbidden tokens (incl. Futura) AND asserts an embedded
+  `@font-face` whose family leads `--hn`; a system-font/Futura token or a missing `@font-face` fails.
 - **H6.3 · Headings — no colored words.** Inside `h1/h2/h3` the accent color is forbidden; the emphasis
   span may change **weight only** (`font-weight:700`, same `--ink`). No `color:var(--red)`/`var(--accent)`
   on any heading descendant. Gate: computed color of every heading descendant must equal the heading's
@@ -1478,9 +1563,9 @@ section hover. This is the Swiss editorial convention of using numbers as struct
   border-bottom: 2px solid var(--ink);  /* thick rule = logical authority */
 }
 .kl-tag {
-  font-family: var(--ft); font-size: .68rem;
+  font-family: var(--ft); font-size: .68rem;   /* Jost — the geometric label layer (Part C) */
   font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--red);  /* editorial red for KL number only */
+  color: var(--ink);  /* Beitar G: numeral is Inchiostro, NOT the accent — Beitar marks the finding only */
 }
 .kl-title {
   font-family: var(--ft); font-size: clamp(1.4rem, 2.5vw, 2rem);
@@ -1530,7 +1615,7 @@ it will collide with the nav background at the same `top:0` position.
   color: var(--ink-3); letter-spacing: .12em; text-transform: uppercase;
   display: flex; align-items: center; gap: 1.5rem;
 }
-.hero-dateline span { color: var(--red) }
+.hero-dateline span { color: var(--ink-3) }  /* Beitar G: separators are Cenere furniture, not the accent */
 .hero-dateline::after { content: ''; flex: 1; height: 1px; background: var(--rule-hi); max-width: 200px }
 ```
 
@@ -2116,23 +2201,24 @@ token names in Phase 6 CSS — consistent naming makes the design system auditab
 ```css
 /* ── Typefaces ── */
 :root {
-  /* H6.2: self-hosted grotesque so type never falls to the OS. Inline assets/embedded-font.css
-     (base64 Archivo 400/700 + Space Mono 400, SIL OFL) VERBATIM into <head> before this block —
-     that is what makes 'Archivo'/'Space Mono' resolve offline. Forbidden anywhere in a text/display
-     token: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro", "Segoe UI". */
-  --hn:   'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --ft:   var(--hn);   /* pure-Swiss register; embed a display face here only if the register needs one */
-  --mono: 'Space Mono', ui-monospace, 'JetBrains Mono', monospace;
+  /* Part C / H6.2: THREE embedded self-hosted families, no OS fallback, no Futura, no serif.
+     Inline assets/embedded-font.css VERBATIM into <head> before this block (base64 woff2:
+     Nimbus Sans as 'HN' 400/700 · Jost 400/700 · JetBrains Mono 400). Forbidden anywhere in a
+     text/display token: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro", "Segoe UI", Futura. */
+  --hn:   'HN', 'Helvetica Neue', Helvetica, Arial, sans-serif;    /* body + display — Nimbus (Helvetica clone) */
+  --ft:   'Jost', 'HN', sans-serif;                                /* labels · eyebrows · section numerals (geometric) */
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;        /* code */
 
-  /* ── Dark palette (default) ── */
-  --paper:    #070708;  --paper-1:  #0f0f11;  --paper-2:  #171719;
-  --ink:      #f0f0ee;  --ink-2:    #888886;  --ink-3:    #404040;
-  --rule:     rgba(240,240,238,.06);
-  --rule-hi:  rgba(240,240,238,.14);
-  --red:      #ff1e1e;  --red-dim:    rgba(255,30,30,.10);
-  --cli:      #00ff88;  --cli-dim:    rgba(0,255,136,.07);
-  --blue:     #3d9eff;  --blue-dim:   rgba(61,158,255,.09);
-  --amber:    #ffaa00;  --amber-dim:  rgba(255,170,0,.10);
+  /* ── Beitar — DEFAULT palette, DARK variant (Part A). Warm curated system.
+     Inchiostro ink · Carta paper · Cenere warm-grey · Beitar #FFCC00 = the accent (MARK ONLY, F/G). ── */
+  --paper:    #17140F;  --paper-1:  #201C15;  --paper-2:  #2A251C;   /* Carta (dark) + stepped warm neutrals */
+  --ink:      #EFEADF;  --ink-2:    #948E86;  --ink-3:    #6A655C;   /* Inchiostro (dark) + Cenere ramp */
+  --rule:     rgba(148,142,134,.16);
+  --rule-hi:  rgba(148,142,134,.30);
+  --red:      #FFCC00;  --red-dim:    rgba(255,204,0,.14);            /* Beitar — the accent slot; a MARK, never text (G) */
+  --cli:      #C9B98A;  --cli-dim:    rgba(201,185,138,.10);          /* evidence — warm muted, not neon (Beitar system) */
+  --blue:     #7FA0B8;  --blue-dim:   rgba(127,160,184,.10);          /* the single cool counterpoint, desaturated (H) */
+  --amber:    #C77A4A;  --amber-dim:  rgba(199,122,74,.12);           /* contested/hedge — warm brick, not yellow (reserve #FFCC00 for the finding) */
 
   /* ── Swiss Grid ── */
   --col12: repeat(12, 1fr);
@@ -2160,44 +2246,45 @@ token names in Phase 6 CSS — consistent naming makes the design system auditab
   --stagger:  60ms;  /* 30-80ms range; never block interaction during stagger */
 }
 
-/* ── Light palette — system preference (no manual override) ── */
-/* H6.1: NEUTRAL near-white/near-black default, one red. The old warm-cream    */
-/* #f5f4f0 ground is the H2-banned "cheap template" tell and is NOT the default.*/
+/* ── Beitar — DEFAULT palette, LIGHT variant (the hero mode, Part A/B). ──
+   H6.1 reframed: the ban is on an *undesigned* muddy warm-cream + terracotta FALLBACK — NOT on a
+   curated warm system. Beitar (near-black Inchiostro on warm Carta paper, one confident #FFCC00 mark)
+   IS the discipline H6 asks for, and is the default. Carta is a designed warm off-white, not #f5f4f0 mud. */
 @media(prefers-color-scheme:light) {
   :root:not([data-theme="dark"]) {
-    --paper:    #FAFAF8;  --paper-1:  #F1F1EE;  --paper-2:  #E7E7E3;
-    --ink:      #17181C;  --ink-2:    #5B5D64;  --ink-3:    #8B8D94;
-    --rule:     rgba(23,24,28,.10);
-    --rule-hi:  rgba(23,24,28,.22);
-    --red:      #D22E1E;  --red-dim:    rgba(210,46,30,.08);
-    --cli:      #006e38;  --cli-dim:    rgba(0,110,56,.08);
-    --blue:     #1457a0;  --blue-dim:   rgba(20,87,160,.09);
-    --amber:    #8a5e00;  --amber-dim:  rgba(138,94,0,.09);
+    --paper:    #F4F0E8;  --paper-1:  #ECE7DC;  --paper-2:  #E3DDCE;   /* Carta + stepped warm neutrals */
+    --ink:      #141210;  --ink-2:    #8C8680;  --ink-3:    #A8A29A;   /* Inchiostro + Cenere ramp */
+    --rule:     rgba(20,18,16,.12);
+    --rule-hi:  rgba(20,18,16,.24);
+    --red:      #FFCC00;  --red-dim:    rgba(255,204,0,.16);            /* Beitar — MARK ONLY (G) */
+    --cli:      #7A6E4E;  --cli-dim:    rgba(122,110,78,.10);           /* evidence — warm muted on paper */
+    --blue:     #3E5C70;  --blue-dim:   rgba(62,92,112,.10);           /* single desaturated cool counterpoint */
+    --amber:    #A6402E;  --amber-dim:  rgba(166,64,46,.10);           /* semantic negative/loss brick (H); harmonises with paper */
   }
 }
 
-/* ── Manual light override (takes precedence over system pref) — neutral (H6.1) ── */
+/* ── Manual light override — Beitar light (takes precedence over system pref) ── */
 [data-theme="light"] {
-  --paper:    #FAFAF8;  --paper-1:  #F1F1EE;  --paper-2:  #E7E7E3;
-  --ink:      #17181C;  --ink-2:    #5B5D64;  --ink-3:    #8B8D94;
-  --rule:     rgba(23,24,28,.10);
-  --rule-hi:  rgba(23,24,28,.22);
-  --red:      #D22E1E;  --red-dim:    rgba(210,46,30,.08);
-  --cli:      #006e38;  --cli-dim:    rgba(0,110,56,.08);
-  --blue:     #1457a0;  --blue-dim:   rgba(20,87,160,.09);
-  --amber:    #8a5e00;  --amber-dim:  rgba(138,94,0,.09);
+  --paper:    #F4F0E8;  --paper-1:  #ECE7DC;  --paper-2:  #E3DDCE;
+  --ink:      #141210;  --ink-2:    #8C8680;  --ink-3:    #A8A29A;
+  --rule:     rgba(20,18,16,.12);
+  --rule-hi:  rgba(20,18,16,.24);
+  --red:      #FFCC00;  --red-dim:    rgba(255,204,0,.16);
+  --cli:      #7A6E4E;  --cli-dim:    rgba(122,110,78,.10);
+  --blue:     #3E5C70;  --blue-dim:   rgba(62,92,112,.10);
+  --amber:    #A6402E;  --amber-dim:  rgba(166,64,46,.10);
 }
 
-/* ── Manual dark override (overrides system light pref) ── */
+/* ── Manual dark override — Beitar dark (overrides system light pref) ── */
 [data-theme="dark"] {
-  --paper:    #070708;  --paper-1:  #0f0f11;  --paper-2:  #171719;
-  --ink:      #f0f0ee;  --ink-2:    #888886;  --ink-3:    #404040;
-  --rule:     rgba(240,240,238,.06);
-  --rule-hi:  rgba(240,240,238,.14);
-  --red:      #ff1e1e;  --red-dim:    rgba(255,30,30,.10);
-  --cli:      #00ff88;  --cli-dim:    rgba(0,255,136,.07);
-  --blue:     #3d9eff;  --blue-dim:   rgba(61,158,255,.09);
-  --amber:    #ffaa00;  --amber-dim:  rgba(255,170,0,.10);
+  --paper:    #17140F;  --paper-1:  #201C15;  --paper-2:  #2A251C;
+  --ink:      #EFEADF;  --ink-2:    #948E86;  --ink-3:    #6A655C;
+  --rule:     rgba(148,142,134,.16);
+  --rule-hi:  rgba(148,142,134,.30);
+  --red:      #FFCC00;  --red-dim:    rgba(255,204,0,.14);
+  --cli:      #C9B98A;  --cli-dim:    rgba(201,185,138,.10);
+  --blue:     #7FA0B8;  --blue-dim:   rgba(127,160,184,.10);
+  --amber:    #C77A4A;  --amber-dim:  rgba(199,122,74,.12);
 }
 
 /* ════════════════════════════════════════════════════════════════════
@@ -2207,11 +2294,27 @@ token names in Phase 6 CSS — consistent naming makes the design system auditab
    Palette rules come AFTER theme rules so they win in the cascade.
    ════════════════════════════════════════════════════════════════════ */
 
-/* ── SWISS — neutral near-white / near-black, one red. THE DEFAULT (H6.1). ──
-   Character: designed editorial, high figure/ground contrast, zero warmth.
-   Applied by the Phase-0a boot when no domain reason selects another palette.
-   Warm-cream + warm-orange is BANNED as a default; claude/archive stay
-   *selectable* for genuinely warm/archival sources, never the fallback. */
+/* ── BEITAR — curated warm system. THE DEFAULT (Part A). ──
+   Inchiostro near-black on Carta warm paper, Cenere warm-grey secondary, one held-constant #FFCC00
+   Beitar accent used as a MARK only (F/G). This mirrors the base :root — selecting it explicitly
+   returns to the default after another palette. H6.1 bans only an *undesigned* warm-cream fallback;
+   this designed high-contrast warm system is exactly the discipline H6 asks for. */
+[data-palette="beitar"][data-theme="light"], [data-palette="beitar"]:not([data-theme="dark"]) {
+  --paper:#F4F0E8; --paper-1:#ECE7DC; --paper-2:#E3DDCE;
+  --ink:#141210;   --ink-2:#8C8680;  --ink-3:#A8A29A;
+  --rule:rgba(20,18,16,.12); --rule-hi:rgba(20,18,16,.24);
+  --red:#FFCC00; --red-dim:rgba(255,204,0,.16);
+}
+[data-palette="beitar"][data-theme="dark"] {
+  --paper:#17140F; --paper-1:#201C15; --paper-2:#2A251C;
+  --ink:#EFEADF;   --ink-2:#948E86;  --ink-3:#6A655C;
+  --rule:rgba(148,142,134,.16); --rule-hi:rgba(148,142,134,.30);
+  --red:#FFCC00; --red-dim:rgba(255,204,0,.14);
+}
+
+/* ── SWISS — neutral near-white / near-black, one red. SELECTABLE (no longer the default). ──
+   Character: designed editorial, high figure/ground contrast, zero warmth. Pick it for a cold
+   register; the warm Beitar system is the default (Part A). */
 [data-palette="swiss"][data-theme="light"], [data-palette="swiss"]:not([data-theme="dark"]) {
   --paper:#FAFAF8; --paper-1:#F1F1EE; --paper-2:#E7E7E3;
   --ink:#17181C;   --ink-2:#5B5D64;  --ink-3:#8B8D94;
@@ -2462,12 +2565,11 @@ Place the script inline in `<head>`, before any CSS.
 <script>
 // Run before paint — no flash of wrong theme, tier, or palette
 (function() {
-  var stored = localStorage.getItem('il-theme');
-  var sys = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', stored || sys);
+  // Part B: default OPEN mode is LIGHT (Carta is the hero); toggle available, choice persists.
+  document.documentElement.setAttribute('data-theme', localStorage.getItem('il-theme') || 'light');
   document.documentElement.setAttribute('data-tier', localStorage.getItem('il-tier') || 'editorial');
-  // H6.1: default to the neutral `swiss` palette unless a domain reason selected another at build.
-  document.documentElement.setAttribute('data-palette', localStorage.getItem('il-palette') || 'swiss');
+  // Part A: default palette is the warm curated `beitar` system unless a domain reason selects another.
+  document.documentElement.setAttribute('data-palette', localStorage.getItem('il-palette') || 'beitar');
 })();
 </script>
 ```
@@ -2561,7 +2663,7 @@ via `[data-palette="X"]` on `<html>` — orthogonal to `[data-theme]` and `[data
 
 **JS: `setPalette()` + picker:**
 ```javascript
-var PALETTES = ['swiss','illuminate','claude','greenhouse','typeset','signal','archive'];  // swiss = default (H6.1)
+var PALETTES = ['beitar','swiss','illuminate','claude','greenhouse','typeset','signal','archive'];  // beitar = default (Part A)
 
 function setPalette(p) {
   // H6.1: `swiss` is the neutral default; every palette (incl. swiss) is applied explicitly.
