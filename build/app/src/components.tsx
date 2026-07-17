@@ -113,13 +113,17 @@ function ScenarioTree({ data }: { data: Extract<ComponentSpec, { family: 'scenar
 }
 
 export function RenderComponent({ spec }: { spec: ComponentSpec }) {
-  switch (spec.family) {
-    case 'code': return <CodeBlock code={spec.data} />;
-    case 'faceted-grid': return <DataTable table={spec.data} />;
-    case 'network': return <Network data={spec.data} />;
-    case 'kpi-summary': return <KPISummary data={spec.data} />;
-    case 'time-series': return <TimeSeries data={spec.data} />;
-    case 'scenario-tree': return <ScenarioTree data={spec.data} />;
-    default: return null;
-  }
+  const inner = (() => {
+    switch (spec.family) {
+      case 'code': return <CodeBlock code={spec.data} />;
+      case 'faceted-grid': return <DataTable table={spec.data} />;
+      case 'network': return <Network data={spec.data} />;
+      case 'kpi-summary': return <KPISummary data={spec.data} />;
+      case 'time-series': return <TimeSeries data={spec.data} />;
+      case 'scenario-tree': return <ScenarioTree data={spec.data} />;
+      default: return null;
+    }
+  })();
+  if (!inner) return null;
+  return <div data-component={spec.family}>{inner}</div>;
 }

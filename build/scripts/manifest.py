@@ -115,6 +115,14 @@ def main(model_path, out):
                 n['source_span']['tables'] = sec['tables']
                 n['source_span']['code'] = sec['code']
 
+    # dedup: a driver drops a bespoke component that one of its own mechanisms already owns
+    # (e.g. "The energy-transition scenario" driver vs its scenario mechanism — the mechanism owns it)
+    for n in nodes.values():
+        if n['level'] == 3 and n['required_component'] and n['required_component']['family'] not in ('code', 'faceted-grid'):
+            fam = n['required_component']['family']
+            if any(nodes[c]['required_component'] and nodes[c]['required_component']['family'] == fam for c in n['children']):
+                n['required_component'] = None
+
     manifest = {
         'meta': {'source': model['source'], 'title': title.split('—')[0].strip(),
                  'kicker': subtitle, 'governing_thought': gt_line,

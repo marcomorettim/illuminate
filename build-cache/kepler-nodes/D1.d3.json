@@ -1,0 +1,16 @@
+{
+  "driver": {
+    "id": "D1.d3",
+    "body": "Demand density (D) and trust (T) are supply-side terms; they convert to revenue only through a rider who chooses Kepler again. This driver is where **interaction density becomes interaction loyalty** — where the density flywheel either self-reinforces (more riders raise D, which sharpens predictions, which improves the experience, which draws more riders) or stalls out [S-014]. Mobility's job here is narrow and measurable: lift D by raising ride frequency per rider, and the lever is a rider app that turns model precision into felt reliability [S-014]."
+  },
+  "mechanisms": [
+    {
+      "id": "D1.d3.m1",
+      "body": "The single experience variable that most moves rebooking is not speed but **ETA accuracy** [S-015]. A rider forgives a four-minute wait promised as four minutes; they abandon a three-minute wait promised as one — the felt injury is the broken promise, not the delay. Density feeds this directly: saturated zones let the ETA model interpolate from dense recent history rather than extrapolate into thin data, which cuts mean absolute ETA error [S-015]. That is how the mechanism moves D — by lifting rides-per-active-rider, since frequency is itself density — and it is fed by D6's demand models and the origin-destination tensor mobility itself generates [S-110].\n\nThe trade-off is priced, not wished away: guaranteeing tight ETAs sometimes means pre-positioning idle vehicles, which nicks the utilization floor of Driver 1 — a managed tension [S-015].\n\nThe rider app makes the copy do three jobs at once:\n\n- \"1,204,000 rides in this zone\" sells density as safety-through-familiarity, cashing Driver 2's trust into legible form.\n- \"Kepler Pay · balance auto-charged\" closes the Payments (D4) loop that lets the ride run cash-free [S-111].\n- \"verified safe\" cashes the Driver 2 safety record at the exact point of decision.\n\nThe edge case is the honest one: when the pod is not pre-positioned and the true ETA is nine minutes, the app says nine — because one broken promise costs more D than one lost ride [S-015]."
+    },
+    {
+      "id": "D1.d3.m2",
+      "body": "Every completed ride writes one cell into an **origin-destination-by-time tensor** — the densest demand map anyone in these cities holds [S-016]. The mechanism moves D by making the next rider's experience better: the tensor is the prior every ETA and surge decision reads from, so each ride sharpens the model that serves the ride after it [S-016].\n\nIts cross-feeds are the flywheel's spine. The same tensor is the demand prior Logistics (D3) routes its couriers against, and the dwell-pattern input Energy (D2) sites its chargers from [S-112] — one shared warehouse feeding three domains rather than three domains hoarding three warehouses.\n\nThe trade-off is privacy exposure: the tensor is re-identification-sensitive, so it is aggregated and made differentially private before it crosses the mobility boundary — a deliberate loss of resolution accepted to protect trust [S-016]. The chain forward to Driver 4: an experience this reliable is only defensible if the machine underneath earns money per ride, which is where unit economics decide whether density is an asset or a subsidy [S-016]."
+    }
+  ]
+}

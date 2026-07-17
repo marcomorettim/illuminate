@@ -1,0 +1,28 @@
+{
+  "driver": {
+    "id": "D4.d2",
+    "body": "If Driver 1's rails are what make Kepler a payments company, the credit engine is what makes it a **fintech** [S-054]. Driver 2 takes the unified ledger built in Driver 1 and does the one thing an incumbent bank structurally cannot: it underwrites Kepler's 28.4m monthly actives on behavioural collateral — how reliably you ride, charge, deliver, and pay — rather than on a thin or absent credit file [S-054]. This is the hinge where the moat's trust term T stops being a soft virtue and becomes monetization, because trust that is measured can be lent against [S-054]. Every clean ride, on-time delivery, and settled charge is a data point the bureau never sees and Kepler already owns — so the collateral is not a document a user brings to the lender, it is the exhaust the platform has been collecting all along."
+  },
+  "mechanisms": [
+    {
+      "id": "D4.d2.m1",
+      "body": "The core mechanism is that Kepler scores creditworthiness from platform behaviour that is **exogenous to any credit bureau** [S-055]. A Driver 3 courier with 18 months of on-time deliveries and stable Driver 1 commuting patterns is a demonstrably better risk than her thin bureau file suggests — the file is silent in exactly the place where Kepler is loud [S-055]. This is the second cross-domain coupling in the flywheel: Payments underwrites on D1 mobility regularity and D3 logistics reliability, two signals a single-vertical lender can never assemble because it touches only one of the surfaces [S-055].\n\nTrace S-405 documents the lift and it is not marginal — adding the cross-domain behavioural features cut the Gini-normalised default rate by 210bps at constant approval, or, read from the other side of the same frontier, raised approvals by 14% at constant loss [S-405]. The scoring logic physically lives in Driver 6's feature store but is owned, productised, and priced by Driver 4 — D6 supplies the substrate, D4 owns the P&L [S-055].\n\nTrace S-406 is the query itself, and the load-bearing detail is the thick_file flag: a user is \"thick\" not because a bureau holds data on them but because Kepler does, across domains [S-406]. That single boolean is the entire underwriting moat compressed to one line of the scoring query."
+    },
+    {
+      "id": "D4.d2.m2",
+      "body": "The score from Mechanism 2.1 powers three distinct products: courier working-capital advances (D3), device instalments (D5), and consumer BNPL on rides and charges (D1/D2) [S-056]. The chaining between them is the whole point, not a footnote. A device instalment (D5) puts a proprietary-sensor device — one that raises the moat's data-breadth term B — into the hands of a user who could not have paid upfront, so **credit manufactures moat inputs for other domains** rather than merely earning a spread on the loan [S-056].\n\nTrace S-407 quantifies that feed directly: instalment financing raised D5 device attach among the bottom two income quartiles by 31%, and that attach flows straight into D5's breadth term [S-407]. Read the sequence and the accounting inverts — credit here is not a yield product to be optimised on its own net-interest-margin; it is a distribution subsidy for the moat, repaid not in interest but in better data across the other five domains [S-056]."
+    },
+    {
+      "id": "D4.d2.m3",
+      "body": "Underwriting on behaviour is powerful and **pro-cyclical**: the same D1 and D3 signals that predict good times can turn together in a downturn [S-057]. Driver 2 therefore hands a specific risk downstream to Driver 3 — correlated behavioural default, where a whole cohort deteriorates at once rather than as independent draws [S-057].\n\nTrace S-408 sets the guardrail: exposure is capped per cohort and provisioned against a stressed scenario in which D1 ride frequency and D3 job volume fall together — the very correlation the cross-domain data itself reveals, turned from an edge into a stress input [S-408]. That is the honest tension at the centre of the thesis: the credit engine's edge and its systemic risk come from the same source [S-057]. The cross-domain signal that lets Kepler lend where banks cannot is the same signal that co-moves in a downturn, so the discipline is to price and provision for the correlation rather than to pretend the behavioural collateral is diversified when it is not [S-408].",
+      "component_data": {
+        "unit": "cohort index (pre-stress = 100)",
+        "series": [
+          { "name": "D1 ride frequency", "dash": false, "pts": [[0, 100], [1, 99], [2, 96], [3, 88], [4, 79], [5, 74], [6, 76]] },
+          { "name": "D3 job volume", "dash": true, "pts": [[0, 100], [1, 98], [2, 94], [3, 85], [4, 77], [5, 72], [6, 75]] }
+        ],
+        "mark": { "name": "stress trough — signals fall together [S-408]", "x": 5, "y": 72 }
+      }
+    }
+  ]
+}

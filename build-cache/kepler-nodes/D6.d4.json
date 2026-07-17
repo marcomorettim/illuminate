@@ -1,0 +1,20 @@
+{
+  "driver": {
+    "id": "D6.d4",
+    "body": "The final driver is the thesis itself, folded back on the machinery that precedes it. Drivers 1 through 3 do work you can point at — they build the pipes, compound the breadth, and serve the models. Driver 4 does something different: it states **why the result is a moat rather than a mere collection of capabilities** — an advantage that widens as Kepler runs rather than eroding — and it discharges that claim by tying every term of the moat identity M = D × B × L × T back to a specific mechanism developed above [S-093]. Nothing here is new evidence; it is the accounting that shows the earlier evidence multiplies."
+  },
+  "mechanisms": [
+    {
+      "id": "D6.d4.m1",
+      "body": "M is a product, and Domain 6 is where the multiplication physically happens. The accounting is exact: for each of the four terms, name which mechanism above moves it, which cross-feed carries the lift, and the trajectory it is on [S-094]. That per-term ledger is the point — the moat is not asserted, it is reconciled line by line to work already shown.\n\nThe consequence is mathematical, not rhetorical. Because M is multiplicative, moving breadth **B by 2.4× while the other three terms rise 1.5–1.9× does not add — it multiplies**, so M compounds far faster than any single term improves [S-613]. This is the arithmetic core of \"one flywheel, not six\": a conglomerate stacks P&Ls and grows linearly; the flywheel multiplies moat terms and grows super-linearly. And the multiplication is not an accident of branding — Domain 6 is the only layer where the terms meet on shared features and actually compose, rather than sitting in six separate warehouses being added [S-613]."
+    },
+    {
+      "id": "D6.d4.m2",
+      "body": "The moat does not merely persist at scale — it widens, and that single property is what turns sequencing from housekeeping into strategy. The cross-join uplift is a function of how many streams share a key: the **Sankey's +19% and the ROC's +18.7 points grow every time a domain is sequenced onto the platform** [S-614]. This is precisely the asymmetry the bear case cannot see. A focused specialist adding users gets more of the same data along one axis; Kepler adding a domain gets a new dimension that multiplies against every dimension already present. Breadth term B therefore has increasing returns.\n\nThat is the edge case the bears miss. At small scale the conglomerate discount is correct — six mediocre verticals, each trailing a specialist, honestly worth less summed than a break-up would unlock. But increasing returns on B guarantee a crossover: a scale beyond which the flywheel dominates focus and the discount inverts into a premium. **Sequencing is choosing when to cross that line** [S-614].\n\nAnd the order is not free. Breadth-heavy domains — D5 devices, D1 mobility — must land before the models that monetise them, D4 credit and D3 matching, or the models train on thin data and the compounding stalls before it starts [S-615]. The platform is the reason the sequence has a right answer at all: only a shared substrate makes \"build breadth first, monetise second\" a physical constraint rather than a preference."
+    },
+    {
+      "id": "D6.d4.m3",
+      "body": "The cost centre is not a wound; it is the moat's price tag, and it is falling per unit of M. **Domain 6's −420m is the amortising fixed cost of the multiplier** — the shared substrate that lifts blended contribution per interaction from −0.31 across all six domains at once [S-616]. The divide between the two readings is entirely accounting posture: the bears expense the hub as a standing loss, while the thesis capitalises it as the asset whose returns show up in every other domain's margin [S-616]. As M compounds, the same −420m buys more moat, so the cost per unit of advantage declines even as the headline figure holds."
+    }
+  ]
+}

@@ -18,7 +18,7 @@ for (const s of model.sections) if (s.trace) EVIDENCE[s.trace] = { source: s.hea
 const bodies = {}, compData = {};
 if (existsSync(nodesDir)) for (const f of readdirSync(nodesDir).filter((x) => x.endsWith('.json'))) {
   const o = JSON.parse(readFileSync(join(nodesDir, f), 'utf8'));
-  if (o.driver) bodies[o.driver.id] = o.driver.body || '';
+  if (o.driver) { bodies[o.driver.id] = o.driver.body || ''; if (o.driver.component_data) compData[o.driver.id] = o.driver.component_data; }
   for (const m of o.mechanisms || []) { bodies[m.id] = m.body || ''; if (m.component_data) compData[m.id] = m.component_data; }
   if (o.component_data) compData[(o.driver || {}).id] = o.component_data;   // domain/GT-level payloads
 }

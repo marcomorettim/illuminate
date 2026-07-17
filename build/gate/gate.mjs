@@ -61,7 +61,7 @@ for (const theme of ['light', 'dark']) {
     // CHECK 2 — component coverage: mark a required node found if its body holds a component element
     for (const n of compNodes) {
       if (compFound.has(n.id)) continue;
-      const has = await page.$(`[data-node-body="${n.id}"] :is(svg,table,[data-tanstack],.code)`);
+      const has = await page.$(`[data-node-body="${n.id}"] :is(svg,table,[data-tanstack],.code,[data-component])`);
       if (has) compFound.add(n.id);
     }
 
