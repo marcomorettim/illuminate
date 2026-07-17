@@ -29,7 +29,8 @@ export type NodeContent = {
   path: string[];
   title: string;
   body: string;                   // developed HTML fragment (md→html at assemble); cites = <button class="cite" data-cite="S-NNN">
-  finding?: string;               // the ONE Beitar mark for a view (level-2 domains only)
+  finding?: string;               // the ONE Beitar mark (short lever) for a view (level-2 domains)
+  finding_full?: string;          // the domain's full synthesis prose (rendered ink, not washed)
   component?: ComponentSpec;      // this node's required component + its traced data
   children: string[];
 };

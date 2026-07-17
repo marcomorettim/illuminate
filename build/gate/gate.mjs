@@ -101,19 +101,21 @@ for (const theme of ['light', 'dark']) {
       const isYellowBg = (c) => { const m = c && c.match(/\d+/g); return m && +m[0] > 230 && +m[1] > 180 && +m[1] < 220 && +m[2] < 60; };
       const isYellowFg = (c) => { const m = c && c.match(/\d+/g); return m && +m[0] > 230 && +m[1] > 180 && +m[1] < 220 && +m[2] < 60; };
       const lum = (c) => { const m = c.match(/\d+/g) || [0, 0, 0]; return 0.2126 * +m[0] + 0.7152 * +m[1] + 0.0722 * +m[2]; };
-      const badFg = []; let accentHeading = false;
+      const badFg = [], wash = []; let accentHeading = false;
       document.querySelectorAll('main *').forEach((el) => {
         const s = getComputedStyle(el);
         if (isYellowBg(s.backgroundColor) && el.getClientRects().length) {
           const txt = (el.textContent || '').trim();
           if (txt && lum(s.color) > 120) badFg.push(txt.slice(0, 24));   // near-white on Beitar fill
+          if (txt.length > 90) wash.push(txt.slice(0, 40) + '…');        // a mark, not a wash (§3.1)
         }
         if (/^H[1-3]$/.test(el.tagName) && isYellowFg(s.color)) accentHeading = true;
       });
-      return { badFg, accentHeading };
+      return { badFg, wash, accentHeading };
     });
     if (beitar.badFg.length) fail('beitar-foreground', { view: v, near_white_on_beitar: beitar.badFg }, theme);
     if (beitar.accentHeading) fail('beitar-heading', { view: v, detail: 'a heading is painted in the accent' }, theme);
+    if (beitar.wash.length) fail('beitar-wash', { view: v, long_marks: beitar.wash }, theme);
 
     // CHECK 6 — fonts: no forbidden family resolved
     const fonts = await page.evaluate(() => {

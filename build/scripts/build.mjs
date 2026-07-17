@@ -106,6 +106,7 @@ for (const n of Object.values(manifest.nodes)) {
     id: n.id, level: n.level, parent: n.parent, path: n.path, title: n.title,
     body: mdToHtml(raw || ''),
     finding: n.finding || undefined,
+    finding_full: n.finding_full ? mdToHtml(n.finding_full) : undefined,
     component: buildComponent(n) || undefined,
     children: n.children || [],
   };

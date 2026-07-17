@@ -81,10 +81,14 @@ function DomainView({ node }: { node: NodeContent }) {
           body: <DriverBody node={d} />,
         }))} />
 
-        {node.finding && (
-          <p className="text-[.9rem] leading-relaxed text-ink-2 max-w-[70ch] mt-9 [&_b]:text-ink [&_b]:font-bold">
-            The one decisive lever — <Finding>{node.finding}</Finding>
-          </p>
+        {(node.finding || node.finding_full) && (
+          <>
+            <div className="flex items-baseline gap-2.5 flex-wrap mb-2 pb-2 border-b border-rule mt-9">
+              <span className="font-ft font-bold text-[.62rem] tracking-[.1em] uppercase text-ink-3">What's true vs what counts</span>
+            </div>
+            {node.finding_full && <div className="prose-illum max-w-[74ch]" dangerouslySetInnerHTML={{ __html: node.finding_full }} />}
+            {node.finding && <p className="text-[.9rem] text-ink-2 max-w-[70ch] mt-3">The decisive lever — <Finding>{node.finding}</Finding></p>}
+          </>
         )}
       </div>
     </div>

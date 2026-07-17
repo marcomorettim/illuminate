@@ -78,8 +78,21 @@ def main(model_path, out):
             }
             roots.append(did); cur_domain = did; cur_driver = None; order = 0
         elif lvl in (2, 3) and kw(h, "what's true", 'what counts') and cur_domain:
-            # the domain's synthesis section — its finding, not a 5th driver (source levels vary)
-            nodes[cur_domain]['finding'] = s['text'][:220]
+            # the domain's synthesis section — its finding, not a 5th driver (source levels vary).
+            # The full text is developed as prose; the Beitar MARK is a short lever (never a wash, §3.1).
+            full = s['text']
+            low = full.lower()
+            tail = full[low.rindex('what counts') + 11:] if 'what counts' in low else full
+            lever = ''
+            for x in re.split(r'(?<=[.!?])\s', tail):
+                x = re.sub(r'\s*\[?S-\w+\]?', '', x).strip(' .:—-')
+                x = re.sub(r'^(is that|is|that|the)\s+', '', x, flags=re.I).strip()
+                if len(x) > 12:
+                    lever = x[0].upper() + x[1:]; break
+            if len(lever) > 64:
+                lever = lever[:60].rsplit(' ', 1)[0] + '…'
+            nodes[cur_domain]['finding'] = lever or None
+            nodes[cur_domain]['finding_full'] = full[:600]
         elif lvl == 3 and cur_domain:
             order += 1
             drid = f'{cur_domain}.d{order}'
