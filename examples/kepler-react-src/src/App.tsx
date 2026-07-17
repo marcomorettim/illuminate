@@ -207,11 +207,49 @@ function TreeRail({ view }: { view: string }) {
   );
 }
 
+// Rebuild the ORIGINAL bootable standalone from the page's own inline assets (not the runtime DOM,
+// which would be a dead static snapshot). Reuses the already-loaded CSS + IIFE bundle → no size double.
+function buildStandalone(): string {
+  const scripts = [].slice.call(document.querySelectorAll('script:not([src])')) as HTMLScriptElement[];
+  const boot = scripts.find((s) => /kp-theme/.test(s.textContent || ''));
+  const bundle = scripts.filter((s) => s !== boot).sort((a, b) => (b.textContent || '').length - (a.textContent || '').length)[0];
+  const css = ([].slice.call(document.querySelectorAll('style')) as HTMLStyleElement[]).map((s) => s.textContent).join('\n');
+  const S = '<' + 'script>', E = '</' + 'script>';
+  return '<!doctype html><html lang="en"><head><meta charset="UTF-8">'
+    + '<meta name="viewport" content="width=device-width,initial-scale=1">'
+    + '<title>Kepler — The Flywheel Decade</title>'
+    + (boot ? S + boot.textContent + E : '')
+    + '<style>' + css + '</style></head><body><div id="root"></div>'
+    + (bundle ? S + bundle.textContent + E : '') + '</body></html>';
+}
+
 export default function App() {
   const view = useRoute();
   const reduce = useReducedMotion();
   const [theme, setTheme] = useState(() => document.documentElement.getAttribute('data-theme') || 'light');
+  const [msg, setMsg] = useState('');
   const toggle = () => { const n = (document.documentElement.getAttribute('data-theme') || 'light') === 'dark' ? 'light' : 'dark'; setTheme(n); document.documentElement.setAttribute('data-theme', n); localStorage.setItem('kp-theme', n); };
+  const toast = (m: string) => { setMsg(m); setTimeout(() => setMsg(''), 2800); };
+  // Export a real file (H4: no theatre). Primary path is a blob <a download> — the standard mechanism,
+  // which works top-level and in most artifact sandboxes on a user gesture. As a belt-and-braces
+  // fallback for a sandbox that blocks the download attribute, also open a saveable copy in a new tab.
+  const saveSelf = () => {
+    const doc = buildStandalone();
+    const b = new Blob([doc], { type: 'text/html' }); const u = URL.createObjectURL(b);
+    let downloaded = false;
+    try {
+      const a = document.createElement('a'); a.href = u; a.download = 'kepler-flywheel-decade.html';
+      a.rel = 'noopener'; a.style.display = 'none'; document.body.appendChild(a); a.click(); a.remove(); downloaded = true;
+    } catch (e) { /* fall through */ }
+    // sandbox fallback: a saveable tab (Ctrl/⌘-S), only if the direct download couldn't be triggered
+    if (!downloaded && window.self !== window.top) {
+      let w: Window | null = null; try { w = window.open('', '_blank'); } catch (e) {}
+      if (w) { w.document.open(); w.document.write(doc); w.document.close(); toast('Opened a saveable copy in a new tab — press ⌘/Ctrl-S'); }
+      else toast('This embedded view blocked saving — open the file directly'); return;
+    }
+    toast('Saving kepler-flywheel-decade.html — check your downloads');
+    setTimeout(() => URL.revokeObjectURL(u), 4000);
+  };
   useEffect(() => { window.scrollTo(0, 0); }, [view]);
 
   const body = view === 'overview' ? <Overview /> : view === 'synthesis' ? <Synthesis /> : <EngineView e={ENGINES.find((e) => e.id === view)!} />;
@@ -224,7 +262,10 @@ export default function App() {
           <a key={v} href={'#/' + v} aria-current={view === v ? 'page' : undefined}
             className={`font-ft font-bold text-[.74rem] tracking-wide uppercase px-2.5 py-3.5 whitespace-nowrap border-b-2 -mb-0.5 ${view === v ? 'text-ink border-beitar' : 'text-ink-2 border-transparent hover:text-ink'}`}>{LABEL[v]}</a>
         ))}
-        <button id="th" onClick={toggle} title="Theme" className="ml-auto w-7 h-7 grid place-items-center border border-rule-hi rounded text-ink-2 font-mono text-[.8rem] hover:text-ink">◐</button>
+        <span className="ml-auto flex items-center gap-1.5">
+          <button onClick={saveSelf} title="Download this page as one offline HTML file" className="w-7 h-7 grid place-items-center border border-rule-hi rounded text-ink-2 font-mono text-[.8rem] hover:text-ink">↓</button>
+          <button id="th" onClick={toggle} title="Theme" className="w-7 h-7 grid place-items-center border border-rule-hi rounded text-ink-2 font-mono text-[.8rem] hover:text-ink">◐</button>
+        </span>
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-[210px_1fr] gap-x-8 xl:gap-x-14 max-w-canvas mx-auto px-[clamp(1rem,4vw,3rem)] py-[clamp(1.6rem,4vw,3.4rem)]">
@@ -245,6 +286,10 @@ export default function App() {
         <span>React + shadcn/Radix + TanStack + visx + Framer · single-file offline</span>
         <span>Beitar system · every sibling developed · drill-down</span>
       </footer>
+
+      {msg && (
+        <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[80] bg-ink text-paper font-mono text-[.72rem] px-4 py-2 rounded-md shadow-lg" role="status">{msg}</div>
+      )}
     </EvidenceProvider>
   );
 }
