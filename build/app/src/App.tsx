@@ -92,14 +92,24 @@ function DomainView({ node }: { node: NodeContent }) {
 }
 
 function Overview() {
+  const gt = N['GT'];
   return (
-    <div className="max-w-[68ch] xl:max-w-none">
+    <div>
       <div className="font-ft font-bold text-[.7rem] tracking-[.16em] uppercase text-ink-2 flex items-center gap-3">
-        <span>{manifest.meta.kicker}</span><span className="flex-1 h-px bg-rule-hi max-w-[220px]" />
+        <span>{manifest.meta.kicker}</span><span className="flex-1 h-px bg-rule-hi max-w-[420px]" />
       </div>
-      <h1 className="text-[clamp(2rem,4.5vw,3.4rem)] font-bold tracking-tight text-ink mt-5 max-w-[22ch]">{manifest.meta.governing_thought}</h1>
-      {N['GT'] && <NodeBody node={N['GT']} />}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-10">
+      {/* canvas-filling two-column: GT reading measure + the flywheel/marginalia aside (§4) */}
+      <div data-node-body="GT" data-level={1} className="grid xl:grid-cols-[1.45fr_1fr] gap-8 xl:gap-14 mt-6 items-start">
+        <div>
+          <h1 className="text-[clamp(2rem,4.5vw,3.4rem)] font-bold tracking-tight text-ink max-w-[20ch]">{manifest.meta.governing_thought}</h1>
+          {gt && <div className="prose-illum max-w-[68ch] mt-4" dangerouslySetInnerHTML={{ __html: gt.body }} />}
+        </div>
+        <div className="xl:sticky xl:top-8 border border-rule rounded-lg p-5 bg-paper-1">
+          <div className="font-ft font-bold text-[.56rem] tracking-[.14em] uppercase text-ink-3 mb-1">The one moat, six feeders</div>
+          {gt && gt.component && <RenderComponent spec={gt.component} />}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-12">
         {manifest.roots.map((id, i) => {
           const d = N[id];
           return (

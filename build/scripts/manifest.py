@@ -52,13 +52,14 @@ def main(model_path, out):
         if secs[i]['level'] in (2, 3) and secs[i]['span_words'] > 0:
             gt_secs.append(secs[i])
         i += 1
-    gt_words = sum(s['span_words'] for s in gt_secs)
     answer = next((s for s in gt_secs if kw(s['heading'], 'answer')), None)
+    # the GT lede shown is the "answer" span, so its floor is proportional to THAT span
+    gt_words = answer['span_words'] if answer else sum(s['span_words'] for s in gt_secs)
     gt_line = (answer['text'].split('.')[0] + '.') if answer else title
     nodes['GT'] = {
         'id': 'GT', 'level': 1, 'parent': None, 'path': [title], 'title': title,
         'source_span': {'heading': title, 'trace': [s['trace'] for s in gt_secs]},
-        'source_words': gt_words, 'word_floor': max(MIN_FLOOR, round(FRACTION * min(gt_words, 500))),
+        'source_words': gt_words, 'word_floor': max(MIN_FLOOR, round(FRACTION * gt_words)),
         'required_component': {'family': 'network', 'lib': 'visx'}, 'children': [],
     }
 
@@ -73,10 +74,11 @@ def main(model_path, out):
                 'id': did, 'level': 2, 'parent': 'GT', 'path': [title, name], 'title': h,
                 'source_span': {'heading': h, 'trace': [s['trace']]},
                 'source_words': s['span_words'], 'word_floor': max(MIN_FLOOR, round(FRACTION * s['span_words'])),
-                'required_component': {'family': 'kpi-summary', 'lib': 'tremor'}, 'children': [], 'finding': None,
+                'required_component': None, 'children': [], 'finding': None,
             }
             roots.append(did); cur_domain = did; cur_driver = None; order = 0
-        elif lvl == 2 and kw(h, "what's true", 'what counts') and cur_domain:
+        elif lvl in (2, 3) and kw(h, "what's true", 'what counts') and cur_domain:
+            # the domain's synthesis section — its finding, not a 5th driver (source levels vary)
             nodes[cur_domain]['finding'] = s['text'][:220]
         elif lvl == 3 and cur_domain:
             order += 1
