@@ -1185,7 +1185,8 @@ Own-the-code components, themed to Beitar:
 Retire the ASCII / `SECTION-MOTIF` / SVG-bar specs **as the default** (keep ASCII only where it
 genuinely serves the narration). **Out of scope:** GraphQL / web3 / any backend data layer — a static
 self-contained document has no backend; adopt the *component + web-engineering* practices, not the
-data layer. Update Rule 19 to mandate this pipeline.
+data layer. This modern single-file pipeline is what Rule 19 mandates and what the build harness
+(`build/app/`) implements.
 
 **§6 · Drill-down is a real multi-level interaction, not a longer scroll.** Descent from the answer to
 the mechanism-level reasoning and back is delivered by **expandable rows, tree descent, master-detail
