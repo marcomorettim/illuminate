@@ -6,7 +6,39 @@
   "mechanisms": [
     {
       "id": "D1.d3.m1",
-      "body": "The single experience variable that most moves rebooking is not speed but **ETA accuracy** [S-015]. A rider forgives a four-minute wait promised as four minutes; they abandon a three-minute wait promised as one — the felt injury is the broken promise, not the delay. Density feeds this directly: saturated zones let the ETA model interpolate from dense recent history rather than extrapolate into thin data, which cuts mean absolute ETA error [S-015]. That is how the mechanism moves D — by lifting rides-per-active-rider, since frequency is itself density — and it is fed by D6's demand models and the origin-destination tensor mobility itself generates [S-110].\n\nThe trade-off is priced, not wished away: guaranteeing tight ETAs sometimes means pre-positioning idle vehicles, which nicks the utilization floor of Driver 1 — a managed tension [S-015].\n\nThe rider app makes the copy do three jobs at once:\n\n- \"1,204,000 rides in this zone\" sells density as safety-through-familiarity, cashing Driver 2's trust into legible form.\n- \"Kepler Pay · balance auto-charged\" closes the Payments (D4) loop that lets the ride run cash-free [S-111].\n- \"verified safe\" cashes the Driver 2 safety record at the exact point of decision.\n\nThe edge case is the honest one: when the pod is not pre-positioned and the true ETA is nine minutes, the app says nine — because one broken promise costs more D than one lost ride [S-015]."
+      "body": "The single experience variable that most moves rebooking is not speed but **ETA accuracy** [S-015]. A rider forgives a four-minute wait promised as four minutes; they abandon a three-minute wait promised as one — the felt injury is the broken promise, not the delay. Density feeds this directly: saturated zones let the ETA model interpolate from dense recent history rather than extrapolate into thin data, which cuts mean absolute ETA error [S-015]. That is how the mechanism moves D — by lifting rides-per-active-rider, since frequency is itself density — and it is fed by D6's demand models and the origin-destination tensor mobility itself generates [S-110].\n\nThe trade-off is priced, not wished away: guaranteeing tight ETAs sometimes means pre-positioning idle vehicles, which nicks the utilization floor of Driver 1 — a managed tension [S-015].\n\nThe rider app makes the copy do three jobs at once:\n\n- \"1,204,000 rides in this zone\" sells density as safety-through-familiarity, cashing Driver 2's trust into legible form.\n- \"Kepler Pay · balance auto-charged\" closes the Payments (D4) loop that lets the ride run cash-free [S-111].\n- \"verified safe\" cashes the Driver 2 safety record at the exact point of decision.\n\nThe edge case is the honest one: when the pod is not pre-positioned and the true ETA is nine minutes, the app says nine — because one broken promise costs more D than one lost ride [S-015].",
+      "component_data": {
+        "unit": "rides in zone (000s) → ETA error (min, dashed) & rebooking (%, solid)",
+        "series": [
+          {
+            "name": "Rebooking rate (%)",
+            "dash": false,
+            "pts": [
+              [0, 42],
+              [150, 56],
+              [400, 67],
+              [750, 77],
+              [1204, 84]
+            ]
+          },
+          {
+            "name": "Mean absolute ETA error (min)",
+            "dash": true,
+            "pts": [
+              [0, 6.0],
+              [150, 4.3],
+              [400, 3.0],
+              [750, 2.1],
+              [1204, 1.2]
+            ]
+          }
+        ],
+        "mark": {
+          "name": "Saturated zone (1.2m rides): precision → loyalty",
+          "x": 1204,
+          "y": 84
+        }
+      }
     },
     {
       "id": "D1.d3.m2",

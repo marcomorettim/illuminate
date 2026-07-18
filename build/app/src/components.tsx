@@ -73,7 +73,7 @@ function TimeSeries({ data }: { data: Extract<ComponentSpec, { family: 'time-ser
     return r;
   });
   return (
-    <div className="my-4 max-w-[560px]" data-component="time-series">
+    <div className="my-4 w-full max-w-[940px]" data-component="time-series">
       <ResponsiveContainer width="100%" height={220}>
         <LineChart data={rows} margin={{ top: 14, right: 18, bottom: 4, left: -6 }}>
           <CartesianGrid stroke={RULE} strokeDasharray="2 3" vertical={false} />
@@ -121,7 +121,7 @@ function Waterfall({ data }: { data: Extract<ComponentSpec, { family: 'waterfall
     return { label: s.label, range: [Math.min(prev, cum[i]), Math.max(prev, cum[i])] as [number, number], v: cum[i], last: i === data.steps.length - 1 };
   });
   return (
-    <div className="my-4 max-w-[620px]" data-component="waterfall">
+    <div className="my-4 w-full max-w-[940px]" data-component="waterfall">
       <ResponsiveContainer width="100%" height={230}>
         <BarChart data={rows} margin={{ top: 18, right: 12, bottom: 4, left: -8 }}>
           <CartesianGrid stroke={RULE} strokeDasharray="2 3" vertical={false} />
@@ -169,9 +169,11 @@ function Funnel({ data }: { data: Extract<ComponentSpec, { family: 'funnel' }>['
 }
 
 // ── mockup: a device/surface frame (ILLUSTRATION surface — make the abstract concrete) ──
+// Phone-class surfaces stay device-narrow; ledger/statement/card/email surfaces are wide slabs.
 function Mockup({ data }: { data: Extract<ComponentSpec, { family: 'mockup' }>['data'] }) {
+  const wide = /ledger|statement|card|email|dashboard|table/i.test(data.kind);
   return (
-    <div className="my-4 max-w-[420px] border border-rule-hi rounded-xl overflow-hidden bg-paper-1" data-component="mockup">
+    <div className={`my-4 ${wide ? 'w-full max-w-[940px]' : 'max-w-[420px]'} border border-rule-hi rounded-xl overflow-hidden bg-paper-1`} data-component="mockup">
       <div className="flex items-center gap-1.5 px-3 py-2 border-b border-rule bg-paper-2">
         <span className="w-2 h-2 rounded-full bg-ink-3" /><span className="w-2 h-2 rounded-full bg-ink-3" />
         <span className="font-ft text-[.58rem] tracking-wide uppercase text-ink-3 ml-2">{data.kind}</span>
@@ -181,6 +183,65 @@ function Mockup({ data }: { data: Extract<ComponentSpec, { family: 'mockup' }>['
         <div className="text-[.9rem] font-bold text-ink mb-2">{data.title}</div>
         {data.lines.map((l, i) => <p key={i} className="text-[.8rem] text-ink-2 leading-snug my-1">{l}</p>)}
       </div>
+    </div>
+  );
+}
+
+// ── map: schematic spatial layout (fleet / network / supply chain); Beitar marks the finding node ──
+function GeoMap({ data }: { data: Extract<ComponentSpec, { family: 'map' }>['data'] }) {
+  return (
+    <div className="my-4 max-w-[560px]" data-component="map">
+      <svg viewBox="0 0 400 260" className="w-full h-auto" role="img" aria-label="schematic map">
+        <rect x="1" y="1" width="398" height="258" rx="6" fill="var(--paper-1)" stroke={RULE} strokeWidth="1" />
+        {data.places.map((p, i) => {
+          const x = 22 + (p.x / 100) * 356, y = 20 + (p.y / 100) * 220;
+          return (
+            <g key={i} textAnchor="middle" className="font-ft">
+              <circle cx={x} cy={y} r={p.finding ? 8 : 5.5} fill={p.finding ? BEITAR : INK2} stroke={INK} strokeWidth="1" />
+              <text x={x} y={y - 11} className="fill-[color:var(--ink)] text-[8.5px] font-bold">{p.label}</text>
+              {p.value && <text x={x} y={y + 15} className="fill-[color:var(--ink-2)] text-[7.5px] font-mono">{p.value}</text>}
+              {p.sub && <text x={x} y={y + 24} className="fill-[color:var(--ink-3)] text-[6.5px]">{p.sub}</text>}
+            </g>
+          );
+        })}
+      </svg>
+      {data.caption && <p className="text-[.7rem] text-ink-3 font-mono mt-1">{data.caption}</p>}
+    </div>
+  );
+}
+// ── sankey: staged left→right flow, band width ∝ value; Beitar marks the finding flow ──
+function Sankey({ data }: { data: Extract<ComponentSpec, { family: 'sankey' }>['data'] }) {
+  const W = 480, H = 260, PAD = 18;
+  const cols = Math.max(1, ...data.nodes.map((n) => n.col)) + 1;
+  const byCol: Record<number, typeof data.nodes> = {};
+  data.nodes.forEach((n) => { (byCol[n.col] ||= []).push(n); });
+  const total = Math.max(1, data.links.reduce((s, l) => s + l.value, 0));
+  const pos: Record<string, { x: number; y: number }> = {};
+  Object.entries(byCol).forEach(([c, ns]) => {
+    const x = PAD + 24 + (cols > 1 ? (+c / (cols - 1)) * (W - 2 * PAD - 48) : 0);
+    const step = (H - 2 * PAD) / ns.length;
+    ns.forEach((n, i) => { pos[n.id] = { x, y: PAD + step * (i + 0.5) }; });
+  });
+  return (
+    <div className="my-4 max-w-[560px]" data-component="sankey">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="flow diagram">
+        {data.links.map((l, i) => {
+          const a = pos[l.source], b = pos[l.target]; if (!a || !b) return null;
+          const w = Math.max(1.5, (l.value / total) * 88), mx = (a.x + b.x) / 2;
+          return <path key={i} d={`M${a.x} ${a.y} C${mx} ${a.y}, ${mx} ${b.y}, ${b.x} ${b.y}`} fill="none"
+            stroke={l.finding ? BEITAR : INK3} strokeWidth={w} strokeOpacity={l.finding ? 0.9 : 0.32} />;
+        })}
+        {data.nodes.map((n, i) => {
+          const p = pos[n.id];
+          return (
+            <g key={i} className="font-ft">
+              <circle cx={p.x} cy={p.y} r="3" fill={INK} />
+              <text x={p.x} y={p.y - 7} textAnchor="middle" className="fill-[color:var(--ink)] text-[7.5px] font-bold">{n.label}</text>
+            </g>
+          );
+        })}
+      </svg>
+      {data.unit && <p className="text-[.66rem] text-ink-3 font-mono mt-1">flows in {data.unit}</p>}
     </div>
   );
 }
@@ -197,6 +258,8 @@ function inner(spec: ComponentSpec) {
     case 'two-sided-funnel': return <TwoSidedFunnel data={spec.data} />;
     case 'funnel': return <Funnel data={spec.data} />;
     case 'mockup': return <Mockup data={spec.data} />;
+    case 'map': return <GeoMap data={spec.data} />;
+    case 'sankey': return <Sankey data={spec.data} />;
     default: return null;
   }
 }

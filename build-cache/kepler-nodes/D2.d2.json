@@ -6,7 +6,27 @@
   "mechanisms": [
     {
       "id": "D2.d2.m1",
-      "body": "Demand is not flat, and **the shape of the curve is the whole game** [S-026]. Two patterns dominate, and both are read off the network-average kW drawn, normalised to peak = 100.\n\nThe daily curve has two peaks. A sharp morning ramp runs 06:00–09:00, driven by fleet pre-positioning plus commuter charging. A taller, longer evening peak runs 17:00–21:00, stacking fleet recharge, courier surge, and retail on top of one another. The trough sits at 00:00–05:00 — the hours when landed cost is lowest and demand is thinnest at the same time [S-026]. The economic opportunity is precisely **the gap between the two**: expensive power meets peak demand in the evening, cheap power meets no demand overnight.\n\nThe seasonal curve, indexed to Jan = 100, has two ridges that make the problem worse. A cooling-driven summer peak (Jun–Aug) lands in the tropical metros, where grid prices spike exactly when air-conditioning load does. A Q4 logistics ridge is driven by D3's delivery surge [S-204]. Neither ridge coincides with a cheap-power window — which is the entire reason **dispatch, not just procurement, is where margin is made or lost**. Reading the curve chains directly into acting on it [S-026]."
+      "body": "Demand is not flat, and **the shape of the curve is the whole game** [S-026]. Two patterns dominate, and both are read off the network-average kW drawn, normalised to peak = 100.\n\nThe daily curve has two peaks. A sharp morning ramp runs 06:00–09:00, driven by fleet pre-positioning plus commuter charging. A taller, longer evening peak runs 17:00–21:00, stacking fleet recharge, courier surge, and retail on top of one another. The trough sits at 00:00–05:00 — the hours when landed cost is lowest and demand is thinnest at the same time [S-026]. The economic opportunity is precisely **the gap between the two**: expensive power meets peak demand in the evening, cheap power meets no demand overnight.\n\nThe seasonal curve, indexed to Jan = 100, has two ridges that make the problem worse. A cooling-driven summer peak (Jun–Aug) lands in the tropical metros, where grid prices spike exactly when air-conditioning load does. A Q4 logistics ridge is driven by D3's delivery surge [S-204]. Neither ridge coincides with a cheap-power window — which is the entire reason **dispatch, not just procurement, is where margin is made or lost**. Reading the curve chains directly into acting on it [S-026].",
+      "component_data": {
+        "unit": "network-avg kW drawn (normalised, peak = 100)",
+        "series": [
+          {
+            "name": "Daily load curve",
+            "dash": false,
+            "pts": [
+              [0, 22], [1, 18], [2, 15], [3, 15], [4, 19], [5, 28],
+              [6, 48], [7, 70], [8, 80], [9, 76], [10, 58], [11, 54],
+              [12, 52], [13, 50], [14, 49], [15, 53], [16, 64], [17, 83],
+              [18, 95], [19, 100], [20, 94], [21, 80], [22, 54], [23, 34]
+            ]
+          }
+        ],
+        "mark": {
+          "name": "Overnight trough (00:00–05:00) — landed cost lowest, demand thinnest",
+          "x": 2,
+          "y": 15
+        }
+      }
     },
     {
       "id": "D2.d2.m2",

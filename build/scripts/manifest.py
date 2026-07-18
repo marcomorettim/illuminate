@@ -22,17 +22,35 @@ def kw(text, *words):
     return any(w in t for w in words)
 
 def component_for(sec):
-    """Only from the section's own evidence surface — no speculative components."""
+    """The section's hero visual, chosen by INTENT (heading) first, generic artifacts last."""
+    head = sec['heading'].lower()
     blob = (sec['heading'] + ' ' + sec['text'][:300]).lower()
-    # strong specific signals win over the generic code/table default
+    # 1) strong specific structural signals — win over everything
     if 'two-sided' in blob and 'funnel' in blob: return {'family': 'two-sided-funnel', 'lib': 'recharts'}
     if 'waterfall' in blob or ('bridge' in blob and '→' in sec['text'][:400]): return {'family': 'waterfall', 'lib': 'recharts'}
+    # 2) heading-semantic families — WIN even when the span also has a table or code
+    if (' map' in head or head.startswith('map') or
+            kw(head, 'fleet', 'geograph', 'zones', 'siting', 'supply chain', 'supply-chain',
+               'charging network', 'footprint', 'catchment', 'territor')):
+        return {'family': 'map', 'lib': 'svg'}
+    if (kw(head, 'sankey', 'data flow', 'data-flow', 'water balance') or
+            (kw(head, 'flow', 'flows') and kw(head, 'data', 'water', 'energy', 'material', 'fund'))):
+        return {'family': 'sankey', 'lib': 'svg'}
+    if kw(head, 'timeline', 'incident', 'time-series', 'load curve', 'utilization', 'utilisation',
+          'trajectory', 'curve', 'retention', 'cohort', 'seasonal', 'over time', 'ramp'):
+        return {'family': 'time-series', 'lib': 'recharts'}
+    if kw(head, 'scenario', 'bull', 'bear', 'base case', 'tree'):
+        return {'family': 'scenario-tree', 'lib': 'svg'}
+    if kw(head, 'funnel', 'drop-off', 'conversion'):
+        return {'family': 'funnel', 'lib': 'recharts'}
+    if kw(blob, 'push notification', 'lock screen', 'in-app', 'sms', 'mockup', 'notification',
+          'statement', 'app screen', 'the offer', 'job-offer', 'card mock'):
+        return {'family': 'mockup', 'lib': 'html'}
+    if kw(head, 'kpi', 'headline metrics', 'scorecard'):
+        return {'family': 'kpi-summary', 'lib': 'html'}
+    # 3) generic fallbacks — LAST resort, only when nothing semantic matched
     if sec['has_code']:  return {'family': 'code', 'lib': 'shiki'}
     if sec['has_table']: return {'family': 'faceted-grid', 'lib': 'tanstack'}
-    if kw(sec['heading'] + ' ' + sec['text'][:300], 'time-series', 'timeline', 'curve', 'trajectory', 'load curve', 'retention', 'cohort'):
-        return {'family': 'time-series', 'lib': 'visx'}
-    if kw(sec['heading'], 'scenario', 'tree'):
-        return {'family': 'scenario-tree', 'lib': 'visx'}
     return None
 
 def slug(s):

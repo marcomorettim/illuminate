@@ -1,45 +1,101 @@
 {
   "driver": {
     "id": "D2.d4",
-    "body": "The final driver is the ten-year question that hangs over every charging asset the domain will ever build: does Energy's **cost floor and trust ceiling survive a decarbonising, re-pricing grid** [S-031]? Alone among the six domains, its core input — the wholesale price of electricity — is set by forces outside Kepler entirely [S-031]. We therefore refuse a point forecast, which would pretend to a precision we do not have, and instead model the domain as a tree of grid-price paths, each path mapped to a margin outcome [S-031]."
+    "body": "The final driver poses the decade's open question: does Energy's **cost floor and trust ceiling survive a decarbonising, re-pricing grid**? [S-031] Energy is the one Kepler domain whose core input — the wholesale price of electricity — is set entirely by forces outside the company: policy, weather, fuel markets, the pace of the renewables build-out [S-031]. Because that input cannot be forecast to a point, we refuse to model the domain as a single number. We model it instead as a tree of grid-price paths, each path carried through the renewables mix it implies and out to the net domain contribution margin it produces [S-031]. The driver's task is to show the floor and the ceiling are robust across the whole tree, not merely at its expected value."
   },
   "mechanisms": [
     {
       "id": "D2.d4.m1",
-      "body": "The tree branches on grid-price path → renewables mix → net domain contribution margin, and the headline is not a forecast but a distribution: the **probability-weighted expected margin across the whole tree is +$0.036/kWh** [S-211]. The decisive feature, though, is the shape rather than the average — five of six branches are margin-positive [S-211]. The single negative branch, *Squeeze* — in which grid prices rise and our PPAs reprice against us — carries only ~6% weight, and it carries so little precisely because the long-dated PPA book and the storage hedge (Mechanism 2.2) are the exact instruments built to collapse it [S-211]. The tail that would sink a standalone charging business is the one we have already bought insurance against.\n\nThe strategically important reading is the second-order one [S-212]. The two *Grid rises* branches are painful for standalone margin, yet they are actively helpful for the cost-advantage spread: when retail power spikes, our hedged landed cost spikes far less, so the gap we hand to Mobility (D1) and Logistics (D3) actually widens [S-212]. The domain's cross-domain value is therefore **counter-cyclical to its own P&L** — the branches that hurt the standalone Energy business are the same ones that most help the flywheel [S-212]. That is why the tree matters strategically and not merely financially: read as a silo, a rising grid is a threat; read as a feeder, it is when the moat term Energy owns pays out hardest to the domains it supplies [S-212]."
-    },
-    {
-      "id": "D2.d4.m2",
-      "body": "The tree is not a fate we merely await; the first three drivers are the instruments that **bias us toward its upper branches** [S-033]. Data-led siting (1.1) concentrates the estate where renewables and storage are scaling fastest, tilting the renewables-mix fork in our favour before the price path is even known [S-033]. Vertical procurement (1.2) locks the PPAs that hold in the *Grid rises* branch, so the very state that punishes an unhedged operator leaves us intact [S-033]. Dispatch optimisation (2.2) is literally the mechanism that converts a *Volatile-Thin* world into a *Volatile-Win* one by arbitraging the peaks [S-033]. Reliability (3.x) ensures that whatever branch we land in, the trust output — and therefore the D4 coupling back into the flywheel — is preserved [S-033].\n\nThe property this buys is the one we most want from an infrastructure asset facing a decade of grid re-pricing: **every driver in this section is simultaneously an operating lever and a hedge on the transition tree** [S-033]. A lever in the good states, a hedge in the bad ones — the same mechanisms that raise the expected margin also compress the variance around it, which is why the tree's downside is shallow enough to leave five of six branches positive [S-033].",
+      "body": "The tree branches on grid-price path, then on the renewables mix each path implies, and terminates in net domain contribution margin. Two numbers govern the reading. First, the probability-weighted expected margin across every branch is **+$0.036/kWh** [S-211] — the domain clears a positive contribution even before any cross-domain value is counted. Second, and decisively, **five of the six branches are margin-positive** [S-211]; the transition does not have to break our way for Energy to hold its floor.\n\nThe single negative branch is *Squeeze* — rising grid prices while our PPAs reprice against us — and it carries only about **6% weight** [S-211]. That weight is low by construction, not by luck: the long-dated PPA book and the storage hedge of Mechanism 2.2 are precisely the instruments that collapse it, so the one path that hurts is the one the earlier drivers were built to suppress.\n\nThe strategically important reading is the two *Grid rises* branches [S-212]. They are painful for standalone margin, yet they widen the cost-advantage spread: when retail power spikes, our hedged landed cost spikes far less, so the gap we hand to Mobility (D1) and Logistics (D3) actually grows. Concretely, dispatch already lets Energy hand the fleet a fixed $0.094/kWh and D3 $0.101/kWh against a $0.163 retail benchmark [S-206]; a grid spike lifts that benchmark while the hedged transfer prices barely move, so the spread the flywheel runs on gets wider exactly when the standalone P&L gets thinner.\n\nThe domain's cross-domain value is therefore counter-cyclical to its own P&L — **even the branches that hurt Energy alone tend to help the flywheel** [S-212]. That is why the tree matters strategically and not just financially.",
       "component_data": {
-        "root": "10-year grid-price path → renewables mix → net domain contribution margin [S-211]",
+        "root": "Expected margin +$0.036/kWh — 10-year, probability-weighted across the tree [S-211]",
         "branches": [
           {
             "label": "Squeeze",
             "prob": 0.06,
-            "value": "negative margin",
-            "note": "Grid prices rise and our PPAs reprice against us — the single negative branch of the six. Carries only ~6% weight because the long-dated PPA book and the storage hedge (Mechanism 2.2) are built precisely to collapse it. [S-211]"
+            "value": -0.02,
+            "note": "Grid rises AND PPAs reprice against us — the only margin-negative branch of the six. Held to ~6% weight by the long-dated PPA book + storage hedge (Mechanism 2.2), which are built to collapse it. [S-211]"
           },
           {
-            "label": "Grid rises (hedged)",
-            "prob": null,
-            "value": "positive margin; spread widens",
-            "note": "Painful for standalone margin, but hedged landed cost spikes far less than retail power, so the cost gap handed to Mobility (D1) and Logistics (D3) widens — the domain's cross-domain value is counter-cyclical to its own P&L. [S-212]"
+            "label": "Grid rises · renewables scale",
+            "prob": 0.15,
+            "value": 0.02,
+            "note": "Painful for standalone margin, but hedged landed cost spikes far less than retail, so the cost-advantage spread handed to D1/D3 widens. [S-212]"
           },
           {
-            "label": "Volatile → Win",
-            "prob": null,
-            "value": "positive margin",
-            "note": "Dispatch optimisation (Mechanism 2.2) arbitrages the peaks, converting what would be a Volatile-Thin world into a Volatile-Win one. [S-033]"
+            "label": "Grid rises · storage-led",
+            "prob": 0.14,
+            "value": 0.025,
+            "note": "Second 'Grid rises' path; storage arbitrage of the peaks defends margin while the cross-domain spread grows counter-cyclically. [S-212]"
           },
           {
-            "label": "Renewables scale",
-            "prob": null,
-            "value": "positive margin",
-            "note": "Grid decarbonises and renewables/storage scale on plan; data-led siting (1.1) has already concentrated the estate here. The majority cluster among the five margin-positive branches. [S-211]"
+            "label": "Volatile-Win",
+            "prob": 0.22,
+            "value": 0.04,
+            "note": "A 'Volatile-Thin' world converted to 'Volatile-Win' by dispatch optimisation (Mechanism 2.2) arbitraging the price peaks. [S-211]"
+          },
+          {
+            "label": "Base · stable grid",
+            "prob": 0.23,
+            "value": 0.045,
+            "note": "Central path; cost floor and trust ceiling hold at the expected-value shape of the domain. [S-211]"
+          },
+          {
+            "label": "Grid falls · renewables flood",
+            "prob": 0.20,
+            "value": 0.06,
+            "note": "Cheap electrons flood the mix; landed cost falls and margin runs richest. [S-211]"
+          }
+        ]
+      }
+    },
+    {
+      "id": "D2.d4.m2",
+      "body": "The tree is not a weather report we merely await; **the first three drivers are the instruments that bias us toward its upper branches** [S-033]. Data-led siting (Mechanism 1.1) concentrates the estate where renewables and storage are scaling fastest, so the physical footprint already leans toward the favourable paths. Vertical procurement (Mechanism 1.2) locks the PPAs that hold in the *Grid rises* branch. Dispatch optimisation (Mechanism 2.2) is literally the lever that converts a *Volatile-Thin* world into a *Volatile-Win* one, arbitraging the price peaks the volatility creates. Reliability (the Driver 3 mechanisms) ensures that whatever branch we land in, the trust output — and therefore the D4 coupling back into the flywheel — is preserved [S-033].\n\nThe property this buys is the one we most want from an infrastructure asset facing a decade of grid re-pricing: **every driver in the section is simultaneously an operating lever and a hedge on the transition tree** [S-033]. We do not merely tolerate the branches; siting, procurement, and dispatch each push probability weight out of *Squeeze* and into the margin-positive paths, which is what it means to hedge the tree rather than bet on it.",
+      "component_data": {
+        "places": [
+          {
+            "label": "Renewables-rich cluster",
+            "sub": "Data-led siting · Mechanism 1.1",
+            "x": 26,
+            "y": 34,
+            "value": "estate concentrated where renewables + storage scale fastest",
+            "finding": false
+          },
+          {
+            "label": "PPA-locked region",
+            "sub": "Vertical procurement · Mechanism 1.2",
+            "x": 68,
+            "y": 26,
+            "value": "long-dated PPAs that hold in the 'Grid rises' branch",
+            "finding": false
+          },
+          {
+            "label": "Volatile peak market",
+            "sub": "Dispatch optimisation · Mechanism 2.2",
+            "x": 47,
+            "y": 60,
+            "value": "arbitrages peaks — converts 'Volatile-Thin' into 'Volatile-Win'",
+            "finding": true
+          },
+          {
+            "label": "Storage-scaling metro",
+            "sub": "Storage hedge · Mechanism 2.2",
+            "x": 78,
+            "y": 70,
+            "value": "buffers landed cost across grid-price paths",
+            "finding": false
+          },
+          {
+            "label": "Squeeze-exposed grid",
+            "sub": "Reliability · Driver 3",
+            "x": 17,
+            "y": 76,
+            "value": "weight pushed down to ~6% by PPA book + hedge; trust output preserved",
+            "finding": false
           }
         ],
-        "caption": "Six-branch tree; five of six branches margin-positive; probability-weighted expected margin +$0.036/kWh. Load-bearing (negative) branch Squeeze shown first. [S-211]"
+        "caption": "Siting, procurement and dispatch place the estate so each driver is also a hedge — pushing probability weight out of Squeeze and into the margin-positive branches. Dispatch in the volatile peak market (finding) is the lever that turns Volatile-Thin into Volatile-Win. [S-033]"
       }
     }
   ]

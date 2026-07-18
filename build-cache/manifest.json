@@ -84,7 +84,10 @@
       },
       "source_words": 42,
       "word_floor": 45,
-      "required_component": null,
+      "required_component": {
+        "family": "map",
+        "lib": "svg"
+      },
       "children": [
         "D1.d1.m1",
         "D1.d1.m2"
@@ -196,8 +199,8 @@
       "source_words": 201,
       "word_floor": 141,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "children": []
     },
@@ -320,8 +323,8 @@
       "source_words": 151,
       "word_floor": 106,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "children": []
     },
@@ -379,8 +382,8 @@
       "source_words": 214,
       "word_floor": 150,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "children": []
     },
@@ -707,8 +710,8 @@
       "source_words": 292,
       "word_floor": 204,
       "required_component": {
-        "family": "faceted-grid",
-        "lib": "tanstack"
+        "family": "map",
+        "lib": "svg"
       },
       "children": []
     },
@@ -805,8 +808,8 @@
       "source_words": 156,
       "word_floor": 109,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "children": []
     },
@@ -977,8 +980,8 @@
       "source_words": 148,
       "word_floor": 104,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "scenario-tree",
+        "lib": "svg"
       },
       "children": []
     },
@@ -1005,8 +1008,8 @@
       "source_words": 123,
       "word_floor": 86,
       "required_component": {
-        "family": "scenario-tree",
-        "lib": "visx"
+        "family": "map",
+        "lib": "svg"
       },
       "children": []
     },
@@ -1123,8 +1126,8 @@
       "source_words": 195,
       "word_floor": 136,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "children": []
     },
@@ -1181,8 +1184,8 @@
       "source_words": 208,
       "word_floor": 146,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "mockup",
+        "lib": "html"
       },
       "children": []
     },
@@ -1701,10 +1704,7 @@
       },
       "source_words": 89,
       "word_floor": 62,
-      "required_component": {
-        "family": "time-series",
-        "lib": "visx"
-      },
+      "required_component": null,
       "children": []
     },
     "D4.d3": {
@@ -2008,8 +2008,8 @@
       "source_words": 156,
       "word_floor": 109,
       "required_component": {
-        "family": "faceted-grid",
-        "lib": "tanstack"
+        "family": "mockup",
+        "lib": "html"
       },
       "children": []
     },
@@ -2123,8 +2123,8 @@
       "source_words": 168,
       "word_floor": 118,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "mockup",
+        "lib": "html"
       },
       "children": []
     },
@@ -2368,8 +2368,8 @@
       "source_words": 131,
       "word_floor": 92,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "map",
+        "lib": "svg"
       },
       "children": []
     },
@@ -2840,10 +2840,7 @@
       },
       "source_words": 72,
       "word_floor": 50,
-      "required_component": {
-        "family": "time-series",
-        "lib": "visx"
-      },
+      "required_component": null,
       "children": [
         "D6.d3.m1",
         "D6.d3.m2",

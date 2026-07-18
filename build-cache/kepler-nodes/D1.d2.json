@@ -10,7 +10,15 @@
     },
     {
       "id": "D1.d2.m2",
-      "body": "Trust is not the average day; it is **how the worst days are handled and disclosed**. Kepler maintains a public safety-incident timeline — every safety-critical event logged, root-caused, and tied to the exact model or hardware change that closed it [S-013]. The mechanism moves T by converting opaque risk into an audit trail a regulator can inspect before granting the next zone permit [S-107]: disclosure itself becomes the currency that buys licence-to-operate. The trade-off is radical transparency — publishing incidents competitors keep quiet, a genuine short-term reputational cost paid deliberately in exchange for long-term standing with the bodies that hand out permits.\n\nThe Q4 event is the instructive edge-case. Heavy rain attenuated lidar; rather than proceeding blind, the vehicle correctly executed a **minimum-risk pullover**, and the fix — radar-weighted sensor fusion — came straight from Devices (D5) hardware co-design [S-109]. That is the flywheel made visible inside a single incident: a hardware cross-feed closing a mobility safety gap, then logged in the open where a regulator can trace cause to remedy. The chain to Driver 3 follows directly — a fleet that is both dense and demonstrably safe can finally be sold as an experience, because trust is the precondition a rider needs before any of the app's promises mean anything [S-013]."
+      "body": "Trust is not the average day; it is **how the worst days are handled and disclosed**. Kepler maintains a public safety-incident timeline — every safety-critical event logged, root-caused, and tied to the exact model or hardware change that closed it [S-013]. The mechanism moves T by converting opaque risk into an audit trail a regulator can inspect before granting the next zone permit [S-107]: disclosure itself becomes the currency that buys licence-to-operate. The trade-off is radical transparency — publishing incidents competitors keep quiet, a genuine short-term reputational cost paid deliberately in exchange for long-term standing with the bodies that hand out permits.\n\nThe Q4 event is the instructive edge-case. Heavy rain attenuated lidar; rather than proceeding blind, the vehicle correctly executed a **minimum-risk pullover**, and the fix — radar-weighted sensor fusion — came straight from Devices (D5) hardware co-design [S-109]. That is the flywheel made visible inside a single incident: a hardware cross-feed closing a mobility safety gap, then logged in the open where a regulator can trace cause to remedy. The chain to Driver 3 follows directly — a fleet that is both dense and demonstrably safe can finally be sold as an experience, because trust is the precondition a rider needs before any of the app's promises mean anything [S-013].",
+      "component_data": {
+        "unit": "index, Q1 = 100",
+        "series": [
+          { "name": "Miles/intervention", "dash": false, "pts": [[1, 100], [4, 1160]] },
+          { "name": "Fleet miles", "dash": true, "pts": [[1, 100], [4, 300]] }
+        ],
+        "mark": { "name": "Q4 rain minimum-risk pullover", "x": 4, "y": 1160 }
+      }
     }
   ]
 }

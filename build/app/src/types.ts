@@ -26,6 +26,8 @@ export type ComponentSpec = ComponentBase & (
   | { family: 'two-sided-funnel'; data: { left: { name: string; rows: [string, number, string][] }; right: { name: string; rows: [string, number, string][] }; cliff_index?: number } }
   | { family: 'funnel'; data: { rows: [string, number, string][] } }
   | { family: 'mockup'; data: { kind: string; title: string; lines: string[]; meta?: string } }
+  | { family: 'map'; data: { places: { label: string; sub?: string; x: number; y: number; value?: string; finding?: boolean }[]; caption?: string } }
+  | { family: 'sankey'; data: { nodes: { id: string; label: string; col: number }[]; links: { source: string; target: string; value: number; finding?: boolean }[]; unit?: string } }
 );
 
 // One node of the argument tree — the manifest record, now carrying its developed body.

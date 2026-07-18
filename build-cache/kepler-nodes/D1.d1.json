@@ -1,7 +1,15 @@
 {
   "driver": {
     "id": "D1.d1",
-    "body": "Density is not bought; it is compounded [S-008]. The fleet is the physical instrument that converts capital into interactions, and the discipline is to concentrate that instrument until the data it produces crosses a usefulness threshold — then hold it there while demand catches up [S-008]. This driver owns **D**, the data term of the moat identity M = D × B × L × T: inside an already-dense zone every additional interaction sharpens the routing and pricing models rather than merely adding revenue, which is why concentration, not coverage, is the governing rule and why the two mechanisms below both bend toward holding a saturated core rather than spreading a thin blanket [S-009]."
+    "body": "Density is not bought; it is compounded [S-008]. The fleet is the physical instrument that converts capital into interactions, and the discipline is to concentrate that instrument until the data it produces crosses a usefulness threshold — then hold it there while demand catches up [S-008]. This driver owns **D**, the data term of the moat identity M = D × B × L × T: inside an already-dense zone every additional interaction sharpens the routing and pricing models rather than merely adding revenue, which is why concentration, not coverage, is the governing rule and why the two mechanisms below both bend toward holding a saturated core rather than spreading a thin blanket [S-009]. The map below lays out that geography — one saturated core, one deliberately starved edge, one corridor ramping toward the floor.",
+    "component_data": {
+      "places": [
+        { "label": "Marina Core", "sub": "71% util · saturated · solid outline", "x": 52, "y": 58, "value": "1,100 AVs / 3 zones", "finding": true },
+        { "label": "Reforma Corridor", "sub": "ramping toward the ~40-interaction floor", "x": 72, "y": 42, "value": "rule being executed", "finding": false },
+        { "label": "Noord Fringe", "sub": "39% util · thin · hatched", "x": 26, "y": 27, "value": "starved edge, kept thin", "finding": false }
+      ],
+      "caption": "Density-first deployment: 1,100 vehicles flood three contiguous zones rather than 300 thin across a metro. Capital flows to Marina Core (71%) while Noord Fringe (39%) is held deliberately thin; Reforma Corridor sits between, ramping toward the ~40 interactions/km²/hr floor [S-009][S-102]."
+    }
   },
   "mechanisms": [
     {
@@ -10,7 +18,15 @@
     },
     {
       "id": "D1.d1.m2",
-      "body": "Concentration only compounds if utilization stays high enough that the fleet is interacting rather than idling — an idle AV produces no D and burns the depreciation that Driver 4 quantifies [S-010]. Kepler manages the fleet against a **utilization floor**, dispatching repositioning moves and dynamic pricing — fed by D4's cash-free rails — whenever a zone threatens to slip beneath it. The mechanism moves D by protecting the denominator of interactions-per-vehicle; the number it moves is weekday utilization, **held above the 60% floor in saturated zones** [S-010].\n\nThe utilization time-series for Marina Core plots a 24-hour curve, midnight to midnight, against a dashed 60% floor line. Two peaks — 07:30 and 18:15 — clear 80%, while the 14:00 midday trough kisses the floor and triggers repositioning and a fare cut [S-103]. The edge-case is the trough that breaks the floor: a rain-driven demand collapse on a Tuesday dropped Reforma Corridor to 41% for two hours, the signal that a zone is over-vehicled and capital should rotate out [S-104]. The chain to Driver 2 is direct — a fleet held at the density floor generates enough incident-free exposure that safety becomes statistically legible, which is the only way to earn the trust the next driver depends on [S-010]."
+      "body": "Concentration only compounds if utilization stays high enough that the fleet is interacting rather than idling — an idle AV produces no D and burns the depreciation that Driver 4 quantifies [S-010]. Kepler manages the fleet against a **utilization floor**, dispatching repositioning moves and dynamic pricing — fed by D4's cash-free rails — whenever a zone threatens to slip beneath it. The mechanism moves D by protecting the denominator of interactions-per-vehicle; the number it moves is weekday utilization, **held above the 60% floor in saturated zones** [S-010].\n\nThe utilization time-series for Marina Core plots a 24-hour curve, midnight to midnight, against a dashed 60% floor line. Two peaks — 07:30 and 18:15 — clear 80%, while the 14:00 midday trough kisses the floor and triggers repositioning and a fare cut [S-103]. The edge-case is the trough that breaks the floor: a rain-driven demand collapse on a Tuesday dropped Reforma Corridor to 41% for two hours, the signal that a zone is over-vehicled and capital should rotate out [S-104]. The chain to Driver 2 is direct — a fleet held at the density floor generates enough incident-free exposure that safety becomes statistically legible, which is the only way to earn the trust the next driver depends on [S-010].",
+      "component_data": {
+        "unit": "utilization %",
+        "series": [
+          { "name": "Marina Core", "dash": false, "pts": [[0, 57], [3, 51], [6, 66], [7.5, 83], [10, 74], [12, 70], [14, 61], [16, 72], [18.25, 85], [20, 77], [22, 63], [24, 56]] },
+          { "name": "60% floor", "dash": true, "pts": [[0, 60], [24, 60]] }
+        ],
+        "mark": { "name": "14:00 trough kisses floor → repositioning + fare cut", "x": 14, "y": 61 }
+      }
     }
   ]
 }
