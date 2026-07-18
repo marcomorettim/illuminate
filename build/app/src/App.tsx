@@ -72,9 +72,9 @@ function DomainView({ node }: { node: NodeContent }) {
 
         <div className="flex items-baseline gap-2.5 flex-wrap mb-2 pb-2 border-b border-rule mt-9">
           <span className="font-ft font-bold text-[.62rem] tracking-[.1em] uppercase text-ink-3">The drivers</span>
-          <h3 className="text-[1.05rem] font-bold tracking-tight text-ink">Every driver developed to the mechanism level</h3>
+          <h3 className="text-[1.05rem] font-bold tracking-tight text-ink">Every branch developed to its deepest level</h3>
         </div>
-        <p className="text-[.78rem] text-ink-3 max-w-[70ch]">Expand each driver, then each mechanism — the argument descends four levels, and every sibling is developed to the same depth.</p>
+        <p className="text-[.78rem] text-ink-3 max-w-[70ch]">Expand each section, then drill down — every sibling is developed to the same depth.</p>
         <Drill items={drivers.map((d) => ({
           value: d.id,
           header: <span className="text-[.98rem] font-bold text-ink">{d.title}</span>,
@@ -102,14 +102,14 @@ function Overview() {
       <div className="font-ft font-bold text-[.7rem] tracking-[.16em] uppercase text-ink-2 flex items-center gap-3">
         <span>{manifest.meta.kicker}</span><span className="flex-1 h-px bg-rule-hi max-w-[420px]" />
       </div>
-      {/* canvas-filling two-column: GT reading measure + the flywheel/marginalia aside (§4) */}
+      {/* canvas-filling two-column: GT reading measure + the network/marginalia aside (§4) */}
       <div data-node-body="GT" data-level={1} className="grid xl:grid-cols-[1.45fr_1fr] gap-8 xl:gap-14 mt-6 items-start">
         <div>
           <h1 className="text-[clamp(2rem,4.5vw,3.4rem)] font-bold tracking-tight text-ink max-w-[20ch]">{manifest.meta.governing_thought}</h1>
           {gt && <div className="prose-illum max-w-[68ch] mt-4" dangerouslySetInnerHTML={{ __html: gt.body }} />}
         </div>
         <div className="xl:sticky xl:top-8 border border-rule rounded-lg p-5 bg-paper-1">
-          <div className="font-ft font-bold text-[.56rem] tracking-[.14em] uppercase text-ink-3 mb-1">The one moat, six feeders</div>
+          <div className="font-ft font-bold text-[.56rem] tracking-[.14em] uppercase text-ink-3 mb-1">{manifest.meta.connective_label || `The whole and its ${manifest.roots.length} domains`}</div>
           {gt && gt.component && <RenderComponent spec={gt.component} />}
         </div>
       </div>
@@ -167,6 +167,7 @@ function saveSelf(toast: (m: string) => void) {
 
 export default function App() {
   const v = useRoute();
+  document.title = manifest.meta.title;   // source-driven tab title (not the build template's default)
   const [msg, setMsg] = useState('');
   const toast = (m: string) => { setMsg(m); setTimeout(() => setMsg(''), 3200); };
   const toggle = () => {

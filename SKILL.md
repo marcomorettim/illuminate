@@ -140,7 +140,7 @@ just the build.
 **Every sibling developed — no head/tail compression (the precisely-located failure).** The most
 common breach is subtle: a section develops its *first* child in full (a full table, the worked
 calculation, the scenario tree) and compresses the *remaining siblings* into summary cards or a
-clause — an engine whose Driver 1 gets a full table while Drivers 2–4 become three one-paragraph
+clause — a domain whose first driver gets a full table while its remaining drivers become one-paragraph
 cards; a driver whose first mechanism is developed and the rest named. **This is the compression, and
 it is banned.** Every sibling at a level — every driver, every mechanism, every branch — is developed
 to the **same depth as the first**. A section whose head is rich and tail is thin is a Completeness
@@ -1166,7 +1166,7 @@ build step). Own-the-code components, themed to Beitar:
 **Targeting a claude.ai Artifact (verified, hard-won).** The default Vite output — a full
 `<!doctype><html><head>…</head><body>` document with a `<script type="module" crossorigin>` bundle —
 **renders blank** as an Artifact: the Artifact CSP blocks inline **module** scripts, and the tool
-wraps *body-content only*. Four steps make it publishable, all proven on the Kepler build:
+wraps *body-content only*. Four steps make it publishable, all proven on the reference build:
 (1) build a **classic IIFE bundle**, not ESM — `rollupOptions.output.format:'iife'` +
 `inlineDynamicImports:true`, `modulePreload:false`; (2) **mount on `DOMContentLoaded`** (a classic
 inline script runs synchronously mid-parse, so `createRoot(#root)` fails with React #299 unless

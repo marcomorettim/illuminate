@@ -11,7 +11,9 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const T = JSON.parse(readFileSync(thrPath, 'utf8'));
 const nodes = Object.values(manifest.nodes);
 const leaves = nodes.filter((n) => n.level === 4);
-const compNodes = nodes.filter((n) => n.required_component);
+// coverage is measured against the components the MODEL actually carries (the develop agent's
+// choice), not the manifest's shape hint — a node the agent developed as prose owes no component.
+const compNodes = nodes.filter((n) => n.component);
 const sourceWords = manifest.meta.substantive_words || nodes.reduce((a, n) => a + (n.source_words || 0), 0);
 
 const report = { source: manifest.meta.source, pages: 0, pass: true, checks: [], failing_nodes: [] };
@@ -74,7 +76,7 @@ for (const theme of ['light', 'dark']) {
     const dead = await page.evaluate(() => {
       const main = document.querySelector('main'); if (!main) return 1;
       const vw = window.innerWidth; let lo = vw, hi = 0;
-      main.querySelectorAll('p,table,svg,h1,h2,li,[data-tanstack]').forEach((el) => {
+      main.querySelectorAll('p,table,svg,h1,h2,li,[data-tanstack],[data-component]').forEach((el) => {
         const r = el.getBoundingClientRect(); if (r.width < 8 || r.height < 4) return;
         lo = Math.min(lo, r.left); hi = Math.max(hi, r.right);
       });
@@ -159,8 +161,10 @@ for (const theme of ['light', 'dark']) {
     const missing = compNodes.filter((n) => !compFound.has(n.id)).map((n) => n.id);
     if (missing.length) fail('coverage', { missing_component_nodes: missing.slice(0, 20), found: compFound.size, required: compNodes.length });
   }
-  // CHECK 3 — drill-down real
-  if (maxDepth < T.min_drill_depth) fail('drill-depth', { reachable: maxDepth, need: T.min_drill_depth }, theme);
+  // CHECK 3 — drill-down real: must reach the source's OWN deepest level (capped by the threshold),
+  // so a genuinely 3-level source isn't failed for lacking a 4th level it never had.
+  const need = Math.min(T.min_drill_depth, Math.max(...nodes.map((n) => n.level)));
+  if (maxDepth < need) fail('drill-depth', { reachable: maxDepth, need }, theme);
   // CHECK 4 — canvas fill
   if (worstDead > T.dead_margin_max) fail('canvas-fill', { dead_margin_ratio: +worstDead.toFixed(2), max: T.dead_margin_max }, theme);
   // CHECK 8 — motion present on drill + reduced-motion branch

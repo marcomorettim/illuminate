@@ -45,7 +45,7 @@ export type NodeContent = {
 };
 
 export type Manifest = {
-  meta: { source: string; governing_thought: string; title: string; kicker: string };
+  meta: { source: string; governing_thought: string; title: string; kicker: string; connective_label?: string };
   nodes: Record<string, NodeContent>;
   roots: string[];                // level-2 domain ids, in order (level-1 GT is meta.governing_thought)
 };

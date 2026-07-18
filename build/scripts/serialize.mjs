@@ -13,13 +13,21 @@ const model = JSON.parse(readFileSync(modelPath, 'utf8'));
 // verbatim source, keyed by trace — the argument-model's `sources` array
 const sources = model.sections.filter((s) => s.trace).map((s) => ({ id: s.trace, claim: s.heading, text: s.text.slice(0, 900) }));
 
-// agent outputs
-const bodies = {}, compData = {};
+// agent outputs — accepts {driver, mechanisms:[…]} or a flat {nodes:[…]}. The agent may also emit a
+// `component_family` per node; that choice OVERRIDES the manifest's shape hint (Fix B — component
+// choice is the develop agent's judgment, not a keyword table).
+const bodies = {}, compData = {}, compFamily = {};
 if (existsSync(nodesDir)) for (const f of readdirSync(nodesDir).filter((x) => x.endsWith('.json'))) {
-  const o = JSON.parse(readFileSync(join(nodesDir, f), 'utf8'));
-  if (o.driver) { bodies[o.driver.id] = o.driver.body || ''; if (o.driver.component_data) compData[o.driver.id] = o.driver.component_data; }
-  for (const m of o.mechanisms || []) { bodies[m.id] = m.body || ''; if (m.component_data) compData[m.id] = m.component_data; }
-  if (o.component_data) compData[(o.driver || {}).id] = o.component_data;
+  let o;
+  try { o = JSON.parse(readFileSync(join(nodesDir, f), 'utf8')); }
+  catch (e) { console.warn(`[serialize] SKIP malformed ${f}: ${e.message} — its nodes fall back to source spans`); continue; }
+  const rows = o.driver ? [o.driver, ...(o.mechanisms || [])] : (o.nodes || []);
+  for (const r of rows) {
+    if (!r || !r.id) continue;
+    bodies[r.id] = r.body || '';
+    if (r.component_data) compData[r.id] = r.component_data;
+    if (r.component_family) compFamily[r.id] = r.component_family;
+  }
 }
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -60,35 +68,33 @@ function parseTable(rows) {
 // code/faceted-grid/kpi-summary render traced/verbatim data → citation chips; the depicting
 // families wear the ILLUSTRATION tag (§2.2).
 const EVIDENCE_CLASS = { code: 'evidence', 'faceted-grid': 'evidence', 'kpi-summary': 'evidence' };
+const initials = (s) => (s || '').split(/\s+/).map((w) => w[0]).join('').replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || 'GT';
 function buildComponent(node) {
-  const rc = node.required_component; if (!rc) return null;
+  // the develop agent's chosen family wins; the manifest shape-hint is the fallback.
+  const family = compFamily[node.id] || (node.required_component && node.required_component.family);
+  if (!family) return null;
   const sp = node.source_span || {};
-  const wrap = (family, data) => data ? { family, data, evidence_class: EVIDENCE_CLASS[family] || 'illustrate', finding: (compData[node.id] || {}).finding } : null;
-  if (rc.family === 'network') {
+  const wrap = (fam, data) => data ? { family: fam, data, evidence_class: EVIDENCE_CLASS[fam] || 'illustrate', finding: (compData[node.id] || {}).finding } : null;
+  if (family === 'network') {
     return wrap('network', compData[node.id] || {
-      hub: { label: (manifest.meta.title || 'GT').slice(0, 3), sub: 'the moat' },
-      spokes: manifest.roots.map((r) => ({ label: r, sub: manifest.nodes[r].path.slice(-1)[0] })),
-      caption: 'every feed is also a return — no domain a leaf',
+      hub: { label: initials(manifest.meta.title), sub: '' },
+      spokes: manifest.roots.map((r) => ({ label: r.toUpperCase(), sub: manifest.nodes[r].path.slice(-1)[0] })),
+      caption: manifest.meta.connective_label || '',
     });
   }
-  if (rc.family === 'code') {
+  if (family === 'code') {
     const code = (sp.code && sp.code[0]) || '';
     if (!code.trim()) return compData[node.id] ? wrap('code', compData[node.id]) : null;
     return wrap('code', { file: node.path.slice(-1)[0].slice(0, 46), lines: highlight(code) });
   }
-  if (rc.family === 'faceted-grid') return wrap('faceted-grid', parseTable(sp.tables && sp.tables[0]));
-  return compData[node.id] ? wrap(rc.family, compData[node.id]) : null;
+  if (family === 'faceted-grid') return wrap('faceted-grid', parseTable(sp.tables && sp.tables[0]));
+  return compData[node.id] ? wrap(family, compData[node.id]) : null;
 }
-
-const answerSec = model.sections.find((s) => /answer/i.test(s.heading) && s.text.trim());
-const scqaText = (kwd) => { const s = model.sections.find((x) => new RegExp(kwd, 'i').test(x.heading)); return s ? s.text.slice(0, 400) : ''; };
-const identity = (model.sections.map((s) => s.text).join(' ').match(/M\s*=\s*[A-Z](?:\s*[×x]\s*[A-Z])+/) || [''])[0];
 
 const nodesOut = {};
 for (const n of Object.values(manifest.nodes)) {
   let raw = bodies[n.id];
-  if (!raw && n.level === 1 && answerSec) raw = answerSec.text;
-  if (!raw && n.level === 2 && n.source_span && n.source_span.text) raw = n.source_span.text;
+  if (!raw && n.source_span && n.source_span.text) raw = n.source_span.text;   // fallback: the node's own span
   nodesOut[n.id] = {
     id: n.id, level: n.level, parent: n.parent, path: n.path, title: n.title,
     developed_content: mdToHtml(raw || ''),
@@ -103,9 +109,8 @@ for (const n of Object.values(manifest.nodes)) {
 
 const argumentModel = {
   governing_thought: manifest.meta.governing_thought,
-  scqa: { s: scqaText('situation|complication|question'), c: '', q: '', a: answerSec ? answerSec.text.slice(0, 400) : '' },
-  spine: { identity, headline_metric: manifest.meta.kicker },
-  meta: { source: manifest.meta.source, title: manifest.meta.title, kicker: manifest.meta.kicker, substantive_words: manifest.meta.substantive_words },
+  meta: { source: manifest.meta.source, title: manifest.meta.title, kicker: manifest.meta.kicker,
+          connective_label: manifest.meta.connective_label || '', substantive_words: manifest.meta.substantive_words },
   sources, roots: manifest.roots, nodes: nodesOut,
 };
 writeFileSync(outPath, JSON.stringify(argumentModel, null, 2));

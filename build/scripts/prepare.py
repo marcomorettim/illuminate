@@ -13,42 +13,42 @@ import sys, os, json
 def main(model_path, manifest_path, work):
     model = json.load(open(model_path))
     man = json.load(open(manifest_path))
-    secs = {s['heading']: s for s in model['sections']}
 
-    # bible = title + the front-matter sections (answer / SCQA / spine / how-to-read), verbatim
-    front = []
-    for s in model['sections']:
-        if s['heading'].startswith('Domain '):
-            break
-        if s['level'] in (1, 2, 3) and s['text'].strip():
-            front.append(f"## {s['heading']}\n\n{s['text']}")
+    # bible = the derived governing thought + the domain list + the source's own front matter (the
+    # title section's text), verbatim. No document-word assumptions — structure comes from the manifest.
+    front_text = man['nodes']['GT']['source_span'].get('text', '')
     bible = (f"# BIBLE — {man['meta']['title']}\n\n"
-             f"GOVERNING THOUGHT: {man['meta']['governing_thought']}\n\n"
-             f"The six domains (roots), in order: "
+             f"GOVERNING THOUGHT (the derived thesis): {man['meta']['governing_thought']}\n\n"
+             f"The {len(man['roots'])} domains (roots), in order: "
              + ', '.join(man['nodes'][r]['path'][-1] for r in man['roots']) + "\n\n"
-             + "Use these figures and this framing consistently. Do not invent numbers; every\n"
-             + "figure you state must come from a node's source span and cite its S-NNN trace.\n\n"
-             + "\n\n".join(front))
+             + "Use this framing consistently. Do not invent numbers; every figure you state must come\n"
+             + "from a node's source span and cite its S-NNN trace.\n\n"
+             + f"## Source front matter\n\n{front_text}")
     os.makedirs(work, exist_ok=True)
     open(os.path.join(work, 'bible.md'), 'w').write(bible)
 
-    # one record per driver: the driver + its mechanisms, each with span text + floor + component
+    def rec(n):
+        sp = n['source_span']
+        return {'id': n['id'], 'title': n['title'], 'path': n['path'],
+                'trace': sp['trace'][0] if sp.get('trace') else None,
+                'word_floor': n['word_floor'], 'source_words': n['source_words'],
+                'required_component': n['required_component'],
+                'source_text': sp.get('text', ''),
+                'has_table': bool(sp.get('tables')), 'has_code': bool(sp.get('code'))}
+
+    # One record per DOMAIN (the dispatch unit): the domain lede + every descendant node (drivers,
+    # and mechanisms if the source is 3-level), each with its verbatim span + floor + component.
+    # Emitted in the existing driver/mechanisms schema (domain→driver slot, descendants→mechanisms
+    # slot) so the serializer needs no change. One agent develops a whole Section.
     ddir = os.path.join(work, 'drivers'); os.makedirs(ddir, exist_ok=True)
-    drivers = [n for n in man['nodes'].values() if n['level'] == 3]
-    for d in drivers:
-        mechs = [man['nodes'][mid] for mid in d['children']]
-        def rec(n):
-            sp = n['source_span']
-            return {'id': n['id'], 'title': n['title'], 'path': n['path'],
-                    'trace': sp['trace'][0] if sp.get('trace') else None,
-                    'word_floor': n['word_floor'], 'source_words': n['source_words'],
-                    'required_component': n['required_component'],
-                    'source_text': sp.get('text', ''),
-                    'has_table': bool(sp.get('tables')), 'has_code': bool(sp.get('code'))}
-        out = {'driver': rec(d), 'domain': man['nodes'][d['parent']]['path'][-1],
-               'mechanisms': [rec(m) for m in mechs]}
-        json.dump(out, open(os.path.join(ddir, d['id'] + '.json'), 'w'), indent=2, ensure_ascii=False)
-    print(f'[prepare] bible + {len(drivers)} driver records -> {work}')
+    for did in man['roots']:
+        d = man['nodes'][did]
+        desc = [n for nid, n in man['nodes'].items()
+                if n['level'] > 2 and (nid == did or nid.startswith(did + '.'))]
+        desc.sort(key=lambda n: (n['level'], n['id']))
+        out = {'driver': rec(d), 'domain': d['path'][-1], 'mechanisms': [rec(n) for n in desc]}
+        json.dump(out, open(os.path.join(ddir, did + '.json'), 'w'), indent=2, ensure_ascii=False)
+    print(f'[prepare] bible + {len(man["roots"])} domain records -> {work}')
 
 if __name__ == '__main__':
     main(sys.argv[1], sys.argv[2], sys.argv[3])
