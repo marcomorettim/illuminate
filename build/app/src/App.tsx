@@ -1,200 +1,142 @@
-import React, { useEffect, useState } from 'react';
-import { EvidenceProvider, Finding, Drill } from './ui';
-import { RenderComponent } from './components';
-import { manifest } from './content';
-import { NodeContent } from './types';
+import { useState, useEffect } from 'react';
+import model from './model.json';
+import { RenderComponent } from './catalog';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './components/ui/accordion';
 
-const N = manifest.nodes;
-const VIEWS = ['overview', ...manifest.roots];
+// The generic, agnostic renderer: a deterministic walk of argument-model.json. Every label comes
+// from the model; nothing here is keyed to any document. It also exposes the render gate's DOM
+// contract — data-node-body/data-level per node, <main>, data-component (via catalog), hash nav,
+// and a data-theme toggle — so the executed gate can measure it.
+type Node = {
+  id: string; level: number; parent: string | null; path: string[]; title: string;
+  developed_content?: string; finding?: string | null; finding_full?: string | null;
+  component?: { family: string; data: any } | null; children: string[];
+};
+const M = model as any;
+const N: Record<string, Node> = M.nodes;
+const roots: string[] = M.roots;
 
-// ── generated md-body HTML (cites are delegated to EvidenceProvider) ──
-function Body({ html }: { html: string }) {
-  if (!html) return null;
-  return <div className="prose-illum max-w-[74ch]" dangerouslySetInnerHTML={{ __html: html }} />;
+// adapter: an older code component may carry {lines} instead of the catalogue's {code}
+function norm(spec: Node['component']) {
+  if (!spec) return null;
+  if (spec.family === 'code' && spec.data && !spec.data.code && spec.data.lines)
+    return { family: 'code', data: { file: spec.data.file, code: spec.data.lines, finding: spec.data.finding } };
+  return spec;
 }
+const Html = ({ html }: { html?: string | null }) =>
+  html ? <div className="prose-illuminate" dangerouslySetInnerHTML={{ __html: html }} /> : null;
 
-// ── a node's required component, rendered from its {family, data} spec ──
-function NodeComponent({ node }: { node: NodeContent }) {
-  if (!node.component) return null;
-  return <RenderComponent spec={node.component} />;
-}
-
-// a node's OWN developed content (body + component), tagged so the gate counts per-node words
-// without double-counting descendants. data-word-floor lets the gate report against the contract.
-function NodeBody({ node }: { node: NodeContent }) {
+// every node's developed prose (reading-width) + its chosen component (full-width, fills the canvas)
+function NodeBody({ node }: { node: Node }) {
   return (
     <div data-node-body={node.id} data-level={node.level}>
-      <Body html={node.body} />
-      <NodeComponent node={node} />
+      <div className="max-w-[74ch]"><Html html={node.developed_content} /></div>
+      {node.component && <RenderComponent spec={norm(node.component) as any} />}
     </div>
   );
 }
 
-// mechanism (L4) — the leaf: its own developed body + component
-function Mechanism({ node }: { node: NodeContent }) {
-  return <NodeBody node={node} />;
-}
-
-// driver (L3) — own body + component + mechanisms as a nested drill (every mechanism a peer)
-function DriverBody({ node }: { node: NodeContent }) {
-  const mechs = node.children.map((id) => N[id]).filter(Boolean);
+function Mechanism({ node }: { node: Node }) {
   return (
-    <>
+    <div className="mt-6 pt-4 border-t border-dashed border-rule">
+      <div className="font-ft text-[11px] tracking-[.12em] uppercase text-cenere mb-2">{node.title}</div>
       <NodeBody node={node} />
-      {mechs.length > 0 && (
-        <Drill items={mechs.map((m) => ({
-          value: m.id,
-          header: <span className="text-[.9rem] font-bold text-ink">{m.title}</span>,
-          body: <Mechanism node={m} />,
-        }))} />
-      )}
-    </>
+    </div>
   );
 }
 
-// domain (L2) — the view: kicker, headline, lede body, its component, drivers drill, ONE finding
-function DomainView({ node }: { node: NodeContent }) {
-  const drivers = node.children.map((id) => N[id]).filter(Boolean);
-  const n = manifest.roots.indexOf(node.id) + 1;
+function DomainView({ node }: { node: Node }) {
+  const drivers = node.children.map((c) => N[c]).filter(Boolean);
   return (
-    <div className="grid grid-cols-[clamp(48px,6vw,90px)_1fr] gap-x-6 lg:gap-x-10">
-      <div>
-        <div className="font-ft font-bold text-[clamp(2.4rem,5vw,4.4rem)] leading-[.8] tracking-tighter text-ink">{String(n).padStart(2, '0')}</div>
-        <div className="font-ft font-bold text-[.56rem] tracking-[.12em] uppercase text-ink-3 mt-2">{node.path[node.path.length - 1]}</div>
+    <div>
+      <div className="font-ft text-[12px] tracking-[.16em] uppercase text-cenere mb-3">{node.path.slice(0, -1).join(' · ')}</div>
+      <h1 className="font-bold text-[40px] leading-[1.05] tracking-tight mb-5 max-w-[22ch]">{node.title}</h1>
+      {node.finding && (
+        <div className="inline-block mb-5 font-ft text-[13px] font-bold px-2 py-0.5 rounded" style={{ background: '#FFCC00', color: '#141210' }}>{node.finding}</div>
+      )}
+      <div data-node-body={node.id} data-level={node.level} className="grid md:grid-cols-[1fr_300px] gap-10 items-start">
+        <div className="max-w-[70ch]"><Html html={node.developed_content} /></div>
+        {node.component && <aside>{<RenderComponent spec={norm(node.component) as any} />}</aside>}
       </div>
-      <div className="min-w-0">
-        <div className="font-ft font-bold text-[.7rem] tracking-[.14em] uppercase text-ink-2 flex items-center gap-3">
-          <span>{node.path.join(' · ')}</span>
-          <span className="flex-1 h-px bg-rule-hi max-w-[220px]" />
-        </div>
-        <h2 className="text-[clamp(1.5rem,3vw,2.2rem)] font-bold tracking-tight text-ink mt-3 max-w-[26ch]">{node.title}</h2>
-        <NodeBody node={node} />
-
-        <div className="flex items-baseline gap-2.5 flex-wrap mb-2 pb-2 border-b border-rule mt-9">
-          <span className="font-ft font-bold text-[.62rem] tracking-[.1em] uppercase text-ink-3">The drivers</span>
-          <h3 className="text-[1.05rem] font-bold tracking-tight text-ink">Every branch developed to its deepest level</h3>
-        </div>
-        <p className="text-[.78rem] text-ink-3 max-w-[70ch]">Expand each section, then drill down — every sibling is developed to the same depth.</p>
-        <Drill items={drivers.map((d) => ({
-          value: d.id,
-          header: <span className="text-[.98rem] font-bold text-ink">{d.title}</span>,
-          body: <DriverBody node={d} />,
-        }))} />
-
-        {(node.finding || node.finding_full) && (
-          <>
-            <div className="flex items-baseline gap-2.5 flex-wrap mb-2 pb-2 border-b border-rule mt-9">
-              <span className="font-ft font-bold text-[.62rem] tracking-[.1em] uppercase text-ink-3">What's true vs what counts</span>
-            </div>
-            {node.finding_full && <div className="prose-illum max-w-[74ch]" dangerouslySetInnerHTML={{ __html: node.finding_full }} />}
-            {node.finding && <p className="text-[.9rem] text-ink-2 max-w-[70ch] mt-3">The decisive lever — <Finding>{node.finding}</Finding></p>}
-          </>
-        )}
-      </div>
+      <Accordion type="multiple" defaultValue={[]} className="mt-8">
+        {drivers.map((d) => {
+          const mechs = d.children.map((c) => N[c]).filter(Boolean);
+          return (
+            <AccordionItem key={d.id} value={d.id}>
+              <AccordionTrigger><span className="font-bold text-[22px] tracking-tight text-left">{d.title}</span></AccordionTrigger>
+              <AccordionContent>
+                <NodeBody node={d} />
+                {mechs.map((mn) => <Mechanism key={mn.id} node={mn} />)}
+              </AccordionContent>
+            </AccordionItem>
+          );
+        })}
+      </Accordion>
     </div>
   );
 }
 
 function Overview() {
-  const gt = N['GT'];
+  const gt = Object.values(N).find((n) => n.level === 1);
   return (
     <div>
-      <div className="font-ft font-bold text-[.7rem] tracking-[.16em] uppercase text-ink-2 flex items-center gap-3">
-        <span>{manifest.meta.kicker}</span><span className="flex-1 h-px bg-rule-hi max-w-[420px]" />
-      </div>
-      {/* canvas-filling two-column: GT reading measure + the network/marginalia aside (§4) */}
-      <div data-node-body="GT" data-level={1} className="grid xl:grid-cols-[1.45fr_1fr] gap-8 xl:gap-14 mt-6 items-start">
+      <div className="font-ft text-[12px] tracking-[.16em] uppercase text-cenere mb-3">{M.meta?.kicker || M.meta?.title}</div>
+      <h1 className="font-bold text-[46px] leading-[1.03] tracking-tight mb-6 max-w-[24ch]">{M.meta?.title}</h1>
+      <div data-node-body={gt?.id || 'GT'} data-level={1} className="grid md:grid-cols-[1fr_360px] gap-12 items-start">
         <div>
-          <h1 className="text-[clamp(2rem,4.5vw,3.4rem)] font-bold tracking-tight text-ink max-w-[20ch]">{manifest.meta.governing_thought}</h1>
-          {gt && <div className="prose-illum max-w-[68ch] mt-4" dangerouslySetInnerHTML={{ __html: gt.body }} />}
+          <p className="text-[19px] leading-[1.55] max-w-[62ch] mb-5 font-medium">{M.governing_thought}</p>
+          {gt && <Html html={gt.developed_content} />}
         </div>
-        <div className="xl:sticky xl:top-8 border border-rule rounded-lg p-5 bg-paper-1">
-          <div className="font-ft font-bold text-[.56rem] tracking-[.14em] uppercase text-ink-3 mb-1">{manifest.meta.connective_label || `The whole and its ${manifest.roots.length} domains`}</div>
-          {gt && gt.component && <RenderComponent spec={gt.component} />}
-        </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-12">
-        {manifest.roots.map((id, i) => {
-          const d = N[id];
-          return (
-            <a key={id} href={'#/' + id} className="border border-rule rounded-lg p-4 bg-paper-1 hover:border-ink transition-colors block">
-              <div className="font-ft font-bold text-[.56rem] tracking-[.12em] uppercase text-ink-3">{String(i + 1).padStart(2, '0')} · {d.path[d.path.length - 1]}</div>
-              <div className="text-[.98rem] font-bold text-ink mt-1 leading-snug">{d.title}</div>
-            </a>
-          );
-        })}
+        {gt?.component && <aside>{<RenderComponent spec={norm(gt.component) as any} />}</aside>}
       </div>
     </div>
   );
 }
 
-function useRoute() {
-  const [v, setV] = useState(() => location.hash.replace('#/', '') || 'overview');
+function useHashView() {
+  const read = () => { const h = location.hash.replace(/^#\//, ''); return h && N[h] ? h : 'overview'; };
+  const [view, setView] = useState(read);
   useEffect(() => {
-    const on = () => setV(location.hash.replace('#/', '') || 'overview');
+    const on = () => setView(read());
     addEventListener('hashchange', on);
     return () => removeEventListener('hashchange', on);
   }, []);
-  return VIEWS.includes(v) ? v : 'overview';
-}
-
-// ── self-contained download: rebuild the ORIGINAL bootable doc from inline style + IIFE script ──
-function buildStandalone(): string {
-  const style = [...document.querySelectorAll('style')].map((s) => s.outerHTML).join('\n');
-  const scripts = [...document.querySelectorAll('script')];
-  const boot = scripts.find((s) => /data-theme/.test(s.textContent || ''));
-  const app = scripts.filter((s) => s !== boot).sort((a, b) => (b.textContent || '').length - (a.textContent || '').length)[0];
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">`
-    + `<title>${manifest.meta.title}</title>${style}</head><body><div id="root"></div>`
-    + (boot ? `<script>${boot.textContent}</script>` : '')
-    + `<script>${app?.textContent || ''}</script></body></html>`;
-}
-function saveSelf(toast: (m: string) => void) {
-  try {
-    const blob = new Blob([buildStandalone()], { type: 'text/html' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = manifest.meta.source.replace(/\.\w+$/, '') + '.html';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    toast('Downloaded — offline HTML saved.');
-  } catch {
-    const w = window.open('', '_blank');
-    if (w) { w.document.write(buildStandalone()); w.document.close(); toast('Opened in a new tab — use ⌘S to save.'); }
-    else toast('Download blocked by the sandbox.');
-  }
+  return view;
 }
 
 export default function App() {
-  const v = useRoute();
-  document.title = manifest.meta.title;   // source-driven tab title (not the build template's default)
-  const [msg, setMsg] = useState('');
-  const toast = (m: string) => { setMsg(m); setTimeout(() => setMsg(''), 3200); };
-  const toggle = () => {
+  const view = useHashView();
+  const go = (v: string) => { location.hash = '#/' + v; };
+  const toggleTheme = () => {
     const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     const next = cur === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     try { localStorage.setItem('illum-theme', next); } catch {}
   };
   return (
-    <EvidenceProvider>
-      <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] min-h-screen">
-        <nav className="lg:sticky lg:top-0 lg:h-screen border-b lg:border-b-0 lg:border-r border-rule p-4 lg:py-8 flex lg:flex-col gap-1 overflow-x-auto">
-          <a href="#/overview" className="font-ft font-bold text-[.66rem] tracking-[.12em] uppercase text-ink mb-2 shrink-0">{manifest.meta.title}</a>
-          {VIEWS.map((id) => {
-            const label = id === 'overview' ? 'Overview' : (manifest.roots.indexOf(id) + 1).toString().padStart(2, '0') + ' ' + (N[id]?.path.slice(-1)[0] ?? id);
-            return <a key={id} href={'#/' + id} className={`font-ft text-[.68rem] tracking-wide py-1 px-2 rounded shrink-0 ${v === id ? 'bg-beitar [color:#141210] font-bold' : 'text-ink-2 hover:text-ink'}`}>{label}</a>;
-          })}
-          <div className="lg:mt-auto flex lg:flex-col gap-1 shrink-0">
-            <button onClick={() => saveSelf(toast)} title="Download offline HTML" className="font-ft text-[.68rem] tracking-wide py-1 px-2 rounded text-ink-2 hover:text-ink border border-rule-hi text-left">↓ Download</button>
-            <button onClick={toggle} title="Toggle theme" className="font-ft text-[.68rem] tracking-wide py-1 px-2 rounded text-ink-2 hover:text-ink border border-rule-hi text-left">◑ Theme</button>
-          </div>
-        </nav>
-        <main className="p-6 md:p-10 xl:p-16 min-w-0 max-w-[1500px]">
-          {v === 'overview' ? <Overview /> : N[v] ? <DomainView node={N[v]} /> : <Overview />}
+    <div className="min-h-screen bg-paper text-ink font-hn">
+      <div className="sticky top-0 z-30 border-b border-rule bg-paper/90 backdrop-blur">
+        <div className="mx-auto px-8 h-14 flex items-center gap-6" style={{ maxWidth: 1440 }}>
+          <span className="font-ft font-bold tracking-[.16em] text-[13px] uppercase">{(M.meta?.title || 'illuminate').split('—')[0].trim()}</span>
+          <button onClick={toggleTheme} className="ml-auto font-ft text-[11px] uppercase tracking-wider border border-rule px-3 py-1.5 rounded hover:border-ink">Theme</button>
+        </div>
+      </div>
+      <div className="mx-auto grid grid-cols-1 lg:grid-cols-[220px_1fr]" style={{ maxWidth: 1440 }}>
+        <aside className="hidden lg:block border-r border-rule">
+          <nav className="sticky top-[56px] px-6 py-8 space-y-1">
+            <button onClick={() => go('overview')} className={`block w-full text-left py-1.5 text-[13.5px] ${view === 'overview' ? 'text-ink font-semibold' : 'text-ink-2'} hover:text-ink`}>Overview</button>
+            {roots.map((r, i) => (
+              <button key={r} onClick={() => go(r)} className={`flex gap-3 w-full text-left py-1.5 ${view === r ? 'text-ink font-semibold' : 'text-ink-2'} hover:text-ink`}>
+                <span className="font-mono text-[11px] text-cenere w-5">{String(i + 1).padStart(2, '0')}</span>
+                <span className="text-[13.5px] leading-tight">{N[r].path.slice(-1)[0]}</span>
+              </button>
+            ))}
+          </nav>
+        </aside>
+        <main className="px-8 lg:px-14 py-12 min-w-0">
+          {view === 'overview' ? <Overview /> : N[view] ? <DomainView node={N[view]} /> : <Overview />}
         </main>
       </div>
-      {msg && <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[60] bg-ink text-paper text-[.8rem] font-ft px-4 py-2 rounded-md shadow-lg">{msg}</div>}
-    </EvidenceProvider>
+    </div>
   );
 }
