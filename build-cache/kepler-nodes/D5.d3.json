@@ -1,0 +1,16 @@
+{
+  "driver": {
+    "id": "D5.d3",
+    "body": "A sensor network is only as broad as the units Kepler can actually manufacture, land, and place. In **Devices**, the supply chain is therefore not a back-office function — it is the **throttle on how fast breadth (B) compounds** [S-073], and it is managed as such rather than as a logistics cost line. Every fab constraint, assembly bottleneck, and port chokepoint reads directly as a ceiling on how quickly the sensor mesh — the term that feeds the moat's breadth factor across the 42 cities — can actually widen."
+  },
+  "mechanisms": [
+    {
+      "id": "D5.d3.m1",
+      "body": "The physical flow runs from silicon to placement [S-509], and two structural choices along it are load-bearing [S-510]. First, **final assembly is concentrated at Jabil Penang**, with ASE Kaohsiung handling SoC packaging and test — deliberately dual-region against the fab base but single-node on final assembly, trading resilience for the tighter process control that a consistent sensor calibration demands. A sensor that reads differently unit-to-unit corrupts the data term (D) it is supposed to feed, so calibration discipline is allowed to outrank redundancy at this leg.\n\nSecond, the **placement leg is Kepler's own**. Units land at the PSA Singapore and Rotterdam hubs and then ride the D1 mobility fleet and D3 courier network into the field, rather than moving through third-party retail [S-509]. This is the **distribution coupling that a standalone device maker cannot replicate** — Kepler already has vehicles and couriers moving through all 42 cities daily, so the last mile of device placement is nearly free and rides infrastructure that already exists [S-510]. Distribution, for a normal hardware company the most expensive way to buy breadth, is here a fixed asset already paid for by two other domains."
+    },
+    {
+      "id": "D5.d3.m2",
+      "body": "The ramp plots the KB-1 v2 and the embedded KN-2 across quarters from FY26 to FY27 [S-511], and the schedule makes one dependency unmissable [S-512]: **the KN-2 embedded module's mass production is gated on the D1 vehicle manufacturing line**, because the Node is built into vehicles at their point of assembly, not retrofitted afterward. This is the cross-domain coupling expressed as a schedule constraint — Devices cannot ramp its highest-breadth embedded sensor any faster than Mobility ramps the vehicles it lives inside.\n\nThe strategic reading is that **Devices' breadth-compounding is paced by D1's fleet growth**, which is precisely why sequencing — the governing thought — matters: place the sensor line and the vehicle line out of sync and the moat forms slower than the model requires [S-512]. Get them in phase and every vehicle rolling off D1's line ships a sensor into the field at zero incremental placement cost.\n\nThe Gantt surfaces a second edge case as well — the **concentration risk on Jabil Penang and the single Singapore port hub**. A typhoon-season disruption at Klang or Penang is a direct hit to breadth, not merely to margin, so the FY27 plan carries a **qualified second final-assembly node as insurance**, accepted as a margin cost paid explicitly against sensor-coverage continuity [S-512]."
+    }
+  ]
+}

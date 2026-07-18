@@ -1,0 +1,36 @@
+{
+  "driver": {
+    "id": "D6.d3",
+    "body": "Features are potential; models are where the moat is realised. Driver 3 is the conversion layer — the point at which breadth **B** is turned into the three terms that actually move the number: density **D** through routing, liquidity **L** through matching, and trust **T** through scoring and safety [S-089]. The strategic claim underneath is blunt: the models are better because the data is broader. A claim like that is only worth stating if it is shown rather than asserted, which is why this driver carries model-performance evidence — ROC curves and a confusion matrix with real figures — instead of a narrative about model quality [S-089]. The curve below is that evidence: the same fraud/trust model scored on D4 data alone against the full cross-domain join, with the operating point held at a fixed 0.5% false-positive rate so the gain is read as recall, not as a moved goalpost [S-089].",
+    "component_data": {
+      "unit": "recall (TPR) vs false-positive rate",
+      "series": [
+        {
+          "name": "D4 data only (AUC 0.883)",
+          "dash": "4 3",
+          "pts": [[0, 0], [0.005, 0.712], [1, 1]]
+        },
+        {
+          "name": "Full cross-domain join (AUC 0.947)",
+          "dash": "0",
+          "pts": [[0, 0], [0.005, 0.899], [1, 1]]
+        }
+      ],
+      "mark": { "name": "0.5% FPR operating point: 71.2% -> 89.9% recall", "x": 0.005, "y": 0.899 }
+    }
+  },
+  "mechanisms": [
+    {
+      "id": "D6.d3.m1",
+      "body": "The first mechanism is organisational, not statistical: **models are not owned by domains**. Every model is registered in a single shared registry with tracked lineage and consumed through one serving API, so no domain runs a private copy [S-090]. The routing model, the matching model, and the fraud model all draw from the same underlying feature tables. That shared substrate is what makes one improvement propagate: lift a single feature — say `feat_location.demand_z`, improved by folding in D2 charge-gap data — and routing, matching, and fraud all inherit the gain at once, because all three read that column [S-090]. This is the concrete content of *sequence, don't silo*. A siloed org retrains three models three times against three partial datasets and pays the retraining cost three times over, each on a thinner slice of the truth; the platform retrains the feature once and every consuming model inherits it for free [S-090]. One write, five readers — the propagation is the flywheel doing arithmetic, and it is why a broad platform pulls ahead of three narrow specialists even when none of the three is individually worse."
+    },
+    {
+      "id": "D6.d3.m2",
+      "body": "The claim that breadth *causes* performance is not left as rhetoric — Domain 6 tests it by ablation. Each model is trained twice: once on a single-domain feature set, once on the full cross-joined set, and the lift between them is measured directly [S-091]. The figures here are the fraud/trust model, chosen because it is the cleanest labelled problem and because it is the D4 coupling made visible [S-091].\n\nThe result is decisive. AUC moves from **0.883 on D4 data alone to 0.947 on the full cross-domain join**, and at a fixed 0.5% false-positive rate recall rises from 71.2% to 89.9% — an **+18.7-point** improvement [S-610]. Every point of that lift comes from joining D1 mobility-regularity and D5 device-health features onto the D4 fraud label; nothing about the D4 model itself changed [S-610]. That delta is the entire flywheel compressed into one confusion matrix: the false decline a single-vertical specialist is forced to eat, Kepler catches — not because its model is cleverer, but because the specialist never holds the mobility and device streams to join in the first place [S-610]. And higher recall at a fixed false-positive rate is trust **T** stated precisely — fewer fraud losses and fewer false declines at once — served straight back into D4 approval rates, where it lifts the very number the payments domain is judged on [S-610]."
+    },
+    {
+      "id": "D6.d3.m3",
+      "body": "A model is only as trustworthy as the features feeding it, so the feature pipeline is not a convenience script — it is versioned, shared code [S-092]. A domain adds a feature by contributing a transform into that shared pipeline, which enforces point-in-time correctness and train/serve parity on the way in; what it cannot do is fork a private copy and let it drift [S-092]. The pipeline shown here computes the cross-domain `road_roughness` feature that three separate domains consume off a single definition [S-605]. Authored once, read three times — and the quality gate on `sensor_health` is the D5 coupling made executable, refusing bad device telemetry before it can poison a downstream decision [S-092]. That is the discipline that keeps the registry in Mechanism 3.1 honest: extension is open, forking is closed, so breadth accumulates into one trusted surface instead of fragmenting into private copies that quietly disagree. Driver 3 has turned breadth into decisions; Driver 4 is why those decisions stay defensible across a decade [S-092]."
+    }
+  ]
+}

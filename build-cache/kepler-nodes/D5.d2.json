@@ -1,0 +1,24 @@
+{
+  "driver": {
+    "id": "D5.d2",
+    "body": "The product line decides what Kepler places and where; the cost structure decides whether that placement is affordable at fleet scale [S-070]. Devices runs on a deliberately unusual margin philosophy — one that inverts the purpose hardware profit normally serves. Here **hardware margin exists to subsidise sensor coverage, not to maximise device profit** [S-070]. Every KB-1 is priced not to earn on the device but to bankroll the data stream it will emit over its life, and that inversion is what reframes both the bill of materials and the margin waterfall the mechanisms below dissect."
+  },
+  "mechanisms": [
+    {
+      "id": "D5.d2.m1",
+      "body": "The KB-1 Beacon's bill of materials is where the strategy stops being a philosophy and becomes concrete [S-071]. The costed BOM (S-504), struck at a 2m-unit annual run-rate, gives a landed cost per unit — the figure that decides whether fleet-scale placement is affordable at all, and the thing the driver's cost structure is really about [S-071].\n\nThe teardown and exploded view (S-505) then name where each of those components physically sits, because **the placement of a sensor determines the quality of the sample it takes** [S-071]. Two placement decisions carry more strategic weight than the BOM table alone can show (S-506).\n\n- The environmental intake vent is engineered to sit above the compute stack, thermally isolated, so the SEN-55 reads true ambient particulate rather than the device's own heat plume — a $0.40 tooling cost that protects the fidelity of a data stream worth far more than the device itself [S-071].\n- The IMU is bonded rigidly to the mount interface, so vibration couples through the chassis of the D1 vehicle or the D3 handlebar it rides on, turning the whole vehicle into an extension of the sensor [S-071].\n\nThese are the design choices that separate a sensor that samples from one that merely reports [S-071]."
+    },
+    {
+      "id": "D5.d2.m2",
+      "body": "The margin waterfall from average selling price to gross margin (S-507), taken per KB-1 unit, lands at a 31% hardware gross margin [S-072]. Read on its own terms, that number is unremarkable for consumer electronics and would be a disappointment for any other Kepler domain — held against the standalone frame, Devices looks like the portfolio's laggard [S-072].\n\nBut **the waterfall is measuring the wrong thing** (S-508). The strategically correct denominator is not device profit; it is the fully-loaded cost of the proprietary data the device generates over its service life [S-072]. A KB-1 held in position for its ~30-month life emits on the order of tens of millions of sensor-seconds across five independent modalities [S-072]. Financing that acquisition through a standalone sensor-network build would sit at full expense on D6's cost line — which today runs at −$420m as a cost centre [S-072]. Instead, the hardware margin pre-pays it: the device sells at a positive gross margin, and the data arrives effectively free to D6 [S-072].\n\nThe correct read of the waterfall is therefore not \"31% margin\" but **a proprietary sensor network delivered at negative net acquisition cost** — the number the board should track, and the bridge into Driver 4 [S-072].",
+      "component_data": {
+        "unit": "% of ASP",
+        "steps": [
+          { "label": "ASP (average selling price)", "value": 100 },
+          { "label": "Less landed cost of goods (BOM + assembly)", "value": 31 },
+          { "label": "Gross margin", "value": 31 }
+        ]
+      }
+    }
+  ]
+}

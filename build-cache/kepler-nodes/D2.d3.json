@@ -1,0 +1,16 @@
+{
+  "driver": {
+    "id": "D2.d3",
+    "body": "The third driver of Energy & Charging is the one the standalone financial model cannot see, because reliability shows up as an **absence** — the charge that did not fail, the queue that did not form, the trip the fleet did not have to abort [S-028]. A DCF prices what happens; reliability's whole value is measured in what does not, so it never lands as a line item. Yet this is precisely how Energy moves the **T** term of the moat, and T is the term with the longest cross-domain reach [S-028] — the same trust earned at the socket is the trust Payments, Logistics, and the fleet all draw on downstream."
+  },
+  "mechanisms": [
+    {
+      "id": "D2.d3.m1",
+      "body": "Trust in physical infrastructure is not a brand attribute; it is an **empirical frequency** [S-029]. A user trusts the network to the exact degree that it works when they arrive — so we instrument it obsessively rather than assert it.\n\nThe utilization gauge reads the operating health of the estate at a glance. Network uptime sits at **99.2%** against a 99.0% target and an industry field average nearer 96% [S-208]; session-success — a plug-in that ends in a completed charge — runs at 98.6% [S-208]. The three-point gap between our uptime and the industry field average is not a bragging right. It is the **raw material of T**: the surplus reliability over what a rider expects elsewhere is exactly what converts into durable trust [S-208].\n\nThe cohort data shows why that surplus compounds. A user whose first three sessions all succeeded shows a **4.1× higher 90-day retention** than one who hit an early failed session, and — critically — a **2.3× higher rate of activating the D4 wallet** [S-209]. The failed charge does not just cost one session; it poisons the trust that Payments was going to draw on [S-209]. Reliability, measured this way, is the atomic unit the rest of the flywheel is built on."
+    },
+    {
+      "id": "D2.d3.m2",
+      "body": "This is the coupling that justifies housing energy and payments **under one roof** [S-030]. Trust earned at the socket is fungible in the user's mind: the person who has learned that the Kepler charger always works is measurably more willing to let the Kepler wallet hold a balance, auto-pay, and eventually accept a credit line [S-030].\n\nWe can trace it in the funnel. Of users who reached **\"high-trust\" status** via a clean charging history, **58% enabled auto-pay within 60 days** versus 29% of the general base, and their D4 **fraud-dispute rate ran 40% lower** — reliable-infrastructure users are, empirically, lower-risk users [S-210]. Energy is therefore a **T-acquisition channel for Payments**, and it is cheaper than any marketing D4 could run, because the trust is a by-product of a charge the user was going to buy anyway [S-030]. There is no acquisition spend; the moat term is minted as a side effect of ordinary usage.\n\nThe mechanism chains forward one last time. If reliability is the asset that buys trust, then the **durability of that reliability under a shifting grid** is the thing we must stress-test — which is the fourth driver [S-030]."
+    }
+  ]
+}

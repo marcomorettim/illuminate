@@ -1,0 +1,3093 @@
+{
+  "meta": {
+    "source": "Article_kepler-flywheel-decade.docx",
+    "title": "Kepler",
+    "kicker": "A ten-year strategy for the operating system of the physical world",
+    "governing_thought": "The market looks at Kepler and sees a conglomerate: six physical-world businesses — mobility, energy, logistics, payments, devices, and the data platform beneath them — stapled together under one brand, each trailing a focused specialist in its own vertical, the whole priced at a ~35% conglomerate discount to the sum of its parts.",
+    "substantive_words": 16739
+  },
+  "nodes": {
+    "GT": {
+      "id": "GT",
+      "level": 1,
+      "parent": null,
+      "path": [
+        "Kepler — The Flywheel Decade"
+      ],
+      "title": "Kepler — The Flywheel Decade",
+      "source_span": {
+        "heading": "Kepler — The Flywheel Decade",
+        "trace": [
+          "S-002",
+          "S-003",
+          "S-004",
+          "S-005",
+          "S-006"
+        ]
+      },
+      "source_words": 297,
+      "word_floor": 208,
+      "required_component": {
+        "family": "network",
+        "lib": "visx"
+      },
+      "children": []
+    },
+    "D1": {
+      "id": "D1",
+      "level": 2,
+      "parent": "GT",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility"
+      ],
+      "title": "Domain 1 — Autonomous Mobility: the density engine that feeds everything else",
+      "source_span": {
+        "heading": "Domain 1 — Autonomous Mobility: the density engine that feeds everything else",
+        "trace": [
+          "S-007"
+        ],
+        "text": "Mobility is where Kepler touches the physical world most often, and frequency is the point. In the moat identity M = D × B × L × T, this domain owns Interaction density (D) outright — the sheer count of geolocated, time-stamped, behaviourally-rich events per square kilometre per hour — and it is the only domain that manufactures D at industrial scale. Every ride is a probe: it measures a street, a curb, a queue, a payment, a rider's tolerance for a three-minute wait. At 41% of the $9.4bn top line, mobility is also the cash and data furnace that the other five draw on. The argument of this section is narrow and load-bearing: D is not a vanity metric; it is the raw feedstock that lowers cost and raises trust everywhere else, and mobility is the only domain that can move it by an order of magnitude.\n\nThe cross-feeds are the whole reason D matters. Mobility's dwell-and-idle heatmaps tell Energy (D2) where to site chargers before demand exists (trace S-118). Its origin-destination tensor is the demand prior that Logistics (D3) routes couriers against (S-112). Its device-fingerprint-plus-trajectory stream is the strongest single fraud signal Payments (D4) consumes (S-116). Its vehicle sensors are the highest-volume input to Devices (D5) telemetry and to every model in Data/AI (D6) (S-121). Read alone, mobility is a good-not-great robotaxi business trailing a focused specialist. Read as the D-engine of a flywheel, it is the domain that makes the other five cheaper to run than any standalone competitor can achieve. This section develops that claim through four drivers, each mechanism chaining into the next.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 268,
+      "word_floor": 188,
+      "required_component": null,
+      "children": [
+        "D1.d1",
+        "D1.d2",
+        "D1.d3",
+        "D1.d4"
+      ],
+      "finding": "Mobility is the only domain that manufactures Interaction…",
+      "finding_full": "What's true. On its own numbers, Kepler mobility is a strong-but-not-singular robotaxi operation. It runs a dense, safe, well-instrumented fleet; utilization in saturated zones clears 70%; miles-per-intervention improved 11.6× in a year; the rider app is good. A focused robotaxi specialist could match most of this line by line, and on a sum-of-the-parts read the market would be right to price mobility as one competent vertical inside a discounted conglomerate. The sensor stack still loses money per ride until solid-state lidar lands. None of this, standing alone, is uncatchable.\n\nWhat counts. "
+    },
+    "D1.d1": {
+      "id": "D1.d1",
+      "level": 3,
+      "parent": "D1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "The fleet and the density engine"
+      ],
+      "title": "Driver 1 — The fleet and the density engine",
+      "source_span": {
+        "heading": "Driver 1 — The fleet and the density engine",
+        "trace": [
+          "S-008"
+        ],
+        "text": "Density is not bought; it is compounded. The fleet is the physical instrument that converts capital into interactions, and the discipline is concentrating that instrument until the data it produces crosses a usefulness threshold, then holding it there while demand catches up.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 42,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D1.d1.m1",
+        "D1.d1.m2"
+      ],
+      "mech_n": 2
+    },
+    "D1.d1.m1": {
+      "id": "D1.d1.m1",
+      "level": 4,
+      "parent": "D1.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "The fleet and the density engine",
+        "The density-first deployment rule"
+      ],
+      "title": "The density-first deployment rule",
+      "source_span": {
+        "heading": "The density-first deployment rule",
+        "trace": [
+          "S-009"
+        ],
+        "text": "Kepler does not spread vehicles to maximise city coverage; it floods zones until interaction density per km² per hour crosses the threshold where the routing and pricing models stop guessing. Below roughly 40 interactions/km²/hr the models are extrapolating; above it they are interpolating, and every downstream prediction — ETA, surge, charger dwell — sharpens. The mechanism moves D directly: rather than 300 vehicles thin across a metro, Kepler runs 1,100 inside three contiguous zones. The number it moves is the map utilization figure below; the trade-off is brutal and deliberate — visible under-service at the metro edge, and a press narrative of \"Kepler abandoned the suburbs,\" accepted because a dense core produces data that a thin blanket never will (S-101).\n\nThe geo/fleet MAP renders the rule. Read it as a metro canvas with named zones as filled polygons, each labelled with active vehicles and utilization (revenue-minutes ÷ available-minutes):\n\nThe map's decisive contrast is Marina Core at 71% against Noord Fringe at 39%: the same vehicle earns and learns nearly twice as much inside the saturated zone. Noord Fringe is the edge-case the rule tolerates — a starving polygon kept deliberately thin so capital flows to Marina Core (S-102). Saturated zones are outlined solid; sub-threshold zones are hatched, a standing to-do list of where density has not yet been bought. The Reforma Corridor sits between the two states, ramping toward the 40-interaction floor: it is where the rule is being executed rather than defended, and its trajectory over the next three quarters is the leading indicator of whether the density-first thesis generalises beyond the two founding metros or is an artefact of Singapore and Amsterdam's particular geometry.",
+        "tables": [
+          [
+            [
+              "Zone (city)",
+              "Active AVs",
+              "Utilization",
+              "Interactions/km²/hr",
+              "Status"
+            ],
+            [
+              "Marina Core (Singapore)",
+              "420",
+              "71%",
+              "63",
+              "Saturated — data-complete"
+            ],
+            [
+              "Jurong Spine (Singapore)",
+              "260",
+              "58%",
+              "44",
+              "At threshold"
+            ],
+            [
+              "Amstel Ring (Amsterdam)",
+              "310",
+              "66%",
+              "51",
+              "Saturated — data-complete"
+            ],
+            [
+              "Noord Fringe (Amsterdam)",
+              "140",
+              "39%",
+              "22",
+              "Sub-threshold — starving"
+            ],
+            [
+              "Jumeirah Belt (Dubai)",
+              "380",
+              "68%",
+              "55",
+              "Saturated — data-complete"
+            ],
+            [
+              "Reforma Corridor (Mexico City)",
+              "290",
+              "52%",
+              "34",
+              "Below threshold — ramping"
+            ]
+          ]
+        ],
+        "code": []
+      },
+      "source_words": 276,
+      "word_floor": 193,
+      "required_component": {
+        "family": "faceted-grid",
+        "lib": "tanstack"
+      },
+      "children": []
+    },
+    "D1.d1.m2": {
+      "id": "D1.d1.m2",
+      "level": 4,
+      "parent": "D1.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "The fleet and the density engine",
+        "Holding the floor with a utilization time-series"
+      ],
+      "title": "Holding the floor with a utilization time-series",
+      "source_span": {
+        "heading": "Holding the floor with a utilization time-series",
+        "trace": [
+          "S-010"
+        ],
+        "text": "Concentration only compounds if utilization stays high enough that the fleet is interacting rather than idling — an idle AV produces no D and burns the depreciation that Driver 4 quantifies. Kepler manages the fleet against a utilization floor, dispatching repositioning moves and dynamic pricing (fed by D4's cash-free rails) whenever a zone threatens to slip beneath it. The mechanism moves D by protecting the denominator of interactions-per-vehicle; the number it moves is weekday utilization, held above the 60% floor in saturated zones.\n\nThe utilization TIME-SERIES for Marina Core, plotted as a 24-hour curve (x-axis midnight-to-midnight, y-axis utilization %, a dashed 60% floor line):\n\nTwo peaks (07:30 and 18:15) clear 80%; the 14:00 midday trough kisses the floor and triggers repositioning and a fare cut (S-103). The edge-case is the trough that breaks the floor — a rain-driven demand collapse on a Tuesday that dropped Reforma Corridor to 41% for two hours, the signal that a zone is over-vehicled and capital should rotate out (S-104). The chain to Driver 2: a fleet held at the density floor generates enough incident-free exposure that safety becomes statistically legible — which is the only way to earn the trust the next driver depends on.",
+        "tables": [],
+        "code": [
+          "Util %  Marina Core — weekday utilization vs 60% floor 90 |                    ╭─╮              ╭──╮ 80 |          ╭─╮      ╱   ╲           ╱     ╲ 70 |    ╭────╯   ╲────╯     ╲────╮   ╱        ╲ 60 |╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╲─╱╌╌╌╌╌╌╌╌╌╌╌╲╌╌  ← floor 50 |  ╱                          ╰╯             ╲ 40 |─╯                                           ╲    +--------------------------------------------------     00   03    06    09    12    15    18    21   24          AM peak↑          midday dip↓   PM peak↑"
+        ]
+      },
+      "source_words": 201,
+      "word_floor": 141,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D1.d2": {
+      "id": "D1.d2",
+      "level": 3,
+      "parent": "D1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "Safety and the trust it earns"
+      ],
+      "title": "Driver 2 — Safety and the trust it earns",
+      "source_span": {
+        "heading": "Driver 2 — Safety and the trust it earns",
+        "trace": [
+          "S-011"
+        ],
+        "text": "Density without safety is a liability that regulators close overnight. This driver owns mobility's contribution to Trust (T) — the only term besides D that mobility meaningfully moves — and the mechanism is turning accumulated safe miles into a disclosed, auditable record that regulators and riders both price in.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 49,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D1.d2.m1",
+        "D1.d2.m2"
+      ],
+      "mech_n": 2
+    },
+    "D1.d2.m1": {
+      "id": "D1.d2.m1",
+      "level": 4,
+      "parent": "D1.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "Safety and the trust it earns",
+        "Miles-per-intervention as the trust currency"
+      ],
+      "title": "Miles-per-intervention as the trust currency",
+      "source_span": {
+        "heading": "Miles-per-intervention as the trust currency",
+        "trace": [
+          "S-012"
+        ],
+        "text": "The operating metric is miles between safety-critical disengagements (a remote operator or safety driver taking control to avoid harm). Density helps here in a way competitors cannot copy: saturated zones generate so many miles over the same road geometry that the model sees each rare edge-case — an occluded pedestrian, a jaywalking cyclist against the light — hundreds of times rather than once. The mechanism moves T by pushing miles-per-intervention up an order of magnitude, and it is fed by D6's perception models, which are themselves trained on the density D1 produces (S-105). The trade-off is that chasing the metric too hard breeds over-cautious \"freezing\" behaviour that tanks the rider experience of Driver 3 — so the safety and experience teams share one objective function, not two.\n\nMiles/intervention rose 11.6× across four quarters while fleet miles merely tripled — the superlinear gain is the density dividend, the same edge-case seen enough times to be learned rather than survived (S-106).",
+        "tables": [
+          [
+            [
+              "Quarter",
+              "Miles/critical intervention",
+              "Fleet miles (m)",
+              "Critical incidents",
+              "Zone"
+            ],
+            [
+              "Q1",
+              "18,400",
+              "22",
+              "3",
+              "Marina Core"
+            ],
+            [
+              "Q2",
+              "41,200",
+              "31",
+              "2",
+              "Marina Core"
+            ],
+            [
+              "Q3",
+              "96,500",
+              "44",
+              "1",
+              "Marina Core"
+            ],
+            [
+              "Q4",
+              "214,000",
+              "58",
+              "1",
+              "Marina Core"
+            ]
+          ]
+        ],
+        "code": []
+      },
+      "source_words": 159,
+      "word_floor": 111,
+      "required_component": {
+        "family": "faceted-grid",
+        "lib": "tanstack"
+      },
+      "children": []
+    },
+    "D1.d2.m2": {
+      "id": "D1.d2.m2",
+      "level": 4,
+      "parent": "D1.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "Safety and the trust it earns",
+        "The incident timeline as an auditable record"
+      ],
+      "title": "The incident timeline as an auditable record",
+      "source_span": {
+        "heading": "The incident timeline as an auditable record",
+        "trace": [
+          "S-013"
+        ],
+        "text": "Trust is not the average; it is how the worst days are handled and disclosed. Kepler maintains a public safety-incident TIMELINE — every safety-critical event logged, root-caused, and tied to the model or hardware change that closed it. The mechanism moves T by converting opaque risk into an audit trail regulators can inspect before granting the next zone permit (S-107). The trade-off is radical transparency: disclosing incidents competitors keep quiet, a short-term reputational cost paid for long-term licence-to-operate.\n\nThe Q4 event is the instructive edge-case: heavy rain attenuated lidar, the vehicle correctly executed a minimum-risk pullover rather than proceeding blind, and the fix — radar-weighted sensor fusion — came straight from Devices (D5) hardware co-design (S-109). The chain to Driver 3: a fleet that is both dense and demonstrably safe can finally be sold as an experience, because trust is the precondition a rider needs before the app's promises mean anything.",
+        "tables": [],
+        "code": [
+          "SAFETY-INCIDENT TIMELINE — Marina Core + Amstel Ring──────────────────────────────────────────────────────────Q1  ●── Occluded pedestrian, near-miss (no contact)        Root cause: late detection behind parked van        Fix: perception model v4.1, occlusion prior      [S-108]Q2  ●── Low-speed contact w/ cyclist, no injury        Root cause: cyclist against-light, unmodeled path        Fix: intent model + geofenced slow-zoneQ3  ○── Hard brake cluster (comfort, not safety)        Root cause: over-cautious freeze at tram crossing        Fix: tuned caution threshold (see Driver 3 tension)Q4  ●── Sensor-occlusion (heavy rain), safe pullover        Root cause: lidar attenuation; SAFE degradation        Fix: radar-weighted fusion in rain (Devices D5)   [S-109]──────────────────────────────────────────────────────────● safety-critical   ○ comfort-only"
+        ]
+      },
+      "source_words": 151,
+      "word_floor": 106,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D1.d3": {
+      "id": "D1.d3",
+      "level": 3,
+      "parent": "D1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "The rider experience"
+      ],
+      "title": "Driver 3 — The rider experience",
+      "source_span": {
+        "heading": "Driver 3 — The rider experience",
+        "trace": [
+          "S-014"
+        ],
+        "text": "D and T are supply-side; they convert to revenue only through a rider who chooses Kepler again. This driver is where interaction density becomes interaction loyalty — where the density flywheel either self-reinforces (more riders → more D → better predictions → better experience → more riders) or stalls. Mobility's role here is to raise D by lifting ride frequency per rider, and the lever is a rider app that turns model precision into felt reliability.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 76,
+      "word_floor": 53,
+      "required_component": null,
+      "children": [
+        "D1.d3.m1",
+        "D1.d3.m2"
+      ],
+      "mech_n": 2
+    },
+    "D1.d3.m1": {
+      "id": "D1.d3.m1",
+      "level": 4,
+      "parent": "D1.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "The rider experience",
+        "Precision ETAs as the retention engine"
+      ],
+      "title": "Precision ETAs as the retention engine",
+      "source_span": {
+        "heading": "Precision ETAs as the retention engine",
+        "trace": [
+          "S-015"
+        ],
+        "text": "The single experience variable that most moves rebooking is ETA accuracy — not speed, accuracy. A rider forgives a four-minute wait promised as four minutes; they abandon a three-minute wait promised as one. Density feeds this directly: saturated zones let the ETA model interpolate from dense recent history rather than extrapolate, cutting mean absolute ETA error. The mechanism moves D by lifting rides-per-active-rider (frequency is density), and it is fed by D6's demand models and the origin-destination tensor mobility itself generates (S-110). The trade-off is that guaranteeing tight ETAs sometimes means pre-positioning idle vehicles, which nicks the utilization floor of Driver 1 — a managed tension, priced.\n\nThe rider-app MOCKUP, first as a push notification landing on a lock screen:\n\nThen the in-app ride screen the rider sees after tapping through:\n\nThe copy is doing three jobs: \"1,204,000 rides in this zone\" sells density as safety-through-familiarity (Driver 2's trust, made legible); \"Kepler Pay · balance auto-charged\" closes the Payments (D4) loop that lets the ride run cash-free (S-111); and \"verified safe\" cashes the Driver 2 record at the point of decision. The edge-case the copy handles: when the pod is not pre-positioned and the honest ETA is nine minutes, the app says nine, because one broken promise costs more D than one lost ride.",
+        "tables": [],
+        "code": [
+          "┌───────────────────────────────────────────┐│  KEPLER · now                               ││  Your Kepler is 2 min away 🚗               ││  Silver pod K-4471 · Marina Blvd pickup.    ││  We moved it closer — tap to track live.    │└───────────────────────────────────────────┘",
+          "┌───────────────────────────────────────────┐│  ●  Arriving in 2 min          [Live map]  ││  ─────────────────────────────────────────  ││         🗺  K-4471 → you                    ││         Marina Blvd · Bay 3                  ││  ─────────────────────────────────────────  ││  Driverless ride · verified safe            ││  ★ 4.9  ·  1,204,000 rides in this zone     ││  ─────────────────────────────────────────  ││  Trip to Jurong Spine        S$14.20        ││  Kepler Pay · balance auto-charged  ✓        ││  [ Cancel ]            [ I'm at the curb ]  │└───────────────────────────────────────────┘"
+        ]
+      },
+      "source_words": 214,
+      "word_floor": 150,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D1.d3.m2": {
+      "id": "D1.d3.m2",
+      "level": 4,
+      "parent": "D1.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "The rider experience",
+        "The origin-destination tensor as the shared demand prior"
+      ],
+      "title": "The origin-destination tensor as the shared demand prior",
+      "source_span": {
+        "heading": "The origin-destination tensor as the shared demand prior",
+        "trace": [
+          "S-016"
+        ],
+        "text": "Every completed ride writes one cell into an origin-destination-by-time tensor — the densest demand map anyone in these cities holds. The mechanism moves D by making the next rider's experience better (the tensor is the prior every ETA and surge decision reads from), and its cross-feeds are the flywheel's spine: the same tensor is the demand prior Logistics (D3) routes couriers against and the dwell-pattern input Energy (D2) sites chargers from (S-112). The trade-off is privacy exposure — the tensor is re-identification-sensitive, so it is aggregated and differentially private before it leaves the mobility boundary, a deliberate loss of resolution accepted for trust. The chain to Driver 4: an experience this reliable is only defensible if the machine underneath earns money per ride, which is where unit economics decide whether density is an asset or a subsidy.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 137,
+      "word_floor": 96,
+      "required_component": null,
+      "children": []
+    },
+    "D1.d4": {
+      "id": "D1.d4",
+      "level": 3,
+      "parent": "D1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "The vehicle and unit economics"
+      ],
+      "title": "Driver 4 — The vehicle and unit economics",
+      "source_span": {
+        "heading": "Driver 4 — The vehicle and unit economics",
+        "trace": [
+          "S-017"
+        ],
+        "text": "Density that loses money is a countdown, not a moat. This driver asks whether each incremental interaction is accretive, and answers with the vehicle itself — the sensor stack that makes autonomy possible is also the cost line that decides the flywheel's terminal contribution. Mobility moves D here only insofar as the per-ride economics let Kepler hold the density rather than retreat from it.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 64,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D1.d4.m1",
+        "D1.d4.m2"
+      ],
+      "mech_n": 2
+    },
+    "D1.d4.m1": {
+      "id": "D1.d4.m1",
+      "level": 4,
+      "parent": "D1.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "The vehicle and unit economics",
+        "The teardown — sensor cost as the swing variable"
+      ],
+      "title": "The teardown — sensor cost as the swing variable",
+      "source_span": {
+        "heading": "The teardown — sensor cost as the swing variable",
+        "trace": [
+          "S-018"
+        ],
+        "text": "The AV is a rolling sensor platform, and its bill of materials is the largest lever on contribution/interaction. The vehicle EXPLODED/TEARDOWN diagram, components named and exploded outward from the chassis:\n\nThe teardown maps one-to-one to the safety timeline: the Q4 rain incident's fix — radar-weighted fusion — is why the 4D imaging radar count is five, not three (S-113). Every one of these sensors is co-designed with Devices (D5), and their raw streams are the proprietary telemetry that widens Data breadth (B) for D6's models — mobility manufactures D, but the vehicle is where it hands B to the platform (S-114). The BOM cost table, the swing variable in one view:\n\nLidar is 61% of the sensor bill and the entire cost thesis: the solid-state roadmap that roughly halves the stack to ~$6,900 is what flips per-ride contribution positive at current density (S-115). The trade-off is timing — deploy density now on expensive lidar and eat negative contribution, or wait for cheap lidar and cede the density lead. Kepler deploys now, because D compounds and cost is a schedule: a density lead surrendered to save eighteen months of lidar depreciation is a lead that a rival, having filled the OD tensor first, may never return. Cost curves bend on a roadmap that engineering controls; density leads, once lost, must be re-bought against an incumbent's better models — an asymmetry that makes the expensive-lidar years a defensible investment rather than a subsidy to be apologised for.",
+        "tables": [
+          [
+            [
+              "Sensor subsystem",
+              "Units",
+              "Unit cost (US$)",
+              "Subtotal",
+              "Cost trajectory"
+            ],
+            [
+              "Spinning lidar (128-beam)",
+              "2",
+              "3,900",
+              "7,800",
+              "↓ solid-state roadmap"
+            ],
+            [
+              "Imaging radar (4D)",
+              "5",
+              "260",
+              "1,300",
+              "↓ flat"
+            ],
+            [
+              "Surround camera (8MP)",
+              "6",
+              "90",
+              "540",
+              "↓ commoditised"
+            ],
+            [
+              "Ultrasonic proximity",
+              "12",
+              "18",
+              "216",
+              "flat"
+            ],
+            [
+              "Compute (autonomy SoC)",
+              "1",
+              "2,400",
+              "2,400",
+              "↓ next-gen node"
+            ],
+            [
+              "IMU / GNSS nav",
+              "1",
+              "480",
+              "480",
+              "flat"
+            ],
+            [
+              "Sensor stack total",
+              "—",
+              "—",
+              "12,736",
+              "↓ to ~6,900 (solid-state)"
+            ]
+          ]
+        ],
+        "code": [
+          "        KEPLER POD — EXPLODED SENSOR STACK                    ┌─────────┐        roof ▸      │ 2× spinning LIDAR (128-beam) │                    └─────────┘     A-pillar ▸  ◐ 6× surround CAMERA (8MP)      grille  ▸  ▭ 5× imaging RADAR (4D)     bumper   ▸  ▬ 12× ultrasonic PROXIMITY      cabin   ▸  ▣ INERTIAL nav unit (IMU/GNSS)      trunk   ▸  ▦ COMPUTE module (autonomy SoC)      wheels  ▸  ⊙ wheel-odometry ENCODERS"
+        ]
+      },
+      "source_words": 245,
+      "word_floor": 172,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D1.d4.m2": {
+      "id": "D1.d4.m2",
+      "level": 4,
+      "parent": "D1.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Autonomous Mobility",
+        "The vehicle and unit economics",
+        "Contribution per interaction — the flywheel's scoreboard"
+      ],
+      "title": "Contribution per interaction — the flywheel's scoreboard",
+      "source_span": {
+        "heading": "Contribution per interaction — the flywheel's scoreboard",
+        "trace": [
+          "S-019"
+        ],
+        "text": "The number that ties this domain to the bible's central promise is blended contribution/interaction, which the flywheel is chartered to lift from −0.31 over ten years. Mobility's job is to drive its share of that swing through two chained effects: density raises utilization (Driver 1) which amortises the vehicle across more paid minutes, and the sensor stream widens B (this driver) which sharpens the fraud, routing, and siting models that lower cost in D2/D3/D4. The mechanism moves D's value, not its count — the same interaction is worth more once four other domains monetise it. The cross-feed made concrete: mobility's trajectory-plus-device-fingerprint stream is the strongest single input to Payments (D4) fraud scoring, and each fraud dollar D4 saves is booked partly against the ride that generated the signal (S-116). The edge-case is the loss-leader ride — a deliberately under-priced trip in a ramping zone (Reforma Corridor) whose contribution is negative but whose data closes a coverage gap in the OD tensor, an investment in D justified only by the flywheel, never by the ride's own P&L (S-117).",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 177,
+      "word_floor": 124,
+      "required_component": null,
+      "children": []
+    },
+    "D2": {
+      "id": "D2",
+      "level": 2,
+      "parent": "GT",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging"
+      ],
+      "title": "Domain 2 — Energy & Charging: the cost floor and the reliability that earns trust",
+      "source_span": {
+        "heading": "Domain 2 — Energy & Charging: the cost floor and the reliability that earns trust",
+        "trace": [
+          "S-021"
+        ],
+        "text": "Energy is the domain that almost nobody underwrites correctly, because on a standalone P&L it looks like the worst business we own: capital-heavy, thin-margined, exposed to a commodity we do not control. Read against the moat identity, though, it is the domain that quietly sets the floor under everything else. Of the four moat terms — M = D × B × L × T — Energy & Charging moves exactly two, and it moves them in a way no other domain can. It compresses the marginal cost of every electron-consuming interaction in the flywheel, and it manufactures Trust (T) the only way trust in physical infrastructure is ever actually manufactured: by being reliable ten thousand times in a row where a competitor is reliable nine thousand nine hundred. It does not touch interaction density (D — that is D1's job), it feeds but does not own data breadth (B — that is D5/D6), and it is agnostic to network liquidity (L — that is D3). Its two levers are cost and T, and the entire investment case for the domain is that these two levers are not local. A charge is not the product. The product is a lower cost floor and a higher trust ceiling that the other five domains draw on for free.\n\nThe cross-feeds are the reason the domain exists inside Kepler rather than as a spun-out charge-point operator trading at a utility multiple. Three couplings carry most of the weight. First, Energy lowers the marginal cost of Mobility (D1) and Logistics (D3) — the same electrons that move an autonomous vehicle move a courier's e-scooter, and owning generation-to-socket economics means we buy those electrons once, at wholesale-plus, instead of twice at retail. Second, siting is fed by Mobility's location data (D1 → D2) — we do not guess where to build chargers; the densest ride and dwell-time data in 42 cities tells us where demand will be eighteen months before a standalone operator can see it. Third, and most strategically, reliability feeds T, and T is the term Payments (D4) is built on — a customer who trusts that the charger works is a customer who trusts the app that dispatched them to it, and eventually the wallet inside that app. Trust is not partitioned by domain in the user's head. We earn it at the socket and spend it at the checkout. This section develops four drivers, each mechanism chaining into the next, and shows where the cost floor and the trust ceiling actually come from.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 422,
+      "word_floor": 295,
+      "required_component": null,
+      "children": [
+        "D2.d1",
+        "D2.d2",
+        "D2.d3",
+        "D2.d4"
+      ],
+      "finding": "Energy moves two moat terms — cost and T — and moves them…",
+      "finding_full": "What's true. Energy & Charging is, on its own books, the least attractive standalone business in the portfolio: capital-intensive, exposed to a commodity it cannot control, and margin-thin even in its good branches (probability-weighted +$0.036/kWh is a utility-grade number, not a software one). A focused charge-point specialist, unburdened by the rest of Kepler, would likely operate a leaner balance sheet and trade at a cleaner multiple. All of that is true, and it is why the sum-of-the-parts view marks this domain down.\n\nWhat counts. None of that is the point of owning it. What counts is tha"
+    },
+    "D2.d1": {
+      "id": "D2.d1",
+      "level": 3,
+      "parent": "D2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "The charging network as an asset"
+      ],
+      "title": "Driver 1 — The charging network as an asset",
+      "source_span": {
+        "heading": "Driver 1 — The charging network as an asset",
+        "trace": [
+          "S-022"
+        ],
+        "text": "The first driver is the physical network itself: 6,180 charging sites across the 42 cities, and the question of whether that estate is a cost sink or a compounding asset. The answer turns entirely on where the sites are, which is where the first cross-domain coupling does its work.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 49,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D2.d1.m1",
+        "D2.d1.m2"
+      ],
+      "mech_n": 2
+    },
+    "D2.d1.m1": {
+      "id": "D2.d1.m1",
+      "level": 4,
+      "parent": "D2.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "The charging network as an asset",
+        "Siting fed by Mobility's location data (D1 → D2)"
+      ],
+      "title": "Mechanism 1.1 — Siting fed by Mobility's location data (D1 → D2)",
+      "source_span": {
+        "heading": "Mechanism 1.1 — Siting fed by Mobility's location data (D1 → D2)",
+        "trace": [
+          "S-023"
+        ],
+        "text": "A standalone charge-point operator sites capacity against traffic counts and grid-connection availability — public, laggy, and available to every competitor simultaneously. Kepler sites capacity against D1's proprietary dwell-and-dispatch map: where autonomous vehicles actually idle between fares, where riders actually originate, where the fleet's state-of-charge actually crosses the reorder threshold. This is the flywheel's first turn in the energy domain. Because D1 generates the densest location and behaviour data in the network, we can place a fast-charger on the corner where the fleet will need it in 2027, not the corner that looked busy in 2024. [S-201] In the eleven cities where siting has been driven by D1 telemetry rather than public traffic data, first-year utilization ran 31% higher than in the legacy-sited estate — the single largest driver of site-level payback in the portfolio. The mechanism matters because utilization is the numerator of every economic in this domain; a mis-sited charger is not a small loss, it is a stranded asset earning grid-connection charges for a decade. Siting quality chains directly into the next mechanism, because a well-sited estate is what makes ownership of the power economics worth having.\n\nCharging-network MAP — the estate, rendered as sites × power class × utilization by city (top corridors shown):\n\nThe map's signal is the right-hand column: the demand feed is never generic. In Jakarta and Ho Chi Minh City the load is dominated by D3's courier fleet on AC chargers; in Dubai it is D1's autonomous fleet on DC-fast. The same physical asset serves different domains in different cities, and that is exactly the point — [S-202] a socket utilised 63% at peak across the network is a socket that two internal customers are paying to keep warm, which no single-purpose operator can replicate.",
+        "tables": [
+          [
+            [
+              "City",
+              "Sites",
+              "DC-fast (≥150kW)",
+              "AC (≤22kW)",
+              "Peak util.",
+              "Off-peak util.",
+              "Primary demand feed"
+            ],
+            [
+              "Singapore",
+              "412",
+              "188",
+              "224",
+              "74%",
+              "29%",
+              "D1 fleet + D3 couriers"
+            ],
+            [
+              "Amsterdam",
+              "356",
+              "141",
+              "215",
+              "68%",
+              "24%",
+              "D1 fleet + retail"
+            ],
+            [
+              "Jakarta",
+              "388",
+              "96",
+              "292",
+              "71%",
+              "33%",
+              "D3 couriers (dominant)"
+            ],
+            [
+              "Ho Chi Minh City",
+              "301",
+              "74",
+              "227",
+              "66%",
+              "31%",
+              "D3 couriers"
+            ],
+            [
+              "Dubai",
+              "214",
+              "132",
+              "82",
+              "59%",
+              "19%",
+              "D1 fleet (dominant)"
+            ],
+            [
+              "Warsaw",
+              "176",
+              "61",
+              "115",
+              "52%",
+              "21%",
+              "Retail + D1"
+            ],
+            [
+              "Network (42 cities)",
+              "6,180",
+              "2,214",
+              "3,966",
+              "63%",
+              "26%",
+              "mixed"
+            ]
+          ]
+        ],
+        "code": []
+      },
+      "source_words": 292,
+      "word_floor": 204,
+      "required_component": {
+        "family": "faceted-grid",
+        "lib": "tanstack"
+      },
+      "children": []
+    },
+    "D2.d1.m2": {
+      "id": "D2.d1.m2",
+      "level": 4,
+      "parent": "D2.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "The charging network as an asset",
+        "Vertical integration of the power economics"
+      ],
+      "title": "Mechanism 1.2 — Vertical integration of the power economics",
+      "source_span": {
+        "heading": "Mechanism 1.2 — Vertical integration of the power economics",
+        "trace": [
+          "S-024"
+        ],
+        "text": "A well-sited, dual-fed estate is worth owning up the stack. Because we can forecast aggregate load with the fleet data behind Mechanism 1.1, we can contract power as an industrial buyer — long-dated PPAs, wholesale-market participation, on-site storage — rather than paying retail tariffs at each socket. [S-203] Blended landed cost of energy across the network is $0.081/kWh versus a retail benchmark of $0.163/kWh in the same metros: a 50.3% wholesale-plus discount that is the raw material of the cost floor. This is the mechanism that converts \"we own chargers\" into \"we own the marginal cost of movement,\" and it is the hinge for the entire domain, because that $0.082/kWh gap is what gets handed to D1 and D3.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 119,
+      "word_floor": 83,
+      "required_component": null,
+      "children": []
+    },
+    "D2.d2": {
+      "id": "D2.d2",
+      "level": 3,
+      "parent": "D2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "Load, demand & dispatch"
+      ],
+      "title": "Driver 2 — Load, demand & dispatch",
+      "source_span": {
+        "heading": "Driver 2 — Load, demand & dispatch",
+        "trace": [
+          "S-025"
+        ],
+        "text": "Owning cheap electrons is necessary but not sufficient. The second driver is the operational engine that decides when to buy, when to charge, and what to price — the machinery that turns a cheap average cost into a cheap marginal cost at the moment of each interaction. This is where the domain's distinctive formula-and-code palette lives.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 56,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D2.d2.m1",
+        "D2.d2.m2"
+      ],
+      "mech_n": 2
+    },
+    "D2.d2.m1": {
+      "id": "D2.d2.m1",
+      "level": 4,
+      "parent": "D2.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "Load, demand & dispatch",
+        "Reading the load curve"
+      ],
+      "title": "Mechanism 2.1 — Reading the load curve",
+      "source_span": {
+        "heading": "Mechanism 2.1 — Reading the load curve",
+        "trace": [
+          "S-026"
+        ],
+        "text": "Demand is not flat, and the shape of the curve is the whole game. Two patterns dominate.\n\nLoad/demand CHART — daily curve (network-average kW drawn, normalised to peak = 100):\n\nTwo peaks — a sharp morning ramp (06:00–09:00, fleet pre-positioning + commuter charging) and a taller, longer evening peak (17:00–21:00, fleet recharge + courier surge + retail). The trough is 00:00–05:00, when landed cost is lowest and demand is thinnest. The economic opportunity is the gap between the two.\n\nLoad/demand CHART — seasonal (monthly peak-load index, network, base = Jan 100):\n\nTwo seasonal ridges: a cooling-driven summer peak (Jun–Aug) in the tropical metros where grid prices spike with air-conditioning load, and a Q4 logistics peak driven by D3's delivery surge. [S-204] These two ridges do not coincide with cheap-power windows, which is precisely why dispatch — not just procurement — is where margin is made or lost. Reading the curve chains directly into acting on it.",
+        "tables": [
+          [
+            [
+              "Q1",
+              "Q2",
+              "Q3",
+              "Q4"
+            ],
+            [
+              "Jan 100 · Feb 96 · Mar 104",
+              "Apr 112 · May 121 · Jun 128",
+              "Jul 133 · Aug 131 · Sep 119",
+              "Oct 110 · Nov 118 · Dec 126"
+            ]
+          ]
+        ],
+        "code": [
+          "Load100 |                          ██ ██ 90 |                    ██  ██ ██ ██ ██ 75 |          ██        ██  ██ ██ ██ ██        ██ ██ 60 |    ██ ██ ██ ██     ██  ██ ██ ██ ██     ██ ██ ██ ██ 45 | ██ ██ ██ ██ ██  ██ ██  ██ ██ ██ ██  ██ ██ ██ ██ ██ ██ 30 | ██ ██ ██ ██ ██  ██ ██  ██ ██ ██ ██  ██ ██ ██ ██ ██ ██    +----------------------------------------------------------      00  03  06   08  09   17 18 19 20   22  23   (hour)              morning peak      evening peak"
+        ]
+      },
+      "source_words": 156,
+      "word_floor": 109,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D2.d2.m2": {
+      "id": "D2.d2.m2",
+      "level": 4,
+      "parent": "D2.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "Load, demand & dispatch",
+        "Dynamic pricing and dispatch optimisation"
+      ],
+      "title": "Mechanism 2.2 — Dynamic pricing and dispatch optimisation",
+      "source_span": {
+        "heading": "Mechanism 2.2 — Dynamic pricing and dispatch optimisation",
+        "trace": [
+          "S-027"
+        ],
+        "text": "Given the curve, the engine does two coupled things: it prices demand to flatten the peaks, and it dispatches charging (and stored energy) into the troughs. Both run off one margin object.\n\nPricing/dispatch FORMULA. The per-session price is a base landed cost plus a congestion term that rises with local utilisation and a scarcity term that rises with grid price, floored to protect trust and capped to protect it too:\n\nwhere util(s,t) ∈ [0,1] is site utilisation, grid(t) is the live wholesale price, and β, γ are tuned per city. The dispatch side solves, over a rolling 24h horizon, when to draw from storage vs. the grid to minimise landed cost subject to meeting the forecast load:\n\n[S-205] With this engine live, peak-to-trough load has flattened by 18 points of the normalised index versus flat-tariff baseline, and storage arbitrage captured $0.019/kWh of additional margin on the 22% of volume it touches. [S-206] Crucially, the same engine is what lets us hand D1 and D3 a stable, low internal transfer price — because we have flattened our own exposure, we can offer the fleet a fixed 0.094/kWh** and to D3 at $0.101/kWh, both far below the $0.163 retail benchmark, and that gap is the marginal-cost reduction the flywheel promised. Dispatch stability chains directly into the third driver, because a network that is economically stable is the precondition for being reliable — and reliability is where trust is minted.",
+        "tables": [],
+        "code": [
+          "price(s,t) = clip(    c_land(t) · (1 + β·util(s,t)) + γ·max(0, grid(t) − grid_ref),    p_floor, p_cap)margin(s,t) = price(s,t) − c_land(t) − c_ops(s)",
+          "def dispatch(horizon, load_fc, grid_price, soc, cap_kwh, chg_max, dis_max):    # horizon: list of hourly steps; soc: battery state-of-charge (kWh)    plan = []    for h in horizon:        cheap = grid_price[h] < percentile(grid_price, 35)  # trough hours        if cheap and soc < cap_kwh:                          # buy & store when cheap            charge = min(chg_max, cap_kwh - soc)            soc += charge            plan.append((\"grid+store\", grid_price[h], charge))        elif load_fc[h] > 0 and grid_price[h] > percentile(grid_price, 80):            draw = min(dis_max, soc, load_fc[h])             # discharge when dear            soc -= draw            grid = max(0, load_fc[h] - draw)                 # top up shortfall            plan.append((\"store+grid\", grid_price[h], grid))        else:            plan.append((\"grid\", grid_price[h], load_fc[h])) # ride the curve    return plan"
+        ]
+      },
+      "source_words": 237,
+      "word_floor": 166,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D2.d3": {
+      "id": "D2.d3",
+      "level": 3,
+      "parent": "D2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "Reliability & the trust it buys"
+      ],
+      "title": "Driver 3 — Reliability & the trust it buys",
+      "source_span": {
+        "heading": "Driver 3 — Reliability & the trust it buys",
+        "trace": [
+          "S-028"
+        ],
+        "text": "The third driver is the one the standalone financial model cannot see, because reliability shows up as an absence — the charge that did not fail, the queue that did not form, the trip the fleet did not have to abort. Reliability is how Energy moves the T term, and T is the term with the longest cross-domain reach.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 59,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D2.d3.m1",
+        "D2.d3.m2"
+      ],
+      "mech_n": 2
+    },
+    "D2.d3.m1": {
+      "id": "D2.d3.m1",
+      "level": 4,
+      "parent": "D2.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "Reliability & the trust it buys",
+        "Uptime as the atomic unit of trust"
+      ],
+      "title": "Mechanism 3.1 — Uptime as the atomic unit of trust",
+      "source_span": {
+        "heading": "Mechanism 3.1 — Uptime as the atomic unit of trust",
+        "trace": [
+          "S-029"
+        ],
+        "text": "Trust in physical infrastructure is not a brand attribute; it is an empirical frequency. A user trusts the network to the exact degree that it works when they arrive. So we instrument it obsessively.\n\nUtilization GAUGE dashboard — the operating health of the estate at a glance:\n\n[S-208] Network uptime sits at 99.2% against a 99.0% target and an industry field average nearer 96%; session-success (a plug-in that ends in a completed charge) is 98.6%. The three-point gap between our uptime and the industry field average is not a bragging right — it is the raw material of T. [S-209] In cohort data, a user whose first three sessions all succeeded shows a 4.1× higher 90-day retention than one who hit an early failed session, and — critically — a 2.3× higher rate of activating the D4 wallet. The failed charge does not just cost one session; it poisons the trust that Payments was going to draw on.",
+        "tables": [],
+        "code": [
+          "  NETWORK UPTIME                 SESSION SUCCESS  ┌───────────────┐              ┌───────────────┐  │   ◐ 99.2%     │              │   ◑ 98.6%     │  │  ▁▃▅▇█ target  │              │  ▁▃▅▇  target │  │      99.0%    │              │      98.0%    │  └───────────────┘              └───────────────┘     ▲ green                        ▲ green  MEAN QUEUE WAIT (peak)         DC-FAST AVG DELIVERED  ┌───────────────┐              ┌───────────────┐  │   ◕ 3.4 min   │              │   ◔ 141 kW    │  │  target ≤5.0  │              │  of 150 rated │  │      green    │              │   94% · green │  └───────────────┘              └───────────────┘"
+        ]
+      },
+      "source_words": 158,
+      "word_floor": 111,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D2.d3.m2": {
+      "id": "D2.d3.m2",
+      "level": 4,
+      "parent": "D2.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "Reliability & the trust it buys",
+        "Reliability feeds T that Payments (D4) relies on"
+      ],
+      "title": "Mechanism 3.2 — Reliability feeds T that Payments (D4) relies on",
+      "source_span": {
+        "heading": "Mechanism 3.2 — Reliability feeds T that Payments (D4) relies on",
+        "trace": [
+          "S-030"
+        ],
+        "text": "This is the coupling that justifies housing energy and payments under one roof. Trust earned at the socket is fungible in the user's mind: the person who has learned that the Kepler charger always works is measurably more willing to let the Kepler wallet hold a balance, auto-pay, and eventually accept a credit line. [S-210] We can trace it in the funnel — of users who reached \"high-trust\" status via a clean charging history, 58% enabled auto-pay within 60 days versus 29% of the general base, and their D4 fraud-dispute rate ran 40% lower (reliable-infrastructure users are, empirically, lower-risk users). Energy is therefore a T-acquisition channel for Payments, and it is cheaper than any marketing D4 could run, because the trust is a by-product of a charge the user was going to buy anyway. The mechanism chains forward one last time: if reliability is the asset that buys trust, then the durability of that reliability under a shifting grid is the thing we must stress-test — which is the fourth driver.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 171,
+      "word_floor": 120,
+      "required_component": null,
+      "children": []
+    },
+    "D2.d4": {
+      "id": "D2.d4",
+      "level": 3,
+      "parent": "D2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "The energy-transition scenario"
+      ],
+      "title": "Driver 4 — The energy-transition scenario",
+      "source_span": {
+        "heading": "Driver 4 — The energy-transition scenario",
+        "trace": [
+          "S-031"
+        ],
+        "text": "The final driver is the ten-year question: does the cost floor and the trust ceiling survive a decarbonising, re-pricing grid? Energy is the one domain whose core input — the wholesale price of electricity — is set by forces outside Kepler entirely. We therefore model the domain not as a point forecast but as a tree of grid-price paths, each mapped to a margin outcome.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 65,
+      "word_floor": 46,
+      "required_component": null,
+      "children": [
+        "D2.d4.m1",
+        "D2.d4.m2"
+      ],
+      "mech_n": 2
+    },
+    "D2.d4.m1": {
+      "id": "D2.d4.m1",
+      "level": 4,
+      "parent": "D2.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "The energy-transition scenario",
+        "The scenario tree from grid price to margin"
+      ],
+      "title": "Mechanism 4.1 — The scenario tree from grid price to margin",
+      "source_span": {
+        "heading": "Mechanism 4.1 — The scenario tree from grid price to margin",
+        "trace": [
+          "S-032"
+        ],
+        "text": "Energy SCENARIO TREE (10-year, branching on grid-price path → renewables mix → net domain contribution margin):\n\n[S-211] The probability-weighted expected margin across the tree is +$0.036/kWh, and — the decisive feature — five of six branches are margin-positive. The single negative branch (Squeeze: rising grid and PPAs repricing against us) carries only ~6% weight because our long-dated PPA book and storage hedge (Mechanism 2.2) are precisely the instruments that collapse it. [S-212] Note also that the two \"Grid rises\" branches, painful for margin, are helpful for the cost-advantage spread: when retail power spikes, our hedged landed cost spikes far less, so the gap we hand to D1 and D3 actually widens — the domain's cross-domain value is counter-cyclical to its own P&L. This is why the scenario tree matters strategically and not just financially: even the branches that hurt the standalone Energy business tend to help the flywheel.",
+        "tables": [],
+        "code": [
+          "                          ┌─ Renewables >60% ──► margin +$0.061/kWh   [Green-Cheap]   p≈.28       ┌─ Grid falls ─────┤       │  (glut / solar)  └─ Renewables 40-60% ► margin +$0.048/kWh   [Green-Base]    p≈.17 START ┤       │                  ┌─ Storage scales ───► margin +$0.033/kWh   [Volatile-Win]  p≈.22       ├─ Grid volatile ──┤       │  (peaky)         └─ Storage lags ─────► margin +$0.012/kWh   [Volatile-Thin] p≈.13       │       └─ Grid rises ──────┬─ PPAs hold ───────► margin +$0.007/kWh   [Hedged-Flat]   p≈.14          (gas / carbon)   └─ PPAs reprice ────► margin −$0.009/kWh   [Squeeze]       p≈.06"
+        ]
+      },
+      "source_words": 148,
+      "word_floor": 104,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D2.d4.m2": {
+      "id": "D2.d4.m2",
+      "level": 4,
+      "parent": "D2.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Energy & Charging",
+        "The energy-transition scenario",
+        "Siting and dispatch as the hedge against the tree"
+      ],
+      "title": "Mechanism 4.2 — Siting and dispatch as the hedge against the tree",
+      "source_span": {
+        "heading": "Mechanism 4.2 — Siting and dispatch as the hedge against the tree",
+        "trace": [
+          "S-033"
+        ],
+        "text": "The tree is not something we merely await; the first three drivers are the instruments that bias us toward its upper branches. Data-led siting (1.1) concentrates the estate where renewables and storage are scaling fastest; vertical procurement (1.2) locks the PPAs that hold in the \"Grid rises\" branch; dispatch optimisation (2.2) is literally the mechanism that converts a \"Volatile-Thin\" world into a \"Volatile-Win\" one by arbitraging the peaks. Reliability (3.x) ensures that whatever branch we land in, the trust output — and therefore the D4 coupling — is preserved. Every driver in this section is simultaneously an operating lever and a hedge on the transition tree, which is the property we most want from an infrastructure asset facing a decade of grid re-pricing.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 123,
+      "word_floor": 86,
+      "required_component": {
+        "family": "scenario-tree",
+        "lib": "visx"
+      },
+      "children": []
+    },
+    "D3": {
+      "id": "D3",
+      "level": 2,
+      "parent": "GT",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace"
+      ],
+      "title": "Domain 3 — Logistics Marketplace: liquidity is the product",
+      "source_span": {
+        "heading": "Domain 3 — Logistics Marketplace: liquidity is the product",
+        "trace": [
+          "S-035"
+        ],
+        "text": "Domain 3 is the only Kepler business whose moat term you can watch move in real time. It owns network liquidity (L) — the probability that, at any given moment in any given cell of any of our 42 cities, a courier and a merchant order can be matched inside the time and price window that both sides will accept. Mobility (D1) owns density, Devices (D5) own breadth, Payments (D4) and Energy (D2) own trust; Logistics owns the term that turns a pile of supply and a pile of demand into a market. And L is the most fragile of the four, because it is not a stock we accumulate but a flow we defend every fifteen minutes. A city can have thousands of couriers and thousands of hungry merchants and still be illiquid — if they are in the wrong places, priced wrong, or matched slowly, the market clears at 61% and both sides quietly churn. Liquidity is not headcount. Liquidity is the product, and everything in this section is a mechanism for manufacturing it.\n\nThe reason Logistics is sequenced third — after Mobility, before the marketplace scales past break-even — is that L is the term with the richest cross-feeds, and it is starved without them. Routing time, the single largest input to match quality, is fed by D1 mobility data: the same 3.1 billion monthly location traces that steer autonomous vehicles give our ETA models the real, congestion-aware travel time between any two points, which no standalone delivery app can match (trace S-301). The courier fleet's marginal energy cost is set by D2: e-bike and van charging runs on Kepler's own network at $0.038/km against a $0.091/km market blended rate, which is the difference between a courier earning a living wage at our take rate and not (S-302). Every payout and every merchant settlement runs cash-free through D4, which is what lets us pay couriers within nine seconds of drop-off and underwrite merchant working-capital advances against observed order flow (S-303). And the matching engine itself — the beating heart of L — is sharpened continuously by D6 models trained on the pooled interaction history of all six domains (S-304). Run Logistics as a standalone marketplace and it is a worse DoorDash. Run it as the liquidity organ of a flywheel and it is a market no standalone can price against.\n\nToday Logistics is 18% of revenue (0.04/order blended, against a −0.31). It moves L from an indexed 0.38 to a target 0.71 over the plan — measured as fill rate × match-quality × repeat-rate, the composite defined below. The four drivers that follow are the machinery that does it, and they chain: two-sided liquidity is the physics, courier supply and merchant demand are the two pistons, and the matching engine is the crankshaft that converts both into cleared orders.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 472,
+      "word_floor": 330,
+      "required_component": null,
+      "children": [
+        "D3.d1",
+        "D3.d2",
+        "D3.d3",
+        "D3.d4"
+      ],
+      "finding": "None of those facts is the point",
+      "finding_full": "What's true. Logistics is 18% of revenue, growing +34% yoy, roughly contribution-neutral today at +€0.04/order. The two-sided funnel leaks hard at the same cliff on both sides. The courier retention curve smiles and the merchant curve flattens high. A professional core of 19% of couriers does 68% of volume. Contribution flips positive only above the batching-density threshold. All of that is real, measured, and — read as a standalone marketplace — describes a competent-but-unremarkable delivery business trailing the category leader on scale.\n\nWhat counts. None of those facts is the point. The "
+    },
+    "D3.d1": {
+      "id": "D3.d1",
+      "level": 3,
+      "parent": "D3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "Two-sided liquidity: the core marketplace dynamic"
+      ],
+      "title": "Driver 1 — Two-sided liquidity: the core marketplace dynamic",
+      "source_span": {
+        "heading": "Driver 1 — Two-sided liquidity: the core marketplace dynamic",
+        "trace": [
+          "S-036"
+        ],
+        "text": "Liquidity is the reflexive loop every marketplace lives or dies inside, and stating it precisely is the whole discipline. More couriers online → shorter pickup ETAs and fewer unfulfilled orders → higher merchant satisfaction and order volume → more and denser earnings opportunities per online hour → more couriers online. The loop runs in reverse just as fast: a thin week thins the other side within two weeks. Our job is to bias the loop forward at the lowest subsidy cost, and to know — cell by cell, hour by hour — exactly where on the liquidity curve each market sits.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 101,
+      "word_floor": 71,
+      "required_component": null,
+      "children": [
+        "D3.d1.m1",
+        "D3.d1.m2"
+      ],
+      "mech_n": 2
+    },
+    "D3.d1.m1": {
+      "id": "D3.d1.m1",
+      "level": 4,
+      "parent": "D3.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "Two-sided liquidity: the core marketplace dynamic",
+        "The liquidity composite and the two-sided funnel"
+      ],
+      "title": "Mechanism 1.1 — The liquidity composite and the two-sided funnel",
+      "source_span": {
+        "heading": "Mechanism 1.1 — The liquidity composite and the two-sided funnel",
+        "trace": [
+          "S-037"
+        ],
+        "text": "We refuse to manage liquidity as a single \"orders\" number because that number hides the two independent conversion pipelines feeding it. We instrument both sides as a two-sided conversion funnel, and the shape of each side tells us which piston is misfiring (S-305).\n\nThe funnel makes the pathology legible. The courier side hemorrhages between \"first shift\" and \"4+ shifts\" — the moment a new courier learns whether the app can actually feed them enough well-paid jobs to bother. That 58%→39% cliff is a liquidity problem masquerading as a retention problem: couriers churn not because onboarding is hard but because the market was thin the week they tried it. The merchant side leaks worst at \"first order taken\" → \"10+ orders\" for the symmetric reason: a restaurant that lists and then waits twenty minutes for a courier on its first lunch rush concludes we don't work. Both cliffs are the same cliff seen from two sides, which is the entire insight of two-sided liquidity: you cannot fix one funnel without the other, and the composite metric L = fill-rate × match-quality × repeat-rate is deliberately built so that improving one leg while starving another does not move it (S-306).",
+        "tables": [],
+        "code": [
+          "TWO-SIDED CONVERSION FUNNEL  (indexed monthly cohort, illustrative mature city)  COURIER SUPPLY SIDE                         MERCHANT DEMAND SIDE  App install ......... 100%  (48,200)        Merchant signup ...... 100%  (3,410)    → Onboarded/verified  71%  (34,200)         → Menu live/onboarded  78%  (2,660)      → First shift        58%  (27,960)          → First order taken   64%  (2,182)        → 4+ shifts wk1    39%  (18,800)            → 10+ orders wk1     47%  (1,603)          → Active mo.2    28%  (13,500)              → Active mo.2       41%  (1,398)            → Retained mo.6 19% (9,160)                → Retained mo.6    33%  (1,125)                                        ↑ the leaks that eat L ↑"
+        ]
+      },
+      "source_words": 198,
+      "word_floor": 139,
+      "required_component": {
+        "family": "two-sided-funnel",
+        "lib": "recharts"
+      },
+      "children": []
+    },
+    "D3.d1.m2": {
+      "id": "D3.d1.m2",
+      "level": 4,
+      "parent": "D3.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "Two-sided liquidity: the core marketplace dynamic",
+        "Cohort retention as the liquidity truth serum"
+      ],
+      "title": "Mechanism 1.2 — Cohort retention as the liquidity truth serum",
+      "source_span": {
+        "heading": "Mechanism 1.2 — Cohort retention as the liquidity truth serum",
+        "trace": [
+          "S-038"
+        ],
+        "text": "Because the funnel is a snapshot, we govern the business on cohort-retention curves — the honest, un-gameable record of whether each side stuck. The shapes are as diagnostic as the numbers.\n\nTwo facts govern the plan. First, the merchant curve flattens high — merchants that survive their first month churn at under 3%/month, because a restaurant that has integrated us into its lunch service faces real switching cost and, critically, because D4 working-capital advances (settled against observed flow) make Kepler a lender as well as a channel. That flat tail is where merchant lifetime value lives. Second, the courier curve smiles — it decays, then stabilizes around a hard core of professional couriers doing 30+ hours/week who account for 68% of delivered volume from 19% of the retained cohort (S-307). These two shapes dictate opposite tactics: for merchants, win month one and the curve holds itself; for couriers, over-invest in the professional core and treat the casual tail as elastic surge capacity, not as the base. Managing them identically — the standalone-marketplace default — wastes subsidy on couriers who were always going to churn and under-serves merchants in the one month that decides their lifetime.",
+        "tables": [],
+        "code": [
+          "COHORT RETENTION — % of month-0 cohort still active   (mature-market blend) Courier cohorts                         Merchant cohorts100 ●                                   100 ●    ●●                                      ●●● 60   ●●●___                             75      ●●●●●●____________  ← merchant curve       ▔▔▔▔▔●●●●________  ← smiles up          flattens HIGH & FLAT 28          ▔▔▔▔▔▔▔●●●●●●  ← courier      41             ▔▔▔▔▔▔▔▔▔▔▔▔▔▔                  ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔     M0  M1  M2  M3  M4  M5  M6            M0  M1  M2  M3  M4  M5  M6"
+        ]
+      },
+      "source_words": 195,
+      "word_floor": 136,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D3.d2": {
+      "id": "D3.d2",
+      "level": 3,
+      "parent": "D3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "Courier supply: manufacturing the sell side"
+      ],
+      "title": "Driver 2 — Courier supply: manufacturing the sell side",
+      "source_span": {
+        "heading": "Driver 2 — Courier supply: manufacturing the sell side",
+        "trace": [
+          "S-039"
+        ],
+        "text": "Couriers are half the market and the more volatile half, because their participation is priced by the hour against every other earning option in the city. Supply is not recruited once; it is summoned order by order, which is why the courier-facing surface — the app in a rider's hand — is a first-class strategic asset, not a UI afterthought.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 60,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D3.d2.m1",
+        "D3.d2.m2"
+      ],
+      "mech_n": 2
+    },
+    "D3.d2.m1": {
+      "id": "D3.d2.m1",
+      "level": 4,
+      "parent": "D3.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "Courier supply: manufacturing the sell side",
+        "The job-offer surface: earning legible in one screen"
+      ],
+      "title": "Mechanism 2.1 — The job-offer surface: earning legible in one screen",
+      "source_span": {
+        "heading": "Mechanism 2.1 — The job-offer surface: earning legible in one screen",
+        "trace": [
+          "S-040"
+        ],
+        "text": "A courier decides to accept or decline in under four seconds. Everything that determines whether L holds — the guaranteed payout, the honest ETA, the surge multiplier, the batching — has to be legible in that window. Here is the live in-app job-offer screen and the push that precedes it, real production copy (S-308):\n\nEvery element is a liquidity lever with a cross-feed behind it. The €14.20 is guaranteed, not estimated — the courier is paid that number even if the drop runs long, which is only underwritable because D4 pays out in nine seconds and D6 predicts route time tightly enough that our guarantee variance is ±7%. The \"~22 min\" and \"5.4 km\" are honest because D1 mobility traces give congestion-real ETAs (S-309); a competitor quoting optimistic times trains its couriers to distrust the app, which is precisely the 58%→39% funnel cliff in miniature. The \"bike at 88%\" line ties to D2 — the app only offers a battery-heavy multi-stop batch to a courier whose charge (on our network, at our cost) can complete it. And the \"acceptance 94% · keeps Priority tier\" is the incentive spine: acceptance rate is the courier's stake in the matching engine (Driver 3), shown to them at the moment it matters.",
+        "tables": [],
+        "code": [
+          "┌──────────────────────────────────────────────┐│  PUSH (lock screen)                            ││  Kepler Courier · now                          ││  ⚡ Surge 1.6× near you — 3 stacked orders,    ││     est. €14.20 for ~22 min. Tap to grab.      │└──────────────────────────────────────────────┘┌──────────────────────────────────────────────┐│   NEW OFFER            ⏱ 12s to accept   ●●●○  ││                                                ││   €14.20   guaranteed          SURGE 1.6× ⚡   ││   ───────────────────────────────────────────  ││   BATCH · 3 stops              Pickup 4 min     ││                                                ││   ①  Nonna's Kitchen · Jl. Kemang    0.9 km    ││   ②  Green Bowl · same block         +0.3 km    ││   ③  → 3 drops, all within 2.1 km               ││                                                ││   Route: 5.4 km · ~22 min · paid on drop        ││   Charged & ready: bike at 88% 🔋               ││   ───────────────────────────────────────────  ││   Your acceptance: 94% ·  keeps Priority tier   ││                                                ││   [   DECLINE   ]        [   ACCEPT  €14.20  ]  │└──────────────────────────────────────────────┘"
+        ]
+      },
+      "source_words": 208,
+      "word_floor": 146,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D3.d2.m2": {
+      "id": "D3.d2.m2",
+      "level": 4,
+      "parent": "D3.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "Courier supply: manufacturing the sell side",
+        "Supply elasticity and the cost of the marginal hour"
+      ],
+      "title": "Mechanism 2.2 — Supply elasticity and the cost of the marginal hour",
+      "source_span": {
+        "heading": "Mechanism 2.2 — Supply elasticity and the cost of the marginal hour",
+        "trace": [
+          "S-041"
+        ],
+        "text": "The professional core is inelastic and cheap; the casual tail is elastic and expensive, summoned only when demand spikes past what the core can clear. We model the marginal cost of an online courier-hour by tier and use it to price surge (Driver 4). The table is the supply curve made operational:\n\nThe strategy reads straight off the table (S-310): protect the core's effective pay at almost any cost — losing 1% of them costs disproportionate volume — and use the casual tail's high elasticity as a supply valve, dialing surge to pull it online for the two hours a day it is needed and letting it recede otherwise. The failure mode we design against is subsidizing the whole population to solve a problem that lives in the tail, which is how standalone marketplaces burn cash into a thin market. Because D2 lowers the core's real energy cost and D4 lowers their payout friction to zero, Kepler's core clears at €9.10/hr where a competitor renting charging and paying weekly clears near €11.20 — a structural 19% supply-cost advantage that widens L at equal price.",
+        "tables": [
+          [
+            [
+              "Supply tier",
+              "% of couriers",
+              "% of volume",
+              "Elasticity to +10% pay",
+              "Marginal cost/online-hr",
+              "Churn if pay −5%"
+            ],
+            [
+              "Professional core (30h+)",
+              "19%",
+              "68%",
+              "+2% hours",
+              "€9.10",
+              "1.1%"
+            ],
+            [
+              "Regular (10–30h)",
+              "34%",
+              "26%",
+              "+11% hours",
+              "€10.40",
+              "6.8%"
+            ],
+            [
+              "Casual/surge tail (<10h)",
+              "47%",
+              "6%",
+              "+38% hours",
+              "€13.90",
+              "22%"
+            ]
+          ]
+        ],
+        "code": []
+      },
+      "source_words": 184,
+      "word_floor": 129,
+      "required_component": {
+        "family": "faceted-grid",
+        "lib": "tanstack"
+      },
+      "children": []
+    },
+    "D3.d3": {
+      "id": "D3.d3",
+      "level": 3,
+      "parent": "D3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "The matching engine: converting both sides into cleared orders"
+      ],
+      "title": "Driver 3 — The matching engine: converting both sides into cleared orders",
+      "source_span": {
+        "heading": "Driver 3 — The matching engine: converting both sides into cleared orders",
+        "trace": [
+          "S-042"
+        ],
+        "text": "Supply and demand do not clear themselves. The matching engine is the crankshaft — the code that, every few seconds, looks at every open order and every available courier in a cell and decides who gets what. Its objective function is the liquidity composite. A naive nearest-courier matcher looks fine at low load and collapses under surge, because greedy local matches strand distant orders; the engine has to optimize the market, not the order.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 74,
+      "word_floor": 52,
+      "required_component": null,
+      "children": [
+        "D3.d3.m1",
+        "D3.d3.m2"
+      ],
+      "mech_n": 2
+    },
+    "D3.d3.m1": {
+      "id": "D3.d3.m1",
+      "level": 4,
+      "parent": "D3.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "The matching engine: converting both sides into cleared orders",
+        "Batch-optimal assignment, not greedy nearest"
+      ],
+      "title": "Mechanism 3.1 — Batch-optimal assignment, not greedy nearest",
+      "source_span": {
+        "heading": "Mechanism 3.1 — Batch-optimal assignment, not greedy nearest",
+        "trace": [
+          "S-043"
+        ],
+        "text": "The engine runs on a short dispatch tick, batching open orders and idle couriers into a bipartite assignment problem solved for a blended cost of ETA, batching gain, courier fairness, and predicted acceptance. The pseudocode is the actual shape of the loop (S-311):\n\nFour cross-feeds are load-bearing inside one function. D1_travel_time replaces straight-line distance with congestion-real ETA — the single biggest match-quality gain, worth +9pts of fill rate in dense cells (S-312). D6_accept_model predicts, per courier per batch, the probability of acceptance, so the engine offers each job to the courier most likely to take it and do it well, which cuts decline-and-reoffer churn that otherwise adds 40–90s of latency per order. D2_energy_ok refuses to hand a courier a batch their charge can't finish. And fairness_debt protects the professional core's earnings from being starved by the optimizer — a fairness term the standalone matcher lacks, and the reason our core churns at 1.1% not 6%.",
+        "tables": [],
+        "code": [
+          "# DISPATCH TICK  — runs every Δt = 6s per city celldef match(cell, t):    orders   = open_orders(cell, t)          # unassigned + newly ready    couriers = available(cell, t)            # idle + finishing-soon (D1 ETA)    if liquidity_index(cell) < THIN:         # thin-market guard        raise_surge(cell)                    # → Driver 4, pulls casual tail    # 1. candidate batches: stack drops that share route corridors    batches = build_batches(orders, max_stops=3, detour_cap=0.35)    # 2. cost matrix over (courier c, batch b)    for c in couriers:      for b in batches:        eta   = D1_travel_time(c.loc, b.route, t)     # congestion-real        p_acc = D6_accept_model(c, b, surge(cell))    # learned propensity        soc   = D2_energy_ok(c.vehicle, b.route)      # charge sufficient?        fair  = fairness_debt(c)                      # under-served core ↑        cost[c][b] = (w1*eta - w2*batch_gain(b)                      - w3*p_acc - w4*fair) / soc_ok(soc)    # 3. solve assignment (Hungarian / auction) minimizing total cost    assign = min_cost_matching(cost)    for (c,b) in assign:        offer(c, b, guaranteed_pay(b, surge(cell)))   # → courier app 2.1        # payout on drop settled instantly via D4    return unmatched(orders, assign)          # roll to next tick"
+        ]
+      },
+      "source_words": 155,
+      "word_floor": 108,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D3.d3.m2": {
+      "id": "D3.d3.m2",
+      "level": 4,
+      "parent": "D3.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "The matching engine: converting both sides into cleared orders",
+        "The engine as the compounding surface"
+      ],
+      "title": "Mechanism 3.2 — The engine as the compounding surface",
+      "source_span": {
+        "heading": "Mechanism 3.2 — The engine as the compounding surface",
+        "trace": [
+          "S-044"
+        ],
+        "text": "The matcher is where the flywheel compounds fastest, because every completed and every declined offer is a labeled training example fed straight back to D6. Match quality this quarter trains the acceptance model that raises match quality next quarter (S-313). This is the mechanism by which L stops being a subsidy we buy and becomes a moat we own: a competitor can match our price for a week, but cannot match a model trained on 340 million dispatch decisions per month across six correlated domains. The gap between our fill rate and a well-funded standalone's has widened from 4pts to 11pts over eight quarters at equal courier pay — not because we spend more, but because the engine has learned more (S-314).",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 122,
+      "word_floor": 85,
+      "required_component": null,
+      "children": []
+    },
+    "D3.d4": {
+      "id": "D3.d4",
+      "level": 3,
+      "parent": "D3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "Merchant demand and density: the buy side and the geometry"
+      ],
+      "title": "Driver 4 — Merchant demand and density: the buy side and the geometry",
+      "source_span": {
+        "heading": "Driver 4 — Merchant demand and density: the buy side and the geometry",
+        "trace": [
+          "S-045"
+        ],
+        "text": "Demand is the other piston, and it has a spatial dimension supply does not: a merchant is a fixed point, and the density of merchants and orders in a cell determines whether batching — the single biggest efficiency lever — is even possible. Thin, spread-out demand cannot be batched, so it is expensive to serve at any courier count. Dense demand is self-lubricating.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 63,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D3.d4.m1",
+        "D3.d4.m2"
+      ],
+      "mech_n": 2
+    },
+    "D3.d4.m1": {
+      "id": "D3.d4.m1",
+      "level": 4,
+      "parent": "D3.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "Merchant demand and density: the buy side and the geometry",
+        "Density as the batching multiplier"
+      ],
+      "title": "Mechanism 4.1 — Density as the batching multiplier",
+      "source_span": {
+        "heading": "Mechanism 4.1 — Density as the batching multiplier",
+        "trace": [
+          "S-046"
+        ],
+        "text": "Below a critical order density the engine cannot stack drops, so every order consumes a whole courier trip; above it, three drops share one trip and effective supply triples without one extra courier. We manage cities across this threshold explicitly:\n\nThe non-linearity is the whole strategy (S-315). The jump from \"approaching\" to \"liquid\" flips contribution from negative to positive on a batching multiplier, not a price change. So the growth playbook is not \"add cities\" but \"concentrate demand within a city until cells cross the batching threshold, then widen\" — a land-and-densify motion, using D1 mobility data to know exactly which cells already have the foot traffic to support density before we spend a euro of merchant acquisition (S-316). Kepler's cross-domain advantage is that Mobility has already mapped the demand geography of all 42 cities, so Logistics launches into pre-validated dense cells instead of guessing.",
+        "tables": [
+          [
+            [
+              "City density tier",
+              "Orders/km²/hr",
+              "Avg stops/batch",
+              "Effective courier multiplier",
+              "Contribution/order"
+            ],
+            [
+              "Sub-critical (launch)",
+              "< 8",
+              "1.1",
+              "1.0×",
+              "−€0.61"
+            ],
+            [
+              "Approaching",
+              "8–18",
+              "1.6",
+              "1.5×",
+              "−€0.09"
+            ],
+            [
+              "Liquid",
+              "18–40",
+              "2.3",
+              "2.2×",
+              "+€0.34"
+            ],
+            [
+              "Dense/core",
+              "> 40",
+              "2.8",
+              "2.7×",
+              "+€0.71"
+            ]
+          ]
+        ],
+        "code": []
+      },
+      "source_words": 145,
+      "word_floor": 102,
+      "required_component": {
+        "family": "faceted-grid",
+        "lib": "tanstack"
+      },
+      "children": []
+    },
+    "D3.d4.m2": {
+      "id": "D3.d4.m2",
+      "level": 4,
+      "parent": "D3.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Logistics Marketplace",
+        "Merchant demand and density: the buy side and the geometry",
+        "Surge as the equilibrium regulator"
+      ],
+      "title": "Mechanism 4.2 — Surge as the equilibrium regulator",
+      "source_span": {
+        "heading": "Mechanism 4.2 — Surge as the equilibrium regulator",
+        "trace": [
+          "S-047"
+        ],
+        "text": "When demand spikes past available supply, price is the only fast lever — surge pulls the elastic casual tail online (Driver 2) and, secondarily, rations demand. The supply–demand equilibrium chart is the control surface the surge engine reads (S-317):\n\nRead left to right: at the pre-surge point ○, peak demand D_peak sits far right of base supply S₀, which is nearly vertical because the inelastic core won't add hours for a small bump — so the market can't clear, fill collapses to 71%, ETAs blow out, and both funnels start leaking within the hour. Surge shifts supply to S₁ by paying the elastic tail enough to come online, moving the clearing point to ★ at 96% fill. The engine's raise_surge call (Mechanism 3.1) is literally walking this curve, using the Driver-2 elasticity table to choose the smallest multiplier that reaches ★. Set surge too low and the market stays illiquid; too high and you over-pay the core for hours they'd have worked anyway and ration demand you wanted. Because our casual tail charges on D2's network and is paid instantly by D4, we can pull it online at a lower multiplier than a competitor — cheaper surge for equal fill is a direct L advantage (S-318).",
+        "tables": [],
+        "code": [
+          "SUPPLY–DEMAND EQUILIBRIUM  (single cell, lunch rush) pay/                     S₀ (base supply, inelastic core) order  │  D_peak            S₁ (with 1.6× surge → casual tail online)  €     │   \\                / 16 ────│────\\──────────────/─── surge pulls S₀→S₁, new clear at ★        │     \\            /★  ← liquid equilibrium (fill 96%) 12 ────│──────\\────●─────/──────  ○ = pre-surge: D_peak >> S₀,        │        \\  ○    /            fill collapses to 71%, ETAs blow out  8 ────│─────────\\────/────────── S₀ nearly vertical: core won't        │           \\  /              add hours for small pay bumps        └────────────╳──────────────────── orders/hr →                pre-surge gap"
+        ]
+      },
+      "source_words": 206,
+      "word_floor": 144,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D4": {
+      "id": "D4",
+      "level": 2,
+      "parent": "GT",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech"
+      ],
+      "title": "Domain 4 — Payments & Fintech: trust is the product, monetization is the by-product",
+      "source_span": {
+        "heading": "Domain 4 — Payments & Fintech: trust is the product, monetization is the by-product",
+        "trace": [
+          "S-049"
+        ],
+        "text": "Domain 4 is the only domain in the flywheel that moves trust (T) as its primary lever and converts moat strength into cash. Every other domain manufactures interactions, breadth, or liquidity and hopes trust follows; Payments manufactures trust deliberately, prices it, and sells it back to the rest of the platform. In the moat identity M = D × B × L × T, Payments is the term-owner for T and the co-owner — with D6 — of the mechanism that turns a high M into revenue. That dual role is why the register of this section is different from the others: it is written half as a trust-engineering document and half as a monetization thesis, because at Kepler those are the same document read from two ends.\n\nThe governing thought insists that Payments is not a business; it is a closing device. Mobility (D1) generates the densest behavioural data in the company but cannot underwrite anything on its own; Logistics (D3) has the liquidity but no balance sheet; Devices (D5) and the Data/AI platform (D6) generate signals but do not touch money. Payments is the domain that (a) closes the loop — it lets D1 and D3 run cash-free, which raises interaction density and network liquidity by removing the friction of cash handling; (b) underwrites on cross-domain behaviour — it prices credit off D1 mobility patterns and D3 courier-reliability data that no bank can see; and (c) consumes fraud signals from D6 — which are themselves fed by D1's location telemetry and D5's device fingerprints. So Payments moves T for the whole platform, and in doing so it is fed by four other domains and feeds all six. It is the most coupled domain in the flywheel, which is exactly why running it as a standalone fintech P&L — the conglomerate reflex — destroys most of its value. Trace S-400 anchors the claim: a payment at Kepler is worth measurably more than the same payment at a monoline PSP because it arrives pre-scored by five other domains.\n\nPayments is also the fastest-growing domain in the company, +58% yoy, against a blended −$1.1bn EBIT and a ~35% conglomerate discount. That growth is not the thesis. The thesis is that the growth is sequenced — it only exists because D1 and D3 reached interaction scale first, and it only compounds because every payment it processes writes back into the moat that D6 curates. What follows is four drivers, each chaining into the next: the rails move the money, the credit engine underwrites the money, trust/fraud/compliance protects the money, and monetization/interchange extracts the money — and each driver hands its output to the one after it.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 444,
+      "word_floor": 311,
+      "required_component": null,
+      "children": [
+        "D4.d1",
+        "D4.d2",
+        "D4.d3",
+        "D4.d4"
+      ],
+      "finding": null,
+      "finding_full": "What's true. Payments is the fastest-growing domain (+58% yoy), it now earns most of its gross profit from durable, un-capped layers (S-413), and its per-interaction contribution has already turned positive (S-416). Interchange is legally near-zero across half of Kepler's TPV (S-412), so the standalone \"payments company\" framing is not just incomplete — it is impossible in these markets. On a monoline basis Kepler Payments would trail a focused regional PSP on rate and a focused lender on scale.\n\nWhat counts. None of the durable margin exists without the other five domains. The credit engine u"
+    },
+    "D4.d1": {
+      "id": "D4.d1",
+      "level": 3,
+      "parent": "D4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "The payments rails: the substrate that makes every other domain cash-free"
+      ],
+      "title": "Driver 1 — The payments rails: the substrate that makes every other domain cash-free",
+      "source_span": {
+        "heading": "Driver 1 — The payments rails: the substrate that makes every other domain cash-free",
+        "trace": [
+          "S-050"
+        ],
+        "text": "The rails are the physical-world plumbing: the ledger, the PSP and scheme connections, the KYC gate, and the settlement engine. If the rails are slow, fragmented, or per-domain, the flywheel leaks — every domain rebuilds its own money-movement stack and the shared trust signal never accumulates in one place. The strategic claim of Driver 1 is that one ledger for all six domains is worth more than six optimised ledgers, because the value is in the join, not in any single flow.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 82,
+      "word_floor": 57,
+      "required_component": null,
+      "children": [
+        "D4.d1.m1",
+        "D4.d1.m2",
+        "D4.d1.m3"
+      ],
+      "mech_n": 3
+    },
+    "D4.d1.m1": {
+      "id": "D4.d1.m1",
+      "level": 4,
+      "parent": "D4.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "The payments rails: the substrate that makes every other domain cash-free",
+        "A single unified ledger as the system of record"
+      ],
+      "title": "Mechanism 1.1 — A single unified ledger as the system of record",
+      "source_span": {
+        "heading": "Mechanism 1.1 — A single unified ledger as the system of record",
+        "trace": [
+          "S-051"
+        ],
+        "text": "Kepler runs one double-entry ledger that every domain posts into: a ride from D1, a charge from D2, a delivery payout to a D3 courier, a device instalment from D5 — all land as entries against the same account graph. This is the mechanism that lets Payments see the whole customer. A rider who also couriers and leases a device is one node with three revenue streams and one risk profile, not three anonymous flows in three systems. Trace S-401 records the design decision: the ledger is append-only, event-sourced, and the source of truth for both money movement and the behavioural features D6 later consumes. The architecture below shows how flows converge.\n\nThe load-bearing nodes: INGRESS API normalises every domain's payment intent into one schema; the RISK node calls D6 in-line (fraud model, ~40ms budget); the KYC/KYB GATE enforces tiered identity (tier 0 anonymous wallet top-up, tier 3 full underwriting-grade KYC); the UNIFIED LEDGER is the join point; the FEATURE STORE bridge is what makes Payments a contributor to the moat rather than a consumer of it. Trace S-402: the feature-store write-back is the single most under-valued line in the architecture — it is how a payment becomes training data.",
+        "tables": [],
+        "code": [
+          "KEPLER PAYMENTS ARCHITECTURE (rails, ledger, PSPs, KYC)  D1 Mobility ──┐                                    ┌── Card Schemes (Visa/MC/local)  D2 Energy ────┤                                    ├── Local rails (UPI/PIX/PayNow/GrabPay)  D3 Logistics ─┼─►  [ INGRESS API ]  ─►  [ RISK ]   ├── Acquiring banks (per-region)  D5 Devices ───┤        │                  │        └── Bank-transfer / RTP networks  D6 signals ───┘        ▼                  ▼                    [ KYC / KYB GATE ] ─► [ UNIFIED LEDGER ]  ◄──► [ FEATURE STORE → D6 ]                         │  tiers 0–3         │  event-sourced                         ▼                    ▼                    [ IDENTITY GRAPH ]   [ SETTLEMENT ENGINE ] ─► [ PAYOUTS / INTERCHANGE CAPTURE ]                                              │                                              ▼                                    [ RECONCILIATION + REG REPORTING (14 countries) ]"
+        ]
+      },
+      "source_words": 200,
+      "word_floor": 140,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D4.d1.m2": {
+      "id": "D4.d1.m2",
+      "level": 4,
+      "parent": "D4.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "The payments rails: the substrate that makes every other domain cash-free",
+        "PSP orchestration and local-rail routing"
+      ],
+      "title": "Mechanism 1.2 — PSP orchestration and local-rail routing",
+      "source_span": {
+        "heading": "Mechanism 1.2 — PSP orchestration and local-rail routing",
+        "trace": [
+          "S-052"
+        ],
+        "text": "No single scheme covers 14 countries economically. Kepler orchestrates across card schemes, local instant-payment rails (UPI in India, PIX in Brazil, PayNow in Singapore), and bank-transfer/RTP networks, routing each transaction to the cheapest rail that clears the risk bar. The mechanism chains directly out of 1.1: because the ledger is unified, the router can make a portfolio decision — accept slightly higher fraud on a low-margin D3 courier payout routed over a cheap local rail, because the same user's D1 ride history (fed in via S-402) collateralises the risk. Trace S-403 captures the routing economics: shifting 22 points of volume from card schemes to local rails cut blended cost-of-payment from 1.9% to 1.3% of TPV without raising realised fraud, because the risk headroom came from cross-domain data, not from the rail itself.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 132,
+      "word_floor": 92,
+      "required_component": null,
+      "children": []
+    },
+    "D4.d1.m3": {
+      "id": "D4.d1.m3",
+      "level": 4,
+      "parent": "D4.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "The payments rails: the substrate that makes every other domain cash-free",
+        "Cash-free closure of D1 and D3"
+      ],
+      "title": "Mechanism 1.3 — Cash-free closure of D1 and D3",
+      "source_span": {
+        "heading": "Mechanism 1.3 — Cash-free closure of D1 and D3",
+        "trace": [
+          "S-053"
+        ],
+        "text": "Here Driver 1 hands off to the flywheel. Once the rails are unified and cheap, Kepler can make mobility and logistics cash-free — no driver handling notes, no courier reconciling coins. This is the first cross-domain coupling: removing cash raises D1's interaction density (D) because more low-value rides become viable, and raises D3's network liquidity (L) because couriers get paid instantly and stay on the platform. Trace S-404: in the six cities where cash was fully removed, D1 ride frequency rose 11% and D3 courier churn fell 9pp — neither number belongs to Payments' P&L, which is precisely the point. Payments spent margin to buy density and liquidity for other domains, and the moat identity M rose even though Domain 4's standalone contribution looked flat. A conglomerate scorecard would have killed this trade.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 133,
+      "word_floor": 93,
+      "required_component": null,
+      "children": []
+    },
+    "D4.d2": {
+      "id": "D4.d2",
+      "level": 3,
+      "parent": "D4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Credit & underwriting: lending on data no bank can see"
+      ],
+      "title": "Driver 2 — Credit & underwriting: lending on data no bank can see",
+      "source_span": {
+        "heading": "Driver 2 — Credit & underwriting: lending on data no bank can see",
+        "trace": [
+          "S-054"
+        ],
+        "text": "If the rails make Kepler a payments company, the credit engine makes it a fintech. Driver 2 takes the unified ledger from Driver 1 and does the thing banks cannot: it underwrites 28.4m actives using behavioural collateral — how reliably you ride, charge, deliver, and pay — rather than a thin or absent credit file. This is where T compounds into monetization, because trust that is measured can be lent against.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 71,
+      "word_floor": 50,
+      "required_component": null,
+      "children": [
+        "D4.d2.m1",
+        "D4.d2.m2",
+        "D4.d2.m3"
+      ],
+      "mech_n": 3
+    },
+    "D4.d2.m1": {
+      "id": "D4.d2.m1",
+      "level": 4,
+      "parent": "D4.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Credit & underwriting: lending on data no bank can see",
+        "Behavioural underwriting off D1 and D3 exhaust"
+      ],
+      "title": "Mechanism 2.1 — Behavioural underwriting off D1 and D3 exhaust",
+      "source_span": {
+        "heading": "Mechanism 2.1 — Behavioural underwriting off D1 and D3 exhaust",
+        "trace": [
+          "S-055"
+        ],
+        "text": "The core mechanism: Kepler scores creditworthiness from platform behaviour that is exogenous to any credit bureau. A D3 courier with 18 months of on-time deliveries and stable D1 commuting patterns is a better risk than her thin bureau file suggests. This is the second cross-domain coupling — Payments underwrites on D1 mobility regularity and D3 logistics reliability. Trace S-405 documents the lift: adding cross-domain behavioural features cut the Gini-normalised default rate 210bps at constant approval, or equivalently raised approvals 14% at constant loss. The scoring logic lives in D6's feature store but is owned, productised, and priced by D4.\n\nTrace S-406 is the query itself; note the thick_file flag — a user is \"thick\" not because a bureau has data on them but because Kepler does, across domains. That is the underwriting moat in one boolean.",
+        "tables": [],
+        "code": [
+          "-- S-406: Kepler cross-domain credit score (nightly batch, feature-store backed)WITH mobility AS (   -- D1 signal: regularity + tenure  SELECT user_id,         COUNT(*)                         AS rides_90d,         STDDEV(hour_of_day)              AS commute_regularity,   -- lower = more predictable         DATE_PART('day', NOW() - MIN(ts)) AS tenure_days  FROM d1_rides WHERE ts > NOW() - INTERVAL '90 days'  GROUP BY user_id),logistics AS (       -- D3 signal: earnings stability + reliability  SELECT courier_id AS user_id,         AVG(on_time_flag)::numeric(4,3)  AS on_time_rate,         STDDEV(daily_earnings)           AS earnings_vol,         SUM(completed_jobs)              AS jobs_90d  FROM d3_courier_jobs WHERE ts > NOW() - INTERVAL '90 days'  GROUP BY courier_id),payments AS (        -- D4 signal: repayment + ledger balance behaviour  SELECT account_id AS user_id,         AVG(repaid_on_time)::numeric(4,3) AS repay_rate,         MIN(running_balance)              AS min_balance_90d,         COUNT(*) FILTER (WHERE type='chargeback') AS cb_90d  FROM ledger_entries WHERE ts > NOW() - INTERVAL '90 days'  GROUP BY account_id)SELECT u.user_id,       ROUND( 560         + 90 * COALESCE(l.on_time_rate,0.5)          -- reliability         + 70 * LEAST(m.tenure_days/365.0, 1.0)       -- tenure, capped 1yr         - 55 * COALESCE(m.commute_regularity,4)/8.0  -- erratic = riskier         - 40 * LEAST(p.cb_90d, 3)                     -- chargebacks penalised         + 60 * COALESCE(p.repay_rate,0.5)             -- prior repayment       )::int AS kepler_score,       (l.on_time_rate IS NOT NULL AND m.rides_90d > 20) AS thick_fileFROM users uLEFT JOIN mobility m  USING (user_id)LEFT JOIN logistics l USING (user_id)LEFT JOIN payments  p USING (user_id);"
+        ]
+      },
+      "source_words": 136,
+      "word_floor": 95,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D4.d2.m2": {
+      "id": "D4.d2.m2",
+      "level": 4,
+      "parent": "D4.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Credit & underwriting: lending on data no bank can see",
+        "Working-capital and instalment products that recycle into the flywheel"
+      ],
+      "title": "Mechanism 2.2 — Working-capital and instalment products that recycle into the flywheel",
+      "source_span": {
+        "heading": "Mechanism 2.2 — Working-capital and instalment products that recycle into the flywheel",
+        "trace": [
+          "S-056"
+        ],
+        "text": "The score from 2.1 powers three products: courier working-capital advances (D3), device instalments (D5), and consumer BNPL on rides/charges (D1/D2). The chaining matters: a device instalment (D5) puts a proprietary-sensor device (which raises data breadth B) into a user's hands who could not have paid upfront — so credit manufactures moat inputs for other domains. Trace S-407: instalment financing raised D5 device attach among the bottom two income quartiles by 31%, directly feeding D5's breadth term. Credit here is not a yield product; it is a distribution subsidy for the moat, repaid by better data.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 95,
+      "word_floor": 66,
+      "required_component": null,
+      "children": []
+    },
+    "D4.d2.m3": {
+      "id": "D4.d2.m3",
+      "level": 4,
+      "parent": "D4.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Credit & underwriting: lending on data no bank can see",
+        "Portfolio risk and the loss-provisioning discipline"
+      ],
+      "title": "Mechanism 2.3 — Portfolio risk and the loss-provisioning discipline",
+      "source_span": {
+        "heading": "Mechanism 2.3 — Portfolio risk and the loss-provisioning discipline",
+        "trace": [
+          "S-057"
+        ],
+        "text": "Underwriting on behaviour is powerful and pro-cyclical — the same D1/D3 signals that predict good times can turn together in a downturn. Driver 2 therefore hands a risk to Driver 3: correlated behavioural default. Trace S-408 sets the guardrail — exposure is capped per cohort and provisioned against a stressed scenario where D1 ride frequency and D3 job volume fall together (the correlation the cross-domain data itself reveals). The credit engine's edge and its systemic risk come from the same source, which is the honest version of the thesis.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 89,
+      "word_floor": 62,
+      "required_component": {
+        "family": "time-series",
+        "lib": "visx"
+      },
+      "children": []
+    },
+    "D4.d3": {
+      "id": "D4.d3",
+      "level": 3,
+      "parent": "D4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Trust, fraud & compliance: the term-owner mechanism for T"
+      ],
+      "title": "Driver 3 — Trust, fraud & compliance: the term-owner mechanism for T",
+      "source_span": {
+        "heading": "Driver 3 — Trust, fraud & compliance: the term-owner mechanism for T",
+        "trace": [
+          "S-058"
+        ],
+        "text": "This is the driver that literally moves T in the moat identity. Fraud losses and compliance failures are trust leaks; every prevented fraud and every clean audit is trust retained and re-lent to all six domains. Driver 3 takes the credit exposure from Driver 2 and the payment flows from Driver 1 and defends both — using signals it does not itself generate.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 63,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D4.d3.m1",
+        "D4.d3.m2"
+      ],
+      "mech_n": 2
+    },
+    "D4.d3.m1": {
+      "id": "D4.d3.m1",
+      "level": 4,
+      "parent": "D4.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Trust, fraud & compliance: the term-owner mechanism for T",
+        "Real-time fraud scoring on D6 signals fed by D1 and D5"
+      ],
+      "title": "Mechanism 3.1 — Real-time fraud scoring on D6 signals fed by D1 and D5",
+      "source_span": {
+        "heading": "Mechanism 3.1 — Real-time fraud scoring on D6 signals fed by D1 and D5",
+        "trace": [
+          "S-059"
+        ],
+        "text": "The fraud engine scores every transaction in the ~40ms RISK node from Driver 1's architecture. Its features are the third and fourth cross-domain couplings: fraud signals from D6, which are themselves assembled from D1 location telemetry (is this ride's device physically where the card says it is?) and D5 device fingerprints (is this the same hardware that onboarded?). A card-not-present transaction that geolocates 300km from the user's D1 device is scored differently from one that sits inside their normal mobility envelope. Trace S-409: cross-domain fraud features cut fraud basis points from 18 to 7 bps of TPV while lowering the false-positive decline rate 22% — trust up on both sides of the ledger, which is the rare win where fewer good customers are wrongly blocked and fewer bad ones get through.\n\nTrace S-410 is the config. Two design choices carry the thesis: the default response to elevated risk is step-up, not decline (preserve the good customer, protect trust on the acceptance side), and the trusted_corridor override spends earned trust to remove friction — the direct, mechanical expression of T as a compounding asset. The courier_collusion rule is pure cross-domain: it can only exist because D3 payouts and D4 funding sources sit in one ledger.",
+        "tables": [],
+        "code": [
+          "# S-410: fraud-ops rules config (evaluated after model score, pre-authorization)version: 2026.7model:  name: d6_txn_fraud_v11          # served by D6, features from D1/D5/D4  score_field: p_fraud  latency_budget_ms: 40thresholds:  auto_approve:  { p_fraud: \"< 0.02\" }  step_up_3ds:   { p_fraud: \"0.02 – 0.15\" }   # challenge, don't decline  manual_review: { p_fraud: \"0.15 – 0.45\" }  auto_decline:  { p_fraud: \">= 0.45\" }rules:  - id: geo_velocity    when: \"d1_last_ping_km_from_txn > 250 AND minutes_since_ping < 30\"    action: step_up_3ds    note: \"physically impossible travel vs D1 telemetry\"  - id: device_swap    when: \"d5_device_fingerprint != account.enrolled_fingerprint\"    action: manual_review  - id: courier_collusion    when: \"d3_payout_to == d4_card_funding_source AND velocity_24h > 8\"    action: hold_and_investigate     # self-dealing loop across D3+D4  - id: new_account_high_ticket    when: \"account.age_days < 7 AND txn.amount > 400\"    action: step_up_3dsoverrides:  trusted_corridor:    when: \"kepler_score > 720 AND thick_file == true\"    action: relax_thresholds         # earned trust buys friction reductionreview_queue: { sla_minutes: 15, staffing: follow_the_sun }"
+        ]
+      },
+      "source_words": 204,
+      "word_floor": 143,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D4.d3.m2": {
+      "id": "D4.d3.m2",
+      "level": 4,
+      "parent": "D4.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Trust, fraud & compliance: the term-owner mechanism for T",
+        "Compliance, licensing, and the 14-country perimeter"
+      ],
+      "title": "Mechanism 3.2 — Compliance, licensing, and the 14-country perimeter",
+      "source_span": {
+        "heading": "Mechanism 3.2 — Compliance, licensing, and the 14-country perimeter",
+        "trace": [
+          "S-060"
+        ],
+        "text": "Trust is also regulatory. Kepler holds or passports payment/e-money and lending licences across 14 countries, and Driver 3 owns the reconciliation and reporting node from the architecture. The mechanism chains from 3.1: the same identity graph that powers fraud scoring powers KYC/KYB and sanctions screening, so compliance is a reuse of the trust infrastructure, not a parallel cost. Trace S-411: consolidating KYC across domains (one verified identity reused by D1, D3, D4, D5) cut per-user onboarding cost 38% and — more importantly — made the identity itself a moat asset, because a once-verified Kepler user onboards into every new domain with zero incremental friction. That is trust as distribution.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 109,
+      "word_floor": 76,
+      "required_component": null,
+      "children": []
+    },
+    "D4.d4": {
+      "id": "D4.d4",
+      "level": 3,
+      "parent": "D4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Monetization & interchange: turning a high M into cash"
+      ],
+      "title": "Driver 4 — Monetization & interchange: turning a high M into cash",
+      "source_span": {
+        "heading": "Driver 4 — Monetization & interchange: turning a high M into cash",
+        "trace": [
+          "S-061"
+        ],
+        "text": "The final driver extracts money from the trust the first three built. It takes the defended, underwritten, cash-free flows and monetises them through interchange, take-rates, credit yield, and — increasingly — data-adjacent products. The strategic subtlety: interchange is regulated and varies by region, so the monetization ceiling is set by policy, not ambition, and the durable margin comes from the parts of the stack regulators do not cap.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 68,
+      "word_floor": 48,
+      "required_component": null,
+      "children": [
+        "D4.d4.m1",
+        "D4.d4.m2",
+        "D4.d4.m3"
+      ],
+      "mech_n": 3
+    },
+    "D4.d4.m1": {
+      "id": "D4.d4.m1",
+      "level": 4,
+      "parent": "D4.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Monetization & interchange: turning a high M into cash",
+        "Interchange capture within regulated caps"
+      ],
+      "title": "Mechanism 4.1 — Interchange capture within regulated caps",
+      "source_span": {
+        "heading": "Mechanism 4.1 — Interchange capture within regulated caps",
+        "trace": [
+          "S-062"
+        ],
+        "text": "Regulatory / interchange NOTE — S-412. Interchange is asymmetrically capped across Kepler's footprint, and the monetization model must respect it region-by-region:\n\nEU/EEA: hard caps under the Interchange Fee Regulation — 0.20% debit, 0.30% credit. Little room; monetize on volume and adjacencies, not rate.\n\nSingapore / much of SE Asia: no hard statutory cap but scheme-set and competitive; effective blended ~0.5–0.9%.\n\nIndia (UPI): merchant-side MDR on UPI is effectively zero by policy — monetization here is never interchange; it is credit, float, and value-added services.\n\nBrazil (PIX): instant-payment rail with no interchange; Central Bank actively compresses card economics. Same conclusion as India.\n\nUS-style uncapped credit interchange (~1.8–2.2%) does not exist in Kepler's markets — the model must not assume it. Implication: in half of Kepler's TPV, interchange is legally near-zero. Monetization therefore cannot rest on the swipe; it must rest on trust-adjacent products (credit yield, insurance, merchant lending, data-informed underwriting) that regulators do not cap. Trace S-412 is the reason Driver 2 exists.\n\nThis note is why Payments cannot be a monoline. In its two largest-by-population markets the swipe is free by law, so the only monetization path is the one that requires the whole flywheel: lending and services priced off cross-domain trust.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 202,
+      "word_floor": 141,
+      "required_component": null,
+      "children": []
+    },
+    "D4.d4.m2": {
+      "id": "D4.d4.m2",
+      "level": 4,
+      "parent": "D4.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Monetization & interchange: turning a high M into cash",
+        "Take-rate, float, and the blended monetization stack"
+      ],
+      "title": "Mechanism 4.2 — Take-rate, float, and the blended monetization stack",
+      "source_span": {
+        "heading": "Mechanism 4.2 — Take-rate, float, and the blended monetization stack",
+        "trace": [
+          "S-063"
+        ],
+        "text": "Kepler monetizes across four layers, each with a different regulatory exposure. The table makes the stack legible and shows where margin is durable.\n\nTrace S-413: the two high-durability layers (credit yield and float/services) already contribute 61% of Payments gross profit despite being under 40% of TPV — evidence that the monetization has already migrated off the regulated swipe toward the trust-moated products. The statement mockup below is where the user experiences all four layers at once.\n\nThe mockup is a trust artefact as much as a financial one: the score is visible and moving, the APR fell because behaviour earned it (the credit engine talking to the customer), and the fraud line advertises that protection ran without wrongly blocking her. The statement is where T is made felt. Trace S-414 notes that surfacing the earned-APR line lifted repeat credit uptake 17% — trust, once shown, sells the next product.",
+        "tables": [
+          [
+            [
+              "Monetization layer",
+              "Basis",
+              "Blended rate",
+              "Regulated?",
+              "Durability"
+            ],
+            [
+              "Card interchange",
+              "% of card TPV",
+              "0.20–0.90%",
+              "Heavily (region-varying)",
+              "Low — capped, compressing"
+            ],
+            [
+              "Platform take-rate (D3 marketplace)",
+              "% of GMV",
+              "8–18%",
+              "Lightly",
+              "Medium"
+            ],
+            [
+              "Credit yield (BNPL, courier WC, D5 instalments)",
+              "APR net of loss",
+              "6–14% net",
+              "Moderately (usury caps)",
+              "High — data-moated"
+            ],
+            [
+              "Float + FX + value-added services",
+              "balances, spread, fees",
+              "0.4–1.1% of TPV",
+              "Lightly",
+              "High"
+            ]
+          ]
+        ],
+        "code": [
+          "┌───────────────────────────────────────────────────────────────┐│  KEPLER  ·  Monthly Statement            Jul 2026 · A. Rivera  ││  Account 4821 ****  ·  Kepler Score 731 ▲12   Tier 3 verified  │├───────────────────────────────────────────────────────────────┤│  DATE   DESCRIPTION                         AMOUNT     BALANCE  ││  07-02  D1 Ride · Marina → Bugis           −  4.20    212.55   ││  07-03  D3 Courier payout (instant)        + 86.40    298.95   ││  07-05  D2 Charge · Node A-114 · 22kWh     −  6.10    292.85   ││  07-09  D5 Device instalment 3/12          − 21.00    271.85   ││  07-14  BNPL repayment · on time           − 33.00    238.85   ││  07-16  Cashback · trusted corridor        +  1.65    240.50   │├───────────────────────────────────────────────────────────────┤│  Credit line 1,200  ·  Used 214  ·  Avail 986                  ││  \"Your on-time history unlocked a lower APR — 14.9% → 12.4%\"   ││  Fraud protection: 3 step-ups cleared · 0 wrong declines       │└───────────────────────────────────────────────────────────────┘"
+        ]
+      },
+      "source_words": 149,
+      "word_floor": 104,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D4.d4.m3": {
+      "id": "D4.d4.m3",
+      "level": 4,
+      "parent": "D4.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Payments & Fintech",
+        "Monetization & interchange: turning a high M into cash",
+        "The ledger as monetization evidence"
+      ],
+      "title": "Mechanism 4.3 — The ledger as monetization evidence",
+      "source_span": {
+        "heading": "Mechanism 4.3 — The ledger as monetization evidence",
+        "trace": [
+          "S-064"
+        ],
+        "text": "Underneath the statement sits the raw ledger — the same one from Driver 1, now read as a monetization record. The table below shows how a single day's mixed flows carry different margins, and how the join (one user, many domains) is what makes the portfolio work.\n\nTrace S-415: read across the user column and the monetization thesis appears — rivera_a and courier_301 each touch three domains in one day, and the high-margin entries (credit yield at 700–1240 bps) are only underwritable because the low-margin entries (rides, jobs) supplied the behavioural collateral. The cheap flows are the moat; the expensive flows are the monetization; the ledger is the join that makes one pay for the other. Trace S-416 closes the loop: contribution per interaction inside Payments moved from −0.19 over the trailing period, the clearest single proof point that the flywheel's target path from −0.31 blended is achievable — and that it runs through Domain 4.",
+        "tables": [
+          [
+            [
+              "entry_id",
+              "ts",
+              "user",
+              "domain",
+              "type",
+              "amount",
+              "fee_bps",
+              "margin_layer"
+            ],
+            [
+              "L-90114",
+              "07-14 09:02",
+              "rivera_a",
+              "D1",
+              "ride_debit",
+              "−4.20",
+              "55",
+              "interchange+float"
+            ],
+            [
+              "L-90115",
+              "07-14 09:02",
+              "driver_774",
+              "D1",
+              "driver_payout",
+              "+3.55",
+              "0",
+              "take-rate"
+            ],
+            [
+              "L-90140",
+              "07-14 12:31",
+              "rivera_a",
+              "D4",
+              "bnpl_repay",
+              "−33.00",
+              "1240",
+              "credit_yield"
+            ],
+            [
+              "L-90162",
+              "07-14 18:44",
+              "courier_301",
+              "D3",
+              "wc_advance",
+              "+150.00",
+              "900",
+              "credit_yield"
+            ],
+            [
+              "L-90163",
+              "07-14 18:44",
+              "courier_301",
+              "D3",
+              "job_payout",
+              "+86.40",
+              "0",
+              "take-rate"
+            ],
+            [
+              "L-90190",
+              "07-14 21:10",
+              "rivera_a",
+              "D5",
+              "instalment",
+              "−21.00",
+              "700",
+              "credit_yield"
+            ]
+          ]
+        ],
+        "code": []
+      },
+      "source_words": 156,
+      "word_floor": 109,
+      "required_component": {
+        "family": "faceted-grid",
+        "lib": "tanstack"
+      },
+      "children": []
+    },
+    "D5": {
+      "id": "D5",
+      "level": 2,
+      "parent": "GT",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware"
+      ],
+      "title": "Domain 5 — Devices & Hardware: we sell hardware to harvest data no one else has",
+      "source_span": {
+        "heading": "Domain 5 — Devices & Hardware: we sell hardware to harvest data no one else has",
+        "trace": [
+          "S-066"
+        ],
+        "text": "Devices is the domain most often misread as the weakest link in the Kepler portfolio, and the misreading is instructive. On a standalone basis it is a low-margin consumer-electronics and industrial-sensor business — a category the market has spent two decades learning to value at single-digit multiples, priced on unit economics, channel, and refresh cycles. Read that way, Devices is a drag: it consumes working capital, it carries inventory risk, it lives and dies on a bill of materials measured in cents, and it will never out-margin a payments network or out-scale a mobility fleet. If Kepler were six businesses, Devices would be the one a focus-minded activist spins out first.\n\nThat is exactly why it is in the portfolio, and exactly why it is misunderstood. In the moat identity\n\nDevices is the domain that owns data breadth (B) — the width of the sensor manifold that every other domain's models draw from. Density (D) is how often the physical world touches Kepler; breadth (B) is how many independent dimensions it measures each time it does. Mobility (D1) already gives Kepler the densest location-and-behaviour stream on Earth, but density on a narrow set of channels is a shallow moat: a competitor with GPS and a payment rail can approximate most of it. Breadth is what cannot be approximated. When a Kepler device measures road-surface vibration at 400 Hz, ambient particulate load, battery-cell impedance under real load, grip torque on a courier's handlebar, or the acoustic signature of a failing charger relay, it is capturing signal no competitor has instrumented and none can synthesise after the fact. The hardware is not the product. The hardware is the sampling apparatus, and the sample is the product.\n\nThis reframes the whole P&L. We do not sell devices to make money on devices; the gross margin on the hardware is a means of financing a proprietary data-acquisition network that would otherwise sit on Kepler's cost line at full expense. Every unit we ship into a vehicle, a courier's kit, a charging bay, or a merchant's counter is a paid-for sensor node in a fleet that sharpens D6's models — which in turn lower cost and raise trust across D1–D4. The cross-feeds run in every direction, and three matter most: the sensor manifold's breadth (B) directly sharpens the D6 models that improve routing, pricing, and fraud detection; Devices ride physically inside D1 vehicles and D3 courier kit, giving them a distribution channel and power source no standalone device maker enjoys; and D4 payments run on-device, closing the monetisation loop at the point of physical interaction while D2 energy telemetry flows back from every charger and battery we instrument. The rest of this section develops four drivers — the product line, the BOM and margin structure, the supply chain, and the sensor data that is the real product — and shows how each mechanism chains into the next.",
+        "tables": [],
+        "code": [
+          "M  =  Interaction density (D)  ×  Data breadth (B)  ×  Network liquidity (L)  ×  Trust (T)"
+        ]
+      },
+      "source_words": 482,
+      "word_floor": 337,
+      "required_component": null,
+      "children": [
+        "D5.d1",
+        "D5.d2",
+        "D5.d3",
+        "D5.d4"
+      ],
+      "finding": "Devices does not exist to make money on devices; it exists…",
+      "finding_full": "What's true. Devices is, on its own financials, the portfolio's least impressive business. A 31% hardware gross margin, real inventory and tariff risk, a supply chain with genuine concentration exposure at Penang and Singapore, and a ramp paced by the domains it depends on. Judged as a device company against a focused device company, it trails — exactly as the sum-of-the-parts frame predicts, and exactly the kind of business an activist would tell Kepler to spin out. All of that is true and none of it should be argued away.\n\nWhat counts. Devices does not exist to make money on devices; it exis"
+    },
+    "D5.d1": {
+      "id": "D5.d1",
+      "level": 3,
+      "parent": "D5",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "The product line: four form factors, one sensor manifold"
+      ],
+      "title": "Driver 1 — The product line: four form factors, one sensor manifold",
+      "source_span": {
+        "heading": "Driver 1 — The product line: four form factors, one sensor manifold",
+        "trace": [
+          "S-067"
+        ],
+        "text": "The product strategy is deliberately not a consumer-electronics strategy. Kepler builds the minimum number of form factors required to place its sensor manifold into the maximum number of high-signal physical contexts. There are four, and they are designed as one modular platform rather than four products.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 46,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D5.d1.m1",
+        "D5.d1.m2"
+      ],
+      "mech_n": 2
+    },
+    "D5.d1.m1": {
+      "id": "D5.d1.m1",
+      "level": 4,
+      "parent": "D5.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "The product line: four form factors, one sensor manifold",
+        "The manifold-first design rule (S-501)"
+      ],
+      "title": "Mechanism 1.1 — The manifold-first design rule (S-501)",
+      "source_span": {
+        "heading": "Mechanism 1.1 — The manifold-first design rule (S-501)",
+        "trace": [
+          "S-068"
+        ],
+        "text": "Every Kepler device is architected around a shared sensor-and-compute core — the Kepler Sensor Module (KSM) — with form-factor-specific carrier boards and enclosures wrapped around it (S-501). The KSM carries the inertial, environmental, and acoustic sensors plus an edge-inference NPU; the carrier adds the connectivity, power, and human-interface elements each context needs. This is the opposite of the consumer playbook, where each product is bespoke to hit a price point. Kepler accepts a slightly higher per-unit cost in exchange for a single validated sensor stack that produces dimensionally consistent data across every context — a road-vibration reading from a vehicle mount and from a courier's handlebar are directly comparable because they come from the same silicon and the same calibration. That comparability is what makes the breadth (B) additive rather than fragmented, and it is the design decision that most directly serves D6.\n\nThe four form factors:\n\nThe Kepler Beacon (KB-1) is the flagship consumer-facing device — a palm-sized navigation-and-payments companion that rides on a vehicle dash or a courier's bar, described in the mockup below. The Kepler Node (KN-2) is an embedded industrial module designed to be built directly into D1 vehicles and D2 chargers at the point of manufacture — no enclosure, no screen, pure sensing and telemetry. The Kepler Tag (KT-3) is a low-cost adhesive asset-tracker for D3 logistics parcels and courier kit, harvesting shock, tilt, and temperature across the delivery graph. The Kepler Counter (KC-4) is a merchant-facing payment-and-sensing terminal that anchors D4 at the physical point of sale.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 253,
+      "word_floor": 177,
+      "required_component": null,
+      "children": []
+    },
+    "D5.d1.m2": {
+      "id": "D5.d1.m2",
+      "level": 4,
+      "parent": "D5.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "The product line: four form factors, one sensor manifold",
+        "The product mockup: what the Beacon actually shows (S-502)"
+      ],
+      "title": "Mechanism 1.2 — The product mockup: what the Beacon actually shows (S-502)",
+      "source_span": {
+        "heading": "Mechanism 1.2 — The product mockup: what the Beacon actually shows (S-502)",
+        "trace": [
+          "S-069"
+        ],
+        "text": "The KB-1's value to the user has to be real, or the device never gets placed and the sensor never samples. The interface is therefore designed as a genuinely useful navigation-and-payments surface whose data-harvesting is invisible (S-502). Rendered:\n\nEvery element on that screen is a cross-domain coupling made visible to the user. The turn card is D1's routing model rendered locally; the \"4 min to charge\" and live bay price is D2 telemetry; \"TAP TO PAY $12.40\" is the D4 wallet executing a transaction on the device's secure element; and the air-quality and road-surface read-outs are the D5 manifold showing the user a sliver of what it is measuring — enough to feel useful, nowhere near the full sample. The design principle (S-503): give the user one visible reason to keep the device powered and mounted for every invisible stream we are collecting behind it. A device in a drawer samples nothing; retention of the hardware in position is the true north-star metric for Devices, not units sold.",
+        "tables": [],
+        "code": [
+          "┌──────────────────────────────────┐│  KEPLER BEACON            9:41 ▲  │   <- status: GPS lock, LTE, 84% batt│                                   ││   ↰  Turn left in 200 m          │   <- nav card (fed by D1 routing model)│      onto Orchard Rd              ││   ▓▓▓▓▓▓▓░░░  4 min to charge     │   <- D2: nearest open bay, live price│                                   ││  ┌─────────────┐  ┌────────────┐ ││  │  TAP TO PAY │  │  AIR: Good │ │   <- D4 on-device wallet | D5 PM2.5│  │   $12.40    │  │  22 µg/m³  │ ││  └─────────────┘  └────────────┘ ││                                   ││  Road: smooth   ·   Grip: firm    │   <- surfaced sensor read-outs└──────────────────────────────────┘"
+        ]
+      },
+      "source_words": 168,
+      "word_floor": 118,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D5.d2": {
+      "id": "D5.d2",
+      "level": 3,
+      "parent": "D5",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "BOM, cost & margin: financing a sensor network with hardware margin"
+      ],
+      "title": "Driver 2 — BOM, cost & margin: financing a sensor network with hardware margin",
+      "source_span": {
+        "heading": "Driver 2 — BOM, cost & margin: financing a sensor network with hardware margin",
+        "trace": [
+          "S-070"
+        ],
+        "text": "If the product line decides what we place and where, the cost structure decides whether the placement is affordable at fleet scale. Devices runs on a deliberately unusual margin philosophy: hardware margin exists to subsidise sensor coverage, not to maximise device profit.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 42,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D5.d2.m1",
+        "D5.d2.m2"
+      ],
+      "mech_n": 2
+    },
+    "D5.d2.m1": {
+      "id": "D5.d2.m1",
+      "level": 4,
+      "parent": "D5.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "BOM, cost & margin: financing a sensor network with hardware margin",
+        "The BOM cost table and the teardown that names the sensors (S-504, S-505)"
+      ],
+      "title": "Mechanism 2.1 — The BOM cost table and the teardown that names the sensors (S-504, S-505)",
+      "source_span": {
+        "heading": "Mechanism 2.1 — The BOM cost table and the teardown that names the sensors (S-504, S-505)",
+        "trace": [
+          "S-071"
+        ],
+        "text": "The KB-1 Beacon's bill of materials is where the strategy becomes concrete. The costed BOM (S-504), at a 2m-unit annual run-rate, landed cost per unit:\n\nThe teardown / exploded view (S-505) names where each of those sits physically, because the placement of a sensor determines the quality of the sample:\n\nThe exploded view carries a decision the BOM table hides (S-506): the environmental intake vent is engineered to sit above the compute stack, thermally isolated, so the SEN-55 reads true ambient particulate rather than the device's own heat plume — a $0.40 tooling cost that protects the fidelity of a data stream worth far more than the device. The IMU is bonded rigidly to the mount interface so vibration couples through the chassis of the D1 vehicle or D3 handlebar it rides on, turning the whole vehicle into an extension of the sensor. These are the design choices that separate a sensor that samples from one that merely reports.",
+        "tables": [
+          [
+            [
+              "#",
+              "Component",
+              "Part / Sensor",
+              "Unit cost (USD)",
+              "Primary supplier",
+              "Feeds"
+            ],
+            [
+              "1",
+              "Compute/NPU",
+              "Kepler KSM SoC (edge NPU)",
+              "$9.80",
+              "TSMC (7nm) via ASE",
+              "D6 edge inference"
+            ],
+            [
+              "2",
+              "IMU",
+              "Bosch BMI360 6-axis @400Hz",
+              "$3.10",
+              "Bosch (Reutlingen)",
+              "Road/vibration (B)"
+            ],
+            [
+              "3",
+              "Env. sensor",
+              "Sensirion SEN-55 PM/VOC/RH",
+              "$6.40",
+              "Sensirion (CH)",
+              "Air quality (B)"
+            ],
+            [
+              "4",
+              "GNSS",
+              "u-blox ZED-F9 dual-band",
+              "$11.20",
+              "u-blox (Thalwil)",
+              "D1 location (D)"
+            ],
+            [
+              "5",
+              "Acoustic",
+              "Knowles MEMS mic array (x2)",
+              "$2.30",
+              "Knowles (Itasca)",
+              "Fault acoustics (B)"
+            ],
+            [
+              "6",
+              "Secure element",
+              "NXP SE051 (EAL6+)",
+              "$1.90",
+              "NXP (Nijmegen)",
+              "D4 payments (T)"
+            ],
+            [
+              "7",
+              "Modem",
+              "Quectel LTE-M/NB-IoT",
+              "$8.70",
+              "Quectel (Shanghai)",
+              "Telemetry uplink"
+            ],
+            [
+              "8",
+              "Display",
+              "2.4\" transflective LCD + touch",
+              "$7.60",
+              "BOE (Chengdu)",
+              "User surface"
+            ],
+            [
+              "9",
+              "Battery",
+              "2000mAh Li-po + PMIC",
+              "$4.10",
+              "ATL (Ningde)",
+              "Power"
+            ],
+            [
+              "10",
+              "Enclosure/PCB",
+              "6-layer PCB, housing, connectors",
+              "$6.90",
+              "Jabil (Penang)",
+              "Structure"
+            ],
+            [
+              "—",
+              "Total BOM",
+              "",
+              "$62.00",
+              "",
+              ""
+            ]
+          ]
+        ],
+        "code": [
+          "        KB-1 BEACON — EXPLODED (top to bottom)   ┌───────────────────────────────┐   │  Transflective LCD + touch    │  (8)   ├───────────────────────────────┤   │  Gasket / light pipe          │   ├───────────────────────────────┤   │  Env. intake vent → SEN-55    │  (3)  particulate/VOC   │  Knowles MEMS mic array  ○ ○   │  (5)  acoustic fault ID   ├───────────────────────────────┤   │  Main PCB:                     │   │    KSM SoC (NPU)   [▓]         │  (1)   │    BMI360 IMU      [·]         │  (2)  vibration/grip   │    ZED-F9 GNSS     [·]         │  (4)   │    SE051 secure el.[·]         │  (6)   │    Quectel modem   [▒]         │  (7)   ├───────────────────────────────┤   │  2000mAh Li-po cell            │  (9)   ├───────────────────────────────┤   │  Housing + connectors         │  (10)   └───────────────────────────────┘"
+        ]
+      },
+      "source_words": 159,
+      "word_floor": 111,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D5.d2.m2": {
+      "id": "D5.d2.m2",
+      "level": 4,
+      "parent": "D5.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "BOM, cost & margin: financing a sensor network with hardware margin",
+        "The margin waterfall: ASP to gross margin, and why it is thin on purpose (S-507)"
+      ],
+      "title": "Mechanism 2.2 — The margin waterfall: ASP to gross margin, and why it is thin on purpose (S-507)",
+      "source_span": {
+        "heading": "Mechanism 2.2 — The margin waterfall: ASP to gross margin, and why it is thin on purpose (S-507)",
+        "trace": [
+          "S-072"
+        ],
+        "text": "The margin waterfall from average selling price to gross margin (S-507), per KB-1 unit:\n\nA 31% hardware gross margin is unremarkable for consumer electronics and would be a disappointment for any other Kepler domain. Held against the standalone frame, Devices looks like the portfolio's laggard. But the waterfall is measuring the wrong thing (S-508). The strategically correct denominator is not device profit; it is the fully-loaded cost of the proprietary data the device generates over its service life. A KB-1 in position for its ~30-month life emits on the order of tens of millions of sensor-seconds across five independent modalities. Financing that acquisition through a standalone sensor-network build would sit at full expense on D6's cost line — which today runs at −$420m as a cost centre. Instead, the hardware margin pre-pays it: the device sells at a positive gross margin, and the data arrives effectively free to D6. The correct read of the waterfall is not \"31% margin\" but \"a proprietary sensor network delivered at negative net acquisition cost.\" That is the number the board should track, and it is the bridge into Driver 4.",
+        "tables": [],
+        "code": [
+          " ASP (blended, direct + fleet) ........... $118.00   − BOM ................................. −$62.00   ┐   − Assembly & test (Jabil) ............ −$9.40    │ COGS   − Freight, duty, tariff .............. −$4.80    │  −$81.20   − Warranty/returns reserve ........... −$2.30    │   − Firmware/cal amortisation .......... −$2.70    ┘ ───────────────────────────────────────────────── Gross profit ............................ $36.80 Gross margin ............................ 31.2%"
+        ]
+      },
+      "source_words": 186,
+      "word_floor": 130,
+      "required_component": {
+        "family": "waterfall",
+        "lib": "recharts"
+      },
+      "children": []
+    },
+    "D5.d3": {
+      "id": "D5.d3",
+      "level": 3,
+      "parent": "D5",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "The supply chain: geography as a sensor-coverage decision"
+      ],
+      "title": "Driver 3 — The supply chain: geography as a sensor-coverage decision",
+      "source_span": {
+        "heading": "Driver 3 — The supply chain: geography as a sensor-coverage decision",
+        "trace": [
+          "S-073"
+        ],
+        "text": "A sensor network is only as broad as the units you can actually manufacture, land, and place. The supply chain is therefore not a back-office function in Devices — it is the throttle on how fast breadth (B) compounds, and it is managed as such.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 45,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D5.d3.m1",
+        "D5.d3.m2"
+      ],
+      "mech_n": 2
+    },
+    "D5.d3.m1": {
+      "id": "D5.d3.m1",
+      "level": 4,
+      "parent": "D5.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "The supply chain: geography as a sensor-coverage decision",
+        "The supply-chain map: fabs, assembly, ports (S-509)"
+      ],
+      "title": "Mechanism 3.1 — The supply-chain map: fabs, assembly, ports (S-509)",
+      "source_span": {
+        "heading": "Mechanism 3.1 — The supply-chain map: fabs, assembly, ports (S-509)",
+        "trace": [
+          "S-074"
+        ],
+        "text": "The physical flow (S-509), from silicon to placement:\n\nTwo structural choices are load-bearing (S-510). First, final assembly is concentrated at Jabil Penang with ASE Kaohsiung doing SoC packaging and test — deliberately dual-region against the fab base but single-node on final assembly, trading resilience for the tighter process control that a consistent sensor calibration demands. Second, the placement leg is Kepler's own: units land at the PSA Singapore and Rotterdam hubs and then ride the D1 mobility fleet and D3 courier network into the field, rather than through third-party retail. This is the distribution coupling that a standalone device maker cannot replicate — Kepler already has vehicles and couriers moving through all 42 cities daily, so the last mile of device placement is nearly free and rides infrastructure that already exists.",
+        "tables": [],
+        "code": [
+          "   FABS / SENSOR SOURCES            ASSEMBLY            PORTS → PLACEMENT   ─────────────────────           ──────────          ─────────────────   TSMC Hsinchu (SoC) ──┐   Bosch Reutlingen ────┤   Sensirion Stäfa ─────┼──► ASE Kaohsiung ──► Jabil ──► Port of   u-blox Thalwil ──────┤      (SoC pkg/test)   Penang    Singapore ──► 14-country   NXP Nijmegen ────────┤                       (final    (PSA hub)     placement   Knowles Itasca ──────┤                        assembly)              via D1/D3   Quectel Shanghai ────┘                          │                    fleet channel                                                    ▼                                            Port of Klang (MY)                                                    │                                         ┌──────────┴──────────┐                                    Rotterdam (EU hub)     Singapore (APAC hub)                                    → Amsterdam DC          → 42-city network"
+        ]
+      },
+      "source_words": 131,
+      "word_floor": 92,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D5.d3.m2": {
+      "id": "D5.d3.m2",
+      "level": 4,
+      "parent": "D5.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "The supply chain: geography as a sensor-coverage decision",
+        "The manufacturing Gantt and the concentration risk it exposes (S-511, S-512)"
+      ],
+      "title": "Mechanism 3.2 — The manufacturing Gantt and the concentration risk it exposes (S-511, S-512)",
+      "source_span": {
+        "heading": "Mechanism 3.2 — The manufacturing Gantt and the concentration risk it exposes (S-511, S-512)",
+        "trace": [
+          "S-075"
+        ],
+        "text": "The ramp for the KB-1 v2 and the embedded KN-2 (S-511), quarters across FY26–FY27:\n\nThe Gantt makes one dependency unmissable (S-512): the KN-2 embedded module's mass production is gated on the D1 vehicle manufacturing line, because the Node is built into vehicles at their point of assembly, not retrofitted. This is the cross-domain coupling expressed as a schedule constraint — Devices cannot ramp its highest-breadth embedded sensor faster than Mobility ramps the vehicles it lives inside. The strategic reading is that Devices' breadth-compounding is paced by D1's fleet growth, which is precisely why sequencing (the governing thought) matters: place the sensor line and the vehicle line out of sync and the moat forms slower than the model requires. The concentration risk on Jabil Penang and the single Singapore port hub is the other edge-case the Gantt surfaces — a typhoon-season disruption at Klang or Penang is a direct hit to breadth, so the FY27 plan carries a qualified second final-assembly node as insurance, accepted as a margin cost against sensor-coverage continuity.",
+        "tables": [],
+        "code": [
+          "                    Q1'26  Q2'26  Q3'26  Q4'26  Q1'27  Q2'27 SoC tape-out/qual  ████░░ Sensor sourcing    ░████░ EVT (eng. valid.)   ░███░░ DVT (design valid.)     ░████░ PVT (prod. valid.)        ░███░ Jabil line bring-up        ░████░ Mass prod. KB-1v2             ░██████████████ KN-2 embed (into D1)              ░████████████   ← gated on D1 vehicle line Cert (CE/FCC/PSA)          ░████░"
+        ]
+      },
+      "source_words": 171,
+      "word_floor": 120,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D5.d4": {
+      "id": "D5.d4",
+      "level": 3,
+      "parent": "D5",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "Proprietary sensor data is the real product"
+      ],
+      "title": "Driver 4 — Proprietary sensor data is the real product",
+      "source_span": {
+        "heading": "Driver 4 — Proprietary sensor data is the real product",
+        "trace": [
+          "S-076"
+        ],
+        "text": "Everything above — the four form factors, the thin-on-purpose margin, the fleet-ridden supply chain — exists to serve this driver. Devices' claim on the moat is breadth (B), and this is where breadth becomes measurable value.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 36,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D5.d4.m1",
+        "D5.d4.m2"
+      ],
+      "mech_n": 2
+    },
+    "D5.d4.m1": {
+      "id": "D5.d4.m1",
+      "level": 4,
+      "parent": "D5.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "Proprietary sensor data is the real product",
+        "The five-modality manifold and its uniqueness (S-513)"
+      ],
+      "title": "Mechanism 4.1 — The five-modality manifold and its uniqueness (S-513)",
+      "source_span": {
+        "heading": "Mechanism 4.1 — The five-modality manifold and its uniqueness (S-513)",
+        "trace": [
+          "S-077"
+        ],
+        "text": "The Kepler manifold captures five broad, mutually-reinforcing modalities that no competitor has jointly instrumented at fleet scale (S-513): kinematic (400 Hz 6-axis IMU — road roughness, grip torque, crash signatures), environmental (particulate, VOC, humidity — air-quality maps street-by-street), acoustic (MEMS array — failing-relay and bearing signatures for predictive maintenance), positional (dual-band GNSS at sub-metre — lane-level, not road-level), and electrical (battery-cell impedance and charger telemetry via the KN-2). The uniqueness is not any single stream — competitors buy IMUs and GNSS too — but the joint distribution: only Kepler observes all five from the same calibrated node, time-aligned, across the same 42-city fleet. That joint distribution is the raw material breadth is made of, and it is why the sample cannot be reconstructed after the fact by anyone lacking the placed hardware.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 132,
+      "word_floor": 92,
+      "required_component": null,
+      "children": []
+    },
+    "D5.d4.m2": {
+      "id": "D5.d4.m2",
+      "level": 4,
+      "parent": "D5.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Devices & Hardware",
+        "Proprietary sensor data is the real product",
+        "How breadth sharpens D6, and the value attribution (S-514, S-515)"
+      ],
+      "title": "Mechanism 4.2 — How breadth sharpens D6, and the value attribution (S-514, S-515)",
+      "source_span": {
+        "heading": "Mechanism 4.2 — How breadth sharpens D6, and the value attribution (S-514, S-515)",
+        "trace": [
+          "S-078"
+        ],
+        "text": "The manifold's payoff is realised in D6's models, and the couplings are specific (S-514). Kinematic road-roughness data sharpens D1's routing and ride-comfort models and feeds D2's siting (rough corridors correlate with battery-drain hotspots worth charger placement). Acoustic fault signatures drive predictive maintenance across the D1 fleet and D2 charger network, converting reactive downtime into scheduled service. Electrical telemetry from the KN-2 feeds D2's battery-health and dispatch pricing. And the on-device secure element plus placement context feed D4's fraud model — a payment tap whose device reports an impossible kinematic trajectory is a fraud signal no card network can see. The second data table quantifies the attributed lift (S-515), Kepler's internal model-improvement attribution from the sensor manifold, FY26 estimate:\n\nThe attribution table is the answer to the board's fair challenge — \"is the compounding real or a story?\" Each row is a coupling the governing thought predicts, now carrying a number. Breadth (B) is not an abstraction; it is a −18% downtime figure and an −11% fraud false-positive figure that land on other domains' P&Ls (S-516). The edge-case worth naming: the environmental modality produces a saleable data product (street-level air quality to municipalities), the one place Devices' data monetises directly rather than only through internal model lift — a hedge that gives the breadth thesis an external price signal to validate against.",
+        "tables": [
+          [
+            [
+              "Modality",
+              "Primary model fed (domain)",
+              "Attributed improvement",
+              "Value mechanism"
+            ],
+            [
+              "Kinematic (IMU)",
+              "Routing / comfort (D1)",
+              "+6.1% route-quality score",
+              "Fewer reroutes, higher rider retention (D)"
+            ],
+            [
+              "Environmental",
+              "Air-quality maps (D6→D1)",
+              "New data product",
+              "Sold to cities; sharpens siting (D2)"
+            ],
+            [
+              "Acoustic",
+              "Predictive maint. (D1/D2)",
+              "−18% unplanned downtime",
+              "Uptime → trust (T)"
+            ],
+            [
+              "Electrical",
+              "Battery health / dispatch (D2)",
+              "+4.3% charge-throughput",
+              "Lower marginal cost of energy"
+            ],
+            [
+              "Positional",
+              "Fraud geo-signals (D4)",
+              "−11% false-positive fraud",
+              "Fewer declined good txns (T)"
+            ]
+          ]
+        ],
+        "code": []
+      },
+      "source_words": 221,
+      "word_floor": 155,
+      "required_component": {
+        "family": "faceted-grid",
+        "lib": "tanstack"
+      },
+      "children": []
+    },
+    "D6": {
+      "id": "D6",
+      "level": 2,
+      "parent": "GT",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform"
+      ],
+      "title": "Domain 6 — Data & AI Platform: the moat is not a business, it is the hub of the flywheel",
+      "source_span": {
+        "heading": "Domain 6 — Data & AI Platform: the moat is not a business, it is the hub of the flywheel",
+        "trace": [
+          "S-080"
+        ],
+        "text": "Every other domain section in this document ends by naming which of the four moat terms it moves and which domains it feeds. Domain 6 is where those threads are tied. It is the only domain that does not own a customer, a vehicle, a charger, a courier, or a card — and it is the only domain whose output is the moat identity itself. Read as a P&L it is an embarrassment: a −$420m cost centre, the single largest line item the conglomerate-discount bears say proves Kepler is undisciplined. Read as the spine, it is the reason the other five stop being five. Domain 6 owns and compounds data breadth (B) directly — it is the layer that turns proprietary sensor and behaviour exhaust into features no competitor can assemble — and it is the only layer that touches all four terms of\n\nbecause it is the multiplication. D1 produces density, D3 produces liquidity, D2 and D4 produce trust, D5 produces breadth — but M is a product, not a sum, and a product only exists once the terms are computed together on shared features. That computation is Domain 6. The cross-feeds are unusually literal here: Domain 6 ingests D1 location traces, D5 sensor telemetry, D3 marketplace supply–demand events, and D4 fraud/settlement signals, and it serves models back — routing, siting, matching, scoring, safety — that raise D1's density, D2's reliability, D3's liquidity, and D4's approval rates. The flywheel is not a metaphor Domain 6 illustrates; it is the graph Domain 6 runs. This section opens the hub, walks its four drivers, and closes on what is settled versus what the next decade is decided by.",
+        "tables": [],
+        "code": [
+          "Moat strength  M  =  Interaction density (D)  ×  Data breadth (B)  ×  Network liquidity (L)  ×  Trust (T)"
+        ]
+      },
+      "source_words": 277,
+      "word_floor": 194,
+      "required_component": null,
+      "children": [
+        "D6.d1",
+        "D6.d2",
+        "D6.d3",
+        "D6.d4"
+      ],
+      "finding": "One decision that determines the decade is whether the…",
+      "finding_full": "What's settled. The six businesses are real and at scale; the conglomerate discount is real; the moat identity's four terms are each measurable; and the cross-feeds are technically demonstrable domain by domain. None of that is in dispute.\n\nWhat counts. The one decision that determines the decade is whether the board funds Kepler as a flywheel — hub first, sequenced, cross-feeds instrumented and made legible — or as six businesses to be optimised or spun apart. The first multiplies four terms into an uncatchable moat and inverts the discount; the second severs the wiring and confirms the medio"
+    },
+    "D6.d1": {
+      "id": "D6.d1",
+      "level": 3,
+      "parent": "D6",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The platform architecture: one ingestion spine, one feature store, one serving layer"
+      ],
+      "title": "Driver 1 — The platform architecture: one ingestion spine, one feature store, one serving layer",
+      "source_span": {
+        "heading": "Driver 1 — The platform architecture: one ingestion spine, one feature store, one serving layer",
+        "trace": [
+          "S-081"
+        ],
+        "text": "The first driver is the least glamorous and the most decisive: there is exactly one data platform, not six. The conglomerate failure mode is not strategic disagreement — it is six teams each standing up their own warehouse, their own feature definitions, their own model registry, so that \"rider dwell time\" means one thing in D1 and a subtly different thing in D3, and the join that would have produced a feature never happens. Domain 6's architecture exists to make that divergence structurally impossible.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 84,
+      "word_floor": 59,
+      "required_component": null,
+      "children": [
+        "D6.d1.m1",
+        "D6.d1.m2",
+        "D6.d1.m3"
+      ],
+      "mech_n": 3
+    },
+    "D6.d1.m1": {
+      "id": "D6.d1.m1",
+      "level": 4,
+      "parent": "D6.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The platform architecture: one ingestion spine, one feature store, one serving layer",
+        "A single ingestion spine that normalises six event streams into one grammar"
+      ],
+      "title": "Mechanism 1.1 — A single ingestion spine that normalises six event streams into one grammar",
+      "source_span": {
+        "heading": "Mechanism 1.1 — A single ingestion spine that normalises six event streams into one grammar",
+        "trace": [
+          "S-082"
+        ],
+        "text": "Every physical-world interaction across the estate emits an event: a ride start, a charge session, a courier accept, a card authorisation, a device heartbeat. S-601 — all six domains publish to a single append-only event bus (Kepler calls it the Interaction Log) under one canonical schema: entity_id, geohash, t, domain, event_type, payload, trust_context. At 28.4m MAU across 42 cities, the spine ingests ~3.9bn events/day at peak. The architecture diagram below is the physical shape of the platform; every later mechanism is a path through it.\n\nThe point of one grammar is the point-in-time join (S-602): any feature can be reconstructed as it was known at decision time, so a fraud model never trains on settlement data that only existed after the authorisation. That single discipline is what lets D4 signals safely sharpen D1–D3 without leakage — a cross-feed that is impossible in a six-warehouse world because the timestamps never reconcile.",
+        "tables": [],
+        "code": [
+          "                         KEPLER DATA & AI PLATFORM — SYSTEM ARCHITECTURE                         (ingestion → feature store → models → serving)  SOURCES                INGESTION            FEATURE STORE          MODELS            SERVING ┌────────┐   events   ┌───────────┐  clean  ┌──────────────┐  vec  ┌─────────┐  API ┌──────────┐ │ D1 ride│──────────▶ │           │────────▶│ offline (parq)│─────▶ │ routing │────▶ │ D1 fleet │ │ D2 chg │──────────▶ │ Interaction│         │  + online (kv)│      │ siting  │      │ D2 dispat│ │ D3 mkt │──────────▶ │   Log bus │  dedup  │              │  ⟳    │ matching│      │ D3 match │ │ D4 pay │──────────▶ │  (Kafka)  │────────▶│  point-in-   │◀─────│ scoring │────▶ │ D4 auth  │ │ D5 dev │──────────▶ │  + Flink  │  PII    │  time joins  │ label │ safety  │      │ D5 OTA   │ │ ext geo│──────────▶ │  normalise│  vault  │              │      │ demand  │      │ dashbds  │ └────────┘            └───────────┘         └──────────────┘      └─────────┘      └──────────┘                            │                       ▲   │              ▲                 │                       trust_context           feature  └── training ──┘         model outputs                       tagging (D4) ───────────▶ registry      registry ◀── eval/ROC (Driver 3)                                                (S-603)         (S-611)          feedback ⟳ (Driver 4)"
+        ]
+      },
+      "source_words": 150,
+      "word_floor": 105,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D6.d1.m2": {
+      "id": "D6.d1.m2",
+      "level": 4,
+      "parent": "D6.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The platform architecture: one ingestion spine, one feature store, one serving layer",
+        "A feature store that is the physical form of data breadth (B)"
+      ],
+      "title": "Mechanism 1.2 — A feature store that is the physical form of data breadth (B)",
+      "source_span": {
+        "heading": "Mechanism 1.2 — A feature store that is the physical form of data breadth (B)",
+        "trace": [
+          "S-083"
+        ],
+        "text": "The Interaction Log is raw; the feature store (S-603) is where breadth B actually lives. It holds two mirrored surfaces: an offline store (columnar, for training) and an online store (key-value, sub-10ms, for serving), guaranteeing train/serve parity. A feature computed once — say geohash_demand_z_15m, the 15-minute demand z-score for a location — is available to D1 routing, D2 siting, and D3 matching from the same row. This is the mechanism by which B compounds instead of fragmenting: each new domain does not add a warehouse, it adds columns other domains can read. The schema below is the load-bearing tables.\n\nNote feat_entity.trust_score and feat_entity.pay_default_pd: those columns are written by D4 and read by D1 (to decide which riders can go cash-free) — the payments-closes-the-loop coupling, made concrete as two columns in one table.",
+        "tables": [
+          [
+            [
+              "Feature-store table",
+              "Grain",
+              "Key columns",
+              "Refresh",
+              "Primary consumers"
+            ],
+            [
+              "feat_location",
+              "geohash-7 × 15min",
+              "demand_z, dwell_p50, charge_gap_min, incident_rate_90d",
+              "streaming",
+              "D1, D2, D3"
+            ],
+            [
+              "feat_entity",
+              "user/device × day",
+              "trust_score, mob_freq_30d, pay_default_pd, sensor_health",
+              "hourly",
+              "D4, D5, D1"
+            ],
+            [
+              "feat_edge",
+              "origin→dest × hour",
+              "eta_resid, match_prob, courier_supply_z, surge_state",
+              "streaming",
+              "D3, D1"
+            ],
+            [
+              "feat_asset",
+              "vehicle/charger × 5min",
+              "soc_pct, util_rate, fault_flag, telemetry_drift",
+              "streaming",
+              "D2, D5, D1"
+            ]
+          ]
+        ],
+        "code": []
+      },
+      "source_words": 132,
+      "word_floor": 92,
+      "required_component": {
+        "family": "faceted-grid",
+        "lib": "tanstack"
+      },
+      "children": []
+    },
+    "D6.d1.m3": {
+      "id": "D6.d1.m3",
+      "level": 4,
+      "parent": "D6.d1",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The platform architecture: one ingestion spine, one feature store, one serving layer",
+        "A serving layer that returns models to the domains that fed them"
+      ],
+      "title": "Mechanism 1.3 — A serving layer that returns models to the domains that fed them",
+      "source_span": {
+        "heading": "Mechanism 1.3 — A serving layer that returns models to the domains that fed them",
+        "trace": [
+          "S-084"
+        ],
+        "text": "Breadth is inert until it is served back. The serving layer (S-604) exposes every model behind one low-latency API with a shared contract, so a domain requests a decision (route, site, match, authorise, flag) and receives it in <60ms p95 without knowing which features or which upstream domains produced it. This is the architectural expression of \"all five draw from the hub.\" It also means a model improvement — better ETA residuals from richer D5 telemetry, say — propagates to every consumer at once, rather than being re-implemented five times. Driver 1 has now built the pipes; Driver 2 explains what flows through them and why it compounds.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 108,
+      "word_floor": 76,
+      "required_component": null,
+      "children": []
+    },
+    "D6.d2": {
+      "id": "D6.d2",
+      "level": 3,
+      "parent": "D6",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The data flywheel: how five domains' data compounds into one moat"
+      ],
+      "title": "Driver 2 — The data flywheel: how five domains' data compounds into one moat",
+      "source_span": {
+        "heading": "Driver 2 — The data flywheel: how five domains' data compounds into one moat",
+        "trace": [
+          "S-085"
+        ],
+        "text": "The architecture is necessary but not sufficient. A pipe that carries six streams to six destinations is still a conglomerate with good plumbing. The flywheel is the claim that each domain's data raises the value of every other domain's data super-additively — that breadth B is not the sum of six datasets but their product on shared keys. Driver 2 is the mechanism of that compounding, and its centrepiece component is the Sankey and the flywheel network graph.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 78,
+      "word_floor": 55,
+      "required_component": null,
+      "children": [
+        "D6.d2.m1",
+        "D6.d2.m2",
+        "D6.d2.m3"
+      ],
+      "mech_n": 3
+    },
+    "D6.d2.m1": {
+      "id": "D6.d2.m1",
+      "level": 4,
+      "parent": "D6.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The data flywheel: how five domains' data compounds into one moat",
+        "Cross-domain joins create features no single domain could hold"
+      ],
+      "title": "Mechanism 2.1 — Cross-domain joins create features no single domain could hold",
+      "source_span": {
+        "heading": "Mechanism 2.1 — Cross-domain joins create features no single domain could hold",
+        "trace": [
+          "S-086"
+        ],
+        "text": "The compounding is concrete. S-605: D1 location traces + D5 accelerometer telemetry + D3 courier GPS join on geohash × t to produce road_roughness and curb_availability features — signals that improve D1 routing and D3 drop-off ETA and D2 charger-siting (rough approach roads depress utilisation). No competitor with only a rideshare app, or only a delivery app, can compute that feature, because none holds all three streams on one key. S-606: D4 authorisation outcomes join to D1 rider history and D5 device fingerprint to lift the fraud model — a card decline pattern becomes explicable when the same entity's mobility regularity and device health are columns in the same row. The data-flow Sankey shows where breadth accumulates: the six sources are the left band, the moat is the single right node, and the ribbon widths are the share of the moat's feature value each source contributes.\n\nThat last line is the whole argument in one number. The +19% cross-join uplift is feature value that literally cannot exist for a focused specialist, because it requires two streams a specialist does not both own. It is the quantified answer to the SCQA's question — the compounding is real, not a story, and it is measurable as the fraction of served feature value that lives only on joins.",
+        "tables": [],
+        "code": [
+          "        DATA-FLOW SANKEY — six domains → the moat (ribbon width = feature-value contribution)  D1 Mobility      ████████████████████████████  34%  ┐  D5 Devices       ██████████████████            22%  ┤  D3 Logistics     ████████████                  16%  ┤        ┌───────────────┐  D4 Payments      ██████████                    13%  ┼──────▶ │  THE MOAT (M) │  D2 Energy        ████████                       9%  ┤        │  B compounded │  ext / partner    ██████                         6%  ┘        └───────────────┘                                                 ───                                                 100%   Cross-join uplift (features that exist ONLY on ≥2 joined streams): +19% of served feature value   → this band is the flywheel: it is zero for any standalone competitor."
+        ]
+      },
+      "source_words": 215,
+      "word_floor": 150,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D6.d2.m2": {
+      "id": "D6.d2.m2",
+      "level": 4,
+      "parent": "D6.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The data flywheel: how five domains' data compounds into one moat",
+        "The flywheel network graph: the coherency centrepiece"
+      ],
+      "title": "Mechanism 2.2 — The flywheel network graph: the coherency centrepiece",
+      "source_span": {
+        "heading": "Mechanism 2.2 — The flywheel network graph: the coherency centrepiece",
+        "trace": [
+          "S-087"
+        ],
+        "text": "If the Sankey shows how much each domain feeds the moat, the network graph shows that every feed is also a return — the loop that makes the wheel a wheel. This is the single most important picture in the section: the six domains as nodes, the moat as the hub, and directed edges in both directions (raw data in, models out).\n\nS-607: the graph is directed and the strategic content is in the return edges. D1 sends traces and receives routing + safety models that raise density D by cutting deadhead miles ~11%. D4 sends fraud/settlement signals and receives a credit model that raises trust T, which is what lets D1 and D3 run cash-free. D5 sends proprietary sensor telemetry — the breadth B no competitor holds — and receives OTA/health models. Delete the hub and the picture collapses into six unconnected nodes: that is the visual proof of the governing thought. The conglomerate discount is the market pricing the six nodes; the flywheel is the edges the market cannot see on a sum-of-the-parts basis.",
+        "tables": [],
+        "code": [
+          "              FLYWHEEL NETWORK GRAPH — six domains feeding & fed by the moat (D6 hub)                                   ┌─────────────┐                    location ─────▶│   D1        │◀───── routing, safety models                    behaviour      │  MOBILITY   │       (raises density D)                                   └─────┬───────┘                        electrons ▲      │ traces         ▲ siting model (raises T)                   ┌─────────────┐│      ▼                │┌─────────────┐        util model │   D2        ││  ┌───────────┐        ││   D5        │       ───────────▶│  ENERGY     │└─▶│           │◀───────┘│  DEVICES    │◀── OTA/health model                   └─────────────┘   │  D6  MOAT │  sensor └─────────────┘   (raises B)                        supply▲      │  (hub, M) │  telem       ▲                   ┌─────────────┐   │           │        ┌─────────────┐      match model  │   D3        │──▶│           │◀───────│   D4        │  fraud/credit model       ───────────▶│ LOGISTICS   │   └───────────┘  auth  │  PAYMENTS   │──▶ (raises trust T)                   └─────────────┘     ▲   fraud+trust     └─────────────┘                                       │   signals close the loop (T)     Every edge IN (data) has a paired edge OUT (model). Remove D6 and the graph is six isolated nodes."
+        ]
+      },
+      "source_words": 176,
+      "word_floor": 123,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D6.d2.m3": {
+      "id": "D6.d2.m3",
+      "level": 4,
+      "parent": "D6.d2",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The data flywheel: how five domains' data compounds into one moat",
+        "Compounding shows up as a rising blended contribution"
+      ],
+      "title": "Mechanism 2.3 — Compounding shows up as a rising blended contribution",
+      "source_span": {
+        "heading": "Mechanism 2.3 — Compounding shows up as a rising blended contribution",
+        "trace": [
+          "S-088"
+        ],
+        "text": "The flywheel's output is economic, and the number is the one the whole document is anchored to: blended contribution/interaction from −0.31 over ten years. Mechanism 2.3 attributes that swing to the moat. S-608: each 10% rise in served feature value (mostly the cross-join band) lowers the marginal cost of a mobility decision (fewer empty miles), a logistics match (higher fill), and a payment authorisation (fewer false declines) simultaneously — because all three read the same improved features. The compounding is that one investment in breadth pays out across four domains at once, which is why Domain 6's −$420m is not a cost but the price of the multiplier. Driver 3 is how that feature value becomes decisions.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 117,
+      "word_floor": 82,
+      "required_component": null,
+      "children": []
+    },
+    "D6.d3": {
+      "id": "D6.d3",
+      "level": 3,
+      "parent": "D6",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The models: turning compounded breadth into decisions that move D, L, and T"
+      ],
+      "title": "Driver 3 — The models: turning compounded breadth into decisions that move D, L, and T",
+      "source_span": {
+        "heading": "Driver 3 — The models: turning compounded breadth into decisions that move D, L, and T",
+        "trace": [
+          "S-089"
+        ],
+        "text": "Features are potential; models are the realised moat. Driver 3 is the layer where breadth B is converted into density D (routing), liquidity L (matching), and trust T (scoring, safety). The distinct components here are the model-performance charts — ROC curves and a confusion matrix with real figures — because the strategic claim (\"the models are better because the data is broader\") is only credible if the performance is shown, not asserted.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 72,
+      "word_floor": 50,
+      "required_component": {
+        "family": "time-series",
+        "lib": "visx"
+      },
+      "children": [
+        "D6.d3.m1",
+        "D6.d3.m2",
+        "D6.d3.m3"
+      ],
+      "mech_n": 3
+    },
+    "D6.d3.m1": {
+      "id": "D6.d3.m1",
+      "level": 4,
+      "parent": "D6.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The models: turning compounded breadth into decisions that move D, L, and T",
+        "A shared model registry so one improvement propagates to five domains"
+      ],
+      "title": "Mechanism 3.1 — A shared model registry so one improvement propagates to five domains",
+      "source_span": {
+        "heading": "Mechanism 3.1 — A shared model registry so one improvement propagates to five domains",
+        "trace": [
+          "S-090"
+        ],
+        "text": "S-609: models are not owned by domains; they are registered in a shared registry (S-611 lineage) and consumed via the serving API. The routing model, the matching model, and the fraud model all draw from the same feature tables, so an improvement to feat_location.demand_z — say from adding D2 charge-gap data — lifts all three at once. This is the mechanism behind \"sequence, don't silo\": a siloed org retrains three models three times on three partial datasets; the platform retrains the feature once and all models inherit it.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 88,
+      "word_floor": 62,
+      "required_component": null,
+      "children": []
+    },
+    "D6.d3.m2": {
+      "id": "D6.d3.m2",
+      "level": 4,
+      "parent": "D6.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The models: turning compounded breadth into decisions that move D, L, and T",
+        "Model performance demonstrably tracks data breadth"
+      ],
+      "title": "Mechanism 3.2 — Model performance demonstrably tracks data breadth",
+      "source_span": {
+        "heading": "Mechanism 3.2 — Model performance demonstrably tracks data breadth",
+        "trace": [
+          "S-091"
+        ],
+        "text": "The claim that breadth causes performance is testable, and Domain 6 tests it by ablation: train each model on a single-domain feature set, then on the full cross-joined set, and measure the lift. The ROC and confusion figures below are the fraud/trust model (the D4 coupling, since it is the cleanest labelled problem).\n\nS-610: the AUC moves from 0.883 (D4 data only) to 0.947 (full cross-domain) and, at a fixed 0.5% false-positive rate, recall rises from 71.2% to 89.9% — an +18.7-point improvement that comes entirely from joining D1 mobility regularity and D5 device-health features onto the D4 label. That delta is the flywheel expressed inside a single confusion matrix: the same false decline the specialist eats, Kepler catches, because the specialist does not hold the mobility and device streams. Higher recall at fixed FPR is directly trust T — fewer fraud losses and fewer false declines — served straight back into D4 approval rates.",
+        "tables": [],
+        "code": [
+          "   ROC — fraud/trust model (S-610)              CONFUSION MATRIX @ operating point (0.5% FPR)   TPR                                                        PREDICTED   1.0 |            ╭────────── full (AUC 0.947)              │  legit    fraud       |         ╭──╯                                  ┌──────┼─────────────────   0.8 |      ╭──╯   ╭──────── D4-only (AUC 0.883)   A │legit │ 1,984,120   9,940   (FPR 0.50%)       |     ╱    ╭──╯                                C │      │   0.6 |    ╱  ╭──╯                                   T │fraud │   1,610   14,320   (recall 89.9%)       |   ╱ ╭─╯                                      U │      │   0.4 |  ╱╭─╯          full model adds D1 mobility   A └──────┴─────────────────       | ╱╭╯            regularity + D5 device health   Precision 59.0% · Recall 89.9% · at 0.5% FPR   0.2 |╱╯              → AUC 0.883 → 0.947            Single-domain (D4-only) recall at same FPR: 71.2%       |╯                                              Cross-domain uplift: +18.7 pts recall   0.0 +──────────────────────────  FPR                (this delta is the flywheel, in one model)      0.0        0.5        1.0"
+        ]
+      },
+      "source_words": 155,
+      "word_floor": 108,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D6.d3.m3": {
+      "id": "D6.d3.m3",
+      "level": 4,
+      "parent": "D6.d3",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The models: turning compounded breadth into decisions that move D, L, and T",
+        "A feature pipeline that any domain can extend but not fork"
+      ],
+      "title": "Mechanism 3.3 — A feature pipeline that any domain can extend but not fork",
+      "source_span": {
+        "heading": "Mechanism 3.3 — A feature pipeline that any domain can extend but not fork",
+        "trace": [
+          "S-092"
+        ],
+        "text": "The models are only as trustworthy as the features feeding them, so the pipeline is code, versioned and shared. S-612: a domain adds a feature by contributing a transform to the shared pipeline, which enforces point-in-time correctness and train/serve parity; it cannot fork a private copy. The pipeline below computes the cross-domain road_roughness feature (S-605) that three domains consume.\n\nThe feature is authored once and read by three domains; the quality gate on sensor_health is the D5 coupling made executable. Driver 3 has turned breadth into decisions; Driver 4 is why those decisions are defensible over a decade.",
+        "tables": [],
+        "code": [
+          "# feature: road_roughness  (S-605, S-612) — joins D1 traces + D5 telemetry + D3 courier GPS@feature(store=\"feat_location\", grain=\"geohash7x15min\", pit=True)  # point-in-time enforceddef road_roughness(ctx):    d1 = ctx.stream(\"D1.ride\")   .select(\"geohash7\", \"t\", \"speed_var\")    d5 = ctx.stream(\"D5.device\") .select(\"geohash7\", \"t\", \"accel_rms\", \"sensor_health\")    d3 = ctx.stream(\"D3.courier\").select(\"geohash7\", \"t\", \"gps_jitter\")    j  = pit_join([d1, d5, d3], on=[\"geohash7\", \"t\"], window=\"15min\")   # no leakage    j  = j.filter(col(\"sensor_health\") > 0.8)                           # D5 quality gate    rough = (0.5*z(j.accel_rms) + 0.3*z(j.speed_var) + 0.2*z(j.gps_jitter))    return rough.clip(-4, 4).alias(\"road_roughness\")   # served to D1 routing, D2 siting, D3 ETA"
+        ]
+      },
+      "source_words": 98,
+      "word_floor": 69,
+      "required_component": {
+        "family": "code",
+        "lib": "shiki"
+      },
+      "children": []
+    },
+    "D6.d4": {
+      "id": "D6.d4",
+      "level": 3,
+      "parent": "D6",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The moat compounding: the M identity made real, and made uncatchable"
+      ],
+      "title": "Driver 4 — The moat compounding: the M identity made real, and made uncatchable",
+      "source_span": {
+        "heading": "Driver 4 — The moat compounding: the M identity made real, and made uncatchable",
+        "trace": [
+          "S-093"
+        ],
+        "text": "The final driver is the thesis itself. Drivers 1–3 build pipes, compound breadth, and serve models; Driver 4 states why the result is a moat — an advantage that widens rather than erodes — and ties every term of M to a mechanism above.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 44,
+      "word_floor": 45,
+      "required_component": null,
+      "children": [
+        "D6.d4.m1",
+        "D6.d4.m2",
+        "D6.d4.m3"
+      ],
+      "mech_n": 3
+    },
+    "D6.d4.m1": {
+      "id": "D6.d4.m1",
+      "level": 4,
+      "parent": "D6.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The moat compounding: the M identity made real, and made uncatchable",
+        "Each term of M is moved by a named mechanism, and D6 multiplies them"
+      ],
+      "title": "Mechanism 4.1 — Each term of M is moved by a named mechanism, and D6 multiplies them",
+      "source_span": {
+        "heading": "Mechanism 4.1 — Each term of M is moved by a named mechanism, and D6 multiplies them",
+        "trace": [
+          "S-094"
+        ],
+        "text": "M is a product, and Domain 6 is the multiplication. The table below is the accounting: which term, which mechanism, which cross-feed, and the trajectory.\n\nS-613: because M is multiplicative, moving B by 2.4× while the other terms rise 1.5–1.9× does not add — it multiplies, so M compounds far faster than any single term. This is the mathematical core of \"one flywheel, not six\": a conglomerate adds P&Ls (linear); the flywheel multiplies moat terms (super-linear). Domain 6 is the only layer where the multiplication physically happens, on shared features.",
+        "tables": [
+          [
+            [
+              "Term",
+              "What D6 does to it",
+              "Mechanism (trace)",
+              "Cross-feed",
+              "Today → 10y"
+            ],
+            [
+              "D density",
+              "Routing/safety models cut deadhead, raise trips/vehicle-hr",
+              "3.1, served via 1.3 (S-609)",
+              "serves D1; fed by D1 traces",
+              "index 100 → 168"
+            ],
+            [
+              "B breadth",
+              "Feature store + cross-joins; +19% join-only value",
+              "1.2, 2.1 (S-603, S-605)",
+              "fed by D5 sensors, D1 loc",
+              "100 → 240"
+            ],
+            [
+              "L liquidity",
+              "Matching model raises fill rate & courier supply-z",
+              "3.1 (S-609)",
+              "serves D3; fed by D3 supply",
+              "100 → 155"
+            ],
+            [
+              "T trust",
+              "Fraud/credit model: recall 71→90% at fixed FPR",
+              "3.2 (S-610)",
+              "serves D4; fed by D4 signals",
+              "100 → 190"
+            ]
+          ]
+        ],
+        "code": []
+      },
+      "source_words": 90,
+      "word_floor": 63,
+      "required_component": {
+        "family": "faceted-grid",
+        "lib": "tanstack"
+      },
+      "children": []
+    },
+    "D6.d4.m2": {
+      "id": "D6.d4.m2",
+      "level": 4,
+      "parent": "D6.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The moat compounding: the M identity made real, and made uncatchable",
+        "The moat widens with scale, so sequencing beats focus"
+      ],
+      "title": "Mechanism 4.2 — The moat widens with scale, so sequencing beats focus",
+      "source_span": {
+        "heading": "Mechanism 4.2 — The moat widens with scale, so sequencing beats focus",
+        "trace": [
+          "S-095"
+        ],
+        "text": "S-614: the cross-join uplift (Sankey's +19%, ROC's +18.7 pts) is a function of how many streams share a key, so it grows every time a domain is sequenced onto the platform — a focused specialist adding users gets more of the same data, while Kepler adding a domain gets a new dimension that multiplies against all existing ones. This is the edge case the bears miss: at small scale the conglomerate discount is correct (six mediocre verticals), but the moat term B has increasing returns, so there is a crossover beyond which the flywheel dominates focus. Sequencing is choosing when to cross it. S-615: the ordering matters because breadth-heavy domains (D5 devices, D1 mobility) must land before the models that monetise them (D4 credit, D3 matching), or the models train on thin data and the compounding stalls — the platform is why the sequence has a right answer.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 148,
+      "word_floor": 104,
+      "required_component": null,
+      "children": []
+    },
+    "D6.d4.m3": {
+      "id": "D6.d4.m3",
+      "level": 4,
+      "parent": "D6.d4",
+      "path": [
+        "Kepler — The Flywheel Decade",
+        "Data & AI Platform",
+        "The moat compounding: the M identity made real, and made uncatchable",
+        "The cost centre is the moat's price, and it is falling per unit of M"
+      ],
+      "title": "Mechanism 4.3 — The cost centre is the moat's price, and it is falling per unit of M",
+      "source_span": {
+        "heading": "Mechanism 4.3 — The cost centre is the moat's price, and it is falling per unit of M",
+        "trace": [
+          "S-096"
+        ],
+        "text": "S-616: Domain 6 costs −420m is not evidence of indiscipline, it is the amortising fixed cost of the multiplier that lifts blended contribution/interaction from −0.31. The bears expense the hub; the thesis capitalises it.",
+        "tables": [],
+        "code": []
+      },
+      "source_words": 34,
+      "word_floor": 45,
+      "required_component": null,
+      "children": []
+    }
+  },
+  "roots": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6"
+  ]
+}

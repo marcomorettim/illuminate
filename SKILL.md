@@ -933,6 +933,54 @@ invisible skeleton. The experience is what the reader feels, not what they are t
 
 ---
 
+## Stage III runs the BUILD HARNESS — the artifact is never emitted from a single generation pass
+
+**The load-bearing law of this stage.** A hand-authored, single-pass artifact is a **process
+failure regardless of how good it looks** — "looks good" is exactly what an empty shell exploits.
+The artifact is only ever emitted as `build/dist/illuminate.html` by the build harness (`build/`,
+see `build/README.md`), and only when its `build/dist/gate-report.json` is **all-pass** (or carries
+an explicit, named residual-FAIL list). Two structural reasons, neither fixable by prompt wording:
+one budget across ~20k words makes a scaffold the cheapest way to *nominally* satisfy every rule;
+and a prose gate re-reads the generator's own source, so a 600-word shell reports itself complete.
+The harness fixes both: **every node gets its own generation step with its own budget**, and the
+gate is **an executed program that counts rendered pixels and DOM** outside any generator's context.
+
+**The nine stages** (Stage I feeds Stage 0; Stage II *is* Stages 1–2; Stage III executes 3–9):
+
+```
+ 0 INGEST      source(s) ─▶ source-model.json          preserve, DO NOT compress (ingest.py)
+ 1 DECOMPOSE   ─▶ argument tree (thesis→domain→driver→mechanism)      (manifest.py)
+ 2 MANIFEST    ─▶ build-manifest.json   THE CONTRACT: per-node word_floor + required_component
+ 3 DEVELOP ▶◀  one subagent per node ─▶ node-<id>.md ≥ its floor      (agents/develop-node.md)
+ 4 COMPONENTIZE code/table verbatim from source; bespoke data traced by the develop agents
+ — SERIALIZE   manifest + sources + node outputs ─▶ argument-model.json  (the II→III seam, doc §3)
+ 5 ASSEMBLE    Stage III renders ONLY from argument-model.json ─▶ React/shadcn single-file app
+ 6 BUNDLE      vite + vite-plugin-singlefile ─▶ dist/illuminate.html   (IIFE + DOMContentLoaded)
+ 7 MASK-CHECK  cheap pre-flight: fonts embedded, no external refs, every component id present
+ 8 RENDER GATE headless Chromium, both themes ─▶ gate-report.json (words/node, components, …)
+ 9 REPAIR      route each FAIL to its owning node's agent, rebuild only that, re-gate — loop
+```
+
+`build-manifest.json` is the **single contract every later stage is measured against, written from
+the SOURCE before any prose exists.** `word_floor` (≈0.7 × a node's source words, never zero) makes
+the head/tail asymmetry an *arithmetic* violation on a named node id, not a hope. The develop agents'
+outputs are then serialized with the manifest + sources into **one `argument-model.json`** (node
+`developed_content` + `component{family,data,finding,evidence_class}` inline); **Stage III renders
+only from that model** — it never re-derives content, which is what removes the single-pass
+starvation. Charts are **Recharts** (line/waterfall/funnel/time-series), monochrome + one Beitar mark;
+ILLUSTRATE-class components wear an `ILLUSTRATION` tag, evidence-class ones carry citation chips. Invoke:
+`node build/scripts/pipeline.mjs prepare <source>` → dispatch one develop agent per driver →
+`node build/scripts/pipeline.mjs assemble`. On FAIL, `gate-report.failing_nodes` names the exact
+node ("`D3.d2.m1` rendered 90 words against a 336 floor"); re-dispatch only those, re-assemble.
+
+**Graceful degradation (no subagents or browser — plain chat).** The true pipeline cannot run.
+There the skill must still (a) build the manifest explicitly and inline, (b) develop node-by-node
+in sequence against the floors (**not** one gestalt pass), and (c) **state clearly that the executed
+gate did not run, so the output is unverified.** It must never pretend the gate passed. The pipeline
+is the standard; the degraded path is honest about being degraded.
+
+---
+
 ## Format & page model (Part F — read the `[ILLUMINATE:FORMAT]` decision first)
 
 **Single file ≠ single page.** The single-file law (portable, offline, zero external requests)
@@ -1135,15 +1183,17 @@ Own-the-code components, themed to Beitar:
 - **TanStack Table (+ Virtual):** faceted filter / sort / group, column pinning, **expandable rows**,
   virtualization — the multi-listing that conveys multidimensionality.
 - **Tree view** (react-arborist / nested Radix): real multi-level nested drill-down.
-- **Charts — retire hand-rolled SVG bars:** **Tremor** (KPI/dashboard) + **visx** (bespoke bridges,
-  sankey, roll-rate curves), themed to §3.4 (monochrome + one Beitar finding).
+- **Charts — retire hand-rolled SVG bars:** **Recharts** (line/bar/waterfall/funnel/cohort — the
+  cartesian default) with visx reserved for genuinely bespoke marks (sankey, geo); network/scenario
+  stay hand-rolled SVG. Themed to §3.4 (monochrome + one Beitar finding).
 - **Framer Motion (`motion/react`):** layout / shared-layout transitions, `AnimatePresence` for
   expand/collapse, scroll-linked reveals — reduced-motion aware.
 - **Layout:** Tailwind **bento grids + Resizable panels + multi-column** to deliver §4.
 Retire the ASCII / `SECTION-MOTIF` / SVG-bar specs **as the default** (keep ASCII only where it
 genuinely serves the narration). **Out of scope:** GraphQL / web3 / any backend data layer — a static
 self-contained document has no backend; adopt the *component + web-engineering* practices, not the
-data layer. Update Rule 19 to mandate this pipeline.
+data layer. This modern single-file pipeline is what Rule 19 mandates and what the build harness
+(`build/app/`) implements.
 
 **§6 · Drill-down is a real multi-level interaction, not a longer scroll.** Descent from the answer to
 the mechanism-level reasoning and back is delivered by **expandable rows, tree descent, master-detail
@@ -1327,6 +1377,15 @@ gate**, not guidance:
   A `FAIL` is **not shippable** — it re-enters the correction register. This is G5/H5 made mechanical
   and blocking, the only form that survives the model's defaults. (If Playwright is unavailable, the
   operator runs the same checks by hand in a browser — but the script is the default path.)
+
+  **When the build harness runs (Stage III), the canonical gate is [`build/gate/gate.mjs`](build/gate/gate.mjs)**
+  — the same checks, but **manifest-driven**: it reads `build-manifest.json` and additionally verifies,
+  per named node, (l) **rendered words ≥ the node's `word_floor`** and total ≥ 0.6× source words
+  (the every-sibling-developed / anti-compression law, §2.1a); (m) **component coverage** — every
+  `required_component` node renders a component element; (n) **drill-down depth ≥ 4 reached by
+  clicking**; and (o) **Beitar-as-wash** — a `.finding` mark over ~90 chars fails. Its `gate-report.json`
+  names the exact failing node ids, which Stage 9 routes back to their owning agents. The standalone
+  `render-gate/render-gate.mjs` remains for single-file artifacts built outside the harness.
 
 ---
 
@@ -3616,7 +3675,7 @@ Design for containment, not exorcism. Signal, do not certify.
 18b. **Editorial elegance is mandatory; the register is selectable (Part F2).** Execute at a high editorial bar independent of palette: strong type hierarchy (ultralight display vs bold labels, not uniform 600-weight card titles), generous whitespace, a felt column grid, restrained ornament (tight radii, subtle/flat shadows, minimal box-in-box), sophisticated semantic color (not a rainbow of tags). **The rounded-card / soft-shadow SaaS-dashboard aesthetic is a named failure mode.** Register may vary (Swiss, warm, archival, print, phosphor); craft may not.
 
 **Technical constraints**
-19. **Author on the modern component stack (Part K·§5), bundled to one offline file.** React + TypeScript + Tailwind + **shadcn/ui** (Radix), **TanStack Table** (faceted, expandable rows) for multi-listings, a **tree view** for nested drill-down, **Tremor + visx** for charts (retiring hand-rolled SVG bars), **Framer Motion** for transitions — `vite build` + **`vite-plugin-singlefile`** inlines everything (JS/CSS/fonts) into one self-contained offline HTML with zero external requests. The ASCII / `SECTION-MOTIF` / SVG-bar specs are retired **as the default** (ASCII only where it genuinely serves the narration). Out of scope: GraphQL / web3 / any backend data layer (a static document has no backend). Not for decoration: an effect that doesn't aid understanding doesn't ship.
+19. **Author on the modern component stack (Part K·§5), bundled to one offline file.** React + TypeScript + Tailwind + **shadcn/ui** (Radix), **TanStack Table** (faceted, expandable rows) for multi-listings, a **tree view** for nested drill-down, **Recharts** for charts (visx only for bespoke sankey/geo; retiring hand-rolled SVG bars), **Framer Motion** for transitions — `vite build` + **`vite-plugin-singlefile`** inlines everything (JS/CSS/fonts) into one self-contained offline HTML with zero external requests. The ASCII / `SECTION-MOTIF` / SVG-bar specs are retired **as the default** (ASCII only where it genuinely serves the narration). Out of scope: GraphQL / web3 / any backend data layer (a static document has no backend). Not for decoration: an effect that doesn't aid understanding doesn't ship.
 20. Prefer vanilla only when it is faster to write and equally expressive. Never avoid a library out of principle — avoid it only when it adds complexity without payoff.
 
 **Component library**

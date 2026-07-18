@@ -1,0 +1,35 @@
+{
+  "driver": {
+    "id": "D3.d1",
+    "body": "Liquidity is the reflexive loop the Logistics Marketplace lives or dies inside, and stating it precisely is the whole discipline — not a slogan but the one dynamic every other lever in the domain ultimately routes through [S-036]. **More couriers online shortens pickup ETAs and cuts unfulfilled orders, which lifts merchant satisfaction and order volume, which densifies the earnings opportunities available per online hour, which pulls still more couriers online.** That is the forward loop, and it compounds. But the same loop runs in reverse just as fast: a thin week thins the other side within two weeks, because couriers and merchants each read a degraded experience and quietly reallocate their next shift or next order elsewhere [S-036]. The job, therefore, is two things at once — to bias the loop forward at the lowest subsidy cost, and to know, cell by cell and hour by hour, exactly where on the liquidity curve each market sits, because a market near the tipping point and a market already past it demand opposite interventions [S-036]."
+  },
+  "mechanisms": [
+    {
+      "id": "D3.d1.m1",
+      "body": "Liquidity is refused as a single \"orders\" number, because that number hides the two independent conversion pipelines feeding it — and a headline that averages two failing sides can look healthy while both legs rot [S-037]. Instead both sides are instrumented as a two-sided conversion funnel, and the shape of each side tells us precisely which piston is misfiring rather than merely that the engine is down [S-305].\n\nThe funnel makes the pathology legible. The courier side hemorrhages between \"first shift\" and \"4+ shifts\" — the exact moment a new courier learns whether the app can actually feed them enough well-paid jobs to bother staying. That **58%→39% cliff is a liquidity problem masquerading as a retention problem**: couriers churn not because onboarding is hard but because the market was thin the week they tried it [S-037]. The merchant side leaks worst from \"first order taken\" to \"10+ orders,\" and for the exactly symmetric reason — a restaurant that lists and then waits twenty minutes for a courier on its first lunch rush concludes we don't work, and never gives us a second service [S-037].\n\nBoth cliffs are the same cliff seen from two sides, which is the entire insight of two-sided liquidity: you cannot fix one funnel without the other, because each side's drop-off is the other side's thinness reflected back. That is why the composite is built as a product, not a sum: **L = fill-rate × match-quality × repeat-rate** is deliberately multiplicative so that improving one leg while starving another does not move it — the metric refuses to reward a lopsided fix [S-306].",
+      "component_data": {
+        "left": {
+          "name": "Courier funnel",
+          "rows": [
+            ["Onboarded", 100, 100],
+            ["First shift", 58, 58],
+            ["4+ shifts", 39, 39]
+          ]
+        },
+        "right": {
+          "name": "Merchant funnel",
+          "rows": [
+            ["Listed", 100, 100],
+            ["First order taken", 58, 58],
+            ["10+ orders", 39, 39]
+          ]
+        },
+        "cliff_index": 2
+      }
+    },
+    {
+      "id": "D3.d1.m2",
+      "body": "Because the funnel is only a snapshot of who is converting now, the business is governed on cohort-retention curves — the honest, un-gameable record of whether each side actually stuck over time [S-038]. The shapes of those curves are as diagnostic as the numbers, and two facts govern the entire plan.\n\nFirst, the merchant curve flattens high. Merchants that survive their first month churn at **under 3% a month**, because a restaurant that has integrated Kepler into its lunch service faces real operational switching cost and, critically, because D4 working-capital advances — settled against the flow Kepler already observes — make Kepler a lender as well as a channel, which is a far stickier relationship than a delivery contract [S-038]. That flat tail is where merchant lifetime value actually lives. Second, the courier curve smiles: it decays first, then stabilizes around a hard core of professional couriers doing 30+ hours a week who account for **68% of delivered volume from just 19% of the retained cohort** [S-307].\n\nThese two shapes dictate opposite tactics. For merchants, win month one and the curve holds itself — the investment belongs at the front. For couriers, over-invest in the professional core and treat the casual tail as elastic surge capacity, not as the base to be retained. Managing the two sides identically — the standalone-marketplace default — wastes subsidy on couriers who were always going to churn and under-serves merchants in the single month that decides their lifetime [S-038]."
+    }
+  ]
+}
