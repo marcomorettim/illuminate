@@ -30,6 +30,8 @@ emit those. For a node whose `required_component.family` is one of the below, ex
 - `waterfall` → `{ unit, steps:[{label,value}] }` (value = the RUNNING TOTAL at each step, e.g. ASP→…→gross-margin; the last step is the terminus/finding)
 - `funnel` → `{ rows:[[stage,pct,count]] }`
 - `mockup` → `{ kind, title, lines:[…], meta }` (a depicted surface — email/push/app/card)
+- `map` → `{ places:[{label,sub,x,y,value,finding}], caption }` (x,y in 0–100 laying out the described geography; the finding place = true)
+- `sankey` → `{ nodes:[{id,label,col}], links:[{source,target,value,finding}], unit }` (col = 0-based stage, left→right; the load-bearing flow = finding:true; values are traced volumes/shares)
 
 ## Body format (constrained — the assembler converts it)
 Plain paragraphs separated by blank lines. `**bold**` for the load-bearing phrase. `- ` bullets

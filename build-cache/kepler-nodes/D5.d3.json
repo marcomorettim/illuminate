@@ -6,7 +6,18 @@
   "mechanisms": [
     {
       "id": "D5.d3.m1",
-      "body": "The physical flow runs from silicon to placement [S-509], and two structural choices along it are load-bearing [S-510]. First, **final assembly is concentrated at Jabil Penang**, with ASE Kaohsiung handling SoC packaging and test — deliberately dual-region against the fab base but single-node on final assembly, trading resilience for the tighter process control that a consistent sensor calibration demands. A sensor that reads differently unit-to-unit corrupts the data term (D) it is supposed to feed, so calibration discipline is allowed to outrank redundancy at this leg.\n\nSecond, the **placement leg is Kepler's own**. Units land at the PSA Singapore and Rotterdam hubs and then ride the D1 mobility fleet and D3 courier network into the field, rather than moving through third-party retail [S-509]. This is the **distribution coupling that a standalone device maker cannot replicate** — Kepler already has vehicles and couriers moving through all 42 cities daily, so the last mile of device placement is nearly free and rides infrastructure that already exists [S-510]. Distribution, for a normal hardware company the most expensive way to buy breadth, is here a fixed asset already paid for by two other domains."
+      "body": "The physical flow runs from silicon to placement [S-509], and two structural choices along it are load-bearing [S-510]. First, **final assembly is concentrated at Jabil Penang**, with ASE Kaohsiung handling SoC packaging and test — deliberately dual-region against the fab base but single-node on final assembly, trading resilience for the tighter process control that a consistent sensor calibration demands. A sensor that reads differently unit-to-unit corrupts the data term (D) it is supposed to feed, so calibration discipline is allowed to outrank redundancy at this leg.\n\nSecond, the **placement leg is Kepler's own**. Units land at the PSA Singapore and Rotterdam hubs and then ride the D1 mobility fleet and D3 courier network into the field, rather than moving through third-party retail [S-509]. This is the **distribution coupling that a standalone device maker cannot replicate** — Kepler already has vehicles and couriers moving through all 42 cities daily, so the last mile of device placement is nearly free and rides infrastructure that already exists [S-510]. Distribution, for a normal hardware company the most expensive way to buy breadth, is here a fixed asset already paid for by two other domains.",
+      "component_data": {
+        "places": [
+          { "label": "Fab base", "sub": "silicon — dual-region", "x": 8, "y": 40, "value": "wafers", "finding": false },
+          { "label": "ASE Kaohsiung", "sub": "SoC packaging & test", "x": 27, "y": 26, "value": "packaged SoC", "finding": false },
+          { "label": "Jabil Penang", "sub": "final assembly — single-node", "x": 44, "y": 54, "value": "finished units", "finding": false },
+          { "label": "PSA Singapore", "sub": "landing hub", "x": 60, "y": 60, "value": "port of entry", "finding": false },
+          { "label": "Rotterdam", "sub": "landing hub", "x": 73, "y": 18, "value": "port of entry", "finding": false },
+          { "label": "Field placement", "sub": "D1 fleet + D3 couriers — 42 cities", "x": 91, "y": 46, "value": "last mile ~free", "finding": true }
+        ],
+        "caption": "Silicon to street: dual-region fabs, single-node final assembly at Jabil Penang with ASE Kaohsiung packaging, landing at the PSA Singapore and Rotterdam hubs, then placed through Kepler's own D1 fleet and D3 couriers across 42 cities rather than third-party retail — the distribution coupling a standalone device maker cannot replicate [S-509][S-510]."
+      }
     },
     {
       "id": "D5.d3.m2",

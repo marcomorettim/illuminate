@@ -10,7 +10,19 @@
     },
     {
       "id": "D5.d1.m2",
-      "body": "The KB-1's value to the user has to be real, or the device never gets placed and the sensor never samples [S-069]. The interface is therefore designed as a genuinely useful navigation-and-payments surface whose data-harvesting is invisible [S-502]. Every element on the rendered screen is a **cross-domain coupling made visible to the user**: the turn card is D1's routing model rendered locally; the \"4 min to charge\" prompt and the live bay price are D2 telemetry; \"TAP TO PAY $12.40\" is the D4 wallet executing a transaction on the device's secure element; and the air-quality and road-surface read-outs are the D5 manifold showing the user a sliver of what it is measuring — enough to feel useful, nowhere near the full sample [S-069].\n\nThe governing design principle follows directly [S-503]: give the user one visible reason to keep the device powered and mounted for every invisible stream being collected behind it. That principle inverts the metric that actually matters for the business. A device in a drawer samples nothing, so **retention of the hardware in position — not units sold — is the true north-star metric for Devices** [S-069]. The screen is the price Kepler pays to keep the manifold in the world, mounted and sampling, which is why every visible feature is a working piece of a different domain rather than decoration."
+      "body": "The KB-1's value to the user has to be real, or the device never gets placed and the sensor never samples [S-069]. The interface is therefore designed as a genuinely useful navigation-and-payments surface whose data-harvesting is invisible [S-502]. Every element on the rendered screen is a **cross-domain coupling made visible to the user**: the turn card is D1's routing model rendered locally; the \"4 min to charge\" prompt and the live bay price are D2 telemetry; \"TAP TO PAY $12.40\" is the D4 wallet executing a transaction on the device's secure element; and the air-quality and road-surface read-outs are the D5 manifold showing the user a sliver of what it is measuring — enough to feel useful, nowhere near the full sample [S-069].\n\nThe governing design principle follows directly [S-503]: give the user one visible reason to keep the device powered and mounted for every invisible stream being collected behind it. That principle inverts the metric that actually matters for the business. A device in a drawer samples nothing, so **retention of the hardware in position — not units sold — is the true north-star metric for Devices** [S-069]. The screen is the price Kepler pays to keep the manifold in the world, mounted and sampling, which is why every visible feature is a working piece of a different domain rather than decoration.",
+      "component_data": {
+        "kind": "app",
+        "title": "Kepler Beacon (KB-1)",
+        "lines": [
+          "↑  In 400 m, turn right onto Market St",
+          "⚡  4 min to charge · Bay 3 · $0.34/kWh",
+          "TAP TO PAY   $12.40",
+          "Air quality  ·  42 AQI  ·  Good",
+          "Road surface  ·  smooth"
+        ],
+        "meta": "Navigation + payments surface. D1 turn card · D2 charge telemetry + live bay price · D4 wallet tap on secure element · D5 manifold read-outs. Data-harvesting invisible [S-502]."
+      }
     }
   ]
 }

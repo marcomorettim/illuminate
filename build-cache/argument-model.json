@@ -653,11 +653,46 @@
         "The fleet and the density engine"
       ],
       "title": "Driver 1 — The fleet and the density engine",
-      "developed_content": "<p>Density is not bought; it is compounded <button class=\"cite\" data-cite=\"S-008\">S-008</button>. The fleet is the physical instrument that converts capital into interactions, and the discipline is to concentrate that instrument until the data it produces crosses a usefulness threshold — then hold it there while demand catches up <button class=\"cite\" data-cite=\"S-008\">S-008</button>. This driver owns <strong>D</strong>, the data term of the moat identity M = D × B × L × T: inside an already-dense zone every additional interaction sharpens the routing and pricing models rather than merely adding revenue, which is why concentration, not coverage, is the governing rule and why the two mechanisms below both bend toward holding a saturated core rather than spreading a thin blanket <button class=\"cite\" data-cite=\"S-009\">S-009</button>.</p>",
+      "developed_content": "<p>Density is not bought; it is compounded <button class=\"cite\" data-cite=\"S-008\">S-008</button>. The fleet is the physical instrument that converts capital into interactions, and the discipline is to concentrate that instrument until the data it produces crosses a usefulness threshold — then hold it there while demand catches up <button class=\"cite\" data-cite=\"S-008\">S-008</button>. This driver owns <strong>D</strong>, the data term of the moat identity M = D × B × L × T: inside an already-dense zone every additional interaction sharpens the routing and pricing models rather than merely adding revenue, which is why concentration, not coverage, is the governing rule and why the two mechanisms below both bend toward holding a saturated core rather than spreading a thin blanket <button class=\"cite\" data-cite=\"S-009\">S-009</button>. The map below lays out that geography — one saturated core, one deliberately starved edge, one corridor ramping toward the floor.</p>",
       "word_floor": 45,
       "source_words": 42,
-      "required_component": null,
-      "component": null,
+      "required_component": {
+        "family": "map",
+        "lib": "svg"
+      },
+      "component": {
+        "family": "map",
+        "data": {
+          "places": [
+            {
+              "label": "Marina Core",
+              "sub": "71% util · saturated · solid outline",
+              "x": 52,
+              "y": 58,
+              "value": "1,100 AVs / 3 zones",
+              "finding": true
+            },
+            {
+              "label": "Reforma Corridor",
+              "sub": "ramping toward the ~40-interaction floor",
+              "x": 72,
+              "y": 42,
+              "value": "rule being executed",
+              "finding": false
+            },
+            {
+              "label": "Noord Fringe",
+              "sub": "39% util · thin · hatched",
+              "x": 26,
+              "y": 27,
+              "value": "starved edge, kept thin",
+              "finding": false
+            }
+          ],
+          "caption": "Density-first deployment: 1,100 vehicles flood three contiguous zones rather than 300 thin across a metro. Capital flows to Marina Core (71%) while Noord Fringe (39%) is held deliberately thin; Reforma Corridor sits between, ramping toward the ~40 interactions/km²/hr floor [S-009][S-102]."
+        },
+        "evidence_class": "illustrate"
+      },
       "finding": null,
       "finding_full": null,
       "cross_feeds": [],
@@ -768,16 +803,90 @@
       "word_floor": 141,
       "source_words": 201,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "component": {
-        "family": "code",
+        "family": "time-series",
         "data": {
-          "file": "Holding the floor with a utilization time-seri",
-          "lines": "Util %  Marina Core — weekday utilization vs <span <span class=\"k\">class</span>=\"nu\">60</span>% floor <span <span class=\"k\">class</span>=\"nu\">90</span> |                    ╭─╮              ╭──╮ <span <span class=\"k\">class</span>=\"nu\">80</span> |          ╭─╮      ╱   ╲           ╱     ╲ <span <span class=\"k\">class</span>=\"nu\">70</span> |    ╭────╯   ╲────╯     ╲────╮   ╱        ╲ <span <span class=\"k\">class</span>=\"nu\">60</span> |╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╲─╱╌╌╌╌╌╌╌╌╌╌╌╲╌╌  ← floor <span <span class=\"k\">class</span>=\"nu\">50</span> |  ╱                          ╰╯             ╲ <span <span class=\"k\">class</span>=\"nu\">40</span> |─╯                                           ╲    +--------------------------------------------------     <span <span class=\"k\">class</span>=\"nu\">00</span>   <span <span class=\"k\">class</span>=\"nu\">03</span>    <span <span class=\"k\">class</span>=\"nu\">06</span>    <span <span class=\"k\">class</span>=\"nu\">09</span>    <span <span class=\"k\">class</span>=\"nu\">12</span>    <span <span class=\"k\">class</span>=\"nu\">15</span>    <span <span class=\"k\">class</span>=\"nu\">18</span>    <span <span class=\"k\">class</span>=\"nu\">21</span>   <span <span class=\"k\">class</span>=\"nu\">24</span>          AM peak↑          midday dip↓   PM peak↑"
+          "unit": "utilization %",
+          "series": [
+            {
+              "name": "Marina Core",
+              "dash": false,
+              "pts": [
+                [
+                  0,
+                  57
+                ],
+                [
+                  3,
+                  51
+                ],
+                [
+                  6,
+                  66
+                ],
+                [
+                  7.5,
+                  83
+                ],
+                [
+                  10,
+                  74
+                ],
+                [
+                  12,
+                  70
+                ],
+                [
+                  14,
+                  61
+                ],
+                [
+                  16,
+                  72
+                ],
+                [
+                  18.25,
+                  85
+                ],
+                [
+                  20,
+                  77
+                ],
+                [
+                  22,
+                  63
+                ],
+                [
+                  24,
+                  56
+                ]
+              ]
+            },
+            {
+              "name": "60% floor",
+              "dash": true,
+              "pts": [
+                [
+                  0,
+                  60
+                ],
+                [
+                  24,
+                  60
+                ]
+              ]
+            }
+          ],
+          "mark": {
+            "name": "14:00 trough kisses floor → repositioning + fare cut",
+            "x": 14,
+            "y": 61
+          }
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -898,16 +1007,50 @@
       "word_floor": 106,
       "source_words": 151,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "component": {
-        "family": "code",
+        "family": "time-series",
         "data": {
-          "file": "The incident timeline as an auditable record",
-          "lines": "SAFETY-INCIDENT TIMELINE — Marina Core + Amstel Ring──────────────────────────────────────────────────────────Q1  ●── Occluded pedestrian, near-miss (no contact)        Root cause: late detection behind parked van        Fix: perception model v4.<span <span class=\"k\">class</span>=\"nu\">1</span>, occlusion prior      [S-<span <span class=\"k\">class</span>=\"nu\">108</span>]Q2  ●── Low-speed contact w/ cyclist, no injury        Root cause: cyclist against-light, unmodeled path        Fix: intent model + geofenced slow-zoneQ3  ○── Hard brake cluster (comfort, not safety)        Root cause: over-cautious freeze at tram crossing        Fix: tuned caution threshold (see Driver <span <span class=\"k\">class</span>=\"nu\">3</span> tension)Q4  ●── Sensor-occlusion (heavy rain), safe pullover        Root cause: lidar attenuation; SAFE degradation        Fix: radar-weighted fusion <span class=\"k\">in</span> rain (Devices D5)   [S-<span <span class=\"k\">class</span>=\"nu\">109</span>]──────────────────────────────────────────────────────────● safety-critical   ○ comfort-only"
+          "unit": "index, Q1 = 100",
+          "series": [
+            {
+              "name": "Miles/intervention",
+              "dash": false,
+              "pts": [
+                [
+                  1,
+                  100
+                ],
+                [
+                  4,
+                  1160
+                ]
+              ]
+            },
+            {
+              "name": "Fleet miles",
+              "dash": true,
+              "pts": [
+                [
+                  1,
+                  100
+                ],
+                [
+                  4,
+                  300
+                ]
+              ]
+            }
+          ],
+          "mark": {
+            "name": "Q4 rain minimum-risk pullover",
+            "x": 4,
+            "y": 1160
+          }
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -958,16 +1101,74 @@
       "word_floor": 150,
       "source_words": 214,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "component": {
-        "family": "code",
+        "family": "time-series",
         "data": {
-          "file": "Precision ETAs as the retention engine",
-          "lines": "┌───────────────────────────────────────────┐│  KEPLER · now                               ││  Your Kepler is <span <span class=\"k\">class</span>=\"nu\">2</span> min away 🚗               ││  Silver pod K-<span <span class=\"k\">class</span>=\"nu\">4471</span> · Marina Blvd pickup.    ││  We moved it closer — tap to track live.    │└───────────────────────────────────────────┘"
+          "unit": "rides in zone (000s) → ETA error (min, dashed) & rebooking (%, solid)",
+          "series": [
+            {
+              "name": "Rebooking rate (%)",
+              "dash": false,
+              "pts": [
+                [
+                  0,
+                  42
+                ],
+                [
+                  150,
+                  56
+                ],
+                [
+                  400,
+                  67
+                ],
+                [
+                  750,
+                  77
+                ],
+                [
+                  1204,
+                  84
+                ]
+              ]
+            },
+            {
+              "name": "Mean absolute ETA error (min)",
+              "dash": true,
+              "pts": [
+                [
+                  0,
+                  6
+                ],
+                [
+                  150,
+                  4.3
+                ],
+                [
+                  400,
+                  3
+                ],
+                [
+                  750,
+                  2.1
+                ],
+                [
+                  1204,
+                  1.2
+                ]
+              ]
+            }
+          ],
+          "mark": {
+            "name": "Saturated zone (1.2m rides): precision → loyalty",
+            "x": 1204,
+            "y": 84
+          }
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -1153,91 +1354,41 @@
       "word_floor": 204,
       "source_words": 292,
       "required_component": {
-        "family": "faceted-grid",
-        "lib": "tanstack"
+        "family": "map",
+        "lib": "svg"
       },
       "component": {
-        "family": "faceted-grid",
+        "family": "map",
         "data": {
-          "cols": [
-            "City",
-            "Sites",
-            "DC-fast (≥150kW)",
-            "AC (≤22kW)",
-            "Peak util.",
-            "Off-peak util.",
-            "Primary demand feed"
+          "places": [
+            {
+              "label": "Dubai",
+              "sub": "D1 autonomous fleet · DC-fast",
+              "x": 24,
+              "y": 40,
+              "value": 90,
+              "finding": true
+            },
+            {
+              "label": "Ho Chi Minh City",
+              "sub": "D3 courier fleet · AC",
+              "x": 72,
+              "y": 50,
+              "value": 45,
+              "finding": false
+            },
+            {
+              "label": "Jakarta",
+              "sub": "D3 courier fleet · AC",
+              "x": 78,
+              "y": 70,
+              "value": 45,
+              "finding": false
+            }
           ],
-          "rows": [
-            [
-              "Singapore",
-              "412",
-              "188",
-              "224",
-              "74%",
-              "29%",
-              "D1 fleet + D3 couriers"
-            ],
-            [
-              "Amsterdam",
-              "356",
-              "141",
-              "215",
-              "68%",
-              "24%",
-              "D1 fleet + retail"
-            ],
-            [
-              "Jakarta",
-              "388",
-              "96",
-              "292",
-              "71%",
-              "33%",
-              "D3 couriers (dominant)"
-            ],
-            [
-              "Ho Chi Minh City",
-              "301",
-              "74",
-              "227",
-              "66%",
-              "31%",
-              "D3 couriers"
-            ],
-            [
-              "Dubai",
-              "214",
-              "132",
-              "82",
-              "59%",
-              "19%",
-              "D1 fleet (dominant)"
-            ],
-            [
-              "Warsaw",
-              "176",
-              "61",
-              "115",
-              "52%",
-              "21%",
-              "Retail + D1"
-            ],
-            [
-              "Network (42 cities)",
-              "6,180",
-              "2,214",
-              "3,966",
-              "63%",
-              "26%",
-              "mixed"
-            ]
-          ],
-          "negCols": [
-            0
-          ]
+          "caption": "The charging estate — 6,180 sites across 42 cities [S-022] — rendered as sites × power class × demand feed. Bubble size = power class (DC-fast vs AC); the right-hand label is the internal customer paying for the load. D1-sited cities ran first-year utilization +31% over the legacy-sited estate [S-201]; dual-served sockets hit 63% peak utilization, two internal customers per socket [S-202]."
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -1312,16 +1463,124 @@
       "word_floor": 109,
       "source_words": 156,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "component": {
-        "family": "code",
+        "family": "time-series",
         "data": {
-          "file": "Reading the load curve",
-          "lines": "Load100 |                          ██ ██ <span <span class=\"k\">class</span>=\"nu\">90</span> |                    ██  ██ ██ ██ ██ <span <span class=\"k\">class</span>=\"nu\">75</span> |          ██        ██  ██ ██ ██ ██        ██ ██ <span <span class=\"k\">class</span>=\"nu\">60</span> |    ██ ██ ██ ██     ██  ██ ██ ██ ██     ██ ██ ██ ██ <span <span class=\"k\">class</span>=\"nu\">45</span> | ██ ██ ██ ██ ██  ██ ██  ██ ██ ██ ██  ██ ██ ██ ██ ██ ██ <span <span class=\"k\">class</span>=\"nu\">30</span> | ██ ██ ██ ██ ██  ██ ██  ██ ██ ██ ██  ██ ██ ██ ██ ██ ██    +----------------------------------------------------------      <span <span class=\"k\">class</span>=\"nu\">00</span>  <span <span class=\"k\">class</span>=\"nu\">03</span>  <span <span class=\"k\">class</span>=\"nu\">06</span>   <span <span class=\"k\">class</span>=\"nu\">08</span>  <span <span class=\"k\">class</span>=\"nu\">09</span>   <span <span class=\"k\">class</span>=\"nu\">17</span> <span <span class=\"k\">class</span>=\"nu\">18</span> <span <span class=\"k\">class</span>=\"nu\">19</span> <span <span class=\"k\">class</span>=\"nu\">20</span>   <span <span class=\"k\">class</span>=\"nu\">22</span>  <span <span class=\"k\">class</span>=\"nu\">23</span>   (hour)              morning peak      evening peak"
+          "unit": "network-avg kW drawn (normalised, peak = 100)",
+          "series": [
+            {
+              "name": "Daily load curve",
+              "dash": false,
+              "pts": [
+                [
+                  0,
+                  22
+                ],
+                [
+                  1,
+                  18
+                ],
+                [
+                  2,
+                  15
+                ],
+                [
+                  3,
+                  15
+                ],
+                [
+                  4,
+                  19
+                ],
+                [
+                  5,
+                  28
+                ],
+                [
+                  6,
+                  48
+                ],
+                [
+                  7,
+                  70
+                ],
+                [
+                  8,
+                  80
+                ],
+                [
+                  9,
+                  76
+                ],
+                [
+                  10,
+                  58
+                ],
+                [
+                  11,
+                  54
+                ],
+                [
+                  12,
+                  52
+                ],
+                [
+                  13,
+                  50
+                ],
+                [
+                  14,
+                  49
+                ],
+                [
+                  15,
+                  53
+                ],
+                [
+                  16,
+                  64
+                ],
+                [
+                  17,
+                  83
+                ],
+                [
+                  18,
+                  95
+                ],
+                [
+                  19,
+                  100
+                ],
+                [
+                  20,
+                  94
+                ],
+                [
+                  21,
+                  80
+                ],
+                [
+                  22,
+                  54
+                ],
+                [
+                  23,
+                  34
+                ]
+              ]
+            }
+          ],
+          "mark": {
+            "name": "Overnight trough (00:00–05:00) — landed cost lowest, demand thinnest",
+            "x": 2,
+            "y": 15
+          }
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -1459,7 +1718,7 @@
         "The energy-transition scenario"
       ],
       "title": "Driver 4 — The energy-transition scenario",
-      "developed_content": "<p>The final driver is the ten-year question that hangs over every charging asset the domain will ever build: does Energy's <strong>cost floor and trust ceiling survive a decarbonising, re-pricing grid</strong> <button class=\"cite\" data-cite=\"S-031\">S-031</button>? Alone among the six domains, its core input — the wholesale price of electricity — is set by forces outside Kepler entirely <button class=\"cite\" data-cite=\"S-031\">S-031</button>. We therefore refuse a point forecast, which would pretend to a precision we do not have, and instead model the domain as a tree of grid-price paths, each path mapped to a margin outcome <button class=\"cite\" data-cite=\"S-031\">S-031</button>.</p>",
+      "developed_content": "<p>The final driver poses the decade's open question: does Energy's <strong>cost floor and trust ceiling survive a decarbonising, re-pricing grid</strong>? <button class=\"cite\" data-cite=\"S-031\">S-031</button> Energy is the one Kepler domain whose core input — the wholesale price of electricity — is set entirely by forces outside the company: policy, weather, fuel markets, the pace of the renewables build-out <button class=\"cite\" data-cite=\"S-031\">S-031</button>. Because that input cannot be forecast to a point, we refuse to model the domain as a single number. We model it instead as a tree of grid-price paths, each path carried through the renewables mix it implies and out to the net domain contribution margin it produces <button class=\"cite\" data-cite=\"S-031\">S-031</button>. The driver's task is to show the floor and the ceiling are robust across the whole tree, not merely at its expected value.</p>",
       "word_floor": 46,
       "source_words": 65,
       "required_component": null,
@@ -1486,20 +1745,57 @@
         "The scenario tree from grid price to margin"
       ],
       "title": "Mechanism 4.1 — The scenario tree from grid price to margin",
-      "developed_content": "<p>The tree branches on grid-price path → renewables mix → net domain contribution margin, and the headline is not a forecast but a distribution: the <strong>probability-weighted expected margin across the whole tree is +$0.036/kWh</strong> <button class=\"cite\" data-cite=\"S-211\">S-211</button>. The decisive feature, though, is the shape rather than the average — five of six branches are margin-positive <button class=\"cite\" data-cite=\"S-211\">S-211</button>. The single negative branch, *Squeeze* — in which grid prices rise and our PPAs reprice against us — carries only ~6% weight, and it carries so little precisely because the long-dated PPA book and the storage hedge (Mechanism 2.2) are the exact instruments built to collapse it <button class=\"cite\" data-cite=\"S-211\">S-211</button>. The tail that would sink a standalone charging business is the one we have already bought insurance against.</p><p>The strategically important reading is the second-order one <button class=\"cite\" data-cite=\"S-212\">S-212</button>. The two *Grid rises* branches are painful for standalone margin, yet they are actively helpful for the cost-advantage spread: when retail power spikes, our hedged landed cost spikes far less, so the gap we hand to Mobility (D1) and Logistics (D3) actually widens <button class=\"cite\" data-cite=\"S-212\">S-212</button>. The domain's cross-domain value is therefore <strong>counter-cyclical to its own P&amp;L</strong> — the branches that hurt the standalone Energy business are the same ones that most help the flywheel <button class=\"cite\" data-cite=\"S-212\">S-212</button>. That is why the tree matters strategically and not merely financially: read as a silo, a rising grid is a threat; read as a feeder, it is when the moat term Energy owns pays out hardest to the domains it supplies <button class=\"cite\" data-cite=\"S-212\">S-212</button>.</p>",
+      "developed_content": "<p>The tree branches on grid-price path, then on the renewables mix each path implies, and terminates in net domain contribution margin. Two numbers govern the reading. First, the probability-weighted expected margin across every branch is <strong>+$0.036/kWh</strong> <button class=\"cite\" data-cite=\"S-211\">S-211</button> — the domain clears a positive contribution even before any cross-domain value is counted. Second, and decisively, <strong>five of the six branches are margin-positive</strong> <button class=\"cite\" data-cite=\"S-211\">S-211</button>; the transition does not have to break our way for Energy to hold its floor.</p><p>The single negative branch is *Squeeze* — rising grid prices while our PPAs reprice against us — and it carries only about <strong>6% weight</strong> <button class=\"cite\" data-cite=\"S-211\">S-211</button>. That weight is low by construction, not by luck: the long-dated PPA book and the storage hedge of Mechanism 2.2 are precisely the instruments that collapse it, so the one path that hurts is the one the earlier drivers were built to suppress.</p><p>The strategically important reading is the two *Grid rises* branches <button class=\"cite\" data-cite=\"S-212\">S-212</button>. They are painful for standalone margin, yet they widen the cost-advantage spread: when retail power spikes, our hedged landed cost spikes far less, so the gap we hand to Mobility (D1) and Logistics (D3) actually grows. Concretely, dispatch already lets Energy hand the fleet a fixed $0.094/kWh and D3 $0.101/kWh against a $0.163 retail benchmark <button class=\"cite\" data-cite=\"S-206\">S-206</button>; a grid spike lifts that benchmark while the hedged transfer prices barely move, so the spread the flywheel runs on gets wider exactly when the standalone P&amp;L gets thinner.</p><p>The domain's cross-domain value is therefore counter-cyclical to its own P&amp;L — <strong>even the branches that hurt Energy alone tend to help the flywheel</strong> <button class=\"cite\" data-cite=\"S-212\">S-212</button>. That is why the tree matters strategically and not just financially.</p>",
       "word_floor": 104,
       "source_words": 148,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "scenario-tree",
+        "lib": "svg"
       },
       "component": {
-        "family": "code",
+        "family": "scenario-tree",
         "data": {
-          "file": "The scenario tree from grid price to margin",
-          "lines": "                          ┌─ Renewables &gt;<span <span class=\"k\">class</span>=\"nu\">60</span>% ──► margin +$<span <span class=\"k\">class</span>=\"nu\">0.061</span>/kWh   [Green-Cheap]   p≈.<span <span class=\"k\">class</span>=\"nu\">28</span>       ┌─ Grid falls ─────┤       │  (glut / solar)  └─ Renewables <span <span class=\"k\">class</span>=\"nu\">40</span>-<span <span class=\"k\">class</span>=\"nu\">60</span>% ► margin +$<span <span class=\"k\">class</span>=\"nu\">0.048</span>/kWh   [Green-Base]    p≈.<span <span class=\"k\">class</span>=\"nu\">17</span> START ┤       │                  ┌─ Storage scales ───► margin +$<span <span class=\"k\">class</span>=\"nu\">0.033</span>/kWh   [Volatile-Win]  p≈.<span <span class=\"k\">class</span>=\"nu\">22</span>       ├─ Grid volatile ──┤       │  (peaky)         └─ Storage lags ─────► margin +$<span <span class=\"k\">class</span>=\"nu\">0.012</span>/kWh   [Volatile-Thin] p≈.<span <span class=\"k\">class</span>=\"nu\">13</span>       │       └─ Grid rises ──────┬─ PPAs hold ───────► margin +$<span <span class=\"k\">class</span>=\"nu\">0.007</span>/kWh   [Hedged-Flat]   p≈.<span <span class=\"k\">class</span>=\"nu\">14</span>          (gas / carbon)   └─ PPAs reprice ────► margin −$<span <span class=\"k\">class</span>=\"nu\">0.009</span>/kWh   [Squeeze]       p≈.<span <span class=\"k\">class</span>=\"nu\">06</span>"
+          "root": "Expected margin +$0.036/kWh — 10-year, probability-weighted across the tree [S-211]",
+          "branches": [
+            {
+              "label": "Squeeze",
+              "prob": 0.06,
+              "value": -0.02,
+              "note": "Grid rises AND PPAs reprice against us — the only margin-negative branch of the six. Held to ~6% weight by the long-dated PPA book + storage hedge (Mechanism 2.2), which are built to collapse it. [S-211]"
+            },
+            {
+              "label": "Grid rises · renewables scale",
+              "prob": 0.15,
+              "value": 0.02,
+              "note": "Painful for standalone margin, but hedged landed cost spikes far less than retail, so the cost-advantage spread handed to D1/D3 widens. [S-212]"
+            },
+            {
+              "label": "Grid rises · storage-led",
+              "prob": 0.14,
+              "value": 0.025,
+              "note": "Second 'Grid rises' path; storage arbitrage of the peaks defends margin while the cross-domain spread grows counter-cyclically. [S-212]"
+            },
+            {
+              "label": "Volatile-Win",
+              "prob": 0.22,
+              "value": 0.04,
+              "note": "A 'Volatile-Thin' world converted to 'Volatile-Win' by dispatch optimisation (Mechanism 2.2) arbitraging the price peaks. [S-211]"
+            },
+            {
+              "label": "Base · stable grid",
+              "prob": 0.23,
+              "value": 0.045,
+              "note": "Central path; cost floor and trust ceiling hold at the expected-value shape of the domain. [S-211]"
+            },
+            {
+              "label": "Grid falls · renewables flood",
+              "prob": 0.2,
+              "value": 0.06,
+              "note": "Cheap electrons flood the mix; landed cost falls and margin runs richest. [S-211]"
+            }
+          ]
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -1520,44 +1816,59 @@
         "Siting and dispatch as the hedge against the tree"
       ],
       "title": "Mechanism 4.2 — Siting and dispatch as the hedge against the tree",
-      "developed_content": "<p>The tree is not a fate we merely await; the first three drivers are the instruments that <strong>bias us toward its upper branches</strong> <button class=\"cite\" data-cite=\"S-033\">S-033</button>. Data-led siting (1.1) concentrates the estate where renewables and storage are scaling fastest, tilting the renewables-mix fork in our favour before the price path is even known <button class=\"cite\" data-cite=\"S-033\">S-033</button>. Vertical procurement (1.2) locks the PPAs that hold in the *Grid rises* branch, so the very state that punishes an unhedged operator leaves us intact <button class=\"cite\" data-cite=\"S-033\">S-033</button>. Dispatch optimisation (2.2) is literally the mechanism that converts a *Volatile-Thin* world into a *Volatile-Win* one by arbitraging the peaks <button class=\"cite\" data-cite=\"S-033\">S-033</button>. Reliability (3.x) ensures that whatever branch we land in, the trust output — and therefore the D4 coupling back into the flywheel — is preserved <button class=\"cite\" data-cite=\"S-033\">S-033</button>.</p><p>The property this buys is the one we most want from an infrastructure asset facing a decade of grid re-pricing: <strong>every driver in this section is simultaneously an operating lever and a hedge on the transition tree</strong> <button class=\"cite\" data-cite=\"S-033\">S-033</button>. A lever in the good states, a hedge in the bad ones — the same mechanisms that raise the expected margin also compress the variance around it, which is why the tree's downside is shallow enough to leave five of six branches positive <button class=\"cite\" data-cite=\"S-033\">S-033</button>.</p>",
+      "developed_content": "<p>The tree is not a weather report we merely await; <strong>the first three drivers are the instruments that bias us toward its upper branches</strong> <button class=\"cite\" data-cite=\"S-033\">S-033</button>. Data-led siting (Mechanism 1.1) concentrates the estate where renewables and storage are scaling fastest, so the physical footprint already leans toward the favourable paths. Vertical procurement (Mechanism 1.2) locks the PPAs that hold in the *Grid rises* branch. Dispatch optimisation (Mechanism 2.2) is literally the lever that converts a *Volatile-Thin* world into a *Volatile-Win* one, arbitraging the price peaks the volatility creates. Reliability (the Driver 3 mechanisms) ensures that whatever branch we land in, the trust output — and therefore the D4 coupling back into the flywheel — is preserved <button class=\"cite\" data-cite=\"S-033\">S-033</button>.</p><p>The property this buys is the one we most want from an infrastructure asset facing a decade of grid re-pricing: <strong>every driver in the section is simultaneously an operating lever and a hedge on the transition tree</strong> <button class=\"cite\" data-cite=\"S-033\">S-033</button>. We do not merely tolerate the branches; siting, procurement, and dispatch each push probability weight out of *Squeeze* and into the margin-positive paths, which is what it means to hedge the tree rather than bet on it.</p>",
       "word_floor": 86,
       "source_words": 123,
       "required_component": {
-        "family": "scenario-tree",
-        "lib": "visx"
+        "family": "map",
+        "lib": "svg"
       },
       "component": {
-        "family": "scenario-tree",
+        "family": "map",
         "data": {
-          "root": "10-year grid-price path → renewables mix → net domain contribution margin [S-211]",
-          "branches": [
+          "places": [
             {
-              "label": "Squeeze",
-              "prob": 0.06,
-              "value": "negative margin",
-              "note": "Grid prices rise and our PPAs reprice against us — the single negative branch of the six. Carries only ~6% weight because the long-dated PPA book and the storage hedge (Mechanism 2.2) are built precisely to collapse it. [S-211]"
+              "label": "Renewables-rich cluster",
+              "sub": "Data-led siting · Mechanism 1.1",
+              "x": 26,
+              "y": 34,
+              "value": "estate concentrated where renewables + storage scale fastest",
+              "finding": false
             },
             {
-              "label": "Grid rises (hedged)",
-              "prob": null,
-              "value": "positive margin; spread widens",
-              "note": "Painful for standalone margin, but hedged landed cost spikes far less than retail power, so the cost gap handed to Mobility (D1) and Logistics (D3) widens — the domain's cross-domain value is counter-cyclical to its own P&L. [S-212]"
+              "label": "PPA-locked region",
+              "sub": "Vertical procurement · Mechanism 1.2",
+              "x": 68,
+              "y": 26,
+              "value": "long-dated PPAs that hold in the 'Grid rises' branch",
+              "finding": false
             },
             {
-              "label": "Volatile → Win",
-              "prob": null,
-              "value": "positive margin",
-              "note": "Dispatch optimisation (Mechanism 2.2) arbitrages the peaks, converting what would be a Volatile-Thin world into a Volatile-Win one. [S-033]"
+              "label": "Volatile peak market",
+              "sub": "Dispatch optimisation · Mechanism 2.2",
+              "x": 47,
+              "y": 60,
+              "value": "arbitrages peaks — converts 'Volatile-Thin' into 'Volatile-Win'",
+              "finding": true
             },
             {
-              "label": "Renewables scale",
-              "prob": null,
-              "value": "positive margin",
-              "note": "Grid decarbonises and renewables/storage scale on plan; data-led siting (1.1) has already concentrated the estate here. The majority cluster among the five margin-positive branches. [S-211]"
+              "label": "Storage-scaling metro",
+              "sub": "Storage hedge · Mechanism 2.2",
+              "x": 78,
+              "y": 70,
+              "value": "buffers landed cost across grid-price paths",
+              "finding": false
+            },
+            {
+              "label": "Squeeze-exposed grid",
+              "sub": "Reliability · Driver 3",
+              "x": 17,
+              "y": 76,
+              "value": "weight pushed down to ~6% by PPA book + hedge; trust output preserved",
+              "finding": false
             }
           ],
-          "caption": "Six-branch tree; five of six branches margin-positive; probability-weighted expected margin +$0.036/kWh. Load-bearing (negative) branch Squeeze shown first. [S-211]"
+          "caption": "Siting, procurement and dispatch place the estate so each driver is also a hedge — pushing probability weight out of Squeeze and into the margin-positive branches. Dispatch in the volatile peak market (finding) is the lever that turns Volatile-Thin into Volatile-Win. [S-033]"
         },
         "evidence_class": "illustrate"
       },
@@ -1710,16 +2021,90 @@
       "word_floor": 136,
       "source_words": 195,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "time-series",
+        "lib": "recharts"
       },
       "component": {
-        "family": "code",
+        "family": "time-series",
         "data": {
-          "file": "Cohort retention as the liquidity truth serum",
-          "lines": "COHORT RETENTION — % of month-<span <span class=\"k\">class</span>=\"nu\">0</span> cohort still active   (mature-market blend) Courier cohorts                         Merchant cohorts100 ●                                   <span <span class=\"k\">class</span>=\"nu\">100</span> ●    ●●                                      ●●● <span <span class=\"k\">class</span>=\"nu\">60</span>   ●●●___                             <span <span class=\"k\">class</span>=\"nu\">75</span>      ●●●●●●____________  ← merchant curve       ▔▔▔▔▔●●●●________  ← smiles up          flattens HIGH &amp; FLAT <span <span class=\"k\">class</span>=\"nu\">28</span>          ▔▔▔▔▔▔▔●●●●●●  ← courier      <span <span class=\"k\">class</span>=\"nu\">41</span>             ▔▔▔▔▔▔▔▔▔▔▔▔▔▔                  ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔     M0  M1  M2  M3  M4  M5  M6            M0  M1  M2  M3  M4  M5  M6"
+          "unit": "% of cohort retained",
+          "series": [
+            {
+              "name": "Merchant cohort — flattens high",
+              "dash": false,
+              "pts": [
+                [
+                  0,
+                  100
+                ],
+                [
+                  1,
+                  62
+                ],
+                [
+                  2,
+                  60
+                ],
+                [
+                  3,
+                  58
+                ],
+                [
+                  4,
+                  57
+                ],
+                [
+                  5,
+                  55
+                ],
+                [
+                  6,
+                  54
+                ]
+              ]
+            },
+            {
+              "name": "Courier cohort — the smile",
+              "dash": true,
+              "pts": [
+                [
+                  0,
+                  100
+                ],
+                [
+                  1,
+                  55
+                ],
+                [
+                  2,
+                  38
+                ],
+                [
+                  3,
+                  28
+                ],
+                [
+                  4,
+                  22
+                ],
+                [
+                  5,
+                  20
+                ],
+                [
+                  6,
+                  19
+                ]
+              ]
+            }
+          ],
+          "mark": {
+            "name": "Professional core — 19% of cohort, 68% of volume [S-307]",
+            "x": 6,
+            "y": 19
+          }
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -1770,16 +2155,25 @@
       "word_floor": 146,
       "source_words": 208,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "mockup",
+        "lib": "html"
       },
       "component": {
-        "family": "code",
+        "family": "mockup",
         "data": {
-          "file": "The job-offer surface: earning legible in one ",
-          "lines": "┌──────────────────────────────────────────────┐│  PUSH (lock screen)                            ││  Kepler Courier · now                          ││  ⚡ Surge <span <span class=\"k\">class</span>=\"nu\">1.6</span>× near you — <span <span class=\"k\">class</span>=\"nu\">3</span> stacked orders,    ││     est. €<span <span class=\"k\">class</span>=\"nu\">14.20</span> <span class=\"k\">for</span> ~<span <span class=\"k\">class</span>=\"nu\">22</span> min. Tap to grab.      │└──────────────────────────────────────────────┘┌──────────────────────────────────────────────┐│   NEW OFFER            ⏱ 12s to accept   ●●●○  ││                                                ││   €<span <span class=\"k\">class</span>=\"nu\">14.20</span>   guaranteed          SURGE <span <span class=\"k\">class</span>=\"nu\">1.6</span>× ⚡   ││   ───────────────────────────────────────────  ││   BATCH · <span <span class=\"k\">class</span>=\"nu\">3</span> stops              Pickup <span <span class=\"k\">class</span>=\"nu\">4</span> min     ││                                                ││   ①  Nonna's Kitchen · Jl. Kemang    <span <span class=\"k\">class</span>=\"nu\">0.9</span> km    ││   ②  Green Bowl · same block         +<span <span class=\"k\">class</span>=\"nu\">0.3</span> km    ││   ③  → <span <span class=\"k\">class</span>=\"nu\">3</span> drops, all within <span <span class=\"k\">class</span>=\"nu\">2.1</span> km               ││                                                ││   Route: <span <span class=\"k\">class</span>=\"nu\">5.4</span> km · ~<span <span class=\"k\">class</span>=\"nu\">22</span> min · paid on drop        ││   Charged &amp; ready: bike at <span <span class=\"k\">class</span>=\"nu\">88</span>% 🔋               ││   ───────────────────────────────────────────  ││   Your acceptance: <span <span class=\"k\">class</span>=\"nu\">94</span>% ·  keeps Priority tier   ││                                                ││   [   DECLINE   ]        [   ACCEPT  €<span <span class=\"k\">class</span>=\"nu\">14.20</span>  ]  │└──────────────────────────────────────────────┘"
+          "kind": "app screen",
+          "title": "New job offer · tap in 4s",
+          "lines": [
+            "€14.20 guaranteed — paid even if the drop runs long",
+            "~22 min · 5.4 km · congestion-real ETA",
+            "Multi-stop batch · surge ×1.4 active",
+            "Your bike at 88% — batch fits this charge",
+            "Acceptance 94% · keeps Priority tier",
+            "[ Accept ]        [ Decline ]"
+          ],
+          "meta": "Push preview: \"€14.20 guaranteed · 22 min · Accept to keep Priority tier\" — real production copy [S-308]"
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -2309,92 +2703,8 @@
       "developed_content": "<p>Underwriting on behaviour is powerful and <strong>pro-cyclical</strong>: the same D1 and D3 signals that predict good times can turn together in a downturn <button class=\"cite\" data-cite=\"S-057\">S-057</button>. Driver 2 therefore hands a specific risk downstream to Driver 3 — correlated behavioural default, where a whole cohort deteriorates at once rather than as independent draws <button class=\"cite\" data-cite=\"S-057\">S-057</button>.</p><p>Trace S-408 sets the guardrail: exposure is capped per cohort and provisioned against a stressed scenario in which D1 ride frequency and D3 job volume fall together — the very correlation the cross-domain data itself reveals, turned from an edge into a stress input <button class=\"cite\" data-cite=\"S-408\">S-408</button>. That is the honest tension at the centre of the thesis: the credit engine's edge and its systemic risk come from the same source <button class=\"cite\" data-cite=\"S-057\">S-057</button>. The cross-domain signal that lets Kepler lend where banks cannot is the same signal that co-moves in a downturn, so the discipline is to price and provision for the correlation rather than to pretend the behavioural collateral is diversified when it is not <button class=\"cite\" data-cite=\"S-408\">S-408</button>.</p>",
       "word_floor": 62,
       "source_words": 89,
-      "required_component": {
-        "family": "time-series",
-        "lib": "visx"
-      },
-      "component": {
-        "family": "time-series",
-        "data": {
-          "unit": "cohort index (pre-stress = 100)",
-          "series": [
-            {
-              "name": "D1 ride frequency",
-              "dash": false,
-              "pts": [
-                [
-                  0,
-                  100
-                ],
-                [
-                  1,
-                  99
-                ],
-                [
-                  2,
-                  96
-                ],
-                [
-                  3,
-                  88
-                ],
-                [
-                  4,
-                  79
-                ],
-                [
-                  5,
-                  74
-                ],
-                [
-                  6,
-                  76
-                ]
-              ]
-            },
-            {
-              "name": "D3 job volume",
-              "dash": true,
-              "pts": [
-                [
-                  0,
-                  100
-                ],
-                [
-                  1,
-                  98
-                ],
-                [
-                  2,
-                  94
-                ],
-                [
-                  3,
-                  85
-                ],
-                [
-                  4,
-                  77
-                ],
-                [
-                  5,
-                  72
-                ],
-                [
-                  6,
-                  75
-                ]
-              ]
-            }
-          ],
-          "mark": {
-            "name": "stress trough — signals fall together [S-408]",
-            "x": 5,
-            "y": 72
-          }
-        },
-        "evidence_class": "illustrate"
-      },
+      "required_component": null,
+      "component": null,
       "finding": null,
       "finding_full": null,
       "cross_feeds": [],
@@ -2587,89 +2897,25 @@
       "word_floor": 109,
       "source_words": 156,
       "required_component": {
-        "family": "faceted-grid",
-        "lib": "tanstack"
+        "family": "mockup",
+        "lib": "html"
       },
       "component": {
-        "family": "faceted-grid",
+        "family": "mockup",
         "data": {
-          "cols": [
-            "entry_id",
-            "ts",
-            "user",
-            "domain",
-            "type",
-            "amount",
-            "fee_bps",
-            "margin_layer"
+          "kind": "ledger",
+          "title": "Unified ledger — one day, mixed flows across domains",
+          "lines": [
+            "rivera_a     · Mobility   · ride fare            · thin margin",
+            "rivera_a     · Payments   · card settlement     · thin margin",
+            "rivera_a     · Credit     · revolving yield     · 700 bps",
+            "courier_301  · Logistics  · job payout          · thin margin",
+            "courier_301  · Payments   · card settlement     · thin margin",
+            "courier_301  · Credit     · merchant-loan yield · 1240 bps"
           ],
-          "rows": [
-            [
-              "L-90114",
-              "07-14 09:02",
-              "rivera_a",
-              "D1",
-              "ride_debit",
-              "−4.20",
-              "55",
-              "interchange+float"
-            ],
-            [
-              "L-90115",
-              "07-14 09:02",
-              "driver_774",
-              "D1",
-              "driver_payout",
-              "+3.55",
-              "0",
-              "take-rate"
-            ],
-            [
-              "L-90140",
-              "07-14 12:31",
-              "rivera_a",
-              "D4",
-              "bnpl_repay",
-              "−33.00",
-              "1240",
-              "credit_yield"
-            ],
-            [
-              "L-90162",
-              "07-14 18:44",
-              "courier_301",
-              "D3",
-              "wc_advance",
-              "+150.00",
-              "900",
-              "credit_yield"
-            ],
-            [
-              "L-90163",
-              "07-14 18:44",
-              "courier_301",
-              "D3",
-              "job_payout",
-              "+86.40",
-              "0",
-              "take-rate"
-            ],
-            [
-              "L-90190",
-              "07-14 21:10",
-              "rivera_a",
-              "D5",
-              "instalment",
-              "−21.00",
-              "700",
-              "credit_yield"
-            ]
-          ],
-          "negCols": [
-            5
-          ]
+          "meta": "Read down the user column: rivera_a and courier_301 each touch three domains in one day [S-415]. The thin-margin rides and jobs supply the behavioural collateral that makes the 700–1240 bps credit yield underwritable — the ledger is the join that makes the cheap flows pay for the expensive ones [S-415]."
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -2771,16 +3017,24 @@
       "word_floor": 118,
       "source_words": 168,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "mockup",
+        "lib": "html"
       },
       "component": {
-        "family": "code",
+        "family": "mockup",
         "data": {
-          "file": "The product mockup: what the Beacon actually s",
-          "lines": "┌──────────────────────────────────┐│  KEPLER BEACON            <span <span class=\"k\">class</span>=\"nu\">9</span>:<span <span class=\"k\">class</span>=\"nu\">41</span> ▲  │   &lt;- status: GPS lock, LTE, <span <span class=\"k\">class</span>=\"nu\">84</span>% batt│                                   ││   ↰  Turn left <span class=\"k\">in</span> <span <span class=\"k\">class</span>=\"nu\">200</span> m          │   &lt;- nav card (fed by D1 routing model)│      onto Orchard Rd              ││   ▓▓▓▓▓▓▓░░░  <span <span class=\"k\">class</span>=\"nu\">4</span> min to charge     │   &lt;- D2: nearest open bay, live price│                                   ││  ┌─────────────┐  ┌────────────┐ ││  │  TAP TO PAY │  │  AIR: Good │ │   &lt;- D4 on-device wallet | D5 PM2.<span <span class=\"k\">class</span>=\"nu\">5</span>│  │   $<span <span class=\"k\">class</span>=\"nu\">12.40</span>    │  │  <span <span class=\"k\">class</span>=\"nu\">22</span> µg/m³  │ ││  └─────────────┘  └────────────┘ ││                                   ││  Road: smooth   ·   Grip: firm    │   &lt;- surfaced sensor read-outs└──────────────────────────────────┘"
+          "kind": "app",
+          "title": "Kepler Beacon (KB-1)",
+          "lines": [
+            "↑  In 400 m, turn right onto Market St",
+            "⚡  4 min to charge · Bay 3 · $0.34/kWh",
+            "TAP TO PAY   $12.40",
+            "Air quality  ·  42 AQI  ·  Good",
+            "Road surface  ·  smooth"
+          ],
+          "meta": "Navigation + payments surface. D1 turn card · D2 charge telemetry + live bay price · D4 wallet tap on secure element · D5 manifold read-outs. Data-harvesting invisible [S-502]."
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -2938,16 +3192,65 @@
       "word_floor": 92,
       "source_words": 131,
       "required_component": {
-        "family": "code",
-        "lib": "shiki"
+        "family": "map",
+        "lib": "svg"
       },
       "component": {
-        "family": "code",
+        "family": "map",
         "data": {
-          "file": "The supply-chain map: fabs, assembly, ports (S",
-          "lines": "   FABS / SENSOR SOURCES            ASSEMBLY            PORTS → PLACEMENT   ─────────────────────           ──────────          ─────────────────   TSMC Hsinchu (SoC) ──┐   Bosch Reutlingen ────┤   Sensirion Stäfa ─────┼──► ASE Kaohsiung ──► Jabil ──► Port of   u-blox Thalwil ──────┤      (SoC pkg/test)   Penang    Singapore ──► <span <span class=\"k\">class</span>=\"nu\">14</span>-country   NXP Nijmegen ────────┤                       (final    (PSA hub)     placement   Knowles Itasca ──────┤                        assembly)              via D1/D3   Quectel Shanghai ────┘                          │                    fleet channel                                                    ▼                                            Port of Klang (MY)                                                    │                                         ┌──────────┴──────────┐                                    Rotterdam (EU hub)     Singapore (APAC hub)                                    → Amsterdam DC          → <span <span class=\"k\">class</span>=\"nu\">42</span>-city network"
+          "places": [
+            {
+              "label": "Fab base",
+              "sub": "silicon — dual-region",
+              "x": 8,
+              "y": 40,
+              "value": "wafers",
+              "finding": false
+            },
+            {
+              "label": "ASE Kaohsiung",
+              "sub": "SoC packaging & test",
+              "x": 27,
+              "y": 26,
+              "value": "packaged SoC",
+              "finding": false
+            },
+            {
+              "label": "Jabil Penang",
+              "sub": "final assembly — single-node",
+              "x": 44,
+              "y": 54,
+              "value": "finished units",
+              "finding": false
+            },
+            {
+              "label": "PSA Singapore",
+              "sub": "landing hub",
+              "x": 60,
+              "y": 60,
+              "value": "port of entry",
+              "finding": false
+            },
+            {
+              "label": "Rotterdam",
+              "sub": "landing hub",
+              "x": 73,
+              "y": 18,
+              "value": "port of entry",
+              "finding": false
+            },
+            {
+              "label": "Field placement",
+              "sub": "D1 fleet + D3 couriers — 42 cities",
+              "x": 91,
+              "y": 46,
+              "value": "last mile ~free",
+              "finding": true
+            }
+          ],
+          "caption": "Silicon to street: dual-region fabs, single-node final assembly at Jabil Penang with ASE Kaohsiung packaging, landing at the PSA Singapore and Rotterdam hubs, then placed through Kepler's own D1 fleet and D3 couriers across 42 cities rather than third-party retail — the distribution coupling a standalone device maker cannot replicate [S-509][S-510]."
         },
-        "evidence_class": "evidence"
+        "evidence_class": "illustrate"
       },
       "finding": null,
       "finding_full": null,
@@ -3428,60 +3731,8 @@
       "developed_content": "<p>Features are potential; models are where the moat is realised. Driver 3 is the conversion layer — the point at which breadth <strong>B</strong> is turned into the three terms that actually move the number: density <strong>D</strong> through routing, liquidity <strong>L</strong> through matching, and trust <strong>T</strong> through scoring and safety <button class=\"cite\" data-cite=\"S-089\">S-089</button>. The strategic claim underneath is blunt: the models are better because the data is broader. A claim like that is only worth stating if it is shown rather than asserted, which is why this driver carries model-performance evidence — ROC curves and a confusion matrix with real figures — instead of a narrative about model quality <button class=\"cite\" data-cite=\"S-089\">S-089</button>. The curve below is that evidence: the same fraud/trust model scored on D4 data alone against the full cross-domain join, with the operating point held at a fixed 0.5% false-positive rate so the gain is read as recall, not as a moved goalpost <button class=\"cite\" data-cite=\"S-089\">S-089</button>.</p>",
       "word_floor": 50,
       "source_words": 72,
-      "required_component": {
-        "family": "time-series",
-        "lib": "visx"
-      },
-      "component": {
-        "family": "time-series",
-        "data": {
-          "unit": "recall (TPR) vs false-positive rate",
-          "series": [
-            {
-              "name": "D4 data only (AUC 0.883)",
-              "dash": "4 3",
-              "pts": [
-                [
-                  0,
-                  0
-                ],
-                [
-                  0.005,
-                  0.712
-                ],
-                [
-                  1,
-                  1
-                ]
-              ]
-            },
-            {
-              "name": "Full cross-domain join (AUC 0.947)",
-              "dash": "0",
-              "pts": [
-                [
-                  0,
-                  0
-                ],
-                [
-                  0.005,
-                  0.899
-                ],
-                [
-                  1,
-                  1
-                ]
-              ]
-            }
-          ],
-          "mark": {
-            "name": "0.5% FPR operating point: 71.2% -> 89.9% recall",
-            "x": 0.005,
-            "y": 0.899
-          }
-        },
-        "evidence_class": "illustrate"
-      },
+      "required_component": null,
+      "component": null,
       "finding": null,
       "finding_full": null,
       "cross_feeds": [],

@@ -14,7 +14,20 @@
     },
     {
       "id": "D4.d4.m3",
-      "body": "Beneath the statement sits the raw ledger — the same ledger from Driver 1, now read not as a record of flows but as a record of margins [S-064]. A single day's mixed flows carry very different economics, and the join — one user, many domains — is what makes the portfolio work [S-064].\n\nRead across the user column and the whole monetization thesis appears in miniature. rivera_a and courier_301 each touch three domains in a single day [S-415], and the high-margin entries — credit yield running **700–1240 bps** [S-415] — are only underwritable because the low-margin entries, the rides and the jobs, supplied the behavioural collateral that made the underwriting safe. Neither half works alone: a lender without the ride-and-job history cannot price the credit, and the ride-and-job history earns almost nothing until a credit line monetizes it.\n\nThat is the mechanism at its sharpest: **the cheap flows are the moat, the expensive flows are the monetization, and the ledger is the join that makes one pay for the other** [S-415]. The proof point closes the loop. Contribution per interaction inside Payments moved from −0.19 over the trailing period [S-416] — the clearest single evidence that the flywheel's target path up from the −0.31 blended figure is achievable, and that the path runs straight through Domain 4 [S-416]. The ledger is where the monetization stops being a story a conglomerate tells and becomes a number a flywheel can show."
+      "body": "Beneath the statement sits the raw ledger — the same ledger from Driver 1, now read not as a record of flows but as a record of margins [S-064]. A single day's mixed flows carry very different economics, and the join — one user, many domains — is what makes the portfolio work [S-064].\n\nRead across the user column and the whole monetization thesis appears in miniature. rivera_a and courier_301 each touch three domains in a single day [S-415], and the high-margin entries — credit yield running **700–1240 bps** [S-415] — are only underwritable because the low-margin entries, the rides and the jobs, supplied the behavioural collateral that made the underwriting safe. Neither half works alone: a lender without the ride-and-job history cannot price the credit, and the ride-and-job history earns almost nothing until a credit line monetizes it.\n\nThat is the mechanism at its sharpest: **the cheap flows are the moat, the expensive flows are the monetization, and the ledger is the join that makes one pay for the other** [S-415]. The proof point closes the loop. Contribution per interaction inside Payments moved from −0.19 over the trailing period [S-416] — the clearest single evidence that the flywheel's target path up from the −0.31 blended figure is achievable, and that the path runs straight through Domain 4 [S-416]. The ledger is where the monetization stops being a story a conglomerate tells and becomes a number a flywheel can show.",
+      "component_data": {
+        "kind": "ledger",
+        "title": "Unified ledger — one day, mixed flows across domains",
+        "lines": [
+          "rivera_a     · Mobility   · ride fare            · thin margin",
+          "rivera_a     · Payments   · card settlement     · thin margin",
+          "rivera_a     · Credit     · revolving yield     · 700 bps",
+          "courier_301  · Logistics  · job payout          · thin margin",
+          "courier_301  · Payments   · card settlement     · thin margin",
+          "courier_301  · Credit     · merchant-loan yield · 1240 bps"
+        ],
+        "meta": "Read down the user column: rivera_a and courier_301 each touch three domains in one day [S-415]. The thin-margin rides and jobs supply the behavioural collateral that makes the 700–1240 bps credit yield underwritable — the ledger is the join that makes the cheap flows pay for the expensive ones [S-415]."
+      }
     }
   ]
 }
