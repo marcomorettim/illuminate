@@ -26,7 +26,7 @@ for (const n of Object.values(M.nodes)) {
   };
 }
 const content = {
-  meta: { source: M.meta.source, governing_thought: M.governing_thought, title: M.meta.title, kicker: M.meta.kicker },
+  meta: { source: M.meta.source, governing_thought: M.governing_thought, title: M.meta.title, kicker: M.meta.kicker, connective_label: M.meta.connective_label || '' },
   nodes, roots: M.roots,
 };
 

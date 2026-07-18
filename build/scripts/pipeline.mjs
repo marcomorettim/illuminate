@@ -4,7 +4,8 @@
 // exist under .work/nodes) assembles, bundles, and gates, returning the gate verdict. Stage 9
 // (repair) = the skill re-dispatches only the agents named in gate-report.failing_nodes, then
 // re-runs `assemble`. Usage:
-//   node pipeline.mjs prepare <source.docx>      # stages 0-2 + bible/records  → then dispatch agents
+//   node pipeline.mjs ingest <source.docx>       # stage 0 → source-model.json (then dispatch architect)
+//   node pipeline.mjs prepare                    # stage 2 → manifest + bible/records (reads .work/tree.json)
 //   node pipeline.mjs assemble                   # stages 5-8: build + gate    → gate-report.json
 import { execSync } from 'node:child_process';
 import { existsSync, readdirSync } from 'node:fs';
@@ -15,13 +16,18 @@ const W = resolve(HERE, '.work');
 const run = (cmd) => execSync(cmd, { cwd: HERE, stdio: 'inherit' });
 const [cmd, arg] = process.argv.slice(2);
 
-if (cmd === 'prepare') {
-  if (!arg) throw new Error('usage: pipeline.mjs prepare <source.docx>');
+if (cmd === 'ingest') {
+  if (!arg) throw new Error('usage: pipeline.mjs ingest <source.docx>');
   run(`python3 scripts/ingest.py "${arg}" .work/source-model.json`);        // Stage 0
-  run(`python3 scripts/manifest.py .work/source-model.json .work/manifest.json`); // Stages 1-2
+  console.log('\n[pipeline] ingested. Now dispatch the ARCHITECT agent (agents/architect.md):');
+  console.log('  read .work/source-model.json → derive the argument tree → write .work/tree.json');
+  console.log('Then: node pipeline.mjs prepare');
+} else if (cmd === 'prepare') {
+  const tree = existsSync(resolve(W, 'tree.json')) ? '.work/tree.json' : '';        // architect tree, or structural fallback
+  run(`python3 scripts/manifest.py .work/source-model.json ${tree ? tree + ' ' : ''}.work/manifest.json`); // Stage 2
   run(`python3 scripts/prepare.py .work/source-model.json .work/manifest.json .work`); // bible + records
   const drivers = readdirSync(resolve(W, 'drivers')).filter((f) => f.endsWith('.json')).map((f) => f.replace('.json', ''));
-  console.log(`\n[pipeline] ready. Now dispatch one develop-node agent per driver (${drivers.length}):`);
+  console.log(`\n[pipeline] ready${tree ? '' : ' (STRUCTURAL FALLBACK — no tree.json; architect not run)'}. Dispatch one develop-node agent per domain (${drivers.length}):`);
   console.log('  ' + drivers.join(', '));
   console.log('  each: read agents/develop-node.md + .work/bible.md + .work/drivers/<id>.json → write .work/nodes/<id>.json');
   console.log('Then: node pipeline.mjs assemble');

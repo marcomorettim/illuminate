@@ -12,7 +12,7 @@ import { ComponentSpec } from './types';
 const INK = 'var(--ink)', INK2 = 'var(--ink-2)', INK3 = 'var(--ink-3)', RULE = 'var(--rule-hi)', BEITAR = '#FFCC00';
 const axis = { stroke: INK3, fontSize: 9, fontFamily: 'JetBrains Mono, monospace' };
 
-// ── network: the flywheel — hub + spokes, every edge bidirectional (Beitar hub = the finding) ──
+// ── network: hub + spokes, every edge bidirectional (Beitar hub = the whole the parts compose) ──
 function Network({ data }: { data: Extract<ComponentSpec, { family: 'network' }>['data'] }) {
   const cx = 210, cy = 135, R = 96, n = data.spokes.length || 1;
   const pts = data.spokes.map((_, i) => {
@@ -211,7 +211,7 @@ function GeoMap({ data }: { data: Extract<ComponentSpec, { family: 'map' }>['dat
 }
 // ── sankey: staged left→right flow, band width ∝ value; Beitar marks the finding flow ──
 function Sankey({ data }: { data: Extract<ComponentSpec, { family: 'sankey' }>['data'] }) {
-  const W = 480, H = 260, PAD = 18;
+  const W = 760, H = 300, PAD = 18;
   const cols = Math.max(1, ...data.nodes.map((n) => n.col)) + 1;
   const byCol: Record<number, typeof data.nodes> = {};
   data.nodes.forEach((n) => { (byCol[n.col] ||= []).push(n); });
@@ -223,7 +223,7 @@ function Sankey({ data }: { data: Extract<ComponentSpec, { family: 'sankey' }>['
     ns.forEach((n, i) => { pos[n.id] = { x, y: PAD + step * (i + 0.5) }; });
   });
   return (
-    <div className="my-4 max-w-[560px]" data-component="sankey">
+    <div className="my-4 w-full max-w-[940px]" data-component="sankey">
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="flow diagram">
         {data.links.map((l, i) => {
           const a = pos[l.source], b = pos[l.target]; if (!a || !b) return null;
