@@ -1,14 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { viteSingleFile } from 'vite-plugin-singlefile'
+import path from 'node:path'
 export default defineConfig({
   plugins: [react(), viteSingleFile()],
-  build: {
-    cssCodeSplit: false,
-    assetsInlineLimit: 100000000,
-    chunkSizeWarningLimit: 5000,
-    modulePreload: false,
-    target: 'es2019',
-    rollupOptions: { output: { format: 'iife', inlineDynamicImports: true } },
-  },
+  resolve: { alias: { '@': path.resolve(__dirname, 'src') } },
+  build: { cssCodeSplit: false, assetsInlineLimit: 100000000,
+    rollupOptions: { output: { inlineDynamicImports: true } } },
 })

@@ -10,9 +10,6 @@ const [manifestPath, modelPath, nodesDir, outPath] = process.argv.slice(2);
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const model = JSON.parse(readFileSync(modelPath, 'utf8'));
 
-// verbatim source, keyed by trace — the argument-model's `sources` array
-const sources = model.sections.filter((s) => s.trace).map((s) => ({ id: s.trace, claim: s.heading, text: s.text.slice(0, 900) }));
-
 // agent outputs — accepts {driver, mechanisms:[…]} or a flat {nodes:[…]}. The agent may also emit a
 // `component_family` per node; that choice OVERRIDES the manifest's shape hint (Fix B — component
 // choice is the develop agent's judgment, not a keyword table).
@@ -45,50 +42,35 @@ function mdToHtml(md) {
   }
 }
 
-const KW = /\b(SELECT|FROM|WHERE|GROUP|BY|ORDER|JOIN|LEFT|RIGHT|INNER|ON|AS|WITH|CASE|WHEN|THEN|ELSE|END|AND|OR|NOT|IN|OVER|PARTITION|HAVING|LIMIT|def|return|if|elif|else|for|while|in|import|from|const|let|var|function|class|new|await|async|yield|lambda|map|filter|reduce)\b/g;
-function highlight(code) {
-  return esc(code).split('\n').map((line) => {
-    const cm = line.match(/^(\s*)(--|#|\/\/)(.*)$/);
-    if (cm) return cm[1] + '<span class="c">' + cm[2] + cm[3] + '</span>';
-    return line
-      .replace(/(&#39;|')(.*?)\1/g, '<span class="s">$1$2$1</span>')
-      .replace(/(&quot;|")(.*?)\1/g, '<span class="s">$1$2$1</span>')
-      .replace(/\b(\d+\.?\d*)\b/g, '<span class="nu">$1</span>')
-      .replace(KW, '<span class="k">$&</span>');
-  }).join('\n');
-}
-function parseTable(rows) {
+// faceted-grid: the catalogue DataGrid takes { cols, rows } and finds numeric columns itself.
+function tableData(rows) {
   if (!rows || !rows.length) return null;
-  const cols = rows[0], body = rows.slice(1).map((r) => r.map((c) => c.trim()));
-  const negCols = [];
-  for (let i = 0; i < cols.length; i++) if (body.some((r) => /−|\(\d/.test(r[i] || ''))) negCols.push(i);
-  return { cols: cols.map((c) => c.trim()), rows: body, negCols };
+  return { cols: rows[0].map((c) => String(c).trim()), rows: rows.slice(1).map((r) => r.map((c) => String(c).trim())) };
 }
-
-// code/faceted-grid/kpi-summary render traced/verbatim data → citation chips; the depicting
-// families wear the ILLUSTRATION tag (§2.2).
-const EVIDENCE_CLASS = { code: 'evidence', 'faceted-grid': 'evidence', 'kpi-summary': 'evidence' };
 const initials = (s) => (s || '').split(/\s+/).map((w) => w[0]).join('').replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || 'GT';
+
+// Emit each node's chosen component as { family, data } in the CATALOGUE's prop shapes. The develop
+// agent's chosen family+data wins; code/faceted-grid are built from the verbatim span; network gets a
+// neutral default. The catalogue components render straight from { family, data } (no wrapping here).
 function buildComponent(node) {
-  // the develop agent's chosen family wins; the manifest shape-hint is the fallback.
   const family = compFamily[node.id] || (node.required_component && node.required_component.family);
   if (!family) return null;
   const sp = node.source_span || {};
-  const wrap = (fam, data) => data ? { family: fam, data, evidence_class: EVIDENCE_CLASS[fam] || 'illustrate', finding: (compData[node.id] || {}).finding } : null;
-  if (family === 'network') {
-    return wrap('network', compData[node.id] || {
+  if (family === 'network')
+    return { family, data: compData[node.id] || {
       hub: { label: initials(manifest.meta.title), sub: '' },
       spokes: manifest.roots.map((r) => ({ label: r.toUpperCase(), sub: manifest.nodes[r].path.slice(-1)[0] })),
       caption: manifest.meta.connective_label || '',
-    });
-  }
+    } };
   if (family === 'code') {
-    const code = (sp.code && sp.code[0]) || '';
-    if (!code.trim()) return compData[node.id] ? wrap('code', compData[node.id]) : null;
-    return wrap('code', { file: node.path.slice(-1)[0].slice(0, 46), lines: highlight(code) });
+    const code = (sp.code && sp.code[0]) || (compData[node.id] && (compData[node.id].code || compData[node.id].lines)) || '';
+    return code.trim() ? { family, data: { file: (node.path.slice(-1)[0] || '').slice(0, 46), code } } : null;
   }
-  if (family === 'faceted-grid') return wrap('faceted-grid', parseTable(sp.tables && sp.tables[0]));
-  return compData[node.id] ? wrap(family, compData[node.id]) : null;
+  if (family === 'faceted-grid') {
+    const d = tableData(sp.tables && sp.tables[0]);
+    return d ? { family, data: d } : null;
+  }
+  return compData[node.id] ? { family, data: compData[node.id] } : null;
 }
 
 const nodesOut = {};
@@ -99,10 +81,8 @@ for (const n of Object.values(manifest.nodes)) {
     id: n.id, level: n.level, parent: n.parent, path: n.path, title: n.title,
     developed_content: mdToHtml(raw || ''),
     word_floor: n.word_floor, source_words: n.source_words,
-    required_component: n.required_component || null,
     component: buildComponent(n),
-    finding: n.finding || null, finding_full: n.finding_full ? mdToHtml(n.finding_full) : null,
-    cross_feeds: n.cross_feeds || [], traces: (n.source_span || {}).trace || [],
+    finding: n.finding || null,
     children: n.children || [],
   };
 }
@@ -111,8 +91,8 @@ const argumentModel = {
   governing_thought: manifest.meta.governing_thought,
   meta: { source: manifest.meta.source, title: manifest.meta.title, kicker: manifest.meta.kicker,
           connective_label: manifest.meta.connective_label || '', substantive_words: manifest.meta.substantive_words },
-  sources, roots: manifest.roots, nodes: nodesOut,
+  roots: manifest.roots, nodes: nodesOut,
 };
 writeFileSync(outPath, JSON.stringify(argumentModel, null, 2));
 const comps = Object.values(nodesOut).filter((n) => n.component).length;
-console.log(`[serialize] argument-model.json: ${Object.keys(nodesOut).length} nodes, ${comps} components, ${sources.length} sources -> ${outPath}`);
+console.log(`[serialize] argument-model.json: ${Object.keys(nodesOut).length} nodes, ${comps} components -> ${outPath}`);

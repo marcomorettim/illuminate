@@ -32,7 +32,7 @@ async function expandAll(page) {
 
 const browser = await chromium.launch();
 for (const theme of ['light', 'dark']) {
-  const page = await browser.newPage({ viewport: T.viewport });
+  const page = await browser.newPage({ viewport: T.viewport, reducedMotion: 'no-preference' });
   const consoleErrors = [];
   page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text().slice(0, 200)); });
   page.on('pageerror', (e) => consoleErrors.push('pageerror: ' + String(e).slice(0, 200)));
