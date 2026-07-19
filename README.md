@@ -64,6 +64,31 @@
 
 ---
 
+## The Method — the Minto Pyramid Principle *(Part 1)*
+
+illuminate's reasoning is not invented here. Stages I–II **are** Barbara Minto's *Pyramid Principle*,
+integrated into this repo as its foundation at [`references/minto-pyramid/`](references/minto-pyramid/)
+— the full method, source-grounded from the book (`cheatsheet.md` for the decision rules, `chapters/`
+for the mechanics). Everything downstream is that method, rendered.
+
+```
+  · Main Point     one governing claim at the apex (the `governing_thought`) — a synthesis
+                   that could be wrong, resting on the branches below
+  · MECE           Minto's own coinage — branches mutually exclusive, collectively exhaustive
+  · Three orders   every group ordered time / structural / degree — never arbitrary
+  · Insight≠count  each branch's `finding` states its EFFECT or IMPLICATION, not a tally
+                   (kill the "blank assertion")
+  · Vertical Q&A   each node answers the question its parent raises — that is "develop"
+  · SCQA · R1/R2   SCQA frames the overview; R1/R2 problem-definition + diagnostic frameworks
+                   apply to problem-solving sources
+```
+
+Per *form follows source* (below), the pyramid is the **default** shape — for single-thesis sources.
+The derived shapes (debate-map, causal-web, timeline, …) are variations on the same Minto discipline:
+MECE joints, traceable evidence, and summaries that carry an insight rather than a count.
+
+---
+
 ## The Arc
 
 Three stages. Each is a named capability block with quality tests and gate conditions.
@@ -332,6 +357,8 @@ non-independent factors, a timeline's pivots…), and the 3-skeptic audit attack
 joints.
 
 ## The Pyramid *(the single-thesis default shape)*
+
+> Minto's pyramid, integrated as [The Method](#the-method--the-minto-pyramid-principle-part-1) at [`references/minto-pyramid/`](references/minto-pyramid/). **GT** (Governing Thought) is Minto's *Main Point*.
 
 ```
                           ▲
