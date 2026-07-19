@@ -12,6 +12,13 @@ tail into cards. The top node gets a real lede; **each node beneath it gets its 
 above its `word_floor`** — the argument, the numbers, the mechanism, the cross-link — ending where
 the node ends. A node under its floor is a build failure that re-runs you.
 
+## What to develop — Minto's vertical Q&A
+Develop each node as **the answer to the question its parent's claim raises** in the reader's mind
+(Why? / How? / How do you know?). This is Minto's vertical question/answer dialogue and it decides
+*content*: the node earns its floor by answering that question completely — the argument, the
+evidence, the mechanism — not by padding. Anything that doesn't answer the parent's question doesn't
+belong in this node. (Reference: `references/minto-pyramid/chapters/ch02` in this repo.)
+
 ## Evidence discipline (hard)
 - State only what the `source_text` supports. Every concrete figure traces to a trace id: write it
   as `[S-NNN]` inline (use the record's `trace` id, or a sibling's). Do **not** invent numbers.

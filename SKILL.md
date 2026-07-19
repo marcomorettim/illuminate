@@ -25,6 +25,20 @@ before any rendering competes for it.
 
 ---
 
+## The method (Part 1) — the Minto Pyramid Principle
+
+illuminate's reasoning is not ad-hoc: **Stages I–II *are* Barbara Minto's Pyramid Principle**, integrated
+into this repo as its foundation at [`references/minto-pyramid/`](references/minto-pyramid/) (the full
+method, source-grounded from the book — `cheatsheet.md` for the decision rules, `chapters/` for the
+mechanics). The architect imposes a Minto pyramid: a single **Main Point** (the `governing_thought` field)
+resting on **MECE** branches ordered by one of Minto's three orders (time / structural / degree), each
+`finding` a real insight and never a blank count. The develop agents run Minto's **vertical question/answer
+dialogue** — each node answers the question its parent raises. SCQA governs the introduction; the R1/R2
+problem-definition framework and diagnostic frameworks apply when the source is a problem-solving document.
+Stage III (build) is dumb infrastructure beneath this method.
+
+---
+
 ## The two laws (override everything)
 
 **1 · The Completeness Law.** illuminate **rationalizes and preserves; it does not compress.** The
